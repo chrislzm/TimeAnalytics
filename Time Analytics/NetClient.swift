@@ -14,8 +14,14 @@ class NetClient {
     
     // MARK: Properties
     
-    // Session variables
     var session = URLSession.shared
+    
+    // Moves session variables
+    var movesAuthCode:String?
+    var movesAccessToken:String?
+    var movesExpiresIn:Int?
+    var movesRefreshToken:String?
+    var movesUserId:UInt64?
     
     // MARK: Methods
     
