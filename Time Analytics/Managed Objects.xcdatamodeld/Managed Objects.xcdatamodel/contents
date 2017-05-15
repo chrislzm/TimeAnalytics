@@ -11,6 +11,7 @@
         <attribute name="foursquareCategoryIds" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="foursquareId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="lastUpdate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="lat" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="lon" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
@@ -19,6 +20,6 @@
     </entity>
     <elements>
         <element name="MovesMove" positionX="-54" positionY="63" width="128" height="90"/>
-        <element name="MovesPlace" positionX="-63" positionY="-18" width="128" height="195"/>
+        <element name="MovesPlace" positionX="-63" positionY="-18" width="128" height="210"/>
     </elements>
 </model>
