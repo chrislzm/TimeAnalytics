@@ -34,18 +34,33 @@ extension NetClient {
         
         struct Methods {
             static let Auth = "/oauth/v1/access_token"
+            static let StoryLine = "/api/1.1/user/storyline/daily"
         }
         
         struct ParameterKeys {
-            static let GrantType = "grant_type"
-            static let Code = "code"
+            // For Auth Flow
+            static let AccessToken = "access_token"
             static let ClientId = "client_id"
             static let ClientSecret = "client_secret"
+            static let Code = "code"
+            static let GrantType = "grant_type"
             static let RedirectUri = "redirect_uri"
+            
+            // For Data Access
+            static let FromDate = "from"
+            static let ToDate = "to"
+            static let TrackPoints = "trackPoints"
+            static let UpdatedSince = "updatedSince"
+            static let TimeZone = "timeZone"
         }
         
         struct ParameterValues {
+            // For Auth Flow
             static let GrantType = "authorization_code"
+            
+            // For Data Access
+            static let True = "true"
+            static let False = "false"
         }
         
         struct JSONResponseKeys {
