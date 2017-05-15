@@ -72,14 +72,16 @@ class NetClient {
             
             /* GUARD: Did we get a successful 2XX response? */
             guard statusCode >= 200 && statusCode <= 299  else {
-                var errorString = "Your request returned a status code other than 2xx. Status code returned: \(statusCode)."
-                if let receivedResponse = response {
-                    errorString += "Response receieved: \(receivedResponse)"
+                var errorString = "Your request returned a status code other than 2xx. Status code returned: \(statusCode).\n"
+                // If we received some response, also include it in the error message
+                if let errorResponse = response {
+                    errorString += "Error response receieved: \(errorResponse)\n"
                 }
-                if let receivedData = data {
-                    let (parsedData,parseError) = self.convertData(receivedData)
-                    if let successfullyParsedData = parsedData {
-                        errorString += "Data returned: \(successfullyParsedData)"
+                // If we received some data, also include it in the error message
+                if let errorData = data {
+                    let (parsedErrorData,_) = self.convertData(errorData)
+                    if let validParsedErrorData = parsedErrorData {
+                        errorString += "Error data received: \(validParsedErrorData)\n"
                     }
                 }
                 sendError(errorString)
