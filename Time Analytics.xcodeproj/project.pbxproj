@@ -15,6 +15,7 @@
 		A52564BC1EC93E4000DD843F /* BorderedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52564BB1EC93E4000DD843F /* BorderedButton.swift */; };
 		A5866A1C1EC964450025D38F /* NetClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5866A1B1EC964440025D38F /* NetClient.swift */; };
 		A5866A1E1EC9649C0025D38F /* NetConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5866A1D1EC9649C0025D38F /* NetConstants.swift */; };
+		A5866A201EC966870025D38F /* NetConvenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5866A1F1EC966870025D38F /* NetConvenience.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		A52564BB1EC93E4000DD843F /* BorderedButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BorderedButton.swift; sourceTree = "<group>"; };
 		A5866A1B1EC964440025D38F /* NetClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetClient.swift; sourceTree = "<group>"; };
 		A5866A1D1EC9649C0025D38F /* NetConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetConstants.swift; sourceTree = "<group>"; };
+		A5866A1F1EC966870025D38F /* NetConvenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetConvenience.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,8 +85,9 @@
 		A5866A1A1EC9641A0025D38F /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				A5866A1D1EC9649C0025D38F /* NetConstants.swift */,
 				A5866A1B1EC964440025D38F /* NetClient.swift */,
+				A5866A1D1EC9649C0025D38F /* NetConstants.swift */,
+				A5866A1F1EC966870025D38F /* NetConvenience.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -163,6 +166,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A5866A1C1EC964450025D38F /* NetClient.swift in Sources */,
+				A5866A201EC966870025D38F /* NetConvenience.swift in Sources */,
 				A52564AB1EC929D900DD843F /* ViewController.swift in Sources */,
 				A52564A91EC929D900DD843F /* AppDelegate.swift in Sources */,
 				A52564BC1EC93E4000DD843F /* BorderedButton.swift in Sources */,
