@@ -72,7 +72,17 @@ class NetClient {
             
             /* GUARD: Did we get a successful 2XX response? */
             guard statusCode >= 200 && statusCode <= 299  else {
-                sendError("Your request returned a status code other than 2xx. Status code returned: \(statusCode)")
+                var errorString = "Your request returned a status code other than 2xx. Status code returned: \(statusCode)."
+                if let receivedResponse = response {
+                    errorString += "Response receieved: \(receivedResponse)"
+                }
+                if let receivedData = data {
+                    let (parsedData,parseError) = self.convertData(receivedData)
+                    if let successfullyParsedData = parsedData {
+                        errorString += "Data returned: \(successfullyParsedData)"
+                    }
+                }
+                sendError(errorString)
                 return
             }
             
@@ -113,18 +123,28 @@ class NetClient {
         return components.url!
     }
     
-    // Converts raw JSON into a usable Foundation object and sends it to a completion handler
-    private func convertDataWithCompletionHandler(_ data: Data, completionHandlerForConvertData: (_ result: AnyObject?, _ error: NSError?) -> Void) {
-        
-        var parsedResult: AnyObject! = nil
+    // Converts raw JSON into a usable Foundation object
+    private func convertData(_ data: Data) -> (AnyObject?,NSError?) {
+        var parsedResult: AnyObject? = nil
         do {
             parsedResult = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as AnyObject
         } catch {
             let userInfo = [NSLocalizedDescriptionKey : "Could not parse the data as JSON: '\(data)'"]
-            completionHandlerForConvertData(nil, NSError(domain: "convertDataWithCompletionHandler", code: 1, userInfo: userInfo))
+            let error = NSError(domain: "NetClient.convertData", code: 1, userInfo: userInfo)
+            return(nil,error)
         }
         
-        completionHandlerForConvertData(parsedResult, nil)
+        return(parsedResult,nil)
+    }
+    
+    // Convenience method
+    private func convertDataWithCompletionHandler(_ data: Data, completionHandlerForConvertData: (_ result: AnyObject?, _ error: NSError?) -> Void) {
+        let (parsedResult,error) = convertData(data)
+        guard error == nil else {
+            completionHandlerForConvertData(nil, error)
+            return
+        }
+        completionHandlerForConvertData(parsedResult,nil)
     }
     
     // MARK: Shared Instance
