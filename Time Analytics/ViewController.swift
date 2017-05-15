@@ -45,8 +45,16 @@ class ViewController: UIViewController {
     }
 
     func didGetMovesAuthCode(_ notification:Notification) {
-        let auth_code = notification.userInfo![AnyHashable("code")] as! String
-        print("Got auth code! \(auth_code)")
+        let authCode = notification.userInfo![AnyHashable("code")] as! String
+        print("Got auth code! \(authCode)")
+        
+        NetClient.sharedInstance().loginWithMovesAuthCode(authCode: authCode) { (error) in
+            guard error == nil else {
+                print("Error login in: \(error!)")
+                return
+            }
+            print("Moves login successful!!!")
+        }
     }
 }
 
