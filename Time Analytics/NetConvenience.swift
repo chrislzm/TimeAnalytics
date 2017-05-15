@@ -55,7 +55,7 @@ extension NetClient {
     
     // Retrieves all data from Moves for a given time period (note: for this type of request the Moves API limits to 7 days max per request)
     
-    func getMovesDataFrom(_ startDate:Date, _ endDate:Date, _ completionHandler: @escaping (_ response:[AnyObject]?, _ error: String?) -> Void) {
+    func getMovesDataFrom(_ startDate:Date, _ endDate:Date, _ completionHandler: @escaping (_ response:[String:AnyObject]?, _ error: String?) -> Void) {
         let formattedStartDate = getFormattedDate(startDate)
         let formattedEndDate = getFormattedDate(endDate)
         
@@ -73,9 +73,8 @@ extension NetClient {
                 return
             }
             
-            /* 3. Verify we have received the data we want */
-            
-            guard let response = results as? [AnyObject] else {
+            /* 3. Verify we have received the data dictionary */
+            guard let responseArray = results as? [AnyObject], let response = responseArray[0] as? [String:AnyObject] else {
                 completionHandler(nil,"Error retrieving data from Moves")
                 return
             }
