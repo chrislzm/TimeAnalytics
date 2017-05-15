@@ -13,6 +13,8 @@
 		A52564B01EC929D900DD843F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A52564AF1EC929D900DD843F /* Assets.xcassets */; };
 		A52564B31EC929D900DD843F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A52564B11EC929D900DD843F /* LaunchScreen.storyboard */; };
 		A52564BC1EC93E4000DD843F /* BorderedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52564BB1EC93E4000DD843F /* BorderedButton.swift */; };
+		A5866A1C1EC964450025D38F /* NetClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5866A1B1EC964440025D38F /* NetClient.swift */; };
+		A5866A1E1EC9649C0025D38F /* NetConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5866A1D1EC9649C0025D38F /* NetConstants.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +26,8 @@
 		A52564B21EC929D900DD843F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A52564B41EC929D900DD843F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A52564BB1EC93E4000DD843F /* BorderedButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BorderedButton.swift; sourceTree = "<group>"; };
+		A5866A1B1EC964440025D38F /* NetClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetClient.swift; sourceTree = "<group>"; };
+		A5866A1D1EC9649C0025D38F /* NetConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetConstants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +60,7 @@
 		A52564A71EC929D900DD843F /* Time Analytics */ = {
 			isa = PBXGroup;
 			children = (
+				A5866A1A1EC9641A0025D38F /* Model */,
 				A52564BA1EC93DC200DD843F /* View */,
 				A52564A81EC929D900DD843F /* AppDelegate.swift */,
 				A52564AA1EC929D900DD843F /* ViewController.swift */,
@@ -73,6 +78,15 @@
 				A52564BB1EC93E4000DD843F /* BorderedButton.swift */,
 			);
 			name = View;
+			sourceTree = "<group>";
+		};
+		A5866A1A1EC9641A0025D38F /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				A5866A1D1EC9649C0025D38F /* NetConstants.swift */,
+				A5866A1B1EC964440025D38F /* NetClient.swift */,
+			);
+			name = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -148,9 +162,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A5866A1C1EC964450025D38F /* NetClient.swift in Sources */,
 				A52564AB1EC929D900DD843F /* ViewController.swift in Sources */,
 				A52564A91EC929D900DD843F /* AppDelegate.swift in Sources */,
 				A52564BC1EC93E4000DD843F /* BorderedButton.swift in Sources */,
+				A5866A1E1EC9649C0025D38F /* NetConstants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -316,6 +332,7 @@
 				A52564B91EC929D900DD843F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
