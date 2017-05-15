@@ -12,6 +12,11 @@ import Foundation
 
 class NetClient {
     
+    // MARK: Properties
+    
+    // Session variables
+    var session = URLSession.shared
+    
     // MARK: Methods
     
     // Shared HTTP Method for all HTTP requests
