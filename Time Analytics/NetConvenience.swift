@@ -27,7 +27,8 @@ extension NetClient {
             
             /* 2. Check for error response from Moves */
             if let error = error {
-                self.handleHttpNSError(error,completionHandler)
+                let errorString = self.getNiceMessageFromHttpNSError(error)
+                completionHandler(errorString)
                 return
             }
             
@@ -52,24 +53,65 @@ extension NetClient {
         }
     }
     
+    // Retrieves all data from Moves for a given time period (note: for this type of request the Moves API limits to 7 days max per request)
+    
+    func getMovesDataFrom(_ startDate:Date, _ endDate:Date, _ completionHandler: @escaping (_ response:[AnyObject]?, _ error: String?) -> Void) {
+        let formattedStartDate = getFormattedDate(startDate)
+        let formattedEndDate = getFormattedDate(endDate)
+        
+        let parameters:[String:String] = [NetClient.MovesApi.ParameterKeys.AccessToken:movesAccessToken!,
+                                          NetClient.MovesApi.ParameterKeys.FromDate:formattedStartDate,
+                                          NetClient.MovesApi.ParameterKeys.ToDate:formattedEndDate,
+                                          NetClient.MovesApi.ParameterKeys.TrackPoints:NetClient.MovesApi.ParameterValues.True]
+        
+        let _ = taskForHTTPMethod(NetClient.Constants.ApiScheme, NetClient.Constants.HttpGet, NetClient.MovesApi.Constants.Host, NetClient.MovesApi.Methods.StoryLine, apiParameters: parameters, valuesForHTTPHeader: nil, httpBody: nil) { (results,error) in
+            
+            /* 2. Check for error response from Moves */
+            if let error = error {
+                let errorString = self.getNiceMessageFromHttpNSError(error)
+                completionHandler(nil, errorString)
+                return
+            }
+            
+            /* 3. Verify we have received the data we want */
+            
+            guard let response = results as? [AnyObject] else {
+                completionHandler(nil,"Error retrieving data from Moves")
+                return
+            }
+            
+            /* 4. Return the data */
+            completionHandler(response,nil)
+        }
+    }
+    
     // MARK: Private helper methods
 
     // Handles NSErrors -- Turns them into user-friendly messages before sending them to the controller's completion handler
-    private func handleHttpNSError(_ error:NSError,_ completionHandler: @escaping (_ errorString: String?) -> Void) {
+    private func getNiceMessageFromHttpNSError(_ error:NSError) -> String {
 
         let errorString = error.userInfo[NSLocalizedDescriptionKey].debugDescription
-
+        var userFriendlyErrorString = "Please try again."
+        
         if errorString.contains("timed out") {
-            completionHandler("Couldn't reach server (timed out)")
+            userFriendlyErrorString = "Couldn't reach server (timed out)"
+        } else if errorString.contains("401"){
+            userFriendlyErrorString = "Unauthorized"
         } else if errorString.contains("404"){
-            completionHandler("Invalid Moves token")
+            userFriendlyErrorString = "Invalid Moves token"
         } else if errorString.contains("network connection was lost"){
-            completionHandler("The network connection was lost")
+            userFriendlyErrorString = "The network connection was lost"
         } else if errorString.contains("Internet connection appears to be offline") {
-            completionHandler("The Internet connection appears to be offline")
-        } else {
-            completionHandler("Please try again.")
+            userFriendlyErrorString = "The Internet connection appears to be offline"
         }
+        
+        return userFriendlyErrorString
+    }
+    
+    private func getFormattedDate(_ date:Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyMMdd"
+        return formatter.string(from: date)
     }
     
     // Substitute a key for the value that is contained within the string
