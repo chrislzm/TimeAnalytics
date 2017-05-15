@@ -94,8 +94,11 @@ class NetClient {
                 return
             }
             
-            /* 4/5. Parse the data and use the data (happens in completion handler) */
-            self.convertDataWithCompletionHandler(data, completionHandlerForConvertData: completionHandler)
+            /* 4. Attempt to parse the data */
+            let (parseResult,error) = self.convertData(data)
+            
+            /* 5. Send the result to the completion handler */
+            completionHandler(parseResult,error)
         }
         
         /* 6. Start the request */
@@ -125,7 +128,7 @@ class NetClient {
         return components.url!
     }
     
-    // Converts raw JSON into a usable Foundation object
+    // Attemps to convert raw JSON into a usable Foundation object. Returns an error if unsuccessful.
     private func convertData(_ data: Data) -> (AnyObject?,NSError?) {
         var parsedResult: AnyObject? = nil
         do {
@@ -137,16 +140,6 @@ class NetClient {
         }
         
         return(parsedResult,nil)
-    }
-    
-    // Convenience method
-    private func convertDataWithCompletionHandler(_ data: Data, completionHandlerForConvertData: (_ result: AnyObject?, _ error: NSError?) -> Void) {
-        let (parsedResult,error) = convertData(data)
-        guard error == nil else {
-            completionHandlerForConvertData(nil, error)
-            return
-        }
-        completionHandlerForConvertData(parsedResult,nil)
     }
     
     // MARK: Shared Instance
