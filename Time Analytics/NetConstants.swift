@@ -10,10 +10,8 @@
 
 extension NetClient {
     
-    // MARK: Constants
     struct Constants {
         
-        // MARK: HTTP Constants
         static let ApiScheme = "https"
         static let HttpGet = "GET"
         static let HttpPost = "POST"
@@ -21,28 +19,41 @@ extension NetClient {
         static let HttpDelete = "DELETE"
         
     }
-    
-    struct Methods {
-        // MARK: Moves API Methods
-    }
-    
-    struct URLKeys {
-        // MARK: Moves API Parameter Keys
-    }
-    
-    struct ParameterKeys {
-        // MARK: Moves API Parameter Keys
-    }
 
-    struct ParameterValues {
-        // MARK: Moves Parameter Values
-    }
-
-    struct JSONRequestKeys {
-        // MARK: Moves JSON Request Keys
+    struct TimeAnalytics {
+        static let RedirectUri = "time-analytics://app"
     }
     
-    struct JSONResponseKeys {
-        // MARK: Moves JSON Response Keys
+    struct MovesApi {
+        
+        struct Constants {
+            static let Host = "api.moves-app.com"
+            static let ClientId = "Z0hQuORANlkEb_BmDVu8TntptuUoTv6o"
+            static let ClientSecret = "fqKgM1ICYa47DYZfw0PLOtsu473Kyy9E6PHUI5cQzZx5VkgbivTlJE4WlvQn2jZ1"
+        }
+        
+        struct Methods {
+            static let Auth = "/oauth/v1/access_token"
+        }
+        
+        struct ParameterKeys {
+            static let GrantType = "grant_type"
+            static let Code = "code"
+            static let ClientId = "client_id"
+            static let ClientSecret = "client_secret"
+            static let RedirectUri = "redirect_uri"
+        }
+        
+        struct ParameterValues {
+            static let GrantType = "authorization_code"
+        }
+        
+        struct JSONResponseKeys {
+            static let AccessToken = "access_token"
+            static let TokenType = "token_type"
+            static let ExpiresIn = "expires_in"
+            static let RefreshToken = "refresh_token"
+            static let UserId = "user_id"
+        }
     }
 }
