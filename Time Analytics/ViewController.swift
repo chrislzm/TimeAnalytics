@@ -53,7 +53,20 @@ class ViewController: UIViewController {
                 print("Error login in: \(error!)")
                 return
             }
-            print("Moves login successful!!!")
+            print("Moves login successful!!! Access Token:")
+            
+            print(NetClient.sharedInstance().movesAccessToken)
+
+            // Try getting moves data
+            NetClient.sharedInstance().getMovesDataFrom(Date(), Date()) { (result,error) in
+                guard error == nil else {
+                    print(error)
+                    return
+                }
+                
+                print ("Got data from moves!")
+                print(result)
+            }
         }
     }
 }
