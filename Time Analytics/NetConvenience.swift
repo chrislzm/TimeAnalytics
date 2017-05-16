@@ -91,7 +91,7 @@ extension NetClient {
         // Setup the date formatter
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZ"
+        dateFormatter.dateFormat = "yyyyMMdd'T'HHmmssZ"
         
         for story in stories {
             if let segments = story[NetClient.MovesApi.JSONResponseKeys.Segments] as? [AnyObject] {
@@ -107,8 +107,9 @@ extension NetClient {
 
                     switch type {
                     case NetClient.MovesApi.JSONResponseValues.Segment.Move:
+                        Model.sharedInstance().containsMovesObject("MovesMove", startTime, endTime)
                         Model.sharedInstance().createMovesMoveObject(startTime, endTime, lastUpdate)
-
+                        Model.sharedInstance().containsMovesObject("MovesMove", startTime, endTime)
                     case NetClient.MovesApi.JSONResponseValues.Segment.Place:
                         // TODO: Don't force unwrap optionals below
                         let place = segment[NetClient.MovesApi.JSONResponseKeys.Segment.Place] as! [String:AnyObject]
@@ -128,7 +129,9 @@ extension NetClient {
                         let lat = coordinates[NetClient.MovesApi.JSONResponseKeys.Place.Latitude]!
                         let lon = coordinates[NetClient.MovesApi.JSONResponseKeys.Place.Longitude]!
                         
+                        Model.sharedInstance().containsMovesObject("MovesPlace", startTime, endTime)
                         Model.sharedInstance().createMovesPlaceObject(startTime, endTime, type, lat, lon, lastUpdate, id, name, facebookPlaceId, foursquareId, foursquareCategoryIds)
+                        Model.sharedInstance().containsMovesObject("MovesPlace", startTime, endTime)
                     default:
                         break
                     }
