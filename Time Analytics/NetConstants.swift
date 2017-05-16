@@ -64,11 +64,47 @@ extension NetClient {
         }
         
         struct JSONResponseKeys {
+            // For Auth Flow
             static let AccessToken = "access_token"
             static let TokenType = "token_type"
             static let ExpiresIn = "expires_in"
             static let RefreshToken = "refresh_token"
             static let UserId = "user_id"
+            
+            // For Data Parsing
+            static let Segments = "segments"
+            
+            // For Data Parsing: Segments
+            struct Segment {
+                static let EndTime = "endTime"
+                static let LastUpdate = "lastUpdate"
+                static let Place = "place"
+                static let SegmentType = "type"
+                static let StartTime = "startTime"
+            }
+            
+            // For Data Parsing: Place
+            struct Place {
+                static let FacebookPlaceId = "facebookPlaceId"
+                static let FoursquareId = "foursquareId"
+                static let FoursquareCategoryIds = "foursquareCategoryIds"
+                static let Id = "id"
+                static let Location = "location"
+                static let Longitude = "lon"
+                static let Latitude = "lat"
+                static let Name = "name"
+                static let PlaceType = "type"
+            }
+        }
+        
+        struct JSONResponseValues {
+            
+            // For Data Parsing: Segments
+            struct Segment {
+                static let Move = "move"
+                static let Off = "off"
+                static let Place = "place"
+            }
         }
     }
 }
