@@ -57,11 +57,34 @@ class Model {
         return numResults > 0
     }
 
+    func deleteAllMovesData() {
+        let context = getContext()
+        let persistentStoreCoordinator = getPersistentStoreCoordinator()
+        let moveFr = NSFetchRequest<NSFetchRequestResult>(entityName: "MovesMove")
+        let deleteMoveRequest = NSBatchDeleteRequest(fetchRequest: moveFr)
+        let placeFr = NSFetchRequest<NSFetchRequestResult>(entityName: "MovesPlace")
+        let deletePlaceRequest = NSBatchDeleteRequest(fetchRequest: placeFr)
+        
+        do {
+            try persistentStoreCoordinator.execute(deleteMoveRequest, with: context)
+            try persistentStoreCoordinator.execute(deletePlaceRequest, with: context)
+        } catch {
+            fatalError("Unable to delete saved data")
+        }
+    }
+    
     // MARK: Helper Functions
     
+    func getAppDelegate() -> AppDelegate {
+        return UIApplication.shared.delegate as! AppDelegate
+    }
+    
     func getContext() -> NSManagedObjectContext {
-        let delegate = UIApplication.shared.delegate as! AppDelegate
-        return delegate.persistentContainer.viewContext
+        return getAppDelegate().persistentContainer.viewContext
+    }
+    
+    func getPersistentStoreCoordinator() -> NSPersistentStoreCoordinator {
+        return getAppDelegate().persistentContainer.persistentStoreCoordinator
     }
     
     func saveContext() {
