@@ -32,9 +32,12 @@ extension NetClient {
     // Handles Part 2 of Moves Auth Flow. (Part 1 is getting an auth code from the Moves app, which is handled by Login ViewController)
     func loginWithMovesAuthCode(authCode:String, completionHandler: @escaping (_ error: String?) -> Void) {
         
-        /* 1. Create and run HTTP request to authenticate the userId and password with Udacity */
+        // 1. Save the auth code to our client
+        self.movesAuthCode = authCode
+
+        /* 2. Create and run HTTP request to authenticate the userId and password with Udacity */
         
-        let parameters:[String:String] = [NetClient.MovesApi.ParameterKeys.GrantType:NetClient.MovesApi.ParameterValues.GrantType,
+        let parameters:[String:String] = [NetClient.MovesApi.ParameterKeys.GrantType:NetClient.MovesApi.ParameterValues.AuthCode,
                                           NetClient.MovesApi.ParameterKeys.Code:authCode,
                                           NetClient.MovesApi.ParameterKeys.ClientId:NetClient.MovesApi.Constants.ClientId,
                                           NetClient.MovesApi.ParameterKeys.ClientSecret:NetClient.MovesApi.Constants.ClientSecret,
@@ -42,47 +45,85 @@ extension NetClient {
     
         let _ = taskForHTTPMethod(NetClient.Constants.ApiScheme, NetClient.Constants.HttpPost, NetClient.MovesApi.Constants.Host, NetClient.MovesApi.Methods.Auth, apiParameters: parameters, valuesForHTTPHeader: nil, httpBody: nil) { (results,error) in
             
-            /* 2. Check for error response from Moves */
-            if let error = error {
-                let errorString = self.getNiceMessageFromHttpNSError(error)
-                completionHandler(errorString)
-                return
-            }
-            
-            /* 3. Verify we have received an access token and are logged in */
-            
-            guard let response = results as? [String:AnyObject], let accessToken = response[NetClient.MovesApi.JSONResponseKeys.AccessToken] as? String, let expiresIn = response[NetClient.MovesApi.JSONResponseKeys.ExpiresIn] as? Int, let refreshToken = response[NetClient.MovesApi.JSONResponseKeys.RefreshToken] as? String, let userId = response[NetClient.MovesApi.JSONResponseKeys.UserId] as? UInt64 else {
-                completionHandler("Error creating Moves session")
-                return
-            }
-            
-            /* 4. Save all session variables */
-
-            // Calculate expiration time of the access token
-            var accessTokenExpiration = Date()
-            accessTokenExpiration.addTimeInterval(TimeInterval(expiresIn - NetClient.MovesApi.Constants.AccessTokenExpirationBuffer))
-            
-            // Save to our client
-            self.movesAuthCode = authCode
-            self.movesUserId = userId
-            self.movesAccessTokenExpiration = accessTokenExpiration
-            self.movesAccessToken = accessToken
-            self.movesRefreshToken = refreshToken
-
-            // Save to the model
-            Model.sharedInstance().saveMovesLoginInfo(authCode, userId, accessToken, accessTokenExpiration, refreshToken)
-            
-            /* 5. Complete login with no errors */
-            
-            completionHandler(nil)
+            /* 3. Send response to auth response handler */
+            self.movesAuthResponseHandler(results,error,completionHandler)
         }
+    }
+    
+    func movesAuthResponseHandler(_ results:AnyObject?, _ error:NSError?,_ completionHandler: @escaping (_ error: String?) -> Void) {
+        
+        /* 1. Check for error response from Moves */
+        if let error = error {
+            let errorString = self.getNiceMessageFromHttpNSError(error)
+            completionHandler(errorString)
+            return
+        }
+        
+        
+        /* 2. Verify we have received an access token and are logged in */
+        
+        guard let response = results as? [String:AnyObject], let accessToken = response[NetClient.MovesApi.JSONResponseKeys.AccessToken] as? String, let expiresIn = response[NetClient.MovesApi.JSONResponseKeys.ExpiresIn] as? Int, let refreshToken = response[NetClient.MovesApi.JSONResponseKeys.RefreshToken] as? String, let userId = response[NetClient.MovesApi.JSONResponseKeys.UserId] as? UInt64 else {
+            completionHandler("Error creating Moves session")
+            return
+        }
+        
+        /* 3. Save all session variables */
+        
+        // Calculate expiration time of the access token
+        var accessTokenExpiration = Date()
+        accessTokenExpiration.addTimeInterval(TimeInterval(expiresIn - NetClient.MovesApi.Constants.AccessTokenExpirationBuffer))
+        
+        self.movesUserId = userId
+        self.movesAccessTokenExpiration = accessTokenExpiration
+        self.movesAccessToken = accessToken
+        self.movesRefreshToken = refreshToken
+        
+        Model.sharedInstance().saveMovesLoginInfo(movesAuthCode!, userId, accessToken, accessTokenExpiration, refreshToken)
+        
+        /* 5. Complete login with no errors */
+        
+        completionHandler(nil)
+    }
+
+
+    // Attemps to ensure our session is authorized before we make any calls to the Moves API
+    func verifyLoggedIntoMoves(completionHandler: @escaping (_ error: String?) -> Void) {
+        
+        // Check: Are we logged in?
+        guard movesAccessTokenExpiration != nil else {
+            completionHandler("Error: Not logged into Moves")
+            return
+        }
+        
+        // Check: Has our session expired?
+        if Date() > movesAccessTokenExpiration! {
+
+            print("authorizeMovesSession: Our Moves session expired. Refreshing.")
+
+            // Attempt to refresh our session
+            /* 1. Create and run HTTP request to authenticate the userId and password with Udacity */
+            
+            let parameters:[String:String] = [NetClient.MovesApi.ParameterKeys.GrantType:NetClient.MovesApi.ParameterValues.RefreshToken,
+                                              NetClient.MovesApi.ParameterKeys.RefreshToken:movesRefreshToken!,
+                                              NetClient.MovesApi.ParameterKeys.ClientId:NetClient.MovesApi.Constants.ClientId,
+                                              NetClient.MovesApi.ParameterKeys.ClientSecret:NetClient.MovesApi.Constants.ClientSecret]
+            
+            let _ = taskForHTTPMethod(NetClient.Constants.ApiScheme, NetClient.Constants.HttpPost, NetClient.MovesApi.Constants.Host, NetClient.MovesApi.Methods.Auth, apiParameters: parameters, valuesForHTTPHeader: nil, httpBody: nil) { (results,error) in
+                
+                self.movesAuthResponseHandler(results,error,completionHandler)
+            }
+        }
+        
+        print("authorizeMovesSession: Our Moves session has not expired. Authorized.")
+        // Our session hasn't expired -- return with no error
+        completionHandler(nil)
     }
     
     // Retrieves all data from Moves for a given time period (note: for this type of request the Moves API limits to 7 days max per request)
     
     func getMovesDataFrom(_ startDate:Date, _ endDate:Date, _ completionHandler: @escaping (_ response:[AnyObject]?, _ error: String?) -> Void) {
         
-        authorizeMovesSession() { (error) in
+        verifyLoggedIntoMoves() { (error) in
             
             guard error == nil else {
                 completionHandler(nil,error!)
@@ -171,27 +212,7 @@ extension NetClient {
             }
         }
     }
-    
-    // Attemps to ensure our session is authorized before we make any calls to the Moves API
-    func authorizeMovesSession(completionHandler: @escaping (_ error: String?) -> Void) {
-        
-        // Check: Are we logged in?
-        guard movesAccessTokenExpiration != nil else {
-            completionHandler("Error: Not logged into Moves")
-            return
-        }
-        
-        // Check: Has our session expired?
-        if Date() > movesAccessTokenExpiration! {
-            
-            // Refresh our session
-            
-        }
-        
-        // Our session hasn't expired -- return with no error
-        completionHandler(nil)
-    }
-    
+
     // MARK: Private helper methods
 
     // Handles NSErrors -- Turns them into user-friendly messages before sending them to the controller's completion handler
