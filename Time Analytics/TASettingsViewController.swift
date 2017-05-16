@@ -10,12 +10,15 @@ import UIKit
 
 class TASettingsViewController:UIViewController {
     
+    @IBOutlet weak var startDate: UIDatePicker!
+    @IBOutlet weak var endDate: UIDatePicker!
+    
     @IBAction func downloadButtonPressed(_ sender: Any) {
-        let calendar = Calendar.current
-        let yesterday = calendar.date(byAdding: .day, value: -1, to: Date())
+        let start = startDate.date
+        let end = endDate.date
         
         // Try getting moves data
-        NetClient.sharedInstance().getMovesDataFrom(yesterday!, Date()) { (result,error) in
+        NetClient.sharedInstance().getMovesDataFrom(start, end) { (result,error) in
             guard error == nil else {
                 print(error)
                 return

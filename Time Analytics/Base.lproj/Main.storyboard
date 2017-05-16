@@ -127,30 +127,26 @@
                                     <action selector="downloadButtonPressed:" destination="5Uy-fx-J0M" eventType="touchUpInside" id="DRO-Gp-HmA"/>
                                 </connections>
                             </button>
-                            <datePicker contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="ZT5-fO-2dT">
-                                <rect key="frame" x="0.0" y="451" width="375" height="216"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <datePicker contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="ZT5-fO-2dT">
+                                <rect key="frame" x="0.0" y="445" width="375" height="157"/>
                                 <date key="date" timeIntervalSinceReferenceDate="516605906.83428001">
                                     <!--2017-05-16 05:38:26 +0000-->
                                 </date>
                             </datePicker>
-                            <datePicker contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" minuteInterval="1" useCurrentDate="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CLA-2A-Tsx">
+                            <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" minuteInterval="1" useCurrentDate="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CLA-2A-Tsx">
                                 <rect key="frame" x="0.0" y="192" width="375" height="216"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                <date key="date" timeIntervalSinceReferenceDate="504950400.26778299">
-                                    <!--2017-01-01 08:00:00 +0000-->
+                                <date key="date" timeIntervalSinceReferenceDate="515919600.26778299">
+                                    <!--2017-05-08 07:00:00 +0000-->
                                 </date>
                             </datePicker>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Start Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rsd-19-dWS">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Start Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rsd-19-dWS">
                                 <rect key="frame" x="148" y="163" width="78" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="End Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9H7-ff-5o4">
-                                <rect key="frame" x="152" y="422" width="70" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="End Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9H7-ff-5o4">
+                                <rect key="frame" x="152" y="416" width="70" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -158,19 +154,36 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="Rsd-19-dWS" firstAttribute="leading" secondItem="lZi-Qi-CjN" secondAttribute="leadingMargin" constant="132" id="1VU-wI-pzS"/>
+                            <constraint firstItem="CLA-2A-Tsx" firstAttribute="top" secondItem="Rsd-19-dWS" secondAttribute="bottom" constant="8" id="5Zr-rR-yfN"/>
                             <constraint firstItem="FZn-3j-jRD" firstAttribute="top" secondItem="NZi-m3-ZD6" secondAttribute="bottom" constant="54" id="7gp-wu-WDA"/>
+                            <constraint firstItem="ZT5-fO-2dT" firstAttribute="leading" secondItem="lZi-Qi-CjN" secondAttribute="leadingMargin" constant="-16" id="Bod-ra-bG8"/>
+                            <constraint firstItem="ZT5-fO-2dT" firstAttribute="top" secondItem="9H7-ff-5o4" secondAttribute="bottom" constant="8" id="CNc-Td-KP1"/>
                             <constraint firstItem="NZi-m3-ZD6" firstAttribute="trailing" secondItem="lZi-Qi-CjN" secondAttribute="trailingMargin" id="HEv-3t-R9O"/>
+                            <constraint firstItem="ygQ-fm-84m" firstAttribute="top" secondItem="ZT5-fO-2dT" secondAttribute="bottom" constant="65" id="JF1-nD-a0o"/>
                             <constraint firstItem="NZi-m3-ZD6" firstAttribute="leading" secondItem="lZi-Qi-CjN" secondAttribute="leadingMargin" id="MCs-7v-L4E"/>
+                            <constraint firstItem="CLA-2A-Tsx" firstAttribute="leading" secondItem="lZi-Qi-CjN" secondAttribute="leadingMargin" constant="-16" id="MYt-Qx-hTk"/>
+                            <constraint firstItem="9H7-ff-5o4" firstAttribute="top" secondItem="CLA-2A-Tsx" secondAttribute="bottom" constant="8" id="OoN-VV-i4B"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="ZT5-fO-2dT" secondAttribute="trailing" constant="-16" id="Qmg-2V-sX4"/>
                             <constraint firstItem="NZi-m3-ZD6" firstAttribute="top" secondItem="3HP-Ct-Sis" secondAttribute="bottom" id="Ub7-4r-l0m"/>
                             <constraint firstItem="FZn-3j-jRD" firstAttribute="top" secondItem="NZi-m3-ZD6" secondAttribute="bottom" constant="54" id="V5z-9L-Fys"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="9H7-ff-5o4" secondAttribute="trailing" constant="137" id="Znd-AC-yzz"/>
+                            <constraint firstItem="9H7-ff-5o4" firstAttribute="leading" secondItem="lZi-Qi-CjN" secondAttribute="leadingMargin" constant="136" id="fdl-7o-X9x"/>
+                            <constraint firstItem="Rsd-19-dWS" firstAttribute="top" secondItem="FZn-3j-jRD" secondAttribute="bottom" constant="29" id="h6U-wq-nZm"/>
                             <constraint firstItem="FZn-3j-jRD" firstAttribute="leading" secondItem="lZi-Qi-CjN" secondAttribute="leadingMargin" id="kMT-PF-6ED"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="CLA-2A-Tsx" secondAttribute="trailing" constant="-16" id="ohv-16-fIz"/>
                             <constraint firstItem="FZn-3j-jRD" firstAttribute="trailing" secondItem="lZi-Qi-CjN" secondAttribute="trailingMargin" id="qEg-vT-JvM"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Rsd-19-dWS" secondAttribute="trailing" constant="133" id="v2y-HV-ESi"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="endDate" destination="ZT5-fO-2dT" id="zm8-VY-avO"/>
+                        <outlet property="startDate" destination="CLA-2A-Tsx" id="3hf-6c-s63"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TvM-F1-qzx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="889" y="806"/>
+            <point key="canvasLocation" x="888.79999999999995" y="805.54722638680664"/>
         </scene>
         <!--Location Table View Controller-->
         <scene sceneID="gbN-IH-hCt">
