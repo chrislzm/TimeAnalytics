@@ -19,6 +19,7 @@
 		A5AB93FB1ECA65B10055301C /* Managed Objects.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A5AB93F91ECA65B10055301C /* Managed Objects.xcdatamodeld */; };
 		A5AB93FD1ECA68A40055301C /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5AB93FC1ECA68A40055301C /* Model.swift */; };
 		A5FFFD8D1ECAB38C00B55020 /* TATableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5FFFD8C1ECAB38C00B55020 /* TATableViewController.swift */; };
+		A5FFFD8F1ECAB4A700B55020 /* TALocationTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5FFFD8E1ECAB4A700B55020 /* TALocationTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		A5AB93FA1ECA65B10055301C /* Managed Objects.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Managed Objects.xcdatamodel"; sourceTree = "<group>"; };
 		A5AB93FC1ECA68A40055301C /* Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		A5FFFD8C1ECAB38C00B55020 /* TATableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TATableViewController.swift; sourceTree = "<group>"; };
+		A5FFFD8E1ECAB4A700B55020 /* TALocationTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TALocationTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +107,7 @@
 				A52564A81EC929D900DD843F /* AppDelegate.swift */,
 				A52564AA1EC929D900DD843F /* ViewController.swift */,
 				A5FFFD8C1ECAB38C00B55020 /* TATableViewController.swift */,
+				A5FFFD8E1ECAB4A700B55020 /* TALocationTableViewController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -189,6 +192,7 @@
 				A5AB93FB1ECA65B10055301C /* Managed Objects.xcdatamodeld in Sources */,
 				A52564A91EC929D900DD843F /* AppDelegate.swift in Sources */,
 				A52564BC1EC93E4000DD843F /* BorderedButton.swift in Sources */,
+				A5FFFD8F1ECAB4A700B55020 /* TALocationTableViewController.swift in Sources */,
 				A5866A1E1EC9649C0025D38F /* NetConstants.swift in Sources */,
 				A5AB93FD1ECA68A40055301C /* Model.swift in Sources */,
 			);
