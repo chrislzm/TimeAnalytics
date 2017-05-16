@@ -41,6 +41,22 @@ class Model {
         saveContext()
     }
     
+    func containsMovesObject(_ entityName:String, _ startTime:Date, _ endTime:Date) -> Bool {
+        let context = getContext()
+        let fr = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
+        let pred = NSPredicate(format: "(startTime == %@) AND (endTime == %@)", argumentArray: [startTime,endTime])
+        fr.predicate = pred
+        var numResults = 0
+        do {
+            let result = try context.fetch(fr)
+            numResults = result.count
+            print("Found \(numResults) objects in data with startTime: \(startTime) and endTime: \(endTime)")
+        } catch {
+            fatalError("Unable to access persistent data")
+        }
+        return numResults > 0
+    }
+
     // MARK: Helper Functions
     
     func getContext() -> NSManagedObjectContext {
@@ -55,7 +71,7 @@ class Model {
     
     // MARK: Shared Instance
     
-    class func sharedInstance() -> Model {
+    func sharedInstance() -> Model {
         struct Singleton {
             static var sharedInstance = Model()
         }
