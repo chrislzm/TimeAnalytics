@@ -25,7 +25,10 @@ class ViewController: UIViewController {
             print("That didn't work")
         }
     }
-    
+    @IBAction func deleteMovesDataPressed(_ sender: Any) {
+        Model.sharedInstance().deleteAllMovesData()
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -53,12 +56,13 @@ class ViewController: UIViewController {
                 print("Error login in: \(error!)")
                 return
             }
-            print("Moves login successful!!! Access Token:")
+            print("Moves login successful!")
             
-            print(NetClient.sharedInstance().movesAccessToken)
-
+            let calendar = Calendar.current
+            let yesterday = calendar.date(byAdding: .day, value: -1, to: Date())
+            
             // Try getting moves data
-            NetClient.sharedInstance().getMovesDataFrom(Date(), Date()) { (result,error) in
+            NetClient.sharedInstance().getMovesDataFrom(yesterday!, Date()) { (result,error) in
                 guard error == nil else {
                     print(error)
                     return
@@ -66,6 +70,8 @@ class ViewController: UIViewController {
                 
                 print ("Got data from moves!")
                 print(result)
+                
+                NetClient.sharedInstance().parseAndSaveMovesData(result!)
             }
         }
     }

@@ -35,6 +35,13 @@
                                 <color key="textColor" red="1" green="0.0" blue="0.90228585023564456" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XhD-rp-dQ2" customClass="BorderedButton" customModule="Time_Analytics" customModuleProvider="target">
+                                <rect key="frame" x="16" y="418.5" width="343" height="30"/>
+                                <state key="normal" title="Delete Moves Data"/>
+                                <connections>
+                                    <action selector="deleteMovesDataPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="MjQ-J0-sjl"/>
+                                </connections>
+                            </button>
                             <activityIndicatorView hidden="YES" opaque="NO" alpha="0.29999999999999999" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="9Yv-SL-pHJ">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -45,9 +52,13 @@
                             <constraint firstItem="eKj-xb-K22" firstAttribute="top" secondItem="fSb-lg-qA5" secondAttribute="bottom" constant="100" id="00g-Qo-TrE"/>
                             <constraint firstItem="eKj-xb-K22" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="1IX-O4-L2B"/>
                             <constraint firstItem="eKj-xb-K22" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="3XN-Cs-Pze"/>
+                            <constraint firstItem="XhD-rp-dQ2" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="7IZ-sL-wpN"/>
                             <constraint firstItem="eKj-xb-K22" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="8q7-h3-mlC"/>
+                            <constraint firstItem="XhD-rp-dQ2" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="JO5-Ia-QkX"/>
                             <constraint firstItem="9Yv-SL-pHJ" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" id="NrR-jD-xjs"/>
+                            <constraint firstItem="XhD-rp-dQ2" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" constant="100" id="NwC-j7-xwi"/>
                             <constraint firstAttribute="bottomMargin" secondItem="9Yv-SL-pHJ" secondAttribute="bottom" id="dbz-vL-cOJ"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="XhD-rp-dQ2" secondAttribute="trailing" id="feq-b7-FFA"/>
                             <constraint firstItem="9Yv-SL-pHJ" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="hm4-3u-Ld2"/>
                             <constraint firstAttribute="trailing" secondItem="9Yv-SL-pHJ" secondAttribute="trailing" id="pzo-NG-FpF"/>
                             <constraint firstItem="eKj-xb-K22" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="rbS-kI-T7e"/>
