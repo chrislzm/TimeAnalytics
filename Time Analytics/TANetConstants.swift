@@ -8,7 +8,7 @@
 //  Copyright © 2017 Chris Leung. All rights reserved.
 //
 
-extension NetClient {
+extension TANetClient {
     
     struct Constants {
         

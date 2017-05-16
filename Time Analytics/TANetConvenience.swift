@@ -12,7 +12,7 @@ import CoreData
 import Foundation
 import UIKit
 
-extension NetClient {
+extension TANetClient {
     
     // Handles Part 1 of Moves Auth Flow: Getting an auth code from the Moves app
     func obtainMovesAuthCode() {

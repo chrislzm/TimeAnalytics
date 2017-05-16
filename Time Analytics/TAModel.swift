@@ -12,7 +12,7 @@ import CoreData
 import Foundation
 import UIKit
 
-class Model {
+class TAModel {
     
     // MARK: Moves API Methods
     func createMovesMoveObject(_ startTime:Date, _ endTime:Date, _ lastUpdate:Date?) {

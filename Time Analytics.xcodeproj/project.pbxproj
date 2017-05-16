@@ -13,11 +13,11 @@
 		A52564B01EC929D900DD843F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A52564AF1EC929D900DD843F /* Assets.xcassets */; };
 		A52564B31EC929D900DD843F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A52564B11EC929D900DD843F /* LaunchScreen.storyboard */; };
 		A52564BC1EC93E4000DD843F /* BorderedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52564BB1EC93E4000DD843F /* BorderedButton.swift */; };
-		A5866A1C1EC964450025D38F /* NetClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5866A1B1EC964440025D38F /* NetClient.swift */; };
-		A5866A1E1EC9649C0025D38F /* NetConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5866A1D1EC9649C0025D38F /* NetConstants.swift */; };
-		A5866A201EC966870025D38F /* NetConvenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5866A1F1EC966870025D38F /* NetConvenience.swift */; };
+		A5866A1C1EC964450025D38F /* TANetClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5866A1B1EC964440025D38F /* TANetClient.swift */; };
+		A5866A1E1EC9649C0025D38F /* TANetConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5866A1D1EC9649C0025D38F /* TANetConstants.swift */; };
+		A5866A201EC966870025D38F /* TANetConvenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5866A1F1EC966870025D38F /* TANetConvenience.swift */; };
 		A5AB93FB1ECA65B10055301C /* Managed Objects.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A5AB93F91ECA65B10055301C /* Managed Objects.xcdatamodeld */; };
-		A5AB93FD1ECA68A40055301C /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5AB93FC1ECA68A40055301C /* Model.swift */; };
+		A5AB93FD1ECA68A40055301C /* TAModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5AB93FC1ECA68A40055301C /* TAModel.swift */; };
 		A5FFFD8D1ECAB38C00B55020 /* TATableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5FFFD8C1ECAB38C00B55020 /* TATableViewController.swift */; };
 		A5FFFD8F1ECAB4A700B55020 /* TALocationTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5FFFD8E1ECAB4A700B55020 /* TALocationTableViewController.swift */; };
 		A5FFFD931ECAC6F200B55020 /* TASettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5FFFD921ECAC6F200B55020 /* TASettingsViewController.swift */; };
@@ -32,11 +32,11 @@
 		A52564B21EC929D900DD843F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A52564B41EC929D900DD843F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A52564BB1EC93E4000DD843F /* BorderedButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BorderedButton.swift; sourceTree = "<group>"; };
-		A5866A1B1EC964440025D38F /* NetClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetClient.swift; sourceTree = "<group>"; };
-		A5866A1D1EC9649C0025D38F /* NetConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetConstants.swift; sourceTree = "<group>"; };
-		A5866A1F1EC966870025D38F /* NetConvenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetConvenience.swift; sourceTree = "<group>"; };
+		A5866A1B1EC964440025D38F /* TANetClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TANetClient.swift; sourceTree = "<group>"; };
+		A5866A1D1EC9649C0025D38F /* TANetConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TANetConstants.swift; sourceTree = "<group>"; };
+		A5866A1F1EC966870025D38F /* TANetConvenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TANetConvenience.swift; sourceTree = "<group>"; };
 		A5AB93FA1ECA65B10055301C /* Managed Objects.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Managed Objects.xcdatamodel"; sourceTree = "<group>"; };
-		A5AB93FC1ECA68A40055301C /* Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
+		A5AB93FC1ECA68A40055301C /* TAModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TAModel.swift; sourceTree = "<group>"; };
 		A5FFFD8C1ECAB38C00B55020 /* TATableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TATableViewController.swift; sourceTree = "<group>"; };
 		A5FFFD8E1ECAB4A700B55020 /* TALocationTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TALocationTableViewController.swift; sourceTree = "<group>"; };
 		A5FFFD921ECAC6F200B55020 /* TASettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TASettingsViewController.swift; sourceTree = "<group>"; };
@@ -94,10 +94,10 @@
 		A5866A1A1EC9641A0025D38F /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				A5AB93FC1ECA68A40055301C /* Model.swift */,
-				A5866A1B1EC964440025D38F /* NetClient.swift */,
-				A5866A1D1EC9649C0025D38F /* NetConstants.swift */,
-				A5866A1F1EC966870025D38F /* NetConvenience.swift */,
+				A5AB93FC1ECA68A40055301C /* TAModel.swift */,
+				A5866A1B1EC964440025D38F /* TANetClient.swift */,
+				A5866A1D1EC9649C0025D38F /* TANetConstants.swift */,
+				A5866A1F1EC966870025D38F /* TANetConvenience.swift */,
 				A5AB93F91ECA65B10055301C /* Managed Objects.xcdatamodeld */,
 			);
 			name = Model;
@@ -188,8 +188,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A5866A1C1EC964450025D38F /* NetClient.swift in Sources */,
-				A5866A201EC966870025D38F /* NetConvenience.swift in Sources */,
+				A5866A1C1EC964450025D38F /* TANetClient.swift in Sources */,
+				A5866A201EC966870025D38F /* TANetConvenience.swift in Sources */,
 				A5FFFD931ECAC6F200B55020 /* TASettingsViewController.swift in Sources */,
 				A5FFFD8D1ECAB38C00B55020 /* TATableViewController.swift in Sources */,
 				A52564AB1EC929D900DD843F /* TALoginViewController.swift in Sources */,
@@ -197,8 +197,8 @@
 				A52564A91EC929D900DD843F /* AppDelegate.swift in Sources */,
 				A52564BC1EC93E4000DD843F /* BorderedButton.swift in Sources */,
 				A5FFFD8F1ECAB4A700B55020 /* TALocationTableViewController.swift in Sources */,
-				A5866A1E1EC9649C0025D38F /* NetConstants.swift in Sources */,
-				A5AB93FD1ECA68A40055301C /* Model.swift in Sources */,
+				A5866A1E1EC9649C0025D38F /* TANetConstants.swift in Sources */,
+				A5AB93FD1ECA68A40055301C /* TAModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

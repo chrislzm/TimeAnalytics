@@ -10,7 +10,7 @@
 
 import Foundation
 
-class NetClient {
+class TANetClient {
     
     // MARK: Properties
     
