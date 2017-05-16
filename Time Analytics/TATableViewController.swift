@@ -9,7 +9,7 @@ import CoreData
 
 // MARK: - CoreDataTableViewController: UITableViewController
 
-class CoreDataTableViewController: UITableViewController {
+class TATableViewController: UITableViewController {
     
     // MARK: Properties
     
@@ -40,7 +40,7 @@ class CoreDataTableViewController: UITableViewController {
 
 // MARK: - CoreDataTableViewController (Subclass Must Implement)
 
-extension CoreDataTableViewController {
+extension TATableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         fatalError("This method MUST be implemented by a subclass of CoreDataTableViewController")
@@ -49,7 +49,7 @@ extension CoreDataTableViewController {
 
 // MARK: - CoreDataTableViewController (Table Data Source)
 
-extension CoreDataTableViewController {
+extension TATableViewController {
     
     override func numberOfSections(in tableView: UITableView) -> Int {
         if let fc = fetchedResultsController {
@@ -94,7 +94,7 @@ extension CoreDataTableViewController {
 
 // MARK: - CoreDataTableViewController (Fetches)
 
-extension CoreDataTableViewController {
+extension TATableViewController {
     
     func executeSearch() {
         if let fc = fetchedResultsController {
@@ -109,7 +109,7 @@ extension CoreDataTableViewController {
 
 // MARK: - CoreDataTableViewController: NSFetchedResultsControllerDelegate
 
-extension CoreDataTableViewController: NSFetchedResultsControllerDelegate {
+extension TATableViewController: NSFetchedResultsControllerDelegate {
     
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.beginUpdates()
