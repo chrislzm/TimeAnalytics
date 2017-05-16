@@ -16,15 +16,29 @@ class Model {
     func createMovesMoveObject(_ startTime:Date, _ endTime:Date, _ lastUpdate:Date?) {
         let context = getContext()
         let entity = NSEntityDescription.entity(forEntityName: "MovesMove", in: context)!
-        let moveObject = NSManagedObject(entity: entity, insertInto: context)
-        moveObject.setValue(startTime, forKey: "startTime")
-        moveObject.setValue(endTime, forKey: "endTime")
-        moveObject.setValue(lastUpdate, forKey: "lastUpdate")
+        let move = NSManagedObject(entity: entity, insertInto: context)
+        move.setValue(startTime, forKey: "startTime")
+        move.setValue(endTime, forKey: "endTime")
+        move.setValue(lastUpdate, forKey: "lastUpdate")
         saveContext()
     }
     
-    func createMovesPlaceObject() {
-        
+    func createMovesPlaceObject(_ startTime:Date, _ endTime:Date, _ type:String,_ lat:Double,_ lon:Double,  _ lastUpdate:Date?,_ id:Int64?,_ name:String?,_ facebookPlaceId:String?, foursquareId:String?, foursquareCategoryIds:String?) {
+        let context = getContext()
+        let entity = NSEntityDescription.entity(forEntityName: "MovesPlace", in: context)!
+        let place = NSManagedObject(entity: entity, insertInto: context)
+        place.setValue(startTime, forKey: "startTime")
+        place.setValue(endTime, forKey: "endTime")
+        place.setValue(type, forKey: "type")
+        place.setValue(lat, forKey: "lat")
+        place.setValue(lon, forKey: "lon")
+        place.setValue(lastUpdate, forKey: "lastUpdate")
+        place.setValue(id, forKey: "id")
+        place.setValue(name, forKey: "name")
+        place.setValue(facebookPlaceId, forKey: "facebookPlaceId")
+        place.setValue(foursquareId, forKey: "foursquareId")
+        place.setValue(foursquareCategoryIds, forKey: "foursquareCategoryIds")
+        saveContext()
     }
     
     // MARK: Helper Functions
