@@ -37,6 +37,13 @@ class TALocationTableViewController: TATableViewController {
         navigationItem.rightBarButtonItem = settingsButton
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        executeSearch()
+        tableView.reloadData()
+    }
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         // This method must be implemented by our subclass. There's no way
