@@ -41,6 +41,16 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.didGetMovesAuthCode(_:)), name: Notification.Name("didGetMovesAuthCode"), object: nil)
+        
+        NetClient.sharedInstance().verifyLoggedIntoMoves() { (error) in
+            guard error == nil else {
+                print("Error: Not logged into Moves")
+                return
+            }
+            DispatchQueue.main.async {
+                self.performSegue(withIdentifier: "ShowLocationTableViewController", sender: nil)
+            }
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
