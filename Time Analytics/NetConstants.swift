@@ -46,6 +46,7 @@ extension NetClient {
             static let Code = "code"
             static let GrantType = "grant_type"
             static let RedirectUri = "redirect_uri"
+            static let RefreshToken = "refresh_token"
             
             // For Data Access
             static let FromDate = "from"
@@ -57,7 +58,8 @@ extension NetClient {
         
         struct ParameterValues {
             // For Auth Flow
-            static let GrantType = "authorization_code"
+            static let AuthCode = "authorization_code"
+            static let RefreshToken = "refresh_token"
             
             // For Data Access
             static let True = "true"
