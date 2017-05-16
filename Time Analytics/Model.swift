@@ -13,6 +13,8 @@ import Foundation
 import UIKit
 
 class Model {
+    
+    // MARK: Moves API Methods
     func createMovesMoveObject(_ startTime:Date, _ endTime:Date, _ lastUpdate:Date?) {
         let context = getContext()
         let entity = NSEntityDescription.entity(forEntityName: "MovesMove", in: context)!
@@ -72,6 +74,61 @@ class Model {
             fatalError("Unable to delete saved data")
         }
         saveContext()
+    }
+
+    
+    func parseAndSaveMovesData(_ stories:[AnyObject]) {
+        
+        // Setup the date formatter
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        dateFormatter.dateFormat = "yyyyMMdd'T'HHmmssZ"
+        
+        for story in stories {
+            if let segments = story[NetClient.MovesApi.JSONResponseKeys.Segments] as? [AnyObject] {
+                for segment in segments {
+                    // TODO: Don't force unwrap optionals here
+                    let type = segment[NetClient.MovesApi.JSONResponseKeys.Segment.SegmentType] as! String
+                    let startTime = dateFormatter.date(from: segment[NetClient.MovesApi.JSONResponseKeys.Segment.StartTime] as! String)!
+                    let endTime = dateFormatter.date(from: segment[NetClient.MovesApi.JSONResponseKeys.Segment.EndTime] as! String)!
+                    var lastUpdate:Date? = nil
+                    if let optionalLastUpdate = segment[NetClient.MovesApi.JSONResponseKeys.Segment.LastUpdate] as? String{
+                        lastUpdate = dateFormatter.date(from: optionalLastUpdate)
+                    }
+                    
+                    switch type {
+                    case NetClient.MovesApi.JSONResponseValues.Segment.Move:
+                        if (!containsMovesObject("MovesMove", startTime)) {
+                            createMovesMoveObject(startTime, endTime, lastUpdate)
+                        }
+                    case NetClient.MovesApi.JSONResponseValues.Segment.Place:
+                        // TODO: Don't force unwrap optionals below
+                        let place = segment[NetClient.MovesApi.JSONResponseKeys.Segment.Place] as! [String:AnyObject]
+                        let id = place[NetClient.MovesApi.JSONResponseKeys.Place.Id] as? Int64
+                        let name = place[NetClient.MovesApi.JSONResponseKeys.Place.Name] as? String
+                        let type = place[NetClient.MovesApi.JSONResponseKeys.Place.PlaceType] as! String
+                        let facebookPlaceId = place[NetClient.MovesApi.JSONResponseKeys.Place.FacebookPlaceId] as? String
+                        let foursquareId = place[NetClient.MovesApi.JSONResponseKeys.Place.FoursquareId] as? String
+                        var foursquareCategoryIds:String?
+                        if let optionalFoursquareCategoryIds = place[NetClient.MovesApi.JSONResponseKeys.Place.FoursquareCategoryIds] as? [String] {
+                            foursquareCategoryIds = String()
+                            for fourSquareCategoryId in optionalFoursquareCategoryIds {
+                                foursquareCategoryIds?.append(fourSquareCategoryId + ",")
+                            }
+                        }
+                        let coordinates = place[NetClient.MovesApi.JSONResponseKeys.Place.Location] as! [String:Double]
+                        let lat = coordinates[NetClient.MovesApi.JSONResponseKeys.Place.Latitude]!
+                        let lon = coordinates[NetClient.MovesApi.JSONResponseKeys.Place.Longitude]!
+                        
+                        if(!containsMovesObject("MovesPlace", startTime)) {
+                            createMovesPlaceObject(startTime, endTime, type, lat, lon, lastUpdate, id, name, facebookPlaceId, foursquareId, foursquareCategoryIds)
+                        }
+                    default:
+                        break
+                    }
+                }
+            }
+        }
     }
 
     // MARK: User Defaults Methods
