@@ -20,12 +20,15 @@
     </entity>
     <entity name="TAPlace" representedClassName="TAPlace" syncable="YES" codeGenerationType="class">
         <attribute name="endTime" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="lat" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="lon" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="movesStartTime" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="startTime" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
     </entity>
     <elements>
         <element name="MovesMove" positionX="-54" positionY="63" width="128" height="90"/>
         <element name="MovesPlace" positionX="-63" positionY="-18" width="128" height="210"/>
-        <element name="TAPlace" positionX="-54" positionY="63" width="128" height="90"/>
+        <element name="TAPlace" positionX="-54" positionY="63" width="128" height="135"/>
     </elements>
 </model>
