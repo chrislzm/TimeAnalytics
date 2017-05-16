@@ -73,8 +73,25 @@ class Model {
         }
         saveContext()
     }
-    
+
     // MARK: User Defaults Methods
+
+    func loadMovesSessionData() {
+        // Check first if we even have an access token expiration date
+        if let accessTokenExpiration = UserDefaults.standard.value(forKey: "movesAccessTokenExpiration") as? Date {
+            
+            // If the access token is still valid
+            if Date() < accessTokenExpiration {
+                // Save the session information into our Net Client
+                NetClient.sharedInstance().movesAccessTokenExpiration = accessTokenExpiration
+                NetClient.sharedInstance().movesAccessToken = UserDefaults.standard.value(forKey: "movesAccessToken") as? String
+                NetClient.sharedInstance().movesAuthCode = UserDefaults.standard.value(forKey: "movesAuthCode") as? String
+                NetClient.sharedInstance().movesRefreshToken = UserDefaults.standard.value(forKey: "movesRefreshToken") as? String
+                NetClient.sharedInstance().movesUserId = UserDefaults.standard.value(forKey: "movesUserId") as? UInt64
+            }
+        }
+        
+    }
     
     func saveMovesLoginInfo(_ authCode:String, _ userId:UInt64, _ accessToken:String,_ accessTokenExpiration:Date,_ refreshToken:String) {
         UserDefaults.standard.set(authCode, forKey: "movesAuthCode")
@@ -82,6 +99,7 @@ class Model {
         UserDefaults.standard.set(accessToken, forKey: "movesAccessToken")
         UserDefaults.standard.set(accessTokenExpiration, forKey: "movesAccessTokenExpiration")
         UserDefaults.standard.set(refreshToken, forKey: "movesRefreshToken")
+        UserDefaults.standard.synchronize()
     }
     
     // MARK: Helper Functions
