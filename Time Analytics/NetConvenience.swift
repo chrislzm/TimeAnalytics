@@ -73,6 +73,7 @@ extension NetClient {
         var accessTokenExpiration = Date()
         accessTokenExpiration.addTimeInterval(TimeInterval(expiresIn - NetClient.MovesApi.Constants.AccessTokenExpirationBuffer))
         
+        print("Setting userId:\(userId), Expiration: \(accessTokenExpiration), Access Token: \(accessToken), Refresh Token: \(refreshToken)")
         self.movesUserId = userId
         self.movesAccessTokenExpiration = accessTokenExpiration
         self.movesAccessToken = accessToken
