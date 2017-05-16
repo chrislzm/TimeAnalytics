@@ -18,29 +18,45 @@ class TAModel {
     func createMovesMoveObject(_ startTime:Date, _ endTime:Date, _ lastUpdate:Date?) {
         let context = getContext()
         let entity = NSEntityDescription.entity(forEntityName: "MovesMove", in: context)!
-        let move = NSManagedObject(entity: entity, insertInto: context)
-        move.setValue(startTime, forKey: "startTime")
-        move.setValue(endTime, forKey: "endTime")
-        move.setValue(lastUpdate, forKey: "lastUpdate")
+        let movesMove = NSManagedObject(entity: entity, insertInto: context)
+        movesMove.setValue(startTime, forKey: "startTime")
+        movesMove.setValue(endTime, forKey: "endTime")
+        movesMove.setValue(lastUpdate, forKey: "lastUpdate")
         saveContext()
     }
     
     func createMovesPlaceObject(_ startTime:Date, _ endTime:Date, _ type:String,_ lat:Double,_ lon:Double,  _ lastUpdate:Date?,_ id:Int64?,_ name:String?,_ facebookPlaceId:String?,_ foursquareId:String?,_ foursquareCategoryIds:String?) {
         let context = getContext()
-        let entity = NSEntityDescription.entity(forEntityName: "MovesPlace", in: context)!
-        let place = NSManagedObject(entity: entity, insertInto: context)
-        place.setValue(startTime, forKey: "startTime")
-        place.setValue(endTime, forKey: "endTime")
-        place.setValue(type, forKey: "type")
-        place.setValue(lat, forKey: "lat")
-        place.setValue(lon, forKey: "lon")
-        place.setValue(lastUpdate, forKey: "lastUpdate")
-        place.setValue(id, forKey: "id")
-        place.setValue(name, forKey: "name")
-        place.setValue(facebookPlaceId, forKey: "facebookPlaceId")
-        place.setValue(foursquareId, forKey: "foursquareId")
-        place.setValue(foursquareCategoryIds, forKey: "foursquareCategoryIds")
+        
+        // Create and store MovesPlace object
+        let movesPlaceEntity = NSEntityDescription.entity(forEntityName: "MovesPlace", in: context)!
+        let movesPlace = NSManagedObject(entity: movesPlaceEntity, insertInto: context)
+        movesPlace.setValue(startTime, forKey: "startTime")
+        movesPlace.setValue(endTime, forKey: "endTime")
+        movesPlace.setValue(type, forKey: "type")
+        movesPlace.setValue(lat, forKey: "lat")
+        movesPlace.setValue(lon, forKey: "lon")
+        movesPlace.setValue(lastUpdate, forKey: "lastUpdate")
+        movesPlace.setValue(id, forKey: "id")
+        movesPlace.setValue(name, forKey: "name")
+        movesPlace.setValue(facebookPlaceId, forKey: "facebookPlaceId")
+        movesPlace.setValue(foursquareId, forKey: "foursquareId")
+        movesPlace.setValue(foursquareCategoryIds, forKey: "foursquareCategoryIds")
         saveContext()
+
+        // Create and store TAPlace object
+        let taPlaceEntity = NSEntityDescription.entity(forEntityName: "TAPlace", in: context)!
+        let taPlace = NSManagedObject(entity: taPlaceEntity, insertInto: context)
+        taPlace.setValue(startTime, forKey:"movesStartTime")
+        taPlace.setValue(startTime, forKey:"startTime")
+        movesPlace.setValue(endTime, forKey: "endTime")
+        movesPlace.setValue(lat, forKey: "lat")
+        movesPlace.setValue(lon, forKey: "lon")
+        movesPlace.setValue(id, forKey: "id")
+        movesPlace.setValue(name, forKey: "name")
+
+        
+        
     }
     
     func containsMovesObject(_ entityName:String, _ startTime:Date) -> Bool {
@@ -57,6 +73,21 @@ class TAModel {
             fatalError("Unable to access persistent data")
         }
         return numResults > 0
+    }
+
+    func deleteMovesObject(_ entityName:String, _ startTime:Date) {
+        let context = getContext()
+        let fr = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
+        let pred = NSPredicate(format: "startTime == %@", argumentArray: [startTime])
+        fr.predicate = pred
+        do {
+            let result = try context.fetch(fr)
+            for object in result {
+                context.delete(object as! NSManagedObject)
+            }
+        } catch {
+            fatalError("Unable to access persistent data")
+        }
     }
 
     func deleteAllMovesData() {
@@ -85,40 +116,40 @@ class TAModel {
         dateFormatter.dateFormat = "yyyyMMdd'T'HHmmssZ"
         
         for story in stories {
-            if let segments = story[NetClient.MovesApi.JSONResponseKeys.Segments] as? [AnyObject] {
+            if let segments = story[TANetClient.MovesApi.JSONResponseKeys.Segments] as? [AnyObject] {
                 for segment in segments {
                     // TODO: Don't force unwrap optionals here
-                    let type = segment[NetClient.MovesApi.JSONResponseKeys.Segment.SegmentType] as! String
-                    let startTime = dateFormatter.date(from: segment[NetClient.MovesApi.JSONResponseKeys.Segment.StartTime] as! String)!
-                    let endTime = dateFormatter.date(from: segment[NetClient.MovesApi.JSONResponseKeys.Segment.EndTime] as! String)!
+                    let type = segment[TANetClient.MovesApi.JSONResponseKeys.Segment.SegmentType] as! String
+                    let startTime = dateFormatter.date(from: segment[TANetClient.MovesApi.JSONResponseKeys.Segment.StartTime] as! String)!
+                    let endTime = dateFormatter.date(from: segment[TANetClient.MovesApi.JSONResponseKeys.Segment.EndTime] as! String)!
                     var lastUpdate:Date? = nil
-                    if let optionalLastUpdate = segment[NetClient.MovesApi.JSONResponseKeys.Segment.LastUpdate] as? String{
+                    if let optionalLastUpdate = segment[TANetClient.MovesApi.JSONResponseKeys.Segment.LastUpdate] as? String{
                         lastUpdate = dateFormatter.date(from: optionalLastUpdate)
                     }
                     
                     switch type {
-                    case NetClient.MovesApi.JSONResponseValues.Segment.Move:
+                    case TANetClient.MovesApi.JSONResponseValues.Segment.Move:
                         if (!containsMovesObject("MovesMove", startTime)) {
                             createMovesMoveObject(startTime, endTime, lastUpdate)
                         }
-                    case NetClient.MovesApi.JSONResponseValues.Segment.Place:
+                    case TANetClient.MovesApi.JSONResponseValues.Segment.Place:
                         // TODO: Don't force unwrap optionals below
-                        let place = segment[NetClient.MovesApi.JSONResponseKeys.Segment.Place] as! [String:AnyObject]
-                        let id = place[NetClient.MovesApi.JSONResponseKeys.Place.Id] as? Int64
-                        let name = place[NetClient.MovesApi.JSONResponseKeys.Place.Name] as? String
-                        let type = place[NetClient.MovesApi.JSONResponseKeys.Place.PlaceType] as! String
-                        let facebookPlaceId = place[NetClient.MovesApi.JSONResponseKeys.Place.FacebookPlaceId] as? String
-                        let foursquareId = place[NetClient.MovesApi.JSONResponseKeys.Place.FoursquareId] as? String
+                        let place = segment[TANetClient.MovesApi.JSONResponseKeys.Segment.Place] as! [String:AnyObject]
+                        let id = place[TANetClient.MovesApi.JSONResponseKeys.Place.Id] as? Int64
+                        let name = place[TANetClient.MovesApi.JSONResponseKeys.Place.Name] as? String
+                        let type = place[TANetClient.MovesApi.JSONResponseKeys.Place.PlaceType] as! String
+                        let facebookPlaceId = place[TANetClient.MovesApi.JSONResponseKeys.Place.FacebookPlaceId] as? String
+                        let foursquareId = place[TANetClient.MovesApi.JSONResponseKeys.Place.FoursquareId] as? String
                         var foursquareCategoryIds:String?
-                        if let optionalFoursquareCategoryIds = place[NetClient.MovesApi.JSONResponseKeys.Place.FoursquareCategoryIds] as? [String] {
+                        if let optionalFoursquareCategoryIds = place[TANetClient.MovesApi.JSONResponseKeys.Place.FoursquareCategoryIds] as? [String] {
                             foursquareCategoryIds = String()
                             for fourSquareCategoryId in optionalFoursquareCategoryIds {
                                 foursquareCategoryIds?.append(fourSquareCategoryId + ",")
                             }
                         }
-                        let coordinates = place[NetClient.MovesApi.JSONResponseKeys.Place.Location] as! [String:Double]
-                        let lat = coordinates[NetClient.MovesApi.JSONResponseKeys.Place.Latitude]!
-                        let lon = coordinates[NetClient.MovesApi.JSONResponseKeys.Place.Longitude]!
+                        let coordinates = place[TANetClient.MovesApi.JSONResponseKeys.Place.Location] as! [String:Double]
+                        let lat = coordinates[TANetClient.MovesApi.JSONResponseKeys.Place.Latitude]!
+                        let lon = coordinates[TANetClient.MovesApi.JSONResponseKeys.Place.Longitude]!
                         
                         if(!containsMovesObject("MovesPlace", startTime)) {
                             createMovesPlaceObject(startTime, endTime, type, lat, lon, lastUpdate, id, name, facebookPlaceId, foursquareId, foursquareCategoryIds)
@@ -140,11 +171,11 @@ class TAModel {
             // If the access token is still valid
             if Date() < accessTokenExpiration {
                 // Save the session information into our Net Client
-                NetClient.sharedInstance().movesAccessTokenExpiration = accessTokenExpiration
-                NetClient.sharedInstance().movesAccessToken = UserDefaults.standard.value(forKey: "movesAccessToken") as? String
-                NetClient.sharedInstance().movesAuthCode = UserDefaults.standard.value(forKey: "movesAuthCode") as? String
-                NetClient.sharedInstance().movesRefreshToken = UserDefaults.standard.value(forKey: "movesRefreshToken") as? String
-                NetClient.sharedInstance().movesUserId = UserDefaults.standard.value(forKey: "movesUserId") as? UInt64
+                TANetClient.sharedInstance().movesAccessTokenExpiration = accessTokenExpiration
+                TANetClient.sharedInstance().movesAccessToken = UserDefaults.standard.value(forKey: "movesAccessToken") as? String
+                TANetClient.sharedInstance().movesAuthCode = UserDefaults.standard.value(forKey: "movesAuthCode") as? String
+                TANetClient.sharedInstance().movesRefreshToken = UserDefaults.standard.value(forKey: "movesRefreshToken") as? String
+                TANetClient.sharedInstance().movesUserId = UserDefaults.standard.value(forKey: "movesUserId") as? UInt64
             }
         }
         
@@ -180,9 +211,9 @@ class TAModel {
     
     // MARK: Shared Instance
     
-    class func sharedInstance() -> Model {
+    class func sharedInstance() -> TAModel {
         struct Singleton {
-            static var sharedInstance = Model()
+            static var sharedInstance = TAModel()
         }
         return Singleton.sharedInstance
     }
