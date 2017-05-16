@@ -14,6 +14,21 @@ import UIKit
 
 extension NetClient {
     
+    // Handles Part 1 of Moves Auth Flow: Getting an auth code from the Moves app
+    func obtainMovesAuthCode() {
+        let moveHook = "moves://app/authorize?" + "client_id=Z0hQuORANlkEb_BmDVu8TntptuUoTv6o&redirect_uri=time-analytics://app&scope=activity location".addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)!
+        let moveUrl = URL(string: moveHook)
+        print(moveUrl!.absoluteString)
+        if UIApplication.shared.canOpenURL(moveUrl!)
+        {
+            UIApplication.shared.open(moveUrl!, options: [:]) { (result) in
+                print("Success")
+            }
+        } else {
+            print("That didn't work")
+        }
+    }
+    
     // Handles Part 2 of Moves Auth Flow. (Part 1 is getting an auth code from the Moves app, which is handled by Login ViewController)
     func loginWithMovesAuthCode(authCode:String, completionHandler: @escaping (_ error: String?) -> Void) {
         
@@ -42,12 +57,20 @@ extension NetClient {
             }
             
             /* 4. Save all session variables */
+
+            // Calculate expiration time of the access token
+            var accessTokenExpiration = Date()
+            accessTokenExpiration.addTimeInterval(TimeInterval(expiresIn - NetClient.MovesApi.Constants.AccessTokenExpirationBuffer))
             
+            // Save to our client
             self.movesAuthCode = authCode
             self.movesUserId = userId
-            self.movesExpiresIn = expiresIn
+            self.movesAccessTokenExpiration = accessTokenExpiration
             self.movesAccessToken = accessToken
             self.movesRefreshToken = refreshToken
+
+            // Save to the model
+            Model.sharedInstance().saveMovesLoginInfo(authCode, userId, accessToken, accessTokenExpiration, refreshToken)
             
             /* 5. Complete login with no errors */
             
@@ -58,31 +81,40 @@ extension NetClient {
     // Retrieves all data from Moves for a given time period (note: for this type of request the Moves API limits to 7 days max per request)
     
     func getMovesDataFrom(_ startDate:Date, _ endDate:Date, _ completionHandler: @escaping (_ response:[AnyObject]?, _ error: String?) -> Void) {
-        let formattedStartDate = getFormattedDate(startDate)
-        let formattedEndDate = getFormattedDate(endDate)
         
-        let parameters:[String:String] = [NetClient.MovesApi.ParameterKeys.AccessToken:movesAccessToken!,
-                                          NetClient.MovesApi.ParameterKeys.FromDate:formattedStartDate,
-                                          NetClient.MovesApi.ParameterKeys.ToDate:formattedEndDate,
-                                          NetClient.MovesApi.ParameterKeys.TrackPoints:NetClient.MovesApi.ParameterValues.True]
-        
-        let _ = taskForHTTPMethod(NetClient.Constants.ApiScheme, NetClient.Constants.HttpGet, NetClient.MovesApi.Constants.Host, NetClient.MovesApi.Methods.StoryLine, apiParameters: parameters, valuesForHTTPHeader: nil, httpBody: nil) { (results,error) in
+        authorizeMovesSession() { (error) in
             
-            /* 2. Check for error response from Moves */
-            if let error = error {
-                let errorString = self.getNiceMessageFromHttpNSError(error)
-                completionHandler(nil, errorString)
+            guard error == nil else {
+                completionHandler(nil,error!)
                 return
             }
             
-            /* 3. Verify we have received the data array */
-            guard let response = results as? [AnyObject] else {
-                completionHandler(nil,"Error retrieving data from Moves")
-                return
-            }
+            let formattedStartDate = self.getFormattedDate(startDate)
+            let formattedEndDate = self.getFormattedDate(endDate)
             
-            /* 4. Return the data */
-            completionHandler(response,nil)
+            let parameters:[String:String] = [NetClient.MovesApi.ParameterKeys.AccessToken:self.movesAccessToken!,
+                                              NetClient.MovesApi.ParameterKeys.FromDate:formattedStartDate,
+                                              NetClient.MovesApi.ParameterKeys.ToDate:formattedEndDate,
+                                              NetClient.MovesApi.ParameterKeys.TrackPoints:NetClient.MovesApi.ParameterValues.True]
+            
+            let _ = self.taskForHTTPMethod(NetClient.Constants.ApiScheme, NetClient.Constants.HttpGet, NetClient.MovesApi.Constants.Host, NetClient.MovesApi.Methods.StoryLine, apiParameters: parameters, valuesForHTTPHeader: nil, httpBody: nil) { (results,error) in
+                
+                /* 2. Check for error response from Moves */
+                if let error = error {
+                    let errorString = self.getNiceMessageFromHttpNSError(error)
+                    completionHandler(nil, errorString)
+                    return
+                }
+                
+                /* 3. Verify we have received the data array */
+                guard let response = results as? [AnyObject] else {
+                    completionHandler(nil,"Error retrieving data from Moves")
+                    return
+                }
+                
+                /* 4. Return the data */
+                completionHandler(response,nil)
+            }
         }
     }
     
@@ -107,9 +139,9 @@ extension NetClient {
 
                     switch type {
                     case NetClient.MovesApi.JSONResponseValues.Segment.Move:
-                        Model.sharedInstance().containsMovesObject("MovesMove", startTime, endTime)
+                        Model.sharedInstance().containsMovesObject("MovesMove", startTime)
                         Model.sharedInstance().createMovesMoveObject(startTime, endTime, lastUpdate)
-                        Model.sharedInstance().containsMovesObject("MovesMove", startTime, endTime)
+                        Model.sharedInstance().containsMovesObject("MovesMove", startTime)
                     case NetClient.MovesApi.JSONResponseValues.Segment.Place:
                         // TODO: Don't force unwrap optionals below
                         let place = segment[NetClient.MovesApi.JSONResponseKeys.Segment.Place] as! [String:AnyObject]
@@ -129,15 +161,35 @@ extension NetClient {
                         let lat = coordinates[NetClient.MovesApi.JSONResponseKeys.Place.Latitude]!
                         let lon = coordinates[NetClient.MovesApi.JSONResponseKeys.Place.Longitude]!
                         
-                        Model.sharedInstance().containsMovesObject("MovesPlace", startTime, endTime)
+                        Model.sharedInstance().containsMovesObject("MovesPlace", startTime)
                         Model.sharedInstance().createMovesPlaceObject(startTime, endTime, type, lat, lon, lastUpdate, id, name, facebookPlaceId, foursquareId, foursquareCategoryIds)
-                        Model.sharedInstance().containsMovesObject("MovesPlace", startTime, endTime)
+                        Model.sharedInstance().containsMovesObject("MovesPlace", startTime)
                     default:
                         break
                     }
                 }
             }
         }
+    }
+    
+    // Attemps to ensure our session is authorized before we make any calls to the Moves API
+    func authorizeMovesSession(completionHandler: @escaping (_ error: String?) -> Void) {
+        
+        // Check: Are we logged in?
+        guard movesAccessTokenExpiration != nil else {
+            completionHandler("Error: Not logged into Moves")
+            return
+        }
+        
+        // Check: Has our session expired?
+        if Date() > movesAccessTokenExpiration! {
+            
+            // Refresh our session
+            
+        }
+        
+        // Our session hasn't expired -- return with no error
+        completionHandler(nil)
     }
     
     // MARK: Private helper methods
