@@ -71,6 +71,7 @@ class Model {
         } catch {
             fatalError("Unable to delete saved data")
         }
+        saveContext()
     }
     
     // MARK: Helper Functions
