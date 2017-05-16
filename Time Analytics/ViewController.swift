@@ -13,20 +13,28 @@ class ViewController: UIViewController {
     @IBOutlet weak var activityView: UIActivityIndicatorView!
     
     @IBAction func loginButtonPressed(_ sender: Any) {
-        let moveHook = "moves://app/authorize?" + "client_id=Z0hQuORANlkEb_BmDVu8TntptuUoTv6o&redirect_uri=time-analytics://app&scope=activity location".addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)!
-        let moveUrl = URL(string: moveHook)
-        print(moveUrl!.absoluteString)
-        if UIApplication.shared.canOpenURL(moveUrl!)
-        {
-            UIApplication.shared.open(moveUrl!, options: [:]) { (result) in
-                print("Success")
-            }
-        } else {
-            print("That didn't work")
-        }
+        NetClient.sharedInstance().obtainMovesAuthCode()
     }
+    
     @IBAction func deleteMovesDataPressed(_ sender: Any) {
         Model.sharedInstance().deleteAllMovesData()
+    }
+    @IBAction func downloadMovesDataPressed(_ sender: Any) {
+        let calendar = Calendar.current
+        let yesterday = calendar.date(byAdding: .day, value: -1, to: Date())
+        
+        // Try getting moves data
+        NetClient.sharedInstance().getMovesDataFrom(yesterday!, Date()) { (result,error) in
+            guard error == nil else {
+                print(error)
+                return
+            }
+            
+            print ("Got data from moves!")
+            print(result)
+            
+            NetClient.sharedInstance().parseAndSaveMovesData(result!)
+        }
     }
 
     override func viewDidLoad() {
@@ -57,22 +65,6 @@ class ViewController: UIViewController {
                 return
             }
             print("Moves login successful!")
-            
-            let calendar = Calendar.current
-            let yesterday = calendar.date(byAdding: .day, value: -1, to: Date())
-            
-            // Try getting moves data
-            NetClient.sharedInstance().getMovesDataFrom(yesterday!, Date()) { (result,error) in
-                guard error == nil else {
-                    print(error)
-                    return
-                }
-                
-                print ("Got data from moves!")
-                print(result)
-                
-                NetClient.sharedInstance().parseAndSaveMovesData(result!)
-            }
         }
     }
 }
