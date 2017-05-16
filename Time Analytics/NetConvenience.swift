@@ -8,7 +8,9 @@
 //  Copyright © 2017 Chris Leung. All rights reserved.
 //
 
+import CoreData
 import Foundation
+import UIKit
 
 extension NetClient {
     
@@ -85,8 +87,53 @@ extension NetClient {
     }
     
     func parseAndSaveMovesData(_ stories:[AnyObject]) {
+
+        // Setup the date formatter
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZ"
+        
         for story in stories {
-            
+            if let segments = story[NetClient.MovesApi.JSONResponseKeys.Segments] as? [AnyObject] {
+                for segment in segments {
+                    // TODO: Don't force unwrap optionals here
+                    let type = segment[NetClient.MovesApi.JSONResponseKeys.Segment.SegmentType] as! String
+                    let startTime = dateFormatter.date(from: segment[NetClient.MovesApi.JSONResponseKeys.Segment.StartTime] as! String)!
+                    let endTime = dateFormatter.date(from: segment[NetClient.MovesApi.JSONResponseKeys.Segment.EndTime] as! String)!
+                    var lastUpdate:Date? = nil
+                    if let optionalLastUpdate = segment[NetClient.MovesApi.JSONResponseKeys.Segment.LastUpdate] as? String{
+                        lastUpdate = dateFormatter.date(from: optionalLastUpdate)
+                    }
+
+                    switch type {
+                    case NetClient.MovesApi.JSONResponseValues.Segment.Move:
+                        Model.sharedInstance().createMovesMoveObject(startTime, endTime, lastUpdate)
+
+                    case NetClient.MovesApi.JSONResponseValues.Segment.Place:
+                        // TODO: Don't force unwrap optionals below
+                        let place = segment[NetClient.MovesApi.JSONResponseKeys.Segment.Place] as! [String:AnyObject]
+                        let id = place[NetClient.MovesApi.JSONResponseKeys.Place.Id] as? Int64
+                        let name = place[NetClient.MovesApi.JSONResponseKeys.Place.Name] as? String
+                        let type = place[NetClient.MovesApi.JSONResponseKeys.Place.PlaceType] as! String
+                        let facebookPlaceId = place[NetClient.MovesApi.JSONResponseKeys.Place.FacebookPlaceId] as? String
+                        let foursquareId = place[NetClient.MovesApi.JSONResponseKeys.Place.FoursquareId] as? String
+                        var foursquareCategoryIds:String?
+                        if let optionalFoursquareCategoryIds = place[NetClient.MovesApi.JSONResponseKeys.Place.FoursquareCategoryIds] as? [String] {
+                            foursquareCategoryIds = String()
+                            for fourSquareCategoryId in optionalFoursquareCategoryIds {
+                                foursquareCategoryIds?.append(fourSquareCategoryId + ",")
+                            }
+                        }
+                        let coordinates = place[NetClient.MovesApi.JSONResponseKeys.Place.Location] as! [String:Double]
+                        let lat = coordinates[NetClient.MovesApi.JSONResponseKeys.Place.Latitude]!
+                        let lon = coordinates[NetClient.MovesApi.JSONResponseKeys.Place.Longitude]!
+                        
+                        Model.sharedInstance().createMovesPlaceObject(startTime, endTime, type, lat, lon, lastUpdate, id, name, facebookPlaceId, foursquareId, foursquareCategoryIds)
+                    default:
+                        break
+                    }
+                }
+            }
         }
     }
     
