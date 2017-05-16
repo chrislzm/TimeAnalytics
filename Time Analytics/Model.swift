@@ -23,7 +23,7 @@ class Model {
         saveContext()
     }
     
-    func createMovesPlaceObject(_ startTime:Date, _ endTime:Date, _ type:String,_ lat:Double,_ lon:Double,  _ lastUpdate:Date?,_ id:Int64?,_ name:String?,_ facebookPlaceId:String?, foursquareId:String?, foursquareCategoryIds:String?) {
+    func createMovesPlaceObject(_ startTime:Date, _ endTime:Date, _ type:String,_ lat:Double,_ lon:Double,  _ lastUpdate:Date?,_ id:Int64?,_ name:String?,_ facebookPlaceId:String?,_ foursquareId:String?,_ foursquareCategoryIds:String?) {
         let context = getContext()
         let entity = NSEntityDescription.entity(forEntityName: "MovesPlace", in: context)!
         let place = NSManagedObject(entity: entity, insertInto: context)
