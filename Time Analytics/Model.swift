@@ -41,16 +41,16 @@ class Model {
         saveContext()
     }
     
-    func containsMovesObject(_ entityName:String, _ startTime:Date, _ endTime:Date) -> Bool {
+    func containsMovesObject(_ entityName:String, _ startTime:Date) -> Bool {
         let context = getContext()
         let fr = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
-        let pred = NSPredicate(format: "(startTime == %@) AND (endTime == %@)", argumentArray: [startTime,endTime])
+        let pred = NSPredicate(format: "startTime == %@", argumentArray: [startTime])
         fr.predicate = pred
         var numResults = 0
         do {
             let result = try context.fetch(fr)
             numResults = result.count
-            print("Found \(numResults) objects in data with startTime: \(startTime) and endTime: \(endTime)")
+            print("Found \(numResults) objects in data with startTime: \(startTime)")
         } catch {
             fatalError("Unable to access persistent data")
         }
@@ -72,6 +72,16 @@ class Model {
             fatalError("Unable to delete saved data")
         }
         saveContext()
+    }
+    
+    // MARK: User Defaults Methods
+    
+    func saveMovesLoginInfo(_ authCode:String, _ userId:UInt64, _ accessToken:String,_ accessTokenExpiration:Date,_ refreshToken:String) {
+        UserDefaults.standard.set(authCode, forKey: "movesAuthCode")
+        UserDefaults.standard.set(userId, forKey: "movesUserId")
+        UserDefaults.standard.set(accessToken, forKey: "movesAccessToken")
+        UserDefaults.standard.set(accessTokenExpiration, forKey: "movesAccessTokenExpiration")
+        UserDefaults.standard.set(refreshToken, forKey: "movesRefreshToken")
     }
     
     // MARK: Helper Functions
