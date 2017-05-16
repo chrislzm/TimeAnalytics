@@ -18,8 +18,14 @@
         <attribute name="startTime" attributeType="Date" usesScalarValueType="NO" indexed="YES" syncable="YES"/>
         <attribute name="type" attributeType="String" syncable="YES"/>
     </entity>
+    <entity name="TAPlace" representedClassName="TAPlace" syncable="YES" codeGenerationType="class">
+        <attribute name="endTime" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="movesStartTime" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="startTime" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+    </entity>
     <elements>
         <element name="MovesMove" positionX="-54" positionY="63" width="128" height="90"/>
         <element name="MovesPlace" positionX="-63" positionY="-18" width="128" height="210"/>
+        <element name="TAPlace" positionX="-54" positionY="63" width="128" height="90"/>
     </elements>
 </model>
