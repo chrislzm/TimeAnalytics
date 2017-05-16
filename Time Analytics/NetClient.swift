@@ -19,7 +19,7 @@ class NetClient {
     // Moves session variables
     var movesAuthCode:String?
     var movesAccessToken:String?
-    var movesExpiresIn:Int?
+    var movesAccessTokenExpiration:Date?
     var movesRefreshToken:String?
     var movesUserId:UInt64?
     
