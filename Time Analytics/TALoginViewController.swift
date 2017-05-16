@@ -13,18 +13,18 @@ class ViewController: UIViewController {
     @IBOutlet weak var activityView: UIActivityIndicatorView!
     
     @IBAction func loginButtonPressed(_ sender: Any) {
-        NetClient.sharedInstance().obtainMovesAuthCode()
+        TANetClient.sharedInstance().obtainMovesAuthCode()
     }
     
     @IBAction func deleteMovesDataPressed(_ sender: Any) {
-        Model.sharedInstance().deleteAllMovesData()
+        TAModel.sharedInstance().deleteAllMovesData()
     }
     @IBAction func downloadMovesDataPressed(_ sender: Any) {
         let calendar = Calendar.current
         let yesterday = calendar.date(byAdding: .day, value: -1, to: Date())
         
         // Try getting moves data
-        NetClient.sharedInstance().getMovesDataFrom(yesterday!, Date()) { (result,error) in
+        TANetClient.sharedInstance().getMovesDataFrom(yesterday!, Date()) { (result,error) in
             guard error == nil else {
                 print(error)
                 return
@@ -33,7 +33,7 @@ class ViewController: UIViewController {
             print ("Got data from moves!")
             print(result)
             
-            NetClient.sharedInstance().parseAndSaveMovesData(result!)
+            Model.sharedInstance().parseAndSaveMovesData(result!)
         }
     }
 
@@ -42,7 +42,7 @@ class ViewController: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.didGetMovesAuthCode(_:)), name: Notification.Name("didGetMovesAuthCode"), object: nil)
         
-        NetClient.sharedInstance().verifyLoggedIntoMoves() { (error) in
+        TANetClient.sharedInstance().verifyLoggedIntoMoves() { (error) in
             guard error == nil else {
                 print("Error: Not logged into Moves")
                 return
@@ -69,7 +69,7 @@ class ViewController: UIViewController {
         let authCode = notification.userInfo![AnyHashable("code")] as! String
         print("Got auth code! \(authCode)")
         
-        NetClient.sharedInstance().loginWithMovesAuthCode(authCode: authCode) { (error) in
+        TANetClient.sharedInstance().loginWithMovesAuthCode(authCode: authCode) { (error) in
             guard error == nil else {
                 print("Error login in: \(error!)")
                 return

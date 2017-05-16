@@ -37,13 +37,13 @@ extension TANetClient {
 
         /* 2. Create and run HTTP request to authenticate the userId and password with Udacity */
         
-        let parameters:[String:String] = [NetClient.MovesApi.ParameterKeys.GrantType:NetClient.MovesApi.ParameterValues.AuthCode,
-                                          NetClient.MovesApi.ParameterKeys.Code:authCode,
-                                          NetClient.MovesApi.ParameterKeys.ClientId:NetClient.MovesApi.Constants.ClientId,
-                                          NetClient.MovesApi.ParameterKeys.ClientSecret:NetClient.MovesApi.Constants.ClientSecret,
-                                          NetClient.MovesApi.ParameterKeys.RedirectUri:NetClient.TimeAnalytics.RedirectUri]
+        let parameters:[String:String] = [TANetClient.MovesApi.ParameterKeys.GrantType:TANetClient.MovesApi.ParameterValues.AuthCode,
+                                          TANetClient.MovesApi.ParameterKeys.Code:authCode,
+                                          TANetClient.MovesApi.ParameterKeys.ClientId:TANetClient.MovesApi.Constants.ClientId,
+                                          TANetClient.MovesApi.ParameterKeys.ClientSecret:TANetClient.MovesApi.Constants.ClientSecret,
+                                          TANetClient.MovesApi.ParameterKeys.RedirectUri:TANetClient.TimeAnalytics.RedirectUri]
     
-        let _ = taskForHTTPMethod(NetClient.Constants.ApiScheme, NetClient.Constants.HttpPost, NetClient.MovesApi.Constants.Host, NetClient.MovesApi.Methods.Auth, apiParameters: parameters, valuesForHTTPHeader: nil, httpBody: nil) { (results,error) in
+        let _ = taskForHTTPMethod(TANetClient.Constants.ApiScheme, TANetClient.Constants.HttpPost, TANetClient.MovesApi.Constants.Host, TANetClient.MovesApi.Methods.Auth, apiParameters: parameters, valuesForHTTPHeader: nil, httpBody: nil) { (results,error) in
             
             /* 3. Send response to auth response handler */
             self.movesAuthResponseHandler(results,error,completionHandler)
@@ -62,7 +62,7 @@ extension TANetClient {
         
         /* 2. Verify we have received an access token and are logged in */
         
-        guard let response = results as? [String:AnyObject], let accessToken = response[NetClient.MovesApi.JSONResponseKeys.AccessToken] as? String, let expiresIn = response[NetClient.MovesApi.JSONResponseKeys.ExpiresIn] as? Int, let refreshToken = response[NetClient.MovesApi.JSONResponseKeys.RefreshToken] as? String, let userId = response[NetClient.MovesApi.JSONResponseKeys.UserId] as? UInt64 else {
+        guard let response = results as? [String:AnyObject], let accessToken = response[TANetClient.MovesApi.JSONResponseKeys.AccessToken] as? String, let expiresIn = response[TANetClient.MovesApi.JSONResponseKeys.ExpiresIn] as? Int, let refreshToken = response[TANetClient.MovesApi.JSONResponseKeys.RefreshToken] as? String, let userId = response[TANetClient.MovesApi.JSONResponseKeys.UserId] as? UInt64 else {
             completionHandler("Error creating Moves session")
             return
         }
@@ -71,7 +71,7 @@ extension TANetClient {
         
         // Calculate expiration time of the access token
         var accessTokenExpiration = Date()
-        accessTokenExpiration.addTimeInterval(TimeInterval(expiresIn - NetClient.MovesApi.Constants.AccessTokenExpirationBuffer))
+        accessTokenExpiration.addTimeInterval(TimeInterval(expiresIn - TANetClient.MovesApi.Constants.AccessTokenExpirationBuffer))
         
         print("Setting userId:\(userId), Expiration: \(accessTokenExpiration), Access Token: \(accessToken), Refresh Token: \(refreshToken)")
         self.movesUserId = userId
@@ -79,7 +79,7 @@ extension TANetClient {
         self.movesAccessToken = accessToken
         self.movesRefreshToken = refreshToken
         
-        Model.sharedInstance().saveMovesLoginInfo(movesAuthCode!, userId, accessToken, accessTokenExpiration, refreshToken)
+        TAModel.sharedInstance().saveMovesLoginInfo(movesAuthCode!, userId, accessToken, accessTokenExpiration, refreshToken)
         
         /* 5. Complete login with no errors */
         
@@ -104,12 +104,12 @@ extension TANetClient {
             // Attempt to refresh our session
             /* 1. Create and run HTTP request to authenticate the userId and password with Udacity */
             
-            let parameters:[String:String] = [NetClient.MovesApi.ParameterKeys.GrantType:NetClient.MovesApi.ParameterValues.RefreshToken,
-                                              NetClient.MovesApi.ParameterKeys.RefreshToken:movesRefreshToken!,
-                                              NetClient.MovesApi.ParameterKeys.ClientId:NetClient.MovesApi.Constants.ClientId,
-                                              NetClient.MovesApi.ParameterKeys.ClientSecret:NetClient.MovesApi.Constants.ClientSecret]
+            let parameters:[String:String] = [TANetClient.MovesApi.ParameterKeys.GrantType:TANetClient.MovesApi.ParameterValues.RefreshToken,
+                                              TANetClient.MovesApi.ParameterKeys.RefreshToken:movesRefreshToken!,
+                                              TANetClient.MovesApi.ParameterKeys.ClientId:TANetClient.MovesApi.Constants.ClientId,
+                                              TANetClient.MovesApi.ParameterKeys.ClientSecret:TANetClient.MovesApi.Constants.ClientSecret]
             
-            let _ = taskForHTTPMethod(NetClient.Constants.ApiScheme, NetClient.Constants.HttpPost, NetClient.MovesApi.Constants.Host, NetClient.MovesApi.Methods.Auth, apiParameters: parameters, valuesForHTTPHeader: nil, httpBody: nil) { (results,error) in
+            let _ = taskForHTTPMethod(TANetClient.Constants.ApiScheme, TANetClient.Constants.HttpPost, TANetClient.MovesApi.Constants.Host, TANetClient.MovesApi.Methods.Auth, apiParameters: parameters, valuesForHTTPHeader: nil, httpBody: nil) { (results,error) in
                 
                 self.movesAuthResponseHandler(results,error,completionHandler)
             }
@@ -134,12 +134,12 @@ extension TANetClient {
             let formattedStartDate = self.getFormattedDate(startDate)
             let formattedEndDate = self.getFormattedDate(endDate)
             
-            let parameters:[String:String] = [NetClient.MovesApi.ParameterKeys.AccessToken:self.movesAccessToken!,
-                                              NetClient.MovesApi.ParameterKeys.FromDate:formattedStartDate,
-                                              NetClient.MovesApi.ParameterKeys.ToDate:formattedEndDate,
-                                              NetClient.MovesApi.ParameterKeys.TrackPoints:NetClient.MovesApi.ParameterValues.False]
+            let parameters:[String:String] = [TANetClient.MovesApi.ParameterKeys.AccessToken:self.movesAccessToken!,
+                                              TANetClient.MovesApi.ParameterKeys.FromDate:formattedStartDate,
+                                              TANetClient.MovesApi.ParameterKeys.ToDate:formattedEndDate,
+                                              TANetClient.MovesApi.ParameterKeys.TrackPoints:TANetClient.MovesApi.ParameterValues.False]
             
-            let _ = self.taskForHTTPMethod(NetClient.Constants.ApiScheme, NetClient.Constants.HttpGet, NetClient.MovesApi.Constants.Host, NetClient.MovesApi.Methods.StoryLine, apiParameters: parameters, valuesForHTTPHeader: nil, httpBody: nil) { (results,error) in
+            let _ = self.taskForHTTPMethod(TANetClient.Constants.ApiScheme, TANetClient.Constants.HttpGet, TANetClient.MovesApi.Constants.Host, TANetClient.MovesApi.Methods.StoryLine, apiParameters: parameters, valuesForHTTPHeader: nil, httpBody: nil) { (results,error) in
                 
                 /* 2. Check for error response from Moves */
                 if let error = error {

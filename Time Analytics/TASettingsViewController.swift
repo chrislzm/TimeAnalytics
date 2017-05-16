@@ -18,17 +18,17 @@ class TASettingsViewController:UIViewController {
         let end = endDate.date
         
         // Try getting moves data
-        NetClient.sharedInstance().getMovesDataFrom(start, end) { (result,error) in
+        TANetClient.sharedInstance().getMovesDataFrom(start, end) { (result,error) in
             guard error == nil else {
                 print(error)
                 return
             }
             
-            NetClient.sharedInstance().parseAndSaveMovesData(result!)
+            Model.sharedInstance().parseAndSaveMovesData(result!)
         }
     }
     
     @IBAction func deleteButtonPressed(_ sender: Any) {
-        Model.sharedInstance().deleteAllMovesData()
+        TAModel.sharedInstance().deleteAllMovesData()
     }
 }
