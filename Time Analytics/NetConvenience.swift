@@ -137,7 +137,7 @@ extension NetClient {
             let parameters:[String:String] = [NetClient.MovesApi.ParameterKeys.AccessToken:self.movesAccessToken!,
                                               NetClient.MovesApi.ParameterKeys.FromDate:formattedStartDate,
                                               NetClient.MovesApi.ParameterKeys.ToDate:formattedEndDate,
-                                              NetClient.MovesApi.ParameterKeys.TrackPoints:NetClient.MovesApi.ParameterValues.True]
+                                              NetClient.MovesApi.ParameterKeys.TrackPoints:NetClient.MovesApi.ParameterValues.False]
             
             let _ = self.taskForHTTPMethod(NetClient.Constants.ApiScheme, NetClient.Constants.HttpGet, NetClient.MovesApi.Constants.Host, NetClient.MovesApi.Methods.StoryLine, apiParameters: parameters, valuesForHTTPHeader: nil, httpBody: nil) { (results,error) in
                 
