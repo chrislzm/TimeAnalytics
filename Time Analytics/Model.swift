@@ -71,7 +71,7 @@ class Model {
     
     // MARK: Shared Instance
     
-    func sharedInstance() -> Model {
+    class func sharedInstance() -> Model {
         struct Singleton {
             static var sharedInstance = Model()
         }
