@@ -17,11 +17,11 @@ class TAModel {
     // MARK: Moves API Methods
     func createMovesMoveObject(_ startTime:Date, _ endTime:Date, _ lastUpdate:Date?) {
         let context = getContext()
-        let entity = NSEntityDescription.entity(forEntityName: "MovesMove", in: context)!
-        let movesMove = NSManagedObject(entity: entity, insertInto: context)
-        movesMove.setValue(startTime, forKey: "startTime")
-        movesMove.setValue(endTime, forKey: "endTime")
-        movesMove.setValue(lastUpdate, forKey: "lastUpdate")
+        let entity = NSEntityDescription.entity(forEntityName: "MovesMoveSegment", in: context)!
+        let movesMoveSegment = NSManagedObject(entity: entity, insertInto: context)
+        movesMoveSegment.setValue(startTime, forKey: "startTime")
+        movesMoveSegment.setValue(endTime, forKey: "endTime")
+        movesMoveSegment.setValue(lastUpdate, forKey: "lastUpdate")
         saveContext()
     }
     
@@ -29,34 +29,36 @@ class TAModel {
         let context = getContext()
         
         // Create and store MovesPlace object
-        let movesPlaceEntity = NSEntityDescription.entity(forEntityName: "MovesPlace", in: context)!
-        let movesPlace = NSManagedObject(entity: movesPlaceEntity, insertInto: context)
-        movesPlace.setValue(startTime, forKey: "startTime")
-        movesPlace.setValue(endTime, forKey: "endTime")
-        movesPlace.setValue(type, forKey: "type")
-        movesPlace.setValue(lat, forKey: "lat")
-        movesPlace.setValue(lon, forKey: "lon")
-        movesPlace.setValue(lastUpdate, forKey: "lastUpdate")
-        movesPlace.setValue(id, forKey: "id")
-        movesPlace.setValue(name, forKey: "name")
-        movesPlace.setValue(facebookPlaceId, forKey: "facebookPlaceId")
-        movesPlace.setValue(foursquareId, forKey: "foursquareId")
-        movesPlace.setValue(foursquareCategoryIds, forKey: "foursquareCategoryIds")
-        saveContext()
+        let movesPlaceSegmentEntity = NSEntityDescription.entity(forEntityName: "MovesPlaceSegment", in: context)!
+        let movesPlaceSegment = NSManagedObject(entity: movesPlaceSegmentEntity, insertInto: context)
+        movesPlaceSegment.setValue(startTime, forKey: "startTime")
+        movesPlaceSegment.setValue(endTime, forKey: "endTime")
+        movesPlaceSegment.setValue(type, forKey: "type")
+        movesPlaceSegment.setValue(lat, forKey: "lat")
+        movesPlaceSegment.setValue(lon, forKey: "lon")
+        movesPlaceSegment.setValue(lastUpdate, forKey: "lastUpdate")
+        movesPlaceSegment.setValue(id, forKey: "id")
+        movesPlaceSegment.setValue(name, forKey: "name")
+        movesPlaceSegment.setValue(facebookPlaceId, forKey: "facebookPlaceId")
+        movesPlaceSegment.setValue(foursquareId, forKey: "foursquareId")
+        movesPlaceSegment.setValue(foursquareCategoryIds, forKey: "foursquareCategoryIds")
 
-        // Create and store TAPlace object
-        let taPlaceEntity = NSEntityDescription.entity(forEntityName: "TAPlace", in: context)!
-        let taPlace = NSManagedObject(entity: taPlaceEntity, insertInto: context)
-        taPlace.setValue(startTime, forKey:"movesStartTime")
-        taPlace.setValue(startTime, forKey:"startTime")
-        movesPlace.setValue(endTime, forKey: "endTime")
-        movesPlace.setValue(lat, forKey: "lat")
-        movesPlace.setValue(lon, forKey: "lon")
-        movesPlace.setValue(id, forKey: "id")
-        movesPlace.setValue(name, forKey: "name")
+        // Create and store TAPlaceSegment object. If we have a duplicate, overwrite it.
+        if(containsObject("TAPlaceSegment",startTime)) {
+            deleteObject("TAPlaceSegment",startTime)
+        }
+        let taPlaceSegmentEntity = NSEntityDescription.entity(forEntityName: "TAPlaceSegment", in: context)!
+        let taPlaceSegment = NSManagedObject(entity: taPlaceSegmentEntity, insertInto: context)
+        taPlaceSegment.setValue(startTime, forKey:"movesStartTime")
+        taPlaceSegment.setValue(startTime, forKey:"startTime")
+        taPlaceSegment.setValue(endTime, forKey: "endTime")
+        taPlaceSegment.setValue(lat, forKey: "lat")
+        taPlaceSegment.setValue(lon, forKey: "lon")
+        taPlaceSegment.setValue(name, forKey: "name")
+        saveContext()
     }
-    
-    func containsMovesObject(_ entityName:String, _ startTime:Date) -> Bool {
+
+    func containsObject(_ entityName:String, _ startTime:Date) -> Bool {
         let context = getContext()
         let fr = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
         let pred = NSPredicate(format: "startTime == %@", argumentArray: [startTime])
@@ -72,7 +74,7 @@ class TAModel {
         return numResults > 0
     }
 
-    func deleteMovesObject(_ entityName:String, _ startTime:Date) {
+    func deleteObject(_ entityName:String, _ startTime:Date) {
         let context = getContext()
         let fr = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
         let pred = NSPredicate(format: "startTime == %@", argumentArray: [startTime])
@@ -85,6 +87,7 @@ class TAModel {
         } catch {
             fatalError("Unable to access persistent data")
         }
+        saveContext()
     }
 
     func deleteAllDataFor(_ entities:[String]) {
@@ -126,9 +129,7 @@ class TAModel {
                     
                     switch type {
                     case TANetClient.MovesApi.JSONResponseValues.Segment.Move:
-                        if (!containsMovesObject("MovesMove", startTime)) {
-                            createMovesMoveObject(startTime, endTime, lastUpdate)
-                        }
+                        createMovesMoveObject(startTime, endTime, lastUpdate)
                     case TANetClient.MovesApi.JSONResponseValues.Segment.Place:
                         // TODO: Don't force unwrap optionals below
                         let place = segment[TANetClient.MovesApi.JSONResponseKeys.Segment.Place] as! [String:AnyObject]
@@ -148,9 +149,7 @@ class TAModel {
                         let lat = coordinates[TANetClient.MovesApi.JSONResponseKeys.Place.Latitude]!
                         let lon = coordinates[TANetClient.MovesApi.JSONResponseKeys.Place.Longitude]!
                         
-                        if(!containsMovesObject("MovesPlace", startTime)) {
-                            createMovesPlaceObject(startTime, endTime, type, lat, lon, lastUpdate, id, name, facebookPlaceId, foursquareId, foursquareCategoryIds)
-                        }
+                        createMovesPlaceObject(startTime, endTime, type, lat, lon, lastUpdate, id, name, facebookPlaceId, foursquareId, foursquareCategoryIds)
                     default:
                         break
                     }
