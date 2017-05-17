@@ -7,6 +7,7 @@
 //
 
 import CoreData
+import Foundation
 import UIKit
 
 class TALocationTableViewController: TATableViewController {
@@ -19,18 +20,18 @@ class TALocationTableViewController: TATableViewController {
         super.viewDidLoad()
         
         // Set the title
-        title = "Time Analytics - Places"
+        title = "Recent Places"
         
         // Get the context
         let delegate = UIApplication.shared.delegate as! AppDelegate
         let context = delegate.persistentContainer.viewContext
         
         // Create a fetchrequest
-        let fr = NSFetchRequest<NSFetchRequestResult>(entityName: "MovesPlace")
+        let fr = NSFetchRequest<NSFetchRequestResult>(entityName: "TAPlaceSegment")
         fr.sortDescriptors = [NSSortDescriptor(key: "startTime", ascending: false)]
         
         // Create the FetchedResultsController
-        fetchedResultsController = NSFetchedResultsController(fetchRequest: fr, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+        fetchedResultsController = NSFetchedResultsController(fetchRequest: fr, managedObjectContext: context, sectionNameKeyPath: "daySectionIdentifier", cacheName: nil)
         
         // Setup and add the Edit button
         settingsButton = UIBarButtonItem(title: "Settings", style: UIBarButtonItemStyle.plain, target:self, action: #selector(TALocationTableViewController.showSettingsMenu))
@@ -44,6 +45,37 @@ class TALocationTableViewController: TATableViewController {
         tableView.reloadData()
     }
     
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        var sectionTitle: String?
+        if let sectionIdentifier = fetchedResultsController!.sections?[section].name {
+            if let numericSection = Int(sectionIdentifier) {
+                // Parse the numericSection into its year/month/day components.
+                let year = numericSection / 10000
+                let month = (numericSection / 100) % 100
+                let day = numericSection % 100
+                
+                // Reconstruct the date from these components.
+                var components = DateComponents()
+                components.calendar = Calendar.current
+                components.day = day
+                components.month = month
+                components.year = year
+                
+                // Set the section title with this date
+                if let date = components.date {
+                    sectionTitle = DateFormatter.localizedString(from: date, dateStyle: .full, timeStyle: .none)
+                }
+            }
+        }
+        
+        return sectionTitle
+    }
+    
+    override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+        return nil
+
+    }
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         // This method must be implemented by our subclass. There's no way
@@ -51,14 +83,25 @@ class TALocationTableViewController: TATableViewController {
         // use.
         
         // Find the right notebook for this indexpath
-        let place = fetchedResultsController!.object(at: indexPath) as! MovesPlace
+        let place = fetchedResultsController!.object(at: indexPath) as! TAPlaceSegment
         
         // Create the cell
         let cell = tableView.dequeueReusableCell(withIdentifier: "PlaceCell", for: indexPath)
         
         // Sync notebook -> cell
-        cell.textLabel?.text = "\(place.startTime): \(place.name) - \(place.lat),\(place.lon)"
-        // cell.detailTextLabel?.text = String(format: "%d notes", nb.notes!.count)
+        let formatter = DateFormatter()
+        formatter.dateFormat = "h:mm a"
+        let time = formatter.string(from: place.startTime! as Date)
+        let visitSeconds = Int((place.endTime! as Date).timeIntervalSince(place.startTime! as Date))
+        let visitTime = StopWatch(totalSeconds: visitSeconds).simpleTimeString
+        
+        var name:String
+        if let _ = place.name {
+            name = place.name!
+        } else {
+            name = "Unknown"
+        }
+        cell.textLabel?.text = "\(time) \(visitTime) \(name)"
         
         return cell
     }
@@ -66,5 +109,51 @@ class TALocationTableViewController: TATableViewController {
     func showSettingsMenu() {
         let controller = self.storyboard?.instantiateViewController(withIdentifier: "TASettingsView") as! TASettingsViewController
         navigationController?.pushViewController(controller, animated: true)
+    }
+    
+    struct StopWatch {
+        
+        var totalSeconds: Int
+        
+        var years: Int {
+            return totalSeconds / 31536000
+        }
+        
+        var days: Int {
+            return (totalSeconds % 31536000) / 86400
+        }
+        
+        var hours: Int {
+            return (totalSeconds % 86400) / 3600
+        }
+        
+        var minutes: Int {
+            return (totalSeconds % 3600) / 60
+        }
+        
+        var seconds: Int {
+            return totalSeconds % 60
+        }
+        
+        //simplified to what OP wanted
+        var hoursMinutesAndSeconds: (hours: Int, minutes: Int, seconds: Int) {
+            return (hours, minutes, seconds)
+        }
+        var simpleTimeString: String {
+            //let hoursText = timeText(from: hours)
+            //let minutesText = timeText(from: minutes)
+            //let secondsText = timeText(from: seconds)
+            //return "\(hoursText):\(minutesText):\(secondsText)"
+            if (hours > 0) {
+                return "\(hours)h\(minutes)m"
+            } else {
+                return "\(minutes)m"
+            }
+            //return "\(hoursText):\(minutesText)"
+        }
+        
+        private func timeText(from number: Int) -> String {
+            return number < 10 ? "0\(number)" : "\(number)"
+        }
     }
 }
