@@ -67,7 +67,7 @@ extension TANetClient {
         }
         
         /* 3. Retrieve user's first date so we'll know how to download all his/her data later */
-        getMovesUserFirstDate() { (date,error) in
+        getMovesUserFirstDate() { (userFirstDate,error) in
             
             guard error == nil else {
                 completionHandler(error!)
@@ -223,7 +223,7 @@ extension TANetClient {
     
     func downloadAllMovesUserData(_ completionHandler: @escaping (_ response:[AnyObject]?, _ error: String?) -> Void)  {
         
-        // First get the user's first date from the user profile
+        // For every set of 31 days from the first user date to present
         
     }
     
