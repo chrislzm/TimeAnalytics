@@ -48,6 +48,15 @@ class ViewController: UIViewController {
         if let query = delegate.query {
             print("Received query in viewcontroller: \(query)")
         }
+        TANetClient.sharedInstance().verifyLoggedIntoMoves() { (error) in
+            guard error == nil else {
+                print("Error: Still not logged into Moves")
+                return
+            }
+            DispatchQueue.main.async {
+                self.performSegue(withIdentifier: "ShowLocationTableViewController", sender: nil)
+            }
+        }
     }
 
     override func didReceiveMemoryWarning() {
