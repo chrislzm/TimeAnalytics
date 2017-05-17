@@ -152,26 +152,37 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="86X-YD-bcY" customClass="BorderedButton" customModule="Time_Analytics" customModuleProvider="target">
+                                <rect key="frame" x="16" y="66" width="343" height="30"/>
+                                <state key="normal" title="Download ALL Moves Data"/>
+                                <connections>
+                                    <action selector="downloadAllUserDataButtonPressed:" destination="5Uy-fx-J0M" eventType="touchUpInside" id="z98-9v-xQY"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="Rsd-19-dWS" firstAttribute="leading" secondItem="lZi-Qi-CjN" secondAttribute="leadingMargin" constant="132" id="1VU-wI-pzS"/>
+                            <constraint firstItem="86X-YD-bcY" firstAttribute="leading" secondItem="lZi-Qi-CjN" secondAttribute="leadingMargin" id="4jE-pL-r89"/>
                             <constraint firstItem="CLA-2A-Tsx" firstAttribute="top" secondItem="Rsd-19-dWS" secondAttribute="bottom" constant="8" id="5Zr-rR-yfN"/>
                             <constraint firstItem="FZn-3j-jRD" firstAttribute="top" secondItem="NZi-m3-ZD6" secondAttribute="bottom" constant="54" id="7gp-wu-WDA"/>
                             <constraint firstItem="ZT5-fO-2dT" firstAttribute="leading" secondItem="lZi-Qi-CjN" secondAttribute="leadingMargin" constant="-16" id="Bod-ra-bG8"/>
                             <constraint firstItem="ZT5-fO-2dT" firstAttribute="top" secondItem="9H7-ff-5o4" secondAttribute="bottom" constant="8" id="CNc-Td-KP1"/>
                             <constraint firstItem="NZi-m3-ZD6" firstAttribute="trailing" secondItem="lZi-Qi-CjN" secondAttribute="trailingMargin" id="HEv-3t-R9O"/>
                             <constraint firstItem="ygQ-fm-84m" firstAttribute="top" secondItem="ZT5-fO-2dT" secondAttribute="bottom" constant="65" id="JF1-nD-a0o"/>
+                            <constraint firstItem="FZn-3j-jRD" firstAttribute="top" secondItem="86X-YD-bcY" secondAttribute="bottom" constant="8" id="K0U-eC-Dyk"/>
                             <constraint firstItem="NZi-m3-ZD6" firstAttribute="leading" secondItem="lZi-Qi-CjN" secondAttribute="leadingMargin" id="MCs-7v-L4E"/>
                             <constraint firstItem="CLA-2A-Tsx" firstAttribute="leading" secondItem="lZi-Qi-CjN" secondAttribute="leadingMargin" constant="-16" id="MYt-Qx-hTk"/>
                             <constraint firstItem="9H7-ff-5o4" firstAttribute="top" secondItem="CLA-2A-Tsx" secondAttribute="bottom" constant="8" id="OoN-VV-i4B"/>
                             <constraint firstAttribute="trailingMargin" secondItem="ZT5-fO-2dT" secondAttribute="trailing" constant="-16" id="Qmg-2V-sX4"/>
                             <constraint firstItem="NZi-m3-ZD6" firstAttribute="top" secondItem="3HP-Ct-Sis" secondAttribute="bottom" id="Ub7-4r-l0m"/>
                             <constraint firstItem="FZn-3j-jRD" firstAttribute="top" secondItem="NZi-m3-ZD6" secondAttribute="bottom" constant="54" id="V5z-9L-Fys"/>
+                            <constraint firstItem="86X-YD-bcY" firstAttribute="trailing" secondItem="lZi-Qi-CjN" secondAttribute="trailingMargin" id="VF2-3Y-Srl"/>
                             <constraint firstAttribute="trailingMargin" secondItem="9H7-ff-5o4" secondAttribute="trailing" constant="137" id="Znd-AC-yzz"/>
                             <constraint firstItem="9H7-ff-5o4" firstAttribute="leading" secondItem="lZi-Qi-CjN" secondAttribute="leadingMargin" constant="136" id="fdl-7o-X9x"/>
                             <constraint firstItem="Rsd-19-dWS" firstAttribute="top" secondItem="FZn-3j-jRD" secondAttribute="bottom" constant="29" id="h6U-wq-nZm"/>
                             <constraint firstItem="FZn-3j-jRD" firstAttribute="leading" secondItem="lZi-Qi-CjN" secondAttribute="leadingMargin" id="kMT-PF-6ED"/>
+                            <constraint firstItem="86X-YD-bcY" firstAttribute="top" secondItem="NZi-m3-ZD6" secondAttribute="bottom" constant="16" id="lp6-QB-HsJ"/>
                             <constraint firstAttribute="trailingMargin" secondItem="CLA-2A-Tsx" secondAttribute="trailing" constant="-16" id="ohv-16-fIz"/>
                             <constraint firstItem="FZn-3j-jRD" firstAttribute="trailing" secondItem="lZi-Qi-CjN" secondAttribute="trailingMargin" id="qEg-vT-JvM"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Rsd-19-dWS" secondAttribute="trailing" constant="133" id="v2y-HV-ESi"/>

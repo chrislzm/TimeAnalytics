@@ -13,6 +13,15 @@ class TASettingsViewController:UIViewController {
     @IBOutlet weak var startDate: UIDatePicker!
     @IBOutlet weak var endDate: UIDatePicker!
     
+    @IBAction func downloadAllUserDataButtonPressed(_ sender: Any) {
+        TANetClient.sharedInstance().downloadAllMovesUserData() { (data,error) in
+            guard error == nil else {
+                print(error)
+                return
+            }            
+        }
+    }
+    
     @IBAction func downloadButtonPressed(_ sender: Any) {
         let start = startDate.date
         let end = endDate.date
