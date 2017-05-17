@@ -35,7 +35,7 @@ extension TANetClient {
         
         struct Methods {
             static let Auth = "/oauth/v1/access_token"
-            static let UserProfile = "/user/profile"
+            static let UserProfile = "/api/1.1/user/profile"
             static let StoryLine = "/api/1.1/user/storyline/daily"
         }
         
