@@ -22,6 +22,7 @@ class TANetClient {
     var movesAccessTokenExpiration:Date?
     var movesRefreshToken:String?
     var movesUserId:UInt64?
+    var movesUserFirstDate:String?
     
     // MARK: Methods
     
