@@ -144,7 +144,9 @@ class TALocationTableViewController: TATableViewController {
             //let minutesText = timeText(from: minutes)
             //let secondsText = timeText(from: seconds)
             //return "\(hoursText):\(minutesText):\(secondsText)"
-            if (hours > 0) {
+            if (days > 0) {
+                return "\(days)d\(hours)h\(minutes)m"
+            } else if (hours > 0) {
                 return "\(hours)h\(minutes)m"
             } else {
                 return "\(minutes)m"
