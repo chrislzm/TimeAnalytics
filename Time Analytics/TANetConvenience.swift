@@ -66,7 +66,18 @@ extension TANetClient {
             return
         }
         
-        /* 3. Retrieve user's first date so we'll know how to download all his/her data later */
+        /* 4. Save retrieved session variables */
+        
+        // Calculate expiration time of the access token
+        var accessTokenExpiration = Date()
+        accessTokenExpiration.addTimeInterval(TimeInterval(expiresIn - TANetClient.MovesApi.Constants.AccessTokenExpirationBuffer))
+        
+        self.movesUserId = userId
+        self.movesAccessTokenExpiration = accessTokenExpiration
+        self.movesAccessToken = accessToken
+        self.movesRefreshToken = refreshToken
+
+        /* 5. Now retrieve user's first date so we'll know how to download all his/her data later */
         getMovesUserFirstDate() { (userFirstDate,error) in
             
             guard error == nil else {
@@ -74,21 +85,12 @@ extension TANetClient {
                 return
             }
             
-            /* 4. Save all session variables */
-            
-            // Calculate expiration time of the access token
-            var accessTokenExpiration = Date()
-            accessTokenExpiration.addTimeInterval(TimeInterval(expiresIn - TANetClient.MovesApi.Constants.AccessTokenExpirationBuffer))
-            
-            self.movesUserId = userId
-            self.movesAccessTokenExpiration = accessTokenExpiration
-            self.movesAccessToken = accessToken
-            self.movesRefreshToken = refreshToken
             self.movesUserFirstDate = userFirstDate!
-            
+
+            /* 6. Save all session info to user defaults for persistence */
             TAModel.sharedInstance().saveMovesLoginInfo(self.movesAuthCode!, userId, accessToken, accessTokenExpiration, refreshToken, userFirstDate!)
             
-            /* 5. Complete login with no errors */
+            /* 7. Complete login with no errors */
             
             completionHandler(nil)
         }
