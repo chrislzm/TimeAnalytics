@@ -86,14 +86,26 @@ class TALocationTableViewController: TATableViewController {
         let place = fetchedResultsController!.object(at: indexPath) as! TAPlaceSegment
         
         // Create the cell
-        let cell = tableView.dequeueReusableCell(withIdentifier: "PlaceCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "PlaceCell", for: indexPath) as! TATableViewCell
         
         // Sync notebook -> cell
         let formatter = DateFormatter()
+        let startTime = place.startTime! as Date
+        let endTime = place.endTime! as Date
         formatter.dateFormat = "h:mm a"
-        let time = formatter.string(from: place.startTime! as Date)
+        let timeIn = formatter.string(from: startTime)
+        var timeOut:String
+        let cal = Calendar(identifier: .gregorian)
+        let nextDay = cal.startOfDay(for: startTime.addingTimeInterval(86400))
+        if endTime > nextDay {
+            formatter.dateFormat = "MMM d"
+        } else {
+            formatter.dateFormat = "h:mm a"
+        }
+        timeOut = formatter.string(from: endTime)
+        
         let visitSeconds = Int((place.endTime! as Date).timeIntervalSince(place.startTime! as Date))
-        let visitTime = StopWatch(totalSeconds: visitSeconds).simpleTimeString
+        let visitTime = StopWatch(totalSeconds: visitSeconds)
         
         var name:String
         if let _ = place.name {
@@ -101,7 +113,12 @@ class TALocationTableViewController: TATableViewController {
         } else {
             name = "Unknown"
         }
-        cell.textLabel?.text = "\(time) \(visitTime) \(name)"
+
+        
+        cell.timeInLabel.text = timeIn + " - " + timeOut
+//        cell.timeOutLabel.text =
+        cell.lengthLabel.text = visitTime.simpleTimeString
+        cell.locationLabel.text = name
         
         return cell
     }
@@ -145,9 +162,9 @@ class TALocationTableViewController: TATableViewController {
             //let secondsText = timeText(from: seconds)
             //return "\(hoursText):\(minutesText):\(secondsText)"
             if (days > 0) {
-                return "\(days)d\(hours)h\(minutes)m"
+                return "\(days)d \(hours)h \(minutes)m"
             } else if (hours > 0) {
-                return "\(hours)h\(minutes)m"
+                return "\(hours)h \(minutes)m"
             } else {
                 return "\(minutes)m"
             }
