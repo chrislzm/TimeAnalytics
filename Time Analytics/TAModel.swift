@@ -54,9 +54,6 @@ class TAModel {
         movesPlace.setValue(lon, forKey: "lon")
         movesPlace.setValue(id, forKey: "id")
         movesPlace.setValue(name, forKey: "name")
-
-        
-        
     }
     
     func containsMovesObject(_ entityName:String, _ startTime:Date) -> Bool {
@@ -90,21 +87,21 @@ class TAModel {
         }
     }
 
-    func deleteAllMovesData() {
+    func deleteAllDataFor(_ entities:[String]) {
         let context = getContext()
         let persistentStoreCoordinator = getPersistentStoreCoordinator()
-        let moveFr = NSFetchRequest<NSFetchRequestResult>(entityName: "MovesMove")
-        let deleteMoveRequest = NSBatchDeleteRequest(fetchRequest: moveFr)
-        let placeFr = NSFetchRequest<NSFetchRequestResult>(entityName: "MovesPlace")
-        let deletePlaceRequest = NSBatchDeleteRequest(fetchRequest: placeFr)
         
-        do {
-            try persistentStoreCoordinator.execute(deleteMoveRequest, with: context)
-            try persistentStoreCoordinator.execute(deletePlaceRequest, with: context)
-        } catch {
-            fatalError("Unable to delete saved data")
+        for entity in entities {
+            let fr = NSFetchRequest<NSFetchRequestResult>(entityName: entity)
+            let deleteRequest = NSBatchDeleteRequest(fetchRequest: fr)
+            
+            do {
+                try persistentStoreCoordinator.execute(deleteRequest, with: context)
+            } catch {
+                fatalError("Unable to delete saved data")
+            }
+            saveContext()
         }
-        saveContext()
     }
 
     
