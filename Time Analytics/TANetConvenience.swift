@@ -86,7 +86,7 @@ extension TANetClient {
             self.movesRefreshToken = refreshToken
             self.movesUserFirstDate = userFirstDate!
             
-            TAModel.sharedInstance().saveMovesLoginInfo(movesAuthCode!, userId, accessToken, accessTokenExpiration, refreshToken, userFirstDate!)
+            TAModel.sharedInstance().saveMovesLoginInfo(self.movesAuthCode!, userId, accessToken, accessTokenExpiration, refreshToken, userFirstDate!)
             
             /* 5. Complete login with no errors */
             
