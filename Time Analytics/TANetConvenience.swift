@@ -59,7 +59,6 @@ extension TANetClient {
             return
         }
         
-        
         /* 2. Verify we have received an access token and are logged in */
         
         guard let response = results as? [String:AnyObject], let accessToken = response[TANetClient.MovesApi.JSONResponseKeys.AccessToken] as? String, let expiresIn = response[TANetClient.MovesApi.JSONResponseKeys.ExpiresIn] as? Int, let refreshToken = response[TANetClient.MovesApi.JSONResponseKeys.RefreshToken] as? String, let userId = response[TANetClient.MovesApi.JSONResponseKeys.UserId] as? UInt64 else {
@@ -67,23 +66,33 @@ extension TANetClient {
             return
         }
         
-        /* 3. Save all session variables */
+        /* 3. Retrieve user's first date so we'll know how to download all his/her data later */
+        getMovesUserFirstDate() { (date,error) in
+            
+            guard error == nil else {
+                completionHandler(error!)
+                return
+            }
+            
+            /* 4. Save all session variables */
+            
+            // Calculate expiration time of the access token
+            var accessTokenExpiration = Date()
+            accessTokenExpiration.addTimeInterval(TimeInterval(expiresIn - TANetClient.MovesApi.Constants.AccessTokenExpirationBuffer))
+            
+            self.movesUserId = userId
+            self.movesAccessTokenExpiration = accessTokenExpiration
+            self.movesAccessToken = accessToken
+            self.movesRefreshToken = refreshToken
+            self.movesUserFirstDate = userFirstDate!
+            
+            TAModel.sharedInstance().saveMovesLoginInfo(movesAuthCode!, userId, accessToken, accessTokenExpiration, refreshToken, userFirstDate)
+            
+            /* 5. Complete login with no errors */
+            
+            completionHandler(nil)
+        }
         
-        // Calculate expiration time of the access token
-        var accessTokenExpiration = Date()
-        accessTokenExpiration.addTimeInterval(TimeInterval(expiresIn - TANetClient.MovesApi.Constants.AccessTokenExpirationBuffer))
-        
-        print("Setting userId:\(userId), Expiration: \(accessTokenExpiration), Access Token: \(accessToken), Refresh Token: \(refreshToken)")
-        self.movesUserId = userId
-        self.movesAccessTokenExpiration = accessTokenExpiration
-        self.movesAccessToken = accessToken
-        self.movesRefreshToken = refreshToken
-        
-        TAModel.sharedInstance().saveMovesLoginInfo(movesAuthCode!, userId, accessToken, accessTokenExpiration, refreshToken)
-        
-        /* 5. Complete login with no errors */
-        
-        completionHandler(nil)
     }
 
 
@@ -160,6 +169,65 @@ extension TANetClient {
         }
     }
 
+    // Retrieves the user's first date from his profile
+    func getMovesUserFirstDate(completionHandler: @escaping (_ date:String?, _ error: String?) -> Void) {
+        getMovesUserProfile() { (response,error) in
+            guard error == nil else {
+                completionHandler(nil,error!)
+                return
+            }
+            guard let profile = response?[TANetClient.MovesApi.JSONResponseKeys.UserProfile.Profile] as? [String:AnyObject], let firstDate = profile[TANetClient.MovesApi.JSONResponseKeys.UserProfile.FirstDate] as? String else {
+                completionHandler(nil,"Unable to parse user profile data")
+                return
+            }
+            completionHandler(firstDate,nil)
+        }
+    }
+    
+    
+    // Retrieves user profile data
+    
+    func getMovesUserProfile(completionHandler: @escaping (_ response:[String:AnyObject]?, _ error: String?) -> Void) {
+        verifyLoggedIntoMoves() { (error) in
+            guard error == nil else {
+                completionHandler(nil,error!)
+                return
+            }
+            /* 1. Create and run HTTP request to get user profile */
+            let parameters:[String:String] = [TANetClient.MovesApi.ParameterKeys.AccessToken:self.movesAccessToken!]
+
+            let _ = self.taskForHTTPMethod(TANetClient.Constants.ApiScheme, TANetClient.Constants.HttpGet, TANetClient.MovesApi.Constants.Host, TANetClient.MovesApi.Methods.UserProfile, apiParameters: parameters, valuesForHTTPHeader: nil, httpBody: nil) { (results,error) in
+                
+                /* 2. Check for error response from Moves */
+                if let error = error {
+                    let errorString = self.getNiceMessageFromHttpNSError(error)
+                    completionHandler(nil,errorString)
+                    return
+                }
+                
+                /* 3. Verify we have received the array of data*/
+                
+                guard let response = results as? [String:AnyObject] else {
+                    completionHandler(nil,"Error retrieving user profile")
+                    return
+                }
+                
+                /* 4. Return the response */
+                completionHandler(response,nil)
+            }
+
+        }
+    }
+    
+    // Downloads all moves data for the user from the beginning of time
+    
+    func downloadAllMovesUserData(_ completionHandler: @escaping (_ response:[AnyObject]?, _ error: String?) -> Void)  {
+        
+        // First get the user's first date from the user profile
+        
+    }
+    
+    
     // MARK: Private helper methods
 
     // Handles NSErrors -- Turns them into user-friendly messages before sending them to the controller's completion handler
