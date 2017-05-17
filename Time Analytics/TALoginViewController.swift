@@ -41,16 +41,6 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.didGetMovesAuthCode(_:)), name: Notification.Name("didGetMovesAuthCode"), object: nil)
-        
-        TANetClient.sharedInstance().verifyLoggedIntoMoves() { (error) in
-            guard error == nil else {
-                print("Error: Not logged into Moves")
-                return
-            }
-            DispatchQueue.main.async {
-                self.performSegue(withIdentifier: "ShowLocationTableViewController", sender: nil)
-            }
-        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -75,6 +65,15 @@ class ViewController: UIViewController {
                 return
             }
             print("Moves login successful!")
+            TANetClient.sharedInstance().verifyLoggedIntoMoves() { (error) in
+                guard error == nil else {
+                    print("Error: Still not logged into Moves")
+                    return
+                }
+                DispatchQueue.main.async {
+                    self.performSegue(withIdentifier: "ShowLocationTableViewController", sender: nil)
+                }
+            }
         }
     }
 }
