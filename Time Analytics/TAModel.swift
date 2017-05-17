@@ -283,17 +283,19 @@ class TAModel {
                 TANetClient.sharedInstance().movesAuthCode = UserDefaults.standard.value(forKey: "movesAuthCode") as? String
                 TANetClient.sharedInstance().movesRefreshToken = UserDefaults.standard.value(forKey: "movesRefreshToken") as? String
                 TANetClient.sharedInstance().movesUserId = UserDefaults.standard.value(forKey: "movesUserId") as? UInt64
+                TANetClient.sharedInstance().movesUserFirstDate = UserDefaults.standard.value(forKey: "movesUserFirstDate") as? String
             }
         }
         
     }
     
-    func saveMovesLoginInfo(_ authCode:String, _ userId:UInt64, _ accessToken:String,_ accessTokenExpiration:Date,_ refreshToken:String) {
+    func saveMovesLoginInfo(_ authCode:String, _ userId:UInt64, _ accessToken:String,_ accessTokenExpiration:Date,_ refreshToken:String, _ userFirstDate:String) {
         UserDefaults.standard.set(authCode, forKey: "movesAuthCode")
         UserDefaults.standard.set(userId, forKey: "movesUserId")
         UserDefaults.standard.set(accessToken, forKey: "movesAccessToken")
         UserDefaults.standard.set(accessTokenExpiration, forKey: "movesAccessTokenExpiration")
         UserDefaults.standard.set(refreshToken, forKey: "movesRefreshToken")
+        UserDefaults.standard.set(userFirstDate, forKey: "movesUserFirstDate")
         UserDefaults.standard.synchronize()
     }
     
