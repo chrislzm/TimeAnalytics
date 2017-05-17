@@ -144,9 +144,9 @@ class TANetClient {
     
     // MARK: Shared Instance
     
-    class func sharedInstance() -> NetClient {
+    class func sharedInstance() -> TANetClient {
         struct Singleton {
-            static var sharedInstance = NetClient()
+            static var sharedInstance = TANetClient()
         }
         return Singleton.sharedInstance
     }

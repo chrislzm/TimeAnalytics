@@ -33,7 +33,7 @@ class ViewController: UIViewController {
             print ("Got data from moves!")
             print(result)
             
-            Model.sharedInstance().parseAndSaveMovesData(result!)
+            TAModel.sharedInstance().parseAndSaveMovesData(result!)
         }
     }
 

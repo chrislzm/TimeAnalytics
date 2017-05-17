@@ -24,7 +24,7 @@ class TASettingsViewController:UIViewController {
                 return
             }
             
-            Model.sharedInstance().parseAndSaveMovesData(result!)
+            TAModel.sharedInstance().parseAndSaveMovesData(result!)
         }
     }
     
