@@ -35,6 +35,7 @@ extension TANetClient {
         
         struct Methods {
             static let Auth = "/oauth/v1/access_token"
+            static let UserProfile = "/user/profile"
             static let StoryLine = "/api/1.1/user/storyline/daily"
         }
         
@@ -97,6 +98,23 @@ extension TANetClient {
                 static let Latitude = "lat"
                 static let Name = "name"
                 static let PlaceType = "type"
+            }
+            
+            // For User Profile
+            struct UserProfile {
+                static let UserId = "userId"
+                static let Profile = "profile"
+                static let FirstDate = "firstDate"
+                static let CurrentTimeZone = "currentTimeZone"
+                static let CurrentTimeZoneId = "id"
+                static let CurrentTimeZoneOffset = "offset"
+                static let Localization = "localization"
+                static let Language = "language"
+                static let Locale = "locale"
+                static let FirstWeekDay = "firstWeekDay"
+                static let Metric = "metric"
+                static let CaloriesAvailable = "caloriesAvailable"
+                static let Platform = "platform"
             }
         }
         
