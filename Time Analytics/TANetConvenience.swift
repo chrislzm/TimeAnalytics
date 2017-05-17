@@ -223,8 +223,27 @@ extension TANetClient {
     
     func downloadAllMovesUserData(_ completionHandler: @escaping (_ response:[AnyObject]?, _ error: String?) -> Void)  {
         
-        // For every set of 31 days from the first user date to present
+        // Setup the date formatter
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        dateFormatter.dateFormat = "yyyyMMdd"
         
+        var beginDate = dateFormatter.date(from: movesUserFirstDate!)!
+        let today = Date()
+        // For every set of 31 days from the first user date to present
+        while (beginDate < today) {
+            var endDate = Calendar.current.date(byAdding: .day, value: 31, to: beginDate)!
+            if (endDate > today) {
+                endDate = today
+            }
+            
+            let formattedBeginDate = dateFormatter.string(from: beginDate)
+            let formattedEndDate = dateFormatter.string(from: endDate)
+            
+            print("Downloading data from \(formattedBeginDate) to \(formattedEndDate)")
+            
+            beginDate = endDate
+        }
     }
     
     
