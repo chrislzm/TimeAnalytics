@@ -14,11 +14,11 @@ class TASettingsViewController:UIViewController {
     @IBOutlet weak var endDate: UIDatePicker!
     
     @IBAction func downloadAllUserDataButtonPressed(_ sender: Any) {
-        TANetClient.sharedInstance().downloadAllMovesUserData() { (data,error) in
+        TAModel.sharedInstance().downloadAndProcessAllMovesData() { (error) in
             guard error == nil else {
-                print(error)
+                print(error!)
                 return
-            }            
+            }
         }
     }
     
