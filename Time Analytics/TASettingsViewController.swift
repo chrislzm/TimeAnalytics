@@ -29,6 +29,6 @@ class TASettingsViewController:UIViewController {
     }
     
     @IBAction func deleteButtonPressed(_ sender: Any) {
-        TAModel.sharedInstance().deleteAllMovesData()
+        TAModel.sharedInstance().deleteAllDataFor(["MovesMoveSegment","MovesPlaceSegment","TAPlaceSegment"])
     }
 }
