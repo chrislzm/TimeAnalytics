@@ -215,7 +215,42 @@ class TAModel {
         }
     }
 
-    
+    func downloadAndProcessAllMovesData(_ completionHandler: @escaping (_ error: String?) -> Void) {
+        
+        // Downloads all moves data for the user from the beginning of time
+        
+        // Setup the date formatter
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        dateFormatter.dateFormat = "yyyyMMdd"
+        var beginDate = dateFormatter.date(from: TANetClient.sharedInstance().movesUserFirstDate!)!
+        let today = Date()
+        // For every set of 30 days from the first user date to present
+        while (beginDate < today) {
+            
+            var endDate = Calendar.current.date(byAdding: .day, value: 30, to: beginDate)!
+            if (endDate > today) {
+                endDate = today
+            }
+            
+            let formattedBeginDate = dateFormatter.string(from: beginDate)
+            let formattedEndDate = dateFormatter.string(from: endDate)
+            
+            print("Downloading data from \(formattedBeginDate) to \(formattedEndDate)")
+            TANetClient.sharedInstance().getMovesDataFrom(beginDate, endDate){ (monthData, error) in
+                guard error == nil else {
+                    completionHandler(error!)
+                    return
+                }
+                print("Completed downloading data from \(formattedBeginDate) to \(formattedEndDate)! Now parsing.")
+                DispatchQueue.main.async {
+                    self.parseAndSaveMovesData(monthData!)
+                }
+            }
+            beginDate = endDate
+        }
+    }
+
     func parseAndSaveMovesData(_ stories:[AnyObject]) {
         
         // Setup the date formatter
