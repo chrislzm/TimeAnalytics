@@ -17,7 +17,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func deleteMovesDataPressed(_ sender: Any) {
-        TAModel.sharedInstance().deleteAllMovesData()
+        TAModel.sharedInstance().deleteAllDataFor(["MovesMove","MovesPlace","TAPlace"])
     }
     @IBAction func downloadMovesDataPressed(_ sender: Any) {
         let calendar = Calendar.current
