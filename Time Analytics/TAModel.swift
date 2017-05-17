@@ -42,14 +42,18 @@ class TAModel {
         movesPlaceSegment.setValue(facebookPlaceId, forKey: "facebookPlaceId")
         movesPlaceSegment.setValue(foursquareId, forKey: "foursquareId")
         movesPlaceSegment.setValue(foursquareCategoryIds, forKey: "foursquareCategoryIds")
-
-        // Create and store TAPlaceSegment object. If we have a duplicate, overwrite it.
-        if(containsObject("TAPlaceSegment",startTime)) {
-            deleteObject("TAPlaceSegment",startTime)
+        saveContext()
+    }
+    
+    func createNewTAPlaceObject(_ movesStartTime:NSDate, _ startTime:NSDate, _ endTime:NSDate, _ lat:Double, _ lon:Double, _ name:String?) {
+        let context = getContext()
+        
+        if(containsObject("TAPlaceSegment","startTime",startTime)) {
+            deleteObject("TAPlaceSegment","startTime",startTime)
         }
         let taPlaceSegmentEntity = NSEntityDescription.entity(forEntityName: "TAPlaceSegment", in: context)!
         let taPlaceSegment = NSManagedObject(entity: taPlaceSegmentEntity, insertInto: context)
-        taPlaceSegment.setValue(startTime, forKey:"movesStartTime")
+        taPlaceSegment.setValue(movesStartTime, forKey:"movesStartTime")
         taPlaceSegment.setValue(startTime, forKey:"startTime")
         taPlaceSegment.setValue(endTime, forKey: "endTime")
         taPlaceSegment.setValue(lat, forKey: "lat")
@@ -57,27 +61,131 @@ class TAModel {
         taPlaceSegment.setValue(name, forKey: "name")
         saveContext()
     }
+    
+    func generateTAPlaceObjects() {
+        
+        // Retrieve all moves place segments
+        let movesPlaceSegments = getAllMovesPlaceSegments()
+        
+        for movesPlaceSegment in movesPlaceSegments {
+            let movesStartTime = movesPlaceSegment.startTime!
+            let movesEndTime = movesPlaceSegment.endTime!
+            let lat = movesPlaceSegment.lat
+            let lon = movesPlaceSegment.lon
+            let name = movesPlaceSegment.name
+            
+            // Now, find the actual start and end times of this place segment
+            var actualStartTime = getLastMoveEndTimeBefore(movesStartTime)
+            let actualEndTime = getFirstMoveStartTimeAfter(movesEndTime)
+        
+            // Get the last place before this one, if any
+            if let lastPlace = getLastTAPlaceBefore(movesStartTime) {
+                // If the last place was the same as the current place
+                if (lastPlace.lat == lat && lastPlace.lon == lon) {
+                    // Update the start time
+                    actualStartTime = lastPlace.startTime!
+                    // Delete the old object
+                    deleteObject("TAPlaceSegment", "movesStartTime", lastPlace.movesStartTime!)
+                }
+            }
+            createNewTAPlaceObject(movesStartTime, actualStartTime, actualEndTime, lat, lon, name)
+        }
+    }
+    
+    func getLastTAPlaceBefore(_ time:NSDate) -> TAPlaceSegment? {
+        let context = getContext()
+        let fr = NSFetchRequest<NSFetchRequestResult>(entityName: "TAPlaceSegment")
+        let pred = NSPredicate(format: "startTime <= %@", argumentArray: [time])
+        fr.predicate = pred
+        let sort = NSSortDescriptor(key: "startTime", ascending: false)
+        fr.sortDescriptors = [sort]
+        var result:[TAPlaceSegment]
+        do {
+            result = try context.fetch(fr) as! [TAPlaceSegment]
+        } catch {
+            fatalError("Unable to access persistent data")
+        }
+        var lastTAPlace:TAPlaceSegment? = nil
+        if result.count > 0 {
+            lastTAPlace = result[0] as TAPlaceSegment
+        }
+        return lastTAPlace
+    }
+    
+    func getAllMovesPlaceSegments() -> [MovesPlaceSegment] {
+        let context = getContext()
+        let fr = NSFetchRequest<NSFetchRequestResult>(entityName: "MovesPlaceSegment")
+        let sort = NSSortDescriptor(key: "startTime", ascending: true)
+        fr.sortDescriptors = [sort]
+        var result:[MovesPlaceSegment]
+        do {
+            result = try context.fetch(fr) as! [MovesPlaceSegment]
+        } catch {
+            fatalError("Unable to access persistent data")
+        }
+        return result
+    }
+    
+    func getLastMoveEndTimeBefore(_ time:NSDate) -> NSDate {
+        let context = getContext()
+        let fr = NSFetchRequest<NSFetchRequestResult>(entityName: "MovesMoveSegment")
+        let pred = NSPredicate(format: "endTime <= %@", argumentArray: [time])
+        fr.predicate = pred
+        let sort = NSSortDescriptor(key: "endTime", ascending: false)
+        fr.sortDescriptors = [sort]
+        var result:[MovesMoveSegment]
+        do {
+            result = try context.fetch(fr) as! [MovesMoveSegment]
+        } catch {
+            fatalError("Unable to access persistent data")
+        }
+        if result.count > 0 {
+            return result[0].endTime!
+        } else {
+            return time
+        }
+    }
+    
+    func getFirstMoveStartTimeAfter(_ time:NSDate) -> NSDate {
+        let context = getContext()
+        let fr = NSFetchRequest<NSFetchRequestResult>(entityName: "MovesMoveSegment")
+        let pred = NSPredicate(format: "startTime >= %@", argumentArray: [time])
+        fr.predicate = pred
+        let sort = NSSortDescriptor(key: "startTime", ascending: true)
+        fr.sortDescriptors = [sort]
+        var result:[MovesMoveSegment]
+        do {
+            result = try context.fetch(fr) as! [MovesMoveSegment]
+        } catch {
+            fatalError("Unable to access persistent data")
+        }
+        if result.count > 0 {
+            return result[0].startTime!
+        } else {
+            return time
+        }
+    }
 
-    func containsObject(_ entityName:String, _ startTime:Date) -> Bool {
+    func containsObject(_ entityName:String,_ attributeName:String, _ value:Any) -> Bool {
         let context = getContext()
         let fr = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
-        let pred = NSPredicate(format: "startTime == %@", argumentArray: [startTime])
+        let pred = NSPredicate(format: "\(attributeName) == %@", argumentArray: [value])
         fr.predicate = pred
         var numResults = 0
         do {
             let result = try context.fetch(fr)
             numResults = result.count
-            print("Found \(numResults) objects in data with startTime: \(startTime)")
+            print("Found \(numResults) objects in data with \(attributeName) = \(value)")
         } catch {
             fatalError("Unable to access persistent data")
         }
         return numResults > 0
     }
 
-    func deleteObject(_ entityName:String, _ startTime:Date) {
+    func deleteObject(_ entityName:String,_ attributeName:String, _ value:Any) {
         let context = getContext()
         let fr = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
-        let pred = NSPredicate(format: "startTime == %@", argumentArray: [startTime])
+        let pred = NSPredicate(format: "\(attributeName) == %@", argumentArray: [value])
         fr.predicate = pred
         do {
             let result = try context.fetch(fr)
@@ -156,6 +264,9 @@ class TAModel {
                 }
             }
         }
+        
+        // Now generate our interpolated TAPlace data
+        generateTAPlaceObjects()
     }
 
     // MARK: User Defaults Methods
