@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		935A8628BD61FFDBEBB0BE71 /* Pods_Time_Analytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F9E6F0E9144766F61922631 /* Pods_Time_Analytics.framework */; };
 		A52564A91EC929D900DD843F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52564A81EC929D900DD843F /* AppDelegate.swift */; };
 		A52564AB1EC929D900DD843F /* TALoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52564AA1EC929D900DD843F /* TALoginViewController.swift */; };
 		A52564AE1EC929D900DD843F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A52564AC1EC929D900DD843F /* Main.storyboard */; };
@@ -21,12 +22,14 @@
 		A5866A201EC966870025D38F /* TANetConvenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5866A1F1EC966870025D38F /* TANetConvenience.swift */; };
 		A5AB93FB1ECA65B10055301C /* Managed Objects.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A5AB93F91ECA65B10055301C /* Managed Objects.xcdatamodeld */; };
 		A5AB93FD1ECA68A40055301C /* TAModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5AB93FC1ECA68A40055301C /* TAModel.swift */; };
+		A5B09F5F1ECD47230019CA4A /* TAPlaceDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B09F5E1ECD47230019CA4A /* TAPlaceDetailViewController.swift */; };
 		A5FFFD8D1ECAB38C00B55020 /* TATableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5FFFD8C1ECAB38C00B55020 /* TATableViewController.swift */; };
 		A5FFFD8F1ECAB4A700B55020 /* TALocationTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5FFFD8E1ECAB4A700B55020 /* TALocationTableViewController.swift */; };
 		A5FFFD931ECAC6F200B55020 /* TASettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5FFFD921ECAC6F200B55020 /* TASettingsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		9F9E6F0E9144766F61922631 /* Pods_Time_Analytics.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Time_Analytics.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A52564A51EC929D900DD843F /* Time Analytics.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Time Analytics.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A52564A81EC929D900DD843F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A52564AA1EC929D900DD843F /* TALoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TALoginViewController.swift; sourceTree = "<group>"; };
@@ -43,9 +46,12 @@
 		A5866A1F1EC966870025D38F /* TANetConvenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TANetConvenience.swift; sourceTree = "<group>"; };
 		A5AB93FA1ECA65B10055301C /* Managed Objects.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Managed Objects.xcdatamodel"; sourceTree = "<group>"; };
 		A5AB93FC1ECA68A40055301C /* TAModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TAModel.swift; sourceTree = "<group>"; };
+		A5B09F5E1ECD47230019CA4A /* TAPlaceDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TAPlaceDetailViewController.swift; sourceTree = "<group>"; };
 		A5FFFD8C1ECAB38C00B55020 /* TATableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TATableViewController.swift; sourceTree = "<group>"; };
 		A5FFFD8E1ECAB4A700B55020 /* TALocationTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TALocationTableViewController.swift; sourceTree = "<group>"; };
 		A5FFFD921ECAC6F200B55020 /* TASettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TASettingsViewController.swift; sourceTree = "<group>"; };
+		AE39A77DBBD222026EEA5263 /* Pods-Time Analytics.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Time Analytics.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Time Analytics/Pods-Time Analytics.debug.xcconfig"; sourceTree = "<group>"; };
+		FB0D48EE7D9020167F52D138 /* Pods-Time Analytics.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Time Analytics.release.xcconfig"; path = "Pods/Target Support Files/Pods-Time Analytics/Pods-Time Analytics.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,17 +59,37 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				935A8628BD61FFDBEBB0BE71 /* Pods_Time_Analytics.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7ABAC58481E808E4AD4E4FE5 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				AE39A77DBBD222026EEA5263 /* Pods-Time Analytics.debug.xcconfig */,
+				FB0D48EE7D9020167F52D138 /* Pods-Time Analytics.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		A3B176A32F7136CF019AF2BA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				9F9E6F0E9144766F61922631 /* Pods_Time_Analytics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		A525649C1EC929D900DD843F = {
 			isa = PBXGroup;
 			children = (
 				A52564A71EC929D900DD843F /* Time Analytics */,
 				A52564A61EC929D900DD843F /* Products */,
+				7ABAC58481E808E4AD4E4FE5 /* Pods */,
+				A3B176A32F7136CF019AF2BA /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -120,6 +146,7 @@
 				A5FFFD8E1ECAB4A700B55020 /* TALocationTableViewController.swift */,
 				A5FFFD921ECAC6F200B55020 /* TASettingsViewController.swift */,
 				A55B137F1ECC318900FA14FB /* TATableViewCell.swift */,
+				A5B09F5E1ECD47230019CA4A /* TAPlaceDetailViewController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -131,9 +158,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A52564B71EC929D900DD843F /* Build configuration list for PBXNativeTarget "Time Analytics" */;
 			buildPhases = (
+				68A9DBC18DF87C6AA0A414CD /* [CP] Check Pods Manifest.lock */,
 				A52564A11EC929D900DD843F /* Sources */,
 				A52564A21EC929D900DD843F /* Frameworks */,
 				A52564A31EC929D900DD843F /* Resources */,
+				B5CACD8222D511C6D6364809 /* [CP] Embed Pods Frameworks */,
+				9CE443CFA8D609F3FDA576F5 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -192,12 +222,61 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		68A9DBC18DF87C6AA0A414CD /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		9CE443CFA8D609F3FDA576F5 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Time Analytics/Pods-Time Analytics-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B5CACD8222D511C6D6364809 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Time Analytics/Pods-Time Analytics-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		A52564A11EC929D900DD843F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				A5866A1C1EC964450025D38F /* TANetClient.swift in Sources */,
+				A5B09F5F1ECD47230019CA4A /* TAPlaceDetailViewController.swift in Sources */,
 				A5866A201EC966870025D38F /* TANetConvenience.swift in Sources */,
 				A55B13801ECC318900FA14FB /* TATableViewCell.swift in Sources */,
 				A55B137D1ECC04A600FA14FB /* TAPlaceSegment+CoreDataClass.swift in Sources */,
@@ -333,6 +412,7 @@
 		};
 		A52564B81EC929D900DD843F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = AE39A77DBBD222026EEA5263 /* Pods-Time Analytics.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = XKM44UF8A2;
@@ -346,6 +426,7 @@
 		};
 		A52564B91EC929D900DD843F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FB0D48EE7D9020167F52D138 /* Pods-Time Analytics.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = XKM44UF8A2;
