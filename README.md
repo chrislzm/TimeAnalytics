@@ -37,6 +37,10 @@ Because Moves data can contain gaps, Time Analytics interpolates the data using 
 * A commute only exists between P1 and P2 when there are no other place segments between them
 * Move segments that begin and end at the same place are ignored
 
+Issues
+------
+* No such module 'Charts': This is a known issue with Charts. To resolve, compile the project, and the error message should disappear. (May require Xcode restart.)
+
 Developer Notes
 ---------------
 * Under active development
