@@ -9,7 +9,9 @@ Installation
 2. Obtain [Moves API ClientId and ClientSecret](https://dev.moves-app.com/apps) values
 3. Open "Time Analytics.xcworkspace"
 4. Update Moves API values in "TANetConstants.swift": TANetClient.MovesApi.ClientId and ClientSecret
-5. Compile and run (Developed and tested with XCode 8+ and iOS 10+)
+5. Compile and run
+
+Developed and tested with XCode 8+ and iOS 10+.
 
 Optional Settings
 -----------------
