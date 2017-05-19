@@ -1,4 +1,4 @@
-![Time Analytics Logo](blob/master/Time%20Analytics/Assets.xcassets/AppIcon.appiconset/Icon-60%403x.png "Time Analytics Logo")
+![Time Analytics Logo](/chrislzm/TimeAnalytics/blob/master/Time%20Analytics/Assets.xcassets/AppIcon.appiconset/Icon-60@3x.png?raw=true "Time Analytics Logo")
 
 Time Analytics
 ==============
