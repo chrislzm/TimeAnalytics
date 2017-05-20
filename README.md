@@ -1,3 +1,5 @@
+![Time Analytics Logo](/Time%20Analytics/Assets.xcassets/AppIcon.appiconset/Icon-60@3x.png?raw=true "Time Analytics Logo")
+
 Time Analytics
 ==============
 
