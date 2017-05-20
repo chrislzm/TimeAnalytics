@@ -46,7 +46,7 @@ Developer Notes
 * Under active development
 * Uses [Charts 3.0.2](https://github.com/danielgindi/Charts)
 
-Questions & Issues
-------------------
+Questions
+---------
 * Create new issues on [GitHub repo](https://github.com/chrislzm/TimeAnalytics/issues) for any bugs found.
 * Contact [Chris Leung](https://github.com/chrislzm)
