@@ -24,7 +24,7 @@ class TALocationTableViewController: TATableViewController {
         
         // Get the context
         let delegate = UIApplication.shared.delegate as! AppDelegate
-        let context = delegate.persistentContainer.viewContext
+        let context = delegate.stack.context
         
         // Create a fetchrequest
         let fr = NSFetchRequest<NSFetchRequestResult>(entityName: "TAPlaceSegment")
@@ -36,16 +36,10 @@ class TALocationTableViewController: TATableViewController {
         // Setup and add the Edit button
         settingsButton = UIBarButtonItem(title: "Settings", style: UIBarButtonItemStyle.plain, target:self, action: #selector(TALocationTableViewController.showSettingsMenu))
         navigationItem.rightBarButtonItem = settingsButton
-        
-        // Sets up an observer that will tell update the view when we have new data available
-        NotificationCenter.default.addObserver(self, selector: #selector(TALocationTableViewController.didProcessDataChunk(_:)), name: Notification.Name("didProcessDataChunk"), object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        executeSearch()
-        tableView.reloadData()
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
