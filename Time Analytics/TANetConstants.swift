@@ -76,6 +76,7 @@ extension TANetClient {
             static let UserId = "user_id"
             
             // For Data Parsing
+            static let Date = "date"
             static let Segments = "segments"
             
             // For Data Parsing: Segments
