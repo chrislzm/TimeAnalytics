@@ -14,7 +14,6 @@
 		A52564B01EC929D900DD843F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A52564AF1EC929D900DD843F /* Assets.xcassets */; };
 		A52564B31EC929D900DD843F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A52564B11EC929D900DD843F /* LaunchScreen.storyboard */; };
 		A52564BC1EC93E4000DD843F /* BorderedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52564BB1EC93E4000DD843F /* BorderedButton.swift */; };
-		A5491E7C1ECFB821007B7313 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = A5491E7B1ECFB821007B7313 /* README.md */; };
 		A55B137D1ECC04A600FA14FB /* TAPlaceSegment+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = A55B137B1ECC04A600FA14FB /* TAPlaceSegment+CoreDataClass.swift */; };
 		A55B137E1ECC04A600FA14FB /* TAPlaceSegment+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = A55B137C1ECC04A600FA14FB /* TAPlaceSegment+CoreDataProperties.swift */; };
 		A55B13801ECC318900FA14FB /* TATableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A55B137F1ECC318900FA14FB /* TATableViewCell.swift */; };
@@ -42,7 +41,6 @@
 		A52564B21EC929D900DD843F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A52564B41EC929D900DD843F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A52564BB1EC93E4000DD843F /* BorderedButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BorderedButton.swift; sourceTree = "<group>"; };
-		A5491E7B1ECFB821007B7313 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		A55B137B1ECC04A600FA14FB /* TAPlaceSegment+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TAPlaceSegment+CoreDataClass.swift"; sourceTree = "<group>"; };
 		A55B137C1ECC04A600FA14FB /* TAPlaceSegment+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TAPlaceSegment+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		A55B137F1ECC318900FA14FB /* TATableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TATableViewCell.swift; sourceTree = "<group>"; };
@@ -94,7 +92,6 @@
 		A525649C1EC929D900DD843F = {
 			isa = PBXGroup;
 			children = (
-				A5491E7B1ECFB821007B7313 /* README.md */,
 				A52564A71EC929D900DD843F /* Time Analytics */,
 				A52564A61EC929D900DD843F /* Products */,
 				7ABAC58481E808E4AD4E4FE5 /* Pods */,
@@ -296,7 +293,6 @@
 				A5B6D1AA1ED16ECE00890BC4 /* TAViewExtensions.swift in Sources */,
 				A5FFFD931ECAC6F200B55020 /* TASettingsViewController.swift in Sources */,
 				A5AA02EF1ED11ACC0046CCB4 /* TAProgressView.swift in Sources */,
-				A5491E7C1ECFB821007B7313 /* README.md in Sources */,
 				A5FFFD8D1ECAB38C00B55020 /* TATableViewController.swift in Sources */,
 				A55B137E1ECC04A600FA14FB /* TAPlaceSegment+CoreDataProperties.swift in Sources */,
 				A52564AB1EC929D900DD843F /* TALoginViewController.swift in Sources */,
