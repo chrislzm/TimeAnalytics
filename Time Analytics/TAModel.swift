@@ -217,6 +217,7 @@ class TAModel {
         
         var dataChunks:Int = totalDays / TANetClient.MovesApi.Constants.MaxDaysPerRequest
         dataChunks += totalDays % TANetClient.MovesApi.Constants.MaxDaysPerRequest > 0 ? 1 : 0
+        dataChunks *= 2 // Because we need to download a chunk and then process it, we'll send a notification for completion of each
         
         while (beginDate < today) {
             
@@ -226,6 +227,12 @@ class TAModel {
             }
             
             TANetClient.sharedInstance().getMovesDataFrom(beginDate, endDate){ (monthData, error) in
+                
+                DispatchQueue.main.async {
+                    // Send notification that we completed one chunk
+                    NotificationCenter.default.post(name: Notification.Name("didCompleteDataChunk"), object: nil)
+                }
+
                 guard error == nil else {
                     completionHandler(0,error!)
                     return
@@ -250,7 +257,7 @@ class TAModel {
         
         // Try getting moves data
         TANetClient.sharedInstance().getMovesDataFrom(startDate, endDate) { (result,error) in
-            
+
             guard error == nil else {
                 completionHandler(error!)
                 return
@@ -324,10 +331,15 @@ class TAModel {
         let lastDate = dateFormatter.date(from: lastDateString)!
         // Generate our interpolated TAPlace data for this date range
         print("Story: First Date: \(firstDateString) Last Date: \(lastDateString)")
-        generateTAPlaceObjects(firstDate,lastDate,progressView,context)
+        generateTAPlaceObjects(firstDate,lastDate,context)
         
         // Delete the moves data for this date rangesince we don't need it anymore
         // deleteAllDataFor(["MovesMoveSegment","MovesPlaceSegment"])
+        
+        DispatchQueue.main.async {
+            // Send notification that we completed processing one chunk
+            NotificationCenter.default.post(name: Notification.Name("didCompleteDataChunk"), object: nil)
+        }
     }
 
     
