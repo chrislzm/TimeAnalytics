@@ -15,22 +15,23 @@ import UIKit
 class TAModel {
     
     // MARK: Moves API Methods
-    func createMovesMoveObject(_ startTime:Date, _ endTime:Date, _ lastUpdate:Date?) {
-        let context = getContext()
+    func createMovesMoveObject(_ date:Date, _ startTime:Date, _ endTime:Date, _ lastUpdate:Date?, _ context:NSManagedObjectContext) {
         let entity = NSEntityDescription.entity(forEntityName: "MovesMoveSegment", in: context)!
         let movesMoveSegment = NSManagedObject(entity: entity, insertInto: context)
+        movesMoveSegment.setValue(date, forKey:"date")
         movesMoveSegment.setValue(startTime, forKey: "startTime")
         movesMoveSegment.setValue(endTime, forKey: "endTime")
         movesMoveSegment.setValue(lastUpdate, forKey: "lastUpdate")
-        saveContext()
+        save(context)
     }
     
-    func createMovesPlaceObject(_ startTime:Date, _ endTime:Date, _ type:String,_ lat:Double,_ lon:Double,  _ lastUpdate:Date?,_ id:Int64?,_ name:String?,_ facebookPlaceId:String?,_ foursquareId:String?,_ foursquareCategoryIds:String?) {
+    func createMovesPlaceObject(_ date:Date, _ startTime:Date, _ endTime:Date, _ type:String,_ lat:Double,_ lon:Double,  _ lastUpdate:Date?,_ id:Int64?,_ name:String?,_ facebookPlaceId:String?,_ foursquareId:String?,_ foursquareCategoryIds:String?, _ context:NSManagedObjectContext) {
         let context = getContext()
         
         // Create and store MovesPlace object
         let movesPlaceSegmentEntity = NSEntityDescription.entity(forEntityName: "MovesPlaceSegment", in: context)!
         let movesPlaceSegment = NSManagedObject(entity: movesPlaceSegmentEntity, insertInto: context)
+        movesPlaceSegment.setValue(date, forKey: "date")
         movesPlaceSegment.setValue(startTime, forKey: "startTime")
         movesPlaceSegment.setValue(endTime, forKey: "endTime")
         movesPlaceSegment.setValue(type, forKey: "type")
@@ -42,14 +43,13 @@ class TAModel {
         movesPlaceSegment.setValue(facebookPlaceId, forKey: "facebookPlaceId")
         movesPlaceSegment.setValue(foursquareId, forKey: "foursquareId")
         movesPlaceSegment.setValue(foursquareCategoryIds, forKey: "foursquareCategoryIds")
-        saveContext()
+        save(context)
     }
     
-    func createNewTAPlaceObject(_ movesStartTime:NSDate, _ startTime:NSDate, _ endTime:NSDate, _ lat:Double, _ lon:Double, _ name:String?) {
-        let context = getContext()
-        
-        if(containsObject("TAPlaceSegment","startTime",startTime)) {
-            deleteObject("TAPlaceSegment","startTime",startTime)
+    func createNewTAPlaceObject(_ movesStartTime:NSDate, _ startTime:NSDate, _ endTime:NSDate, _ lat:Double, _ lon:Double, _ name:String?,_ context:NSManagedObjectContext) {
+
+        if(containsObject("TAPlaceSegment","startTime",startTime,context)) {
+            deleteObject("TAPlaceSegment","startTime",startTime,context)
         }
         let taPlaceSegmentEntity = NSEntityDescription.entity(forEntityName: "TAPlaceSegment", in: context)!
         let taPlaceSegment = NSManagedObject(entity: taPlaceSegmentEntity, insertInto: context)
@@ -59,41 +59,9 @@ class TAModel {
         taPlaceSegment.setValue(lat, forKey: "lat")
         taPlaceSegment.setValue(lon, forKey: "lon")
         taPlaceSegment.setValue(name, forKey: "name")
-        saveContext()
+        save(context)
     }
-    
-    func generateTAPlaceObjects() {
-        
-        // Retrieve all moves place segments
-        let movesPlaceSegments = getAllMovesPlaceSegments()
-        
-        for movesPlaceSegment in movesPlaceSegments {
-            let movesStartTime = movesPlaceSegment.startTime!
-            let movesEndTime = movesPlaceSegment.endTime!
-            let lat = movesPlaceSegment.lat
-            let lon = movesPlaceSegment.lon
-            let name = movesPlaceSegment.name
-            
-            // Now, find the actual start and end times of this place segment
-            var actualStartTime = getLastMoveEndTimeBefore(movesStartTime)
-            let actualEndTime = getFirstMoveStartTimeAfter(movesEndTime)
-        
-            // Get the last place before this one, if any
-            if let lastPlace = getLastTAPlaceBefore(movesStartTime) {
-                // If the last place was the same as the current place
-                if (lastPlace.lat == lat && lastPlace.lon == lon) {
-                    // Update the start time
-                    actualStartTime = lastPlace.startTime!
-                    // Delete the old object
-                    deleteObject("TAPlaceSegment", "movesStartTime", lastPlace.movesStartTime!)
-                }
-            }
-            createNewTAPlaceObject(movesStartTime, actualStartTime, actualEndTime, lat, lon, name)
-        }
-    }
-    
-    func getLastTAPlaceBefore(_ time:NSDate) -> TAPlaceSegment? {
-        let context = getContext()
+    func getLastTAPlaceBefore(_ time:NSDate,_ context:NSManagedObjectContext) -> TAPlaceSegment? {
         let fr = NSFetchRequest<NSFetchRequestResult>(entityName: "TAPlaceSegment")
         let pred = NSPredicate(format: "startTime <= %@", argumentArray: [time])
         fr.predicate = pred
@@ -112,8 +80,7 @@ class TAModel {
         return lastTAPlace
     }
     
-    func getAllMovesPlaceSegments() -> [MovesPlaceSegment] {
-        let context = getContext()
+    func getAllMovesPlaceSegments(_ context:NSManagedObjectContext) -> [MovesPlaceSegment] {
         let fr = NSFetchRequest<NSFetchRequestResult>(entityName: "MovesPlaceSegment")
         let sort = NSSortDescriptor(key: "startTime", ascending: true)
         fr.sortDescriptors = [sort]
@@ -126,8 +93,22 @@ class TAModel {
         return result
     }
     
-    func getLastMoveEndTimeBefore(_ time:NSDate) -> NSDate {
-        let context = getContext()
+    func getMovesPlaceSegmentsBetween(_ startDate:NSDate,_ endDate:NSDate,_ context:NSManagedObjectContext) -> [MovesPlaceSegment] {
+        let fr = NSFetchRequest<NSFetchRequestResult>(entityName: "MovesPlaceSegment")
+        let sort = NSSortDescriptor(key: "startTime", ascending: true)
+        fr.sortDescriptors = [sort]
+        let pred = NSPredicate(format: "(date >= %@) AND (date <= %@)", argumentArray: [startDate,endDate])
+        fr.predicate = pred
+        var result:[MovesPlaceSegment]
+        do {
+            result = try context.fetch(fr) as! [MovesPlaceSegment]
+        } catch {
+            fatalError("Unable to access persistent data")
+        }
+        return result
+    }
+    
+    func getLastMoveEndTimeBefore(_ time:NSDate,_ context:NSManagedObjectContext) -> NSDate {
         let fr = NSFetchRequest<NSFetchRequestResult>(entityName: "MovesMoveSegment")
         let pred = NSPredicate(format: "endTime <= %@", argumentArray: [time])
         fr.predicate = pred
@@ -146,8 +127,7 @@ class TAModel {
         }
     }
     
-    func getFirstMoveStartTimeAfter(_ time:NSDate) -> NSDate {
-        let context = getContext()
+    func getFirstMoveStartTimeAfter(_ time:NSDate, _ context:NSManagedObjectContext) -> NSDate {
         let fr = NSFetchRequest<NSFetchRequestResult>(entityName: "MovesMoveSegment")
         let pred = NSPredicate(format: "startTime >= %@", argumentArray: [time])
         fr.predicate = pred
@@ -166,8 +146,7 @@ class TAModel {
         }
     }
 
-    func containsObject(_ entityName:String,_ attributeName:String, _ value:Any) -> Bool {
-        let context = getContext()
+    func containsObject(_ entityName:String,_ attributeName:String, _ value:Any, _ context:NSManagedObjectContext) -> Bool {
         let fr = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
         let pred = NSPredicate(format: "\(attributeName) == %@", argumentArray: [value])
         fr.predicate = pred
@@ -181,8 +160,7 @@ class TAModel {
         return numResults > 0
     }
 
-    func deleteObject(_ entityName:String,_ attributeName:String, _ value:Any) {
-        let context = getContext()
+    func deleteObject(_ entityName:String,_ attributeName:String, _ value:Any, _ context:NSManagedObjectContext) {
         let fr = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
         let pred = NSPredicate(format: "\(attributeName) == %@", argumentArray: [value])
         fr.predicate = pred
@@ -194,7 +172,7 @@ class TAModel {
         } catch {
             fatalError("Unable to access persistent data")
         }
-        saveContext()
+        save(context)
     }
 
     func deleteAllDataFor(_ entities:[String]) {
@@ -214,9 +192,15 @@ class TAModel {
         }
     }
 
-    func downloadAndProcessAllMovesData(_ completionHandler: @escaping (_ error: String?) -> Void) {
+    // Downloads all moves data for the user from the beginning of time
+
+    func downloadAndProcessAllMovesData(_ progressView:TAProgressView, _ completionHandler: @escaping (_ error: String?) -> Void) {
+
+        let container = getPersistentContainer()
         
-        // Downloads all moves data for the user from the beginning of time
+        progressView.titleLabel.text = "Downloading and Processing Moves Data"
+        progressView.progressView.setProgress(0, animated: false)
+        progressView.isHidden = false
         
         // Setup the date formatter
         let dateFormatter = DateFormatter()
@@ -224,6 +208,13 @@ class TAModel {
         dateFormatter.dateFormat = "yyyyMMdd"
         var beginDate = dateFormatter.date(from: TANetClient.sharedInstance().movesUserFirstDate!)!
         let today = Date()
+        
+        let calendar = NSCalendar.current
+        let totalDays = calendar.dateComponents([.day], from: calendar.startOfDay(for: beginDate), to: calendar.startOfDay(for: today))
+        progressView.currentProgress = 0
+        progressView.totalProgress = Float(totalDays.day! * 2)
+        print("Total days: \(totalDays.day!)")
+
         // For every set of 30 days from the first user date to present
         while (beginDate < today) {
             
@@ -237,15 +228,27 @@ class TAModel {
                     completionHandler(error!)
                     return
                 }
-                DispatchQueue.main.async {
-                    self.parseAndSaveMovesData(monthData!)
+                
+                container.performBackgroundTask() { (context) in
+                    self.parseAndSaveMovesData(monthData!, progressView, context)
                 }
-            }
+            }            
             beginDate = endDate
         }
     }
     
-    func downloadAndProcessMovesDataInRange(_ startDate:Date, _ endDate: Date, completionHandler: @escaping (_ error: String?) -> Void) {
+    func downloadAndProcessMovesDataInRange(_ startDate:Date, _ endDate: Date, _ progressView:TAProgressView, completionHandler: @escaping (_ error: String?) -> Void) {
+        let container = getPersistentContainer()
+        
+        progressView.titleLabel.text = "Downloading and Processing Moves Data"
+        progressView.progressView.setProgress(0, animated: false)
+        progressView.isHidden = false
+        
+        let calendar = NSCalendar.current
+        let totalDays = calendar.dateComponents([.day], from: calendar.startOfDay(for: startDate), to: calendar.startOfDay(for: endDate))
+        progressView.currentProgress = 0
+        progressView.totalProgress = Float(totalDays.day! * 2)
+        print("Total days: \(totalDays.day!)")
         
         // Try getting moves data
         TANetClient.sharedInstance().getMovesDataFrom(startDate, endDate) { (result,error) in
@@ -255,20 +258,30 @@ class TAModel {
                 return
             }
             
-            self.parseAndSaveMovesData(result!)
+            container.performBackgroundTask() { (context) in
+                self.parseAndSaveMovesData(result!, progressView, context)
+                
+                completionHandler(nil)
+            }
             
-            completionHandler(nil)
         }
     }
  
-    func parseAndSaveMovesData(_ stories:[AnyObject]) {
+    func parseAndSaveMovesData(_ stories:[AnyObject],_ progressView:TAProgressView, _ context:NSManagedObjectContext) {
  
         // Setup the date formatter
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-        dateFormatter.dateFormat = "yyyyMMdd'T'HHmmssZ"
+        
+        let calendar = NSCalendar.current
+        var processedDays = Set<Date>()
         
         for story in stories {
+            
+            dateFormatter.dateFormat = "yyyyMMdd"
+            let date = dateFormatter.date(from: story[TANetClient.MovesApi.JSONResponseKeys.Date] as! String)!
+
+            dateFormatter.dateFormat = "yyyyMMdd'T'HHmmssZ"
             if let segments = story[TANetClient.MovesApi.JSONResponseKeys.Segments] as? [AnyObject] {
                 for segment in segments {
                     // TODO: Don't force unwrap optionals here; we should try to process as much data as possible, and return error if we had any problems
@@ -282,7 +295,7 @@ class TAModel {
                     
                     switch type {
                     case TANetClient.MovesApi.JSONResponseValues.Segment.Move:
-                        createMovesMoveObject(startTime, endTime, lastUpdate)
+                        createMovesMoveObject(date, startTime, endTime, lastUpdate, context)
                     case TANetClient.MovesApi.JSONResponseValues.Segment.Place:
                         // TODO: Don't force unwrap optionals below. See comment above
                         let place = segment[TANetClient.MovesApi.JSONResponseKeys.Segment.Place] as! [String:AnyObject]
@@ -301,20 +314,84 @@ class TAModel {
                         let coordinates = place[TANetClient.MovesApi.JSONResponseKeys.Place.Location] as! [String:Double]
                         let lat = coordinates[TANetClient.MovesApi.JSONResponseKeys.Place.Latitude]!
                         let lon = coordinates[TANetClient.MovesApi.JSONResponseKeys.Place.Longitude]!
-                        createMovesPlaceObject(startTime, endTime, type, lat, lon, lastUpdate, id, name, facebookPlaceId, foursquareId, foursquareCategoryIds)
+                        createMovesPlaceObject(date,startTime, endTime, type, lat, lon, lastUpdate, id, name, facebookPlaceId, foursquareId, foursquareCategoryIds, context)
                     default:
                         break
                     }
+                    
+                    // Update progress view
+                    let dateJustProcessed = calendar.startOfDay(for: startTime as Date)
+                    if !processedDays.contains(dateJustProcessed) {
+                        processedDays.insert(dateJustProcessed)
+                        DispatchQueue.main.async {
+                            progressView.addProgress(1)
+                        }
+                    }
+                    print("Proccessing TAPlace data: \(progressView.currentProgress)/\(progressView.totalProgress)")
+                    print("Processed downloaded data: \(progressView.currentProgress)/\(progressView.totalProgress)")
                 }
             }
         }
+
+        dateFormatter.dateFormat = "yyyyMMdd"
+        let firstDateString = (stories.first as! [String:AnyObject])[TANetClient.MovesApi.JSONResponseKeys.Date] as! String
+        let lastDateString = (stories.last as! [String:AnyObject])[TANetClient.MovesApi.JSONResponseKeys.Date] as! String
+        let firstDate = dateFormatter.date(from: firstDateString)!
+        let lastDate = dateFormatter.date(from: lastDateString)!
+        // Generate our interpolated TAPlace data for this date range
+        print("Story: First Date: \(firstDateString) Last Date: \(lastDateString)")
+        generateTAPlaceObjects(firstDate,lastDate,progressView,context)
         
-        // Generate our interpolated TAPlace data
-        generateTAPlaceObjects()
-        
-        // Delete the moves data since we don't need it anymore
-        deleteAllDataFor(["MovesMoveSegment","MovesPlaceSegment"])
+        // Delete the moves data for this date rangesince we don't need it anymore
+        // deleteAllDataFor(["MovesMoveSegment","MovesPlaceSegment"])
     }
+
+    
+    func generateTAPlaceObjects(_ fromDate:Date,_ toDate:Date, _ progressView:TAProgressView, _ context:NSManagedObjectContext) {
+        
+        // Setup calendar for calculating progress view updates
+        let calendar = NSCalendar.current
+        
+        // Retrieve all moves place segments
+        let movesPlaceSegments = getMovesPlaceSegmentsBetween(fromDate as NSDate, toDate as NSDate, context)
+        
+        var processedDays = Set<Date>()
+        
+        for movesPlaceSegment in movesPlaceSegments {
+            let movesStartTime = movesPlaceSegment.startTime!
+            let movesEndTime = movesPlaceSegment.endTime!
+            let lat = movesPlaceSegment.lat
+            let lon = movesPlaceSegment.lon
+            let name = movesPlaceSegment.name
+            
+            // Now, find the actual start and end times of this place segment
+            var actualStartTime = getLastMoveEndTimeBefore(movesStartTime,context)
+            let actualEndTime = getFirstMoveStartTimeAfter(movesEndTime,context)
+            
+            // Get the last place before this one, if any
+            if let lastPlace = getLastTAPlaceBefore(movesStartTime,context) {
+                // If the last place was the same as the current place
+                if (lastPlace.lat == lat && lastPlace.lon == lon) {
+                    // Update the start time
+                    actualStartTime = lastPlace.startTime!
+                    // Delete the old object
+                    deleteObject("TAPlaceSegment", "movesStartTime", lastPlace.movesStartTime!,context)
+                }
+            }
+            createNewTAPlaceObject(movesStartTime, actualStartTime, actualEndTime, lat, lon, name, context)
+            
+            // Update progress view
+            let dateJustProcessed = calendar.startOfDay(for: movesStartTime as Date)
+            if !processedDays.contains(dateJustProcessed) {
+                processedDays.insert(dateJustProcessed)
+                DispatchQueue.main.async {
+                    progressView.addProgress(1)
+                }
+            }
+            print("Proccessing TAPlace data: \(progressView.currentProgress)/\(progressView.totalProgress)")
+        }
+    }
+    
 
     // MARK: User Defaults Methods
 
@@ -352,8 +429,12 @@ class TAModel {
         return UIApplication.shared.delegate as! AppDelegate
     }
     
+    func getPersistentContainer() -> NSPersistentContainer {
+        return getAppDelegate().persistentContainer
+    }
     func getContext() -> NSManagedObjectContext {
-        return getAppDelegate().persistentContainer.viewContext
+        return getAppDelegate().persistentContainer.newBackgroundContext()
+        
     }
     
     func getPersistentStoreCoordinator() -> NSPersistentStoreCoordinator {
@@ -363,6 +444,14 @@ class TAModel {
     func saveContext() {
         let delegate = UIApplication.shared.delegate as! AppDelegate
         delegate.saveContext()
+    }
+    
+    func save(_ context:NSManagedObjectContext) {
+        do {
+            try context.save()
+        } catch {
+           fatalError("Error saving data")
+        }
     }
     
     // MARK: Shared Instance
