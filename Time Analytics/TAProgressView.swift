@@ -21,6 +21,22 @@ class TAProgressView: UIView {
         progressView.setProgress((currentProgress/totalProgress), animated: true)
     }
     
+    func didCompleteDataChunk(_ notification:Notification) {
+        
+        addProgress(1)
+        if currentProgress == totalProgress {
+            fadeOut() { (finished) in
+                if finished {
+                    self.removeFromSuperview()
+                }
+            }
+        }
+    }
+    
+    func setupObserver() {
+        NotificationCenter.default.addObserver(self, selector: #selector(TAProgressView.didCompleteDataChunk(_:)), name: Notification.Name("didProcessDataChunk"), object: nil)
+    }
+    
     class func instanceFromNib() -> TAProgressView {
         return UINib(nibName: "TAProgressView", bundle: nil).instantiate(withOwner: nil, options: nil)[0] as! TAProgressView
     }
