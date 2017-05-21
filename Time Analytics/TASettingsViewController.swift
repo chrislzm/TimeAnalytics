@@ -23,17 +23,11 @@ class TASettingsViewController:UIViewController {
     }
     
     @IBAction func downloadButtonPressed(_ sender: Any) {
-        let start = startDate.date
-        let end = endDate.date
-        
-        // Try getting moves data
-        TANetClient.sharedInstance().getMovesDataFrom(start, end) { (result,error) in
+        TAModel.sharedInstance().downloadAndProcessMovesDataInRange(startDate.date, endDate.date) { (error) in
             guard error == nil else {
-                print(error)
+                print(error!)
                 return
             }
-            
-            TAModel.sharedInstance().parseAndSaveMovesData(result!)
         }
     }
     
