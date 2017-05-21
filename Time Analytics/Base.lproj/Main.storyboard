@@ -499,7 +499,7 @@
                                     <constraint firstItem="UnH-yP-as2" firstAttribute="height" secondItem="k2X-xT-cfa" secondAttribute="height" id="ic9-BH-8SC"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tOl-AM-4qw" userLabel="ChartView">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tOl-AM-4qw" userLabel="ChartView" customClass="LineChartView" customModule="Charts">
                                 <rect key="frame" x="0.0" y="130.5" width="187.5" height="153"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>

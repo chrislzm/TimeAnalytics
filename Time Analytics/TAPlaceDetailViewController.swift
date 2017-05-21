@@ -41,14 +41,39 @@ class TAPlaceDetailViewController: TATableViewController {
         
         // Create a fetchrequest
         let fr = NSFetchRequest<NSFetchRequestResult>(entityName: "TAPlaceSegment")
-        fr.sortDescriptors = [NSSortDescriptor(key: "startTime", ascending: false)]
-        let pred = NSPredicate(format: "(lat == %@) AND (lon == %@)", argumentArray: [lat,lon])
-        fr.predicate = pred
         
-        // Create the FetchedResultsController
+        // Update label with total visits over last month
+        let oneMonthAgo = Date() - 2678400 // There are this many seconds in a month
+        var pred = NSPredicate(format: "(lat == %@) AND (lon == %@) AND (startTime >= %@)", argumentArray: [lat,lon,oneMonthAgo])
+        fr.predicate = pred
+        let stack = getCoreDataStack()
+        let lastMonthVisits = try! stack.context.fetch(fr) as! [TAPlaceSegment]
+        pastMonthLabel.text = "\(lastMonthVisits.count)"
+        
+        // Now create the FetchedResultsController for the TableView
+        fr.sortDescriptors = [NSSortDescriptor(key: "startTime", ascending: false)]
+        pred = NSPredicate(format: "(lat == %@) AND (lon == %@)", argumentArray: [lat,lon])
+        fr.predicate = pred
         fetchedResultsController = NSFetchedResultsController(fetchRequest: fr, managedObjectContext: context, sectionNameKeyPath: "startTime", cacheName: nil)
         
-        visitHistoryLabel.text = "  Visit History - \(fetchedResultsController!.fetchedObjects!.count) Total"
+        // Update labels with total visits
+        let totalVisits = fetchedResultsController!.fetchedObjects!.count
+        visitHistoryLabel.text = "  Visit History - \(totalVisits) Total"
+        totalVisitsLabel.text = "\(totalVisits)"
+        
+        // Update labels with average visit time
+        let places = fetchedResultsController?.fetchedObjects as! [TAPlaceSegment]
+        var totalVisitSeconds:Double = 0.0
+        for place in places {
+            let startTime = place.startTime! as Date
+            let endTime = place.endTime! as Date
+            let visitTime = endTime.timeIntervalSince(startTime)
+            totalVisitSeconds += visitTime
+        }
+        let averageVisitTime = StopWatch(totalSeconds: Int(totalVisitSeconds)/totalVisits)
+        let totalVisitTime = StopWatch(totalSeconds: Int(totalVisitSeconds))
+        totalTimeLabel.text = "\(totalVisitTime.simpleTimeString)"
+        averageTimeLabel.text = "\(averageVisitTime.simpleTimeString)"
         
         // Setup Mapview = Add the geocoded location as an annotation to the map
         let annotation = MKPointAnnotation()
@@ -59,6 +84,9 @@ class TAPlaceDetailViewController: TATableViewController {
         // Set the MapView to a 1km * 1km box around the geocoded location
         let viewRegion = MKCoordinateRegionMakeWithDistance(coordinate, 1000, 1000);
         mapView.setRegion(viewRegion, animated: true)
+        
+        // Setup Chart
+        let inputTable = GraphInput
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -109,5 +137,12 @@ class TAPlaceDetailViewController: TATableViewController {
     
     override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
         return nil
+    }
+    
+    // MARK: Helper Functions
+    
+    func getCoreDataStack() -> CoreDataStack {
+        let delegate = UIApplication.shared.delegate as! AppDelegate
+        return delegate.stack
     }
 }
