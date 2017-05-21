@@ -175,7 +175,6 @@ class TAModel {
         do {
             let result = try context.fetch(fr)
             numResults = result.count
-            print("Found \(numResults) objects in data with \(attributeName) = \(value)")
         } catch {
             fatalError("Unable to access persistent data")
         }
@@ -233,16 +232,11 @@ class TAModel {
                 endDate = today
             }
             
-            let formattedBeginDate = dateFormatter.string(from: beginDate)
-            let formattedEndDate = dateFormatter.string(from: endDate)
-            
-            print("Downloading data from \(formattedBeginDate) to \(formattedEndDate)")
             TANetClient.sharedInstance().getMovesDataFrom(beginDate, endDate){ (monthData, error) in
                 guard error == nil else {
                     completionHandler(error!)
                     return
                 }
-                print("Completed downloading data from \(formattedBeginDate) to \(formattedEndDate)! Now parsing.")
                 DispatchQueue.main.async {
                     self.parseAndSaveMovesData(monthData!)
                 }
@@ -250,9 +244,25 @@ class TAModel {
             beginDate = endDate
         }
     }
-
-    func parseAndSaveMovesData(_ stories:[AnyObject]) {
+    
+    func downloadAndProcessMovesDataInRange(_ startDate:Date, _ endDate: Date, completionHandler: @escaping (_ error: String?) -> Void) {
         
+        // Try getting moves data
+        TANetClient.sharedInstance().getMovesDataFrom(startDate, endDate) { (result,error) in
+            
+            guard error == nil else {
+                completionHandler(error!)
+                return
+            }
+            
+            self.parseAndSaveMovesData(result!)
+            
+            completionHandler(nil)
+        }
+    }
+ 
+    func parseAndSaveMovesData(_ stories:[AnyObject]) {
+ 
         // Setup the date formatter
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
@@ -261,7 +271,7 @@ class TAModel {
         for story in stories {
             if let segments = story[TANetClient.MovesApi.JSONResponseKeys.Segments] as? [AnyObject] {
                 for segment in segments {
-                    // TODO: Don't force unwrap optionals here
+                    // TODO: Don't force unwrap optionals here; we should try to process as much data as possible, and return error if we had any problems
                     let type = segment[TANetClient.MovesApi.JSONResponseKeys.Segment.SegmentType] as! String
                     let startTime = dateFormatter.date(from: segment[TANetClient.MovesApi.JSONResponseKeys.Segment.StartTime] as! String)!
                     let endTime = dateFormatter.date(from: segment[TANetClient.MovesApi.JSONResponseKeys.Segment.EndTime] as! String)!
@@ -274,7 +284,7 @@ class TAModel {
                     case TANetClient.MovesApi.JSONResponseValues.Segment.Move:
                         createMovesMoveObject(startTime, endTime, lastUpdate)
                     case TANetClient.MovesApi.JSONResponseValues.Segment.Place:
-                        // TODO: Don't force unwrap optionals below
+                        // TODO: Don't force unwrap optionals below. See comment above
                         let place = segment[TANetClient.MovesApi.JSONResponseKeys.Segment.Place] as! [String:AnyObject]
                         let id = place[TANetClient.MovesApi.JSONResponseKeys.Place.Id] as? Int64
                         let name = place[TANetClient.MovesApi.JSONResponseKeys.Place.Name] as? String
@@ -291,7 +301,6 @@ class TAModel {
                         let coordinates = place[TANetClient.MovesApi.JSONResponseKeys.Place.Location] as! [String:Double]
                         let lat = coordinates[TANetClient.MovesApi.JSONResponseKeys.Place.Latitude]!
                         let lon = coordinates[TANetClient.MovesApi.JSONResponseKeys.Place.Longitude]!
-                        
                         createMovesPlaceObject(startTime, endTime, type, lat, lon, lastUpdate, id, name, facebookPlaceId, foursquareId, foursquareCategoryIds)
                     default:
                         break
@@ -300,8 +309,11 @@ class TAModel {
             }
         }
         
-        // Now generate our interpolated TAPlace data
+        // Generate our interpolated TAPlace data
         generateTAPlaceObjects()
+        
+        // Delete the moves data since we don't need it anymore
+        deleteAllDataFor(["MovesMoveSegment","MovesPlaceSegment"])
     }
 
     // MARK: User Defaults Methods
