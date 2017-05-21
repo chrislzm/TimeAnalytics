@@ -15,9 +15,6 @@ class TASettingsViewController:UIViewController {
     
     @IBAction func downloadAllUserDataButtonPressed(_ sender: Any) {
         let progressView = TAProgressView.instanceFromNib()
-        progressView.setupObserver()
-        progressView.progressView.setProgress(0, animated: false)
-        progressView.titleLabel.text = "Downloading and Processing Data..."
         setupOverlayView(progressView)
         progressView.fadeIn(nil)
 
@@ -46,6 +43,11 @@ class TASettingsViewController:UIViewController {
     
     // Creates sets up overlay attributes, hides it, and adds it to the navigation controller view hierarchy
     func setupOverlayView(_ view:UIView) {
+        
+        if view is TAProgressView {
+            (view as! TAProgressView).setupDefaultProperties()
+        }
+        
         view.alpha = 0
         view.clipsToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
