@@ -83,7 +83,7 @@ class TALocationTableViewController: TATableViewController {
         let place = fetchedResultsController!.object(at: indexPath) as! TAPlaceSegment
         
         // Create the cell
-        let cell = tableView.dequeueReusableCell(withIdentifier: "PlaceCell", for: indexPath) as! TATableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "TALocationTableViewCell", for: indexPath) as! TALocationTableViewCell
         
         // Sync notebook -> cell
         let formatter = DateFormatter()
@@ -113,11 +113,21 @@ class TALocationTableViewController: TATableViewController {
 
         
         cell.timeInLabel.text = timeIn + " - " + timeOut
-//        cell.timeOutLabel.text =
         cell.lengthLabel.text = visitTime.simpleTimeString
         cell.locationLabel.text = name
         
         return cell
+    }
+    
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // Grab the DetailVC from Storyboard
+        let detailController = self.storyboard!.instantiateViewController(withIdentifier: "TAPlaceDetailViewController") as! TAPlaceDetailViewController
+        
+        // Populate view controller with data from the selected item
+
+        // Present the view controller using navigation
+        navigationController!.pushViewController(detailController, animated: true)
     }
     
     func showSettingsMenu() {
