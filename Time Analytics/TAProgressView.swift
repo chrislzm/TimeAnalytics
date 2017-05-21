@@ -13,7 +13,15 @@ class TAProgressView: UIView {
     @IBOutlet weak var progressView: UIProgressView!
     @IBOutlet weak var titleLabel: UILabel!
     
-    class func instanceFromNib() -> UIView {
-        return UINib(nibName: "TAProgressView", bundle: nil).instantiate(withOwner: nil, options: nil)[0] as! UIView
+    var totalProgress:Float!
+    var currentProgress:Float = 0
+    
+    func addProgress(_ amountProgressed:Float) {
+        currentProgress += amountProgressed
+        progressView.setProgress((currentProgress/totalProgress), animated: true)
+    }
+    
+    class func instanceFromNib() -> TAProgressView {
+        return UINib(nibName: "TAProgressView", bundle: nil).instantiate(withOwner: nil, options: nil)[0] as! TAProgressView
     }
  }
