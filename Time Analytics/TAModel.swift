@@ -26,7 +26,6 @@ class TAModel {
     }
     
     func createMovesPlaceObject(_ date:Date, _ startTime:Date, _ endTime:Date, _ type:String,_ lat:Double,_ lon:Double,  _ lastUpdate:Date?,_ id:Int64?,_ name:String?,_ facebookPlaceId:String?,_ foursquareId:String?,_ foursquareCategoryIds:String?, _ context:NSManagedObjectContext) {
-        let context = getContext()
         
         // Create and store MovesPlace object
         let movesPlaceSegmentEntity = NSEntityDescription.entity(forEntityName: "MovesPlaceSegment", in: context)!
@@ -176,7 +175,7 @@ class TAModel {
     }
 
     func deleteAllDataFor(_ entities:[String]) {
-        let context = getContext()
+        let context = getMainContext()
         let persistentStoreCoordinator = getPersistentStoreCoordinator()
         
         for entity in entities {
@@ -188,7 +187,7 @@ class TAModel {
             } catch {
                 fatalError("Unable to delete saved data")
             }
-            saveContext()
+            saveMainContext()
         }
     }
 
@@ -323,12 +322,10 @@ class TAModel {
         let lastDateString = (stories.last as! [String:AnyObject])[TANetClient.MovesApi.JSONResponseKeys.Date] as! String
         let firstDate = dateFormatter.date(from: firstDateString)!
         let lastDate = dateFormatter.date(from: lastDateString)!
+
         // Generate our interpolated TAPlace data for this date range
-        print("Story: First Date: \(firstDateString) Last Date: \(lastDateString)")
         generateTAPlaceObjects(firstDate,lastDate,context)
-        
-        // Delete the moves data for this date rangesince we don't need it anymore
-        // deleteAllDataFor(["MovesMoveSegment","MovesPlaceSegment"])
+
     }
 
     
@@ -402,8 +399,8 @@ class TAModel {
     func getPersistentContainer() -> NSPersistentContainer {
         return getAppDelegate().persistentContainer
     }
-    func getContext() -> NSManagedObjectContext {
-        return getAppDelegate().persistentContainer.newBackgroundContext()
+    func getMainContext() -> NSManagedObjectContext {
+        return getAppDelegate().persistentContainer.viewContext
         
     }
     
@@ -411,7 +408,7 @@ class TAModel {
         return getAppDelegate().persistentContainer.persistentStoreCoordinator
     }
     
-    func saveContext() {
+    func saveMainContext() {
         let delegate = UIApplication.shared.delegate as! AppDelegate
         delegate.saveContext()
     }
