@@ -3,7 +3,7 @@
 Time Analytics
 ==============
 
-Programmed by Chris Leung
+By Chris Leung
 
 Installation
 ------------
