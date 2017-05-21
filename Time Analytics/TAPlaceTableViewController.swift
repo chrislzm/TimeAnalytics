@@ -10,7 +10,7 @@ import CoreData
 import Foundation
 import UIKit
 
-class TALocationTableViewController: TATableViewController {
+class TAPlaceTableViewController: TATableViewController {
     
     var settingsButton:UIBarButtonItem?
     
@@ -34,7 +34,7 @@ class TALocationTableViewController: TATableViewController {
         fetchedResultsController = NSFetchedResultsController(fetchRequest: fr, managedObjectContext: context, sectionNameKeyPath: "daySectionIdentifier", cacheName: nil)
         
         // Setup and add the Edit button
-        settingsButton = UIBarButtonItem(title: "Settings", style: UIBarButtonItemStyle.plain, target:self, action: #selector(TALocationTableViewController.showSettingsMenu))
+        settingsButton = UIBarButtonItem(title: "Settings", style: UIBarButtonItemStyle.plain, target:self, action: #selector(TAPlaceTableViewController.showSettingsMenu))
         navigationItem.rightBarButtonItem = settingsButton
     }
     
@@ -83,7 +83,7 @@ class TALocationTableViewController: TATableViewController {
         let place = fetchedResultsController!.object(at: indexPath) as! TAPlaceSegment
         
         // Create the cell
-        let cell = tableView.dequeueReusableCell(withIdentifier: "TALocationTableViewCell", for: indexPath) as! TALocationTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "TAPlaceTableViewCell", for: indexPath) as! TAPlaceTableViewCell
         
         // Sync notebook -> cell
         let formatter = DateFormatter()

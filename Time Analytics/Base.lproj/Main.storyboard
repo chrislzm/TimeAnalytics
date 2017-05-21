@@ -197,16 +197,16 @@
             </objects>
             <point key="canvasLocation" x="888.79999999999995" y="805.54722638680664"/>
         </scene>
-        <!--Location Table View Controller-->
+        <!--Place Table View Controller-->
         <scene sceneID="gbN-IH-hCt">
             <objects>
-                <tableViewController id="Uf4-mZ-fTI" customClass="TALocationTableViewController" customModule="Time_Analytics" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="Uf4-mZ-fTI" customClass="TAPlaceTableViewController" customModule="Time_Analytics" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="RcC-tV-tHp">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TALocationTableViewCell" id="9mb-ng-d3r" customClass="TALocationTableViewCell" customModule="Time_Analytics" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TAPlaceTableViewCell" id="9mb-ng-d3r" customClass="TAPlaceTableViewCell" customModule="Time_Analytics" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="9mb-ng-d3r" id="KYH-xl-MAQ">
