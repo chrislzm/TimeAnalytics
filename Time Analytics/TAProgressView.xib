@@ -13,36 +13,88 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleAspectFit" id="iN0-l3-epB" customClass="TAProgressView" customModule="Time_Analytics" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="231" height="58"/>
+            <rect key="frame" x="0.0" y="0.0" width="280" height="58"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w9A-kY-YfC">
-                    <rect key="frame" x="77.5" y="13" width="76.5" height="18"/>
-                    <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="7zx-JH-O5P">
-                    <rect key="frame" x="23" y="40" width="185" height="2"/>
-                </progressView>
+                <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3zD-7Z-FT5">
+                    <rect key="frame" x="0.0" y="0.0" width="280" height="58"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="isj-fM-eSg">
+                            <rect key="frame" x="0.0" y="0.0" width="12" height="58"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Jdm-TT-BZY">
+                            <rect key="frame" x="12" y="0.0" width="20" height="58"/>
+                        </activityIndicatorView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZE7-76-5U2">
+                            <rect key="frame" x="32" y="0.0" width="12" height="58"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="VOy-mr-bP9">
+                            <rect key="frame" x="44" y="0.0" width="224" height="58"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="250" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P4c-ST-ecV">
+                                    <rect key="frame" x="0.0" y="0.0" width="224" height="7.5"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="750" text="Title Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w9A-kY-YfC">
+                                    <rect key="frame" x="0.0" y="15.5" width="224" height="17"/>
+                                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
+                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="7zx-JH-O5P">
+                                    <rect key="frame" x="0.0" y="40.5" width="224" height="2"/>
+                                </progressView>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="250" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qOr-mY-0GR">
+                                    <rect key="frame" x="0.0" y="50.5" width="224" height="7.5"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <constraints>
+                                <constraint firstItem="qOr-mY-0GR" firstAttribute="height" secondItem="P4c-ST-ecV" secondAttribute="height" id="Fxk-mu-2wV"/>
+                            </constraints>
+                        </stackView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YjE-mL-s2e">
+                            <rect key="frame" x="268" y="0.0" width="12" height="58"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="VOy-mr-bP9" firstAttribute="width" secondItem="3zD-7Z-FT5" secondAttribute="width" multiplier="0.8" id="NtT-Ei-ROe"/>
+                        <constraint firstItem="Jdm-TT-BZY" firstAttribute="centerY" secondItem="3zD-7Z-FT5" secondAttribute="centerY" id="Q0J-zr-wJX"/>
+                        <constraint firstItem="YjE-mL-s2e" firstAttribute="width" secondItem="ZE7-76-5U2" secondAttribute="width" id="l7z-t6-FY3"/>
+                        <constraint firstItem="ZE7-76-5U2" firstAttribute="width" secondItem="isj-fM-eSg" secondAttribute="width" id="mer-7L-FcV"/>
+                        <constraint firstItem="VOy-mr-bP9" firstAttribute="height" secondItem="3zD-7Z-FT5" secondAttribute="height" id="tTt-2X-wmK"/>
+                    </constraints>
+                </stackView>
             </subviews>
             <color key="backgroundColor" red="0.81847258189489525" green="1" blue="0.80987799741204192" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <accessibility key="accessibilityConfiguration">
                 <accessibilityTraits key="traits" notEnabled="YES"/>
             </accessibility>
             <constraints>
-                <constraint firstItem="7zx-JH-O5P" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" multiplier="0.8" id="5rQ-fh-pBI"/>
-                <constraint firstItem="7zx-JH-O5P" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="SZz-YQ-Zyu"/>
-                <constraint firstItem="w9A-kY-YfC" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="rJx-d1-9XS"/>
-                <constraint firstItem="7zx-JH-O5P" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" constant="12" id="tPg-Ym-C5n"/>
-                <constraint firstItem="w9A-kY-YfC" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" constant="-7" id="zaQ-cI-lTS"/>
+                <constraint firstItem="3zD-7Z-FT5" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="7u3-Dx-Mh1"/>
+                <constraint firstItem="3zD-7Z-FT5" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" id="QAr-if-Pe2"/>
+                <constraint firstItem="3zD-7Z-FT5" firstAttribute="height" secondItem="iN0-l3-epB" secondAttribute="height" id="WXu-x9-2Qp"/>
+                <constraint firstItem="3zD-7Z-FT5" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="oMe-Vc-2Hs"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="progressView" destination="7zx-JH-O5P" id="0Fm-6f-Y01"/>
                 <outlet property="titleLabel" destination="w9A-kY-YfC" id="L5g-DK-Sas"/>
             </connections>
-            <point key="canvasLocation" x="-23" y="-237"/>
+            <point key="canvasLocation" x="-48" y="-237"/>
         </view>
     </objects>
 </document>
