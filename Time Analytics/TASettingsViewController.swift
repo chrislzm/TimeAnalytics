@@ -12,22 +12,16 @@ class TASettingsViewController:UIViewController {
     
     @IBOutlet weak var startDate: UIDatePicker!
     @IBOutlet weak var endDate: UIDatePicker!
-    var progressView:TAProgressView?
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(TASettingsViewController.didCompleteDataChunk(_:)), name: Notification.Name("didCompleteDataChunk"), object: nil)
-    }
     
     @IBAction func downloadAllUserDataButtonPressed(_ sender: Any) {
         let progressView = TAProgressView.instanceFromNib()
+        progressView.setupObserver()
         progressView.progressView.setProgress(0, animated: false)
-        progressView.titleLabel.text = "Downloading and Processing Moves Data"
+        progressView.titleLabel.text = "Downloading and Processing Data..."
         setupOverlayView(progressView)
         progressView.fadeIn(nil)
 
-        TAModel.sharedInstance().downloadAndProcessAllMovesData(progressView) { (dataChunks, error) in
+        TAModel.sharedInstance().downloadAndProcessAllMovesData() { (dataChunks, error) in
             guard error == nil else {
                 print(error!)
                 return
@@ -64,21 +58,6 @@ class TASettingsViewController:UIViewController {
         let heightConstraint = NSLayoutConstraint(item: view, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: 50)
         let bottomConstraint = NSLayoutConstraint(item: view, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: navControllerView, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: 0)
         self.navigationController?.view.addConstraints([horizontalConstraint,widthConstraint,heightConstraint,bottomConstraint])
-    }
-    
-    func didCompleteDataChunk(_ notification:Notification) {
-        if progressView != nil {
-            progressView?.addProgress(1)
-            if progressView?.currentProgress == progressView?.totalProgress {
-                
-                progressView?.fadeOut() { (finished) in
-                    if finished {
-                        self.progressView?.removeFromSuperview()
-                        self.progressView = nil
-                    }
-                }
-            }
-        }
     }
 }
 
