@@ -21,7 +21,7 @@ class TAPlaceDetailViewController: TATableViewController {
     @IBOutlet weak var averageTimeLabel: UILabel!
     @IBOutlet weak var pastMonthLabel: UILabel!
     @IBOutlet weak var totalVisitsLabel: UILabel!
-    @IBOutlet weak var chartView: UIView!
+    @IBOutlet weak var chartView: LineChartView!
     
     var lat:Double! = nil
     var lon:Double! = nil
@@ -64,11 +64,13 @@ class TAPlaceDetailViewController: TATableViewController {
         // Update labels with average visit time
         let places = fetchedResultsController?.fetchedObjects as! [TAPlaceSegment]
         var totalVisitSeconds:Double = 0.0
+        var visitLengths = [Double]()
         for place in places {
             let startTime = place.startTime! as Date
             let endTime = place.endTime! as Date
             let visitTime = endTime.timeIntervalSince(startTime)
             totalVisitSeconds += visitTime
+            visitLengths.append(visitTime)
         }
         let averageVisitTime = StopWatch(totalSeconds: Int(totalVisitSeconds)/totalVisits)
         let totalVisitTime = StopWatch(totalSeconds: Int(totalVisitSeconds))
@@ -86,7 +88,14 @@ class TAPlaceDetailViewController: TATableViewController {
         mapView.setRegion(viewRegion, animated: true)
         
         // Setup Chart
-        let inputTable = GraphInput
+        var dataEntries = [ChartDataEntry]()
+        for i in 0..<visitLengths.count {
+            let dataEntry = ChartDataEntry(x: Double(i), y: visitLengths[i])
+            dataEntries.append(dataEntry)
+        }
+        let lineChartDataSet = LineChartDataSet(values: dataEntries, label: nil)
+        let lineChartData = LineChartData(dataSet: lineChartDataSet)
+        chartView.data = lineChartData
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
