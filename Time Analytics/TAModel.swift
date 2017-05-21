@@ -211,6 +211,7 @@ class TAModel {
         
         var dataChunks:Int = totalDays / TANetClient.MovesApi.Constants.MaxDaysPerRequest
         dataChunks += totalDays % TANetClient.MovesApi.Constants.MaxDaysPerRequest > 0 ? 1 : 0
+        dataChunks *= 2 // Since we'll be taking two passes through the moves data
         
         while (beginDate < today) {
             
@@ -228,11 +229,6 @@ class TAModel {
                 
                 container.performBackgroundTask() { (context) in
                     self.parseAndSaveMovesData(dataChunk!, context)
-                    
-                    DispatchQueue.main.async {
-                        // Send notification that we completed processing one chunk
-                        NotificationCenter.default.post(name: Notification.Name("didProcessDataChunk"), object: nil)
-                    }
                 }
             }            
             beginDate = endDate
@@ -316,6 +312,11 @@ class TAModel {
                 }
             }
         }
+        
+        DispatchQueue.main.async {
+            // Send notification that we completed processing one chunk
+            NotificationCenter.default.post(name: Notification.Name("didProcessDataChunk"), object: nil)
+        }
 
         dateFormatter.dateFormat = "yyyyMMdd"
         let firstDateString = (stories.first as! [String:AnyObject])[TANetClient.MovesApi.JSONResponseKeys.Date] as! String
@@ -326,6 +327,10 @@ class TAModel {
         // Generate our interpolated TAPlace data for this date range
         generateTAPlaceObjects(firstDate,lastDate,context)
 
+        DispatchQueue.main.async {
+            // Send notification that we completed processing one chunk
+            NotificationCenter.default.post(name: Notification.Name("didProcessDataChunk"), object: nil)
+        }
     }
 
     
