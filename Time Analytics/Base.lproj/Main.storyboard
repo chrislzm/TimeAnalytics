@@ -540,8 +540,13 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="averageTimeLabel" destination="R8e-ye-tpe" id="cpq-9H-4Dn"/>
+                        <outlet property="chartView" destination="tOl-AM-4qw" id="sGQ-Lq-fv4"/>
                         <outlet property="mapView" destination="dXY-R5-ap4" id="vp1-PO-Gw0"/>
+                        <outlet property="pastMonthLabel" destination="dwW-y8-MM9" id="ai3-QC-RsM"/>
                         <outlet property="placeTableView" destination="c5X-iT-b0P" id="fBi-Z2-eso"/>
+                        <outlet property="totalTimeLabel" destination="YeQ-fs-4Ra" id="Jgl-0V-wCF"/>
+                        <outlet property="totalVisitsLabel" destination="XgZ-oi-GgN" id="BmB-O6-NyB"/>
                         <outlet property="visitHistoryLabel" destination="eUR-83-rfy" id="7ct-lU-UcV"/>
                     </connections>
                 </viewController>

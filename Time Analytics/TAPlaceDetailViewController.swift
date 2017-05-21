@@ -13,9 +13,15 @@ import MapKit
 import UIKit
 
 class TAPlaceDetailViewController: TATableViewController {
+    
     @IBOutlet weak var placeTableView: UITableView!
     @IBOutlet weak var visitHistoryLabel: UILabel!
     @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var totalTimeLabel: UILabel!
+    @IBOutlet weak var averageTimeLabel: UILabel!
+    @IBOutlet weak var pastMonthLabel: UILabel!
+    @IBOutlet weak var totalVisitsLabel: UILabel!
+    @IBOutlet weak var chartView: UIView!
     
     var lat:Double! = nil
     var lon:Double! = nil
