@@ -26,6 +26,7 @@
 		A5AB93FB1ECA65B10055301C /* Managed Objects.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A5AB93F91ECA65B10055301C /* Managed Objects.xcdatamodeld */; };
 		A5AB93FD1ECA68A40055301C /* TAModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5AB93FC1ECA68A40055301C /* TAModel.swift */; };
 		A5B09F5F1ECD47230019CA4A /* TAPlaceDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B09F5E1ECD47230019CA4A /* TAPlaceDetailViewController.swift */; };
+		A5B6D1AA1ED16ECE00890BC4 /* TAViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B6D1A91ED16ECE00890BC4 /* TAViewExtensions.swift */; };
 		A5FFFD8D1ECAB38C00B55020 /* TATableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5FFFD8C1ECAB38C00B55020 /* TATableViewController.swift */; };
 		A5FFFD8F1ECAB4A700B55020 /* TALocationTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5FFFD8E1ECAB4A700B55020 /* TALocationTableViewController.swift */; };
 		A5FFFD931ECAC6F200B55020 /* TASettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5FFFD921ECAC6F200B55020 /* TASettingsViewController.swift */; };
@@ -53,6 +54,7 @@
 		A5AB93FA1ECA65B10055301C /* Managed Objects.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Managed Objects.xcdatamodel"; sourceTree = "<group>"; };
 		A5AB93FC1ECA68A40055301C /* TAModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TAModel.swift; sourceTree = "<group>"; };
 		A5B09F5E1ECD47230019CA4A /* TAPlaceDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TAPlaceDetailViewController.swift; sourceTree = "<group>"; };
+		A5B6D1A91ED16ECE00890BC4 /* TAViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TAViewExtensions.swift; sourceTree = "<group>"; };
 		A5FFFD8C1ECAB38C00B55020 /* TATableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TATableViewController.swift; sourceTree = "<group>"; };
 		A5FFFD8E1ECAB4A700B55020 /* TALocationTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TALocationTableViewController.swift; sourceTree = "<group>"; };
 		A5FFFD921ECAC6F200B55020 /* TASettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TASettingsViewController.swift; sourceTree = "<group>"; };
@@ -128,6 +130,7 @@
 				A52564BB1EC93E4000DD843F /* BorderedButton.swift */,
 				A5AA02EC1ED11A6C0046CCB4 /* TAProgressView.xib */,
 				A5AA02EE1ED11ACC0046CCB4 /* TAProgressView.swift */,
+				A5B6D1A91ED16ECE00890BC4 /* TAViewExtensions.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -290,6 +293,7 @@
 				A5866A201EC966870025D38F /* TANetConvenience.swift in Sources */,
 				A55B13801ECC318900FA14FB /* TATableViewCell.swift in Sources */,
 				A55B137D1ECC04A600FA14FB /* TAPlaceSegment+CoreDataClass.swift in Sources */,
+				A5B6D1AA1ED16ECE00890BC4 /* TAViewExtensions.swift in Sources */,
 				A5FFFD931ECAC6F200B55020 /* TASettingsViewController.swift in Sources */,
 				A5AA02EF1ED11ACC0046CCB4 /* TAProgressView.swift in Sources */,
 				A5491E7C1ECFB821007B7313 /* README.md in Sources */,
