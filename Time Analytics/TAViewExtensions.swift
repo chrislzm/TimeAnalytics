@@ -11,12 +11,12 @@ import UIKit
 extension UIView {
     
     // Fade In/Out animation for UIView objects
-    func fadeIn(duration: TimeInterval = 0.25, delay: TimeInterval = 0.0) {
-        UIView.animate(withDuration: duration, animations: { self.alpha = 1.0 }, completion: nil)
+    func fadeIn(duration: TimeInterval = 0.25, delay: TimeInterval = 0.0, _ completionHandler: ((_ finished:Bool) -> Void)?) {
+        UIView.animate(withDuration: duration, animations: { self.alpha = 1.0 }, completion: completionHandler)
     }
     
-    func fadeOut(duration: TimeInterval = 0.25, delay: TimeInterval = 0.0) {
-        UIView.animate(withDuration: duration, animations: { self.alpha = 0.0 }, completion: nil)
+    func fadeOut(duration: TimeInterval = 0.25, delay: TimeInterval = 0.0, _ completionHandler: ((_ finished:Bool) -> Void)?) {
+        UIView.animate(withDuration: duration, animations: { self.alpha = 0.0 }, completion: completionHandler)
     }
     
 }
