@@ -220,7 +220,7 @@ class TAModel {
                 endDate = today
             }
             
-            TANetClient.sharedInstance().getMovesDataFrom(beginDate, endDate){ (monthData, error) in
+            TANetClient.sharedInstance().getMovesDataFrom(beginDate, endDate){ (dataChunk, error) in
                 
                 guard error == nil else {
                     completionHandler(0,error!)
@@ -228,7 +228,12 @@ class TAModel {
                 }
                 
                 container.performBackgroundTask() { (context) in
-                    self.parseAndSaveMovesData(monthData!, context)
+                    self.parseAndSaveMovesData(dataChunk!, context)
+                    
+                    DispatchQueue.main.async {
+                        // Send notification that we completed processing one chunk
+                        NotificationCenter.default.post(name: Notification.Name("didProcessDataChunk"), object: nil)
+                    }
                 }
             }            
             beginDate = endDate
@@ -324,11 +329,6 @@ class TAModel {
         
         // Delete the moves data for this date rangesince we don't need it anymore
         // deleteAllDataFor(["MovesMoveSegment","MovesPlaceSegment"])
-        
-        DispatchQueue.main.async {
-            // Send notification that we completed processing one chunk
-            NotificationCenter.default.post(name: Notification.Name("didProcessDataChunk"), object: nil)
-        }
     }
 
     
