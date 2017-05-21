@@ -36,6 +36,9 @@ class TALocationTableViewController: TATableViewController {
         // Setup and add the Edit button
         settingsButton = UIBarButtonItem(title: "Settings", style: UIBarButtonItemStyle.plain, target:self, action: #selector(TALocationTableViewController.showSettingsMenu))
         navigationItem.rightBarButtonItem = settingsButton
+        
+        // Sets up an observer that will tell update the view when we have new data available
+        NotificationCenter.default.addObserver(self, selector: #selector(TALocationTableViewController.didProcessDataChunk(_:)), name: Notification.Name("didProcessDataChunk"), object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -174,5 +177,10 @@ class TALocationTableViewController: TATableViewController {
         private func timeText(from number: Int) -> String {
             return number < 10 ? "0\(number)" : "\(number)"
         }
+    }
+    
+    func didProcessDataChunk(_ notification:Notification) {
+        executeSearch()
+        tableView.reloadData()
     }
 }
