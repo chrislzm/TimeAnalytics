@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class TATableViewCell : UITableViewCell {
+class TALocationTableViewCell : UITableViewCell {
     
     // MARK: Outlets
     @IBOutlet weak var timeInLabel: UILabel!
