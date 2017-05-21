@@ -38,6 +38,7 @@ Because Moves data can contain gaps, Time Analytics interpolates the data using 
 * Given two places P1 and P2, the startTime and endTime of a commute between P1 and P2 is equal to the startTime of P2 minus the endTime of P1
 * A commute only exists between P1 and P2 when there are no other place segments between them
 * Move segments that begin and end at the same place are ignored
+* We are still located at a place for the place segment with the most recent endTime 
 
 Issues
 ------
