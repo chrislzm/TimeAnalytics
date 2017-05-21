@@ -194,8 +194,9 @@ class TAModel {
 
     // Downloads all moves data for the user from the beginning of time
 
-    func downloadAndProcessAllMovesData(_ progressView:TAProgressView, _ completionHandler: @escaping (_ error: String?) -> Void) {
+    func downloadAndProcessAllMovesData(_ progressView:TAProgressView, _ completionHandler: @escaping (_ dataChunks:Int, _ error: String?) -> Void) {
 
+        
         let container = getPersistentContainer()
         
         progressView.titleLabel.text = "Downloading and Processing Moves Data"
@@ -210,44 +211,41 @@ class TAModel {
         let today = Date()
         
         let calendar = NSCalendar.current
-        let totalDays = calendar.dateComponents([.day], from: calendar.startOfDay(for: beginDate), to: calendar.startOfDay(for: today))
-        progressView.currentProgress = 0
-        progressView.totalProgress = Float(totalDays.day! * 2)
-        print("Total days: \(totalDays.day!)")
-
-        // For every set of 30 days from the first user date to present
+        // TODO: This calculation may or may not be accurate
+        let totalDays = (calendar.dateComponents([.day], from: calendar.startOfDay(for: beginDate), to: calendar.startOfDay(for: today))).day! + 1
+        print("Total days: \(totalDays)")
+        
+        var dataChunks:Int = totalDays / TANetClient.MovesApi.Constants.MaxDaysPerRequest
+        dataChunks += totalDays % TANetClient.MovesApi.Constants.MaxDaysPerRequest > 0 ? 1 : 0
+        
         while (beginDate < today) {
             
-            var endDate = Calendar.current.date(byAdding: .day, value: 30, to: beginDate)!
+            var endDate = Calendar.current.date(byAdding: .day, value: TANetClient.MovesApi.Constants.MaxDaysPerRequest, to: beginDate)!
             if (endDate > today) {
                 endDate = today
             }
             
             TANetClient.sharedInstance().getMovesDataFrom(beginDate, endDate){ (monthData, error) in
                 guard error == nil else {
-                    completionHandler(error!)
+                    completionHandler(0,error!)
                     return
                 }
                 
                 container.performBackgroundTask() { (context) in
-                    self.parseAndSaveMovesData(monthData!, progressView, context)
+                    self.parseAndSaveMovesData(monthData!, context)
                 }
             }            
             beginDate = endDate
         }
+        
+        completionHandler(dataChunks,nil)
     }
     
-    func downloadAndProcessMovesDataInRange(_ startDate:Date, _ endDate: Date, _ progressView:TAProgressView, completionHandler: @escaping (_ error: String?) -> Void) {
+    func downloadAndProcessMovesDataInRange(_ startDate:Date, _ endDate: Date, completionHandler: @escaping (_ error: String?) -> Void) {
         let container = getPersistentContainer()
-        
-        progressView.titleLabel.text = "Downloading and Processing Moves Data"
-        progressView.progressView.setProgress(0, animated: false)
-        progressView.isHidden = false
         
         let calendar = NSCalendar.current
         let totalDays = calendar.dateComponents([.day], from: calendar.startOfDay(for: startDate), to: calendar.startOfDay(for: endDate))
-        progressView.currentProgress = 0
-        progressView.totalProgress = Float(totalDays.day! * 2)
         print("Total days: \(totalDays.day!)")
         
         // Try getting moves data
@@ -259,7 +257,7 @@ class TAModel {
             }
             
             container.performBackgroundTask() { (context) in
-                self.parseAndSaveMovesData(result!, progressView, context)
+                self.parseAndSaveMovesData(result!, context)
                 
                 completionHandler(nil)
             }
@@ -267,14 +265,11 @@ class TAModel {
         }
     }
  
-    func parseAndSaveMovesData(_ stories:[AnyObject],_ progressView:TAProgressView, _ context:NSManagedObjectContext) {
+    func parseAndSaveMovesData(_ stories:[AnyObject], _ context:NSManagedObjectContext) {
  
         // Setup the date formatter
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-        
-        let calendar = NSCalendar.current
-        var processedDays = Set<Date>()
         
         for story in stories {
             
@@ -318,17 +313,6 @@ class TAModel {
                     default:
                         break
                     }
-                    
-                    // Update progress view
-                    let dateJustProcessed = calendar.startOfDay(for: startTime as Date)
-                    if !processedDays.contains(dateJustProcessed) {
-                        processedDays.insert(dateJustProcessed)
-                        DispatchQueue.main.async {
-                            progressView.addProgress(1)
-                        }
-                    }
-                    print("Proccessing TAPlace data: \(progressView.currentProgress)/\(progressView.totalProgress)")
-                    print("Processed downloaded data: \(progressView.currentProgress)/\(progressView.totalProgress)")
                 }
             }
         }
@@ -347,15 +331,10 @@ class TAModel {
     }
 
     
-    func generateTAPlaceObjects(_ fromDate:Date,_ toDate:Date, _ progressView:TAProgressView, _ context:NSManagedObjectContext) {
-        
-        // Setup calendar for calculating progress view updates
-        let calendar = NSCalendar.current
-        
+    func generateTAPlaceObjects(_ fromDate:Date,_ toDate:Date, _ context:NSManagedObjectContext) {
+
         // Retrieve all moves place segments
         let movesPlaceSegments = getMovesPlaceSegmentsBetween(fromDate as NSDate, toDate as NSDate, context)
-        
-        var processedDays = Set<Date>()
         
         for movesPlaceSegment in movesPlaceSegments {
             let movesStartTime = movesPlaceSegment.startTime!
@@ -379,16 +358,6 @@ class TAModel {
                 }
             }
             createNewTAPlaceObject(movesStartTime, actualStartTime, actualEndTime, lat, lon, name, context)
-            
-            // Update progress view
-            let dateJustProcessed = calendar.startOfDay(for: movesStartTime as Date)
-            if !processedDays.contains(dateJustProcessed) {
-                processedDays.insert(dateJustProcessed)
-                DispatchQueue.main.async {
-                    progressView.addProgress(1)
-                }
-            }
-            print("Proccessing TAPlace data: \(progressView.currentProgress)/\(progressView.totalProgress)")
         }
     }
     
