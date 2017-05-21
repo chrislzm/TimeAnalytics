@@ -12,8 +12,11 @@ import UIKit
 class TAPlaceTableViewCell : UITableViewCell {
     
     // MARK: Outlets
-    @IBOutlet weak var timeInLabel: UILabel!
-    @IBOutlet weak var timeOutLabel: UILabel!
+    @IBOutlet weak var timeInOutLabel: UILabel!
     @IBOutlet weak var lengthLabel: UILabel!
     @IBOutlet weak var locationLabel: UILabel!
+    
+    // Properties
+    var lat:Double! = nil
+    var lon:Double! = nil
 }

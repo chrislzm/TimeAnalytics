@@ -12,12 +12,16 @@ import UIKit
 
 class TAPlaceTableViewController: TATableViewController {
     
+    @IBOutlet weak var placeTableView: UITableView!
+    
     var settingsButton:UIBarButtonItem?
     
     // MARK: Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        tableView = placeTableView
         
         // Set the title
         title = "Recent Places"
@@ -112,20 +116,25 @@ class TAPlaceTableViewController: TATableViewController {
         }
 
         
-        cell.timeInLabel.text = timeIn + " - " + timeOut
+        cell.timeInOutLabel.text = timeIn + " - " + timeOut
         cell.lengthLabel.text = visitTime.simpleTimeString
         cell.locationLabel.text = name
+        cell.lat = place.lat
+        cell.lon = place.lon
         
         return cell
     }
     
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // Grab the DetailVC from Storyboard
         let detailController = self.storyboard!.instantiateViewController(withIdentifier: "TAPlaceDetailViewController") as! TAPlaceDetailViewController
         
         // Populate view controller with data from the selected item
-
+        let place = fetchedResultsController?.object(at: indexPath) as? TAPlaceSegment
+        detailController.lat = place?.lat
+        detailController.lon = place?.lon
+        
         // Present the view controller using navigation
         navigationController!.pushViewController(detailController, animated: true)
     }
