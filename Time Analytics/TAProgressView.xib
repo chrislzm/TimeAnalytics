@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleAspectFit" id="iN0-l3-epB" customClass="TAProgressView" customModule="Time_Analytics" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="231" height="58"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w9A-kY-YfC">
+                    <rect key="frame" x="77.5" y="13" width="76.5" height="18"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="7zx-JH-O5P">
+                    <rect key="frame" x="23" y="40" width="185" height="2"/>
+                </progressView>
+            </subviews>
+            <color key="backgroundColor" red="0.81847258189489525" green="1" blue="0.80987799741204192" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <accessibility key="accessibilityConfiguration">
+                <accessibilityTraits key="traits" notEnabled="YES"/>
+            </accessibility>
+            <constraints>
+                <constraint firstItem="7zx-JH-O5P" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" multiplier="0.8" id="5rQ-fh-pBI"/>
+                <constraint firstItem="7zx-JH-O5P" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="SZz-YQ-Zyu"/>
+                <constraint firstItem="w9A-kY-YfC" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="rJx-d1-9XS"/>
+                <constraint firstItem="7zx-JH-O5P" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" constant="12" id="tPg-Ym-C5n"/>
+                <constraint firstItem="w9A-kY-YfC" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" constant="-7" id="zaQ-cI-lTS"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="progressView" destination="7zx-JH-O5P" id="0Fm-6f-Y01"/>
+                <outlet property="titleLabel" destination="w9A-kY-YfC" id="L5g-DK-Sas"/>
+            </connections>
+            <point key="canvasLocation" x="-23" y="-237"/>
+        </view>
+    </objects>
+</document>
