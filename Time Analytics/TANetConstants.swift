@@ -30,6 +30,7 @@ extension TANetClient {
             static let Host = "api.moves-app.com"
             static let ClientId = "Z0hQuORANlkEb_BmDVu8TntptuUoTv6o"
             static let ClientSecret = "fqKgM1ICYa47DYZfw0PLOtsu473Kyy9E6PHUI5cQzZx5VkgbivTlJE4WlvQn2jZ1"
+            static let MaxDaysPerRequest = 30
             static let AccessTokenExpirationBuffer = 60
         }
         
