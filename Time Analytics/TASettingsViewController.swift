@@ -12,28 +12,33 @@ class TASettingsViewController:UIViewController {
     
     @IBOutlet weak var startDate: UIDatePicker!
     @IBOutlet weak var endDate: UIDatePicker!
+    var progressView:TAProgressView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(TASettingsViewController.didCompleteDataChunk(_:)), name: Notification.Name("didCompleteDataChunk"), object: nil)
     }
     
     @IBAction func downloadAllUserDataButtonPressed(_ sender: Any) {
         let progressView = TAProgressView.instanceFromNib()
-        setupAndHideOverlayView(progressView)
-        
-        TAModel.sharedInstance().downloadAndProcessAllMovesData(progressView) { (error) in
+        progressView.progressView.setProgress(0, animated: false)
+        progressView.titleLabel.text = "Downloading and Processing Moves Data"
+        setupOverlayView(progressView)
+        progressView.fadeIn(nil)
+
+        TAModel.sharedInstance().downloadAndProcessAllMovesData(progressView) { (dataChunks, error) in
             guard error == nil else {
                 print(error!)
                 return
             }
+            
+            progressView.totalProgress = Float(dataChunks)
         }
     }
     
     @IBAction func downloadButtonPressed(_ sender: Any) {
-        let progressView = TAProgressView.instanceFromNib()
-        setupAndHideOverlayView(progressView)
-
-        TAModel.sharedInstance().downloadAndProcessMovesDataInRange(startDate.date, endDate.date,progressView) { (error) in            
+        TAModel.sharedInstance().downloadAndProcessMovesDataInRange(startDate.date, endDate.date) { (error) in
             guard error == nil else {
                 print(error!)
                 return
@@ -46,8 +51,8 @@ class TASettingsViewController:UIViewController {
     }
     
     // Creates sets up overlay attributes, hides it, and adds it to the navigation controller view hierarchy
-    func setupAndHideOverlayView(_ view:UIView) {
-        view.isHidden = true
+    func setupOverlayView(_ view:UIView) {
+        view.alpha = 0
         view.clipsToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
         let navControllerView = self.navigationController!.view!
@@ -60,4 +65,20 @@ class TASettingsViewController:UIViewController {
         let bottomConstraint = NSLayoutConstraint(item: view, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: navControllerView, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: 0)
         self.navigationController?.view.addConstraints([horizontalConstraint,widthConstraint,heightConstraint,bottomConstraint])
     }
+    
+    func didCompleteDataChunk(_ notification:Notification) {
+        if progressView != nil {
+            progressView?.addProgress(1)
+            if progressView?.currentProgress == progressView?.totalProgress {
+                
+                progressView?.fadeOut() { (finished) in
+                    if finished {
+                        self.progressView?.removeFromSuperview()
+                        self.progressView = nil
+                    }
+                }
+            }
+        }
+    }
 }
+
