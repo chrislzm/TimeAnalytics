@@ -41,11 +41,7 @@ class TAPlaceTableViewController: TATableViewController {
         settingsButton = UIBarButtonItem(title: "Settings", style: UIBarButtonItemStyle.plain, target:self, action: #selector(TAPlaceTableViewController.showSettingsMenu))
         navigationItem.rightBarButtonItem = settingsButton
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-    }
-    
+
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         var sectionTitle: String?
         if let sectionIdentifier = fetchedResultsController!.sections?[section].name {
@@ -74,7 +70,6 @@ class TAPlaceTableViewController: TATableViewController {
     
     override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
         return nil
-
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -121,6 +116,7 @@ class TAPlaceTableViewController: TATableViewController {
         cell.locationLabel.text = name
         cell.lat = place.lat
         cell.lon = place.lon
+        cell.name = place.name
         
         return cell
     }
@@ -134,6 +130,7 @@ class TAPlaceTableViewController: TATableViewController {
         let place = fetchedResultsController?.object(at: indexPath) as? TAPlaceSegment
         detailController.lat = place?.lat
         detailController.lon = place?.lon
+        detailController.name = place?.name
         
         // Present the view controller using navigation
         navigationController!.pushViewController(detailController, animated: true)
@@ -143,55 +140,7 @@ class TAPlaceTableViewController: TATableViewController {
         let controller = self.storyboard?.instantiateViewController(withIdentifier: "TASettingsView") as! TASettingsViewController
         navigationController?.pushViewController(controller, animated: true)
     }
-    
-    struct StopWatch {
-        
-        var totalSeconds: Int
-        
-        var years: Int {
-            return totalSeconds / 31536000
-        }
-        
-        var days: Int {
-            return (totalSeconds % 31536000) / 86400
-        }
-        
-        var hours: Int {
-            return (totalSeconds % 86400) / 3600
-        }
-        
-        var minutes: Int {
-            return (totalSeconds % 3600) / 60
-        }
-        
-        var seconds: Int {
-            return totalSeconds % 60
-        }
-        
-        //simplified to what OP wanted
-        var hoursMinutesAndSeconds: (hours: Int, minutes: Int, seconds: Int) {
-            return (hours, minutes, seconds)
-        }
-        var simpleTimeString: String {
-            //let hoursText = timeText(from: hours)
-            //let minutesText = timeText(from: minutes)
-            //let secondsText = timeText(from: seconds)
-            //return "\(hoursText):\(minutesText):\(secondsText)"
-            if (days > 0) {
-                return "\(days)d \(hours)h \(minutes)m"
-            } else if (hours > 0) {
-                return "\(hours)h \(minutes)m"
-            } else {
-                return "\(minutes)m"
-            }
-            //return "\(hoursText):\(minutesText)"
-        }
-        
-        private func timeText(from number: Int) -> String {
-            return number < 10 ? "0\(number)" : "\(number)"
-        }
-    }
-    
+ 
     func didProcessDataChunk(_ notification:Notification) {
         executeSearch()
         tableView.reloadData()
