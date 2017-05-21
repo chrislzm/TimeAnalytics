@@ -20,21 +20,7 @@ class ViewController: UIViewController {
         TAModel.sharedInstance().deleteAllDataFor(["MovesMove","MovesPlace","TAPlace"])
     }
     @IBAction func downloadMovesDataPressed(_ sender: Any) {
-        let calendar = Calendar.current
-        let yesterday = calendar.date(byAdding: .day, value: -1, to: Date())
         
-        // Try getting moves data
-        TANetClient.sharedInstance().getMovesDataFrom(yesterday!, Date()) { (result,error) in
-            guard error == nil else {
-                print(error)
-                return
-            }
-            
-            print ("Got data from moves!")
-            print(result)
-            
-            TAModel.sharedInstance().parseAndSaveMovesData(result!)
-        }
     }
 
     override func viewDidLoad() {
