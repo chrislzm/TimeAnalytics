@@ -194,14 +194,9 @@ class TAModel {
 
     // Downloads all moves data for the user from the beginning of time
 
-    func downloadAndProcessAllMovesData(_ progressView:TAProgressView, _ completionHandler: @escaping (_ dataChunks:Int, _ error: String?) -> Void) {
-
+    func downloadAndProcessAllMovesData(_ completionHandler: @escaping (_ dataChunks:Int, _ error: String?) -> Void) {
         
         let container = getPersistentContainer()
-        
-        progressView.titleLabel.text = "Downloading and Processing Moves Data"
-        progressView.progressView.setProgress(0, animated: false)
-        progressView.isHidden = false
         
         // Setup the date formatter
         let dateFormatter = DateFormatter()
@@ -217,7 +212,6 @@ class TAModel {
         
         var dataChunks:Int = totalDays / TANetClient.MovesApi.Constants.MaxDaysPerRequest
         dataChunks += totalDays % TANetClient.MovesApi.Constants.MaxDaysPerRequest > 0 ? 1 : 0
-        dataChunks *= 2 // Because we need to download a chunk and then process it, we'll send a notification for completion of each
         
         while (beginDate < today) {
             
@@ -228,11 +222,6 @@ class TAModel {
             
             TANetClient.sharedInstance().getMovesDataFrom(beginDate, endDate){ (monthData, error) in
                 
-                DispatchQueue.main.async {
-                    // Send notification that we completed one chunk
-                    NotificationCenter.default.post(name: Notification.Name("didCompleteDataChunk"), object: nil)
-                }
-
                 guard error == nil else {
                     completionHandler(0,error!)
                     return
@@ -338,7 +327,7 @@ class TAModel {
         
         DispatchQueue.main.async {
             // Send notification that we completed processing one chunk
-            NotificationCenter.default.post(name: Notification.Name("didCompleteDataChunk"), object: nil)
+            NotificationCenter.default.post(name: Notification.Name("didProcessDataChunk"), object: nil)
         }
     }
 
