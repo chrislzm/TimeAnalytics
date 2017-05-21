@@ -6,7 +6,6 @@
 //  Copyright © 2017 Chris Leung. All rights reserved.
 //
 
-import Foundation
 import UIKit
 
 class TAPlaceTableViewCell : UITableViewCell {
@@ -19,4 +18,5 @@ class TAPlaceTableViewCell : UITableViewCell {
     // Properties
     var lat:Double! = nil
     var lon:Double! = nil
+    var name:String! = nil
 }
