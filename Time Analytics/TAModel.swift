@@ -175,8 +175,9 @@ class TAModel {
     }
 
     func deleteAllDataFor(_ entities:[String]) {
-        let context = getMainContext()
-        let persistentStoreCoordinator = getPersistentStoreCoordinator()
+        let stack = getCoreDataStack()
+        let context = stack.context
+        let persistentStoreCoordinator = stack.coordinator
         
         for entity in entities {
             let fr = NSFetchRequest<NSFetchRequestResult>(entityName: entity)
@@ -187,7 +188,7 @@ class TAModel {
             } catch {
                 fatalError("Unable to delete saved data")
             }
-            saveMainContext()
+            stack.save()
         }
     }
 
@@ -195,7 +196,7 @@ class TAModel {
 
     func downloadAndProcessAllMovesData(_ completionHandler: @escaping (_ dataChunks:Int, _ error: String?) -> Void) {
         
-        let container = getPersistentContainer()
+        let stack = getCoreDataStack()
         
         // Setup the date formatter
         let dateFormatter = DateFormatter()
@@ -227,18 +228,18 @@ class TAModel {
                     return
                 }
                 
-                container.performBackgroundTask() { (context) in
+                stack.performBackgroundBatchOperation() { (context) in
                     self.parseAndSaveMovesData(dataChunk!, context)
+                    stack.save()
                 }
             }            
             beginDate = endDate
         }
-        
         completionHandler(dataChunks,nil)
     }
     
     func downloadAndProcessMovesDataInRange(_ startDate:Date, _ endDate: Date, completionHandler: @escaping (_ error: String?) -> Void) {
-        let container = getPersistentContainer()
+        let stack = getCoreDataStack()
         
         let calendar = NSCalendar.current
         let totalDays = calendar.dateComponents([.day], from: calendar.startOfDay(for: startDate), to: calendar.startOfDay(for: endDate))
@@ -252,9 +253,9 @@ class TAModel {
                 return
             }
             
-            container.performBackgroundTask() { (context) in
+            stack.performBackgroundBatchOperation() { (context) in
                 self.parseAndSaveMovesData(result!, context)
-                
+                stack.save()
                 completionHandler(nil)
             }
             
@@ -401,21 +402,11 @@ class TAModel {
         return UIApplication.shared.delegate as! AppDelegate
     }
     
-    func getPersistentContainer() -> NSPersistentContainer {
-        return getAppDelegate().persistentContainer
-    }
-    func getMainContext() -> NSManagedObjectContext {
-        return getAppDelegate().persistentContainer.viewContext
-        
-    }
+    // MARK: Helper Functions
     
-    func getPersistentStoreCoordinator() -> NSPersistentStoreCoordinator {
-        return getAppDelegate().persistentContainer.persistentStoreCoordinator
-    }
-    
-    func saveMainContext() {
+    func getCoreDataStack() -> CoreDataStack {
         let delegate = UIApplication.shared.delegate as! AppDelegate
-        delegate.saveContext()
+        return delegate.stack
     }
     
     func save(_ context:NSManagedObjectContext) {
