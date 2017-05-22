@@ -13,6 +13,8 @@ class TACommuteTableViewController: TATableViewController {
 
     @IBOutlet weak var commuteTableView: UITableView!
     
+    let viewTitle = "My Commutes"
+    
     // MARK: Actions
     func showPlacesButtonPressed() {
         let placesController = self.storyboard!.instantiateViewController(withIdentifier: "TAPlaceTableViewController") as! TAPlaceTableViewController
@@ -26,6 +28,7 @@ class TACommuteTableViewController: TATableViewController {
         tableView = commuteTableView
         super.viewDidLoad()
 
+        title = viewTitle
         
         // Get the context
         let delegate = UIApplication.shared.delegate as! AppDelegate
@@ -37,7 +40,10 @@ class TACommuteTableViewController: TATableViewController {
         
         // Create the FetchedResultsController
         fetchedResultsController = NSFetchedResultsController(fetchRequest: fr, managedObjectContext: context, sectionNameKeyPath: "daySectionIdentifier", cacheName: nil)
-        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         setupBottomNavigationBar()
     }
     
@@ -47,36 +53,17 @@ class TACommuteTableViewController: TATableViewController {
         
         // Create the cell
         let cell = tableView.dequeueReusableCell(withIdentifier: "TACommuteTableViewCell", for: indexPath) as! TACommuteTableViewCell
+
+        // Get label values
+        let (timeLabelText,commuteLengthLabelText,startNameLabelText,endNameLabelText,_) = generateCommuteStringDescriptions(commute)
         
-        // Sync notebook -> cell
-        let formatter = DateFormatter()
-        let startTime = commute.startTime! as Date
-        let endTime = commute.endTime! as Date
-        formatter.dateFormat = "h:mm a"
-        let timeIn = formatter.string(from: startTime)
-        var timeOut:String
-        timeOut = formatter.string(from: endTime)
+        // Set label values
+        cell.timeLabel.text = timeLabelText
+        cell.lengthLabel.text = commuteLengthLabelText
+        cell.startNameLabel.text = startNameLabelText
+        cell.endNameLabel.text = endNameLabelText
         
-        let visitSeconds = Int((commute.endTime! as Date).timeIntervalSince(commute.startTime! as Date))
-        let visitTime = StopWatch(totalSeconds: visitSeconds)
-        
-        let startName:String
-        let endName:String
-        if let name = commute.startName {
-            startName = name
-        } else {
-            startName = "Unknown"
-        }
-        if let name = commute.endName {
-            endName = name
-        } else {
-            endName = "Unknown"
-        }
-        
-        cell.timeLabel.text = timeIn + " - " + timeOut
-        cell.lengthLabel.text = visitTime.simpleTimeString
-        cell.startNameLabel.text = startName
-        cell.endNameLabel.text = "to \(endName)"
+        // Store commute information in cell
         cell.startName = commute.startName
         cell.startLat = commute.startLat
         cell.startLon = commute.startLon
