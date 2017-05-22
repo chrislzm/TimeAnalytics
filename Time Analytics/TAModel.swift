@@ -13,7 +13,7 @@ import Foundation
 import UIKit
 
 class TAModel {
-    
+
     // MARK: Moves API Methods
     func createMovesMoveObject(_ date:Date, _ startTime:Date, _ endTime:Date, _ lastUpdate:Date?, _ context:NSManagedObjectContext) {
         let entity = NSEntityDescription.entity(forEntityName: "MovesMoveSegment", in: context)!
@@ -61,11 +61,11 @@ class TAModel {
         save(context)
     }
     
-    func createNewTACommuteObject(_ startTime:NSDate, _ endTime:NSDate,_ startLat:Double, _ startLon:Double, _ endLat:Double, _ endLon:Double,_ startName:String,_ endName:String,_ context:NSManagedObjectContext) {
+    func createNewTACommuteObject(_ startTime:NSDate, _ endTime:NSDate,_ startLat:Double, _ startLon:Double, _ endLat:Double, _ endLon:Double,_ startName:String?,_ endName:String?,_ context:NSManagedObjectContext) {
         if(containsObject("TACommuteSegment","startTime",startTime,context)) {
             deleteObject("TACommuteSegment","startTime",startTime,context)
         }
-        let taMoveSegmentEntity = NSEntityDescription.entity(forEntityName: "TAMoveSegment", in: context)!
+        let taMoveSegmentEntity = NSEntityDescription.entity(forEntityName: "TACommuteSegment", in: context)!
         let taMoveSegment = NSManagedObject(entity: taMoveSegmentEntity, insertInto: context)
         taMoveSegment.setValue(startTime, forKey:"startTime")
         taMoveSegment.setValue(endTime, forKey: "endTime")
@@ -206,7 +206,6 @@ class TAModel {
             } catch {
                 fatalError("Unable to delete saved data")
             }
-            stack.save()
         }
     }
 
@@ -229,8 +228,6 @@ class TAModel {
         print("Total days: \(totalDays)")
         
         var dataChunks:Int = totalDays / TANetClient.MovesApi.Constants.MaxDaysPerRequest
-        dataChunks += totalDays % TANetClient.MovesApi.Constants.MaxDaysPerRequest > 0 ? 1 : 0
-        dataChunks *= 2 // Since we'll be taking two passes through the moves data
         
         while (beginDate < today) {
             
@@ -255,7 +252,7 @@ class TAModel {
         }
         completionHandler(dataChunks,nil)
     }
-    
+
     func downloadAndProcessMovesDataInRange(_ startDate:Date, _ endDate: Date, completionHandler: @escaping (_ error: String?) -> Void) {
         let stack = getCoreDataStack()
         
@@ -336,27 +333,89 @@ class TAModel {
             // Send notification that we completed processing one chunk
             NotificationCenter.default.post(name: Notification.Name("didProcessDataChunk"), object: nil)
         }
+    }
+    
+    func generateTADataFromMovesData(_ completionHandler: @escaping (_ totalRecordsToProcess:Int, _ error: String?) -> Void) {
+        let stack = getCoreDataStack()
+        let context = stack.context
+        var dataChunks = 0
+        
+        // TODO: Replace these forced try statements
+        
+        // Get total moves place segments we need to process
+        let fr = NSFetchRequest<NSFetchRequestResult>(entityName: "MovesPlaceSegment")
+        dataChunks += try! context.count(for: fr)
+        dataChunks += dataChunks - 1 // We are going to take about two passes through
+        
+        stack.performBackgroundBatchOperation() { (context) in
+            self.generateTAPlaceObjects(context)
+            self.generateTACommuteObject(context)
+            DispatchQueue.main.async {
+                // Send notification that we completed processing
+                NotificationCenter.default.post(name: Notification.Name("didCompleteProcessing"), object: nil)
+                print("Completed processing notification sent")
+            }
+        }
+        
+        completionHandler(dataChunks,nil)
+    }
+    
+    func generateTACommuteObject(_ context:NSManagedObjectContext) {
+        // Get all of our place objects
+        var taPlaceSegments = getAllTAPlaceSegments(context)
+        
+        // Check first we even have place segments to proces
+        if let firstSegment = taPlaceSegments.first {
 
-        dateFormatter.dateFormat = "yyyyMMdd"
-        let firstDateString = (stories.first as! [String:AnyObject])[TANetClient.MovesApi.JSONResponseKeys.Date] as! String
-        let lastDateString = (stories.last as! [String:AnyObject])[TANetClient.MovesApi.JSONResponseKeys.Date] as! String
-        let firstDate = dateFormatter.date(from: firstDateString)!
-        let lastDate = dateFormatter.date(from: lastDateString)!
-
-        // Generate our interpolated TAPlace data for this date range
-        generateTAPlaceObjects(firstDate,lastDate,context)
-
-        DispatchQueue.main.async {
-            // Send notification that we completed processing one chunk
-            NotificationCenter.default.post(name: Notification.Name("didProcessDataChunk"), object: nil)
+            var lastPlace = firstSegment
+            taPlaceSegments.remove(at: 0)
+            
+            // For each place object
+            for thisPlace in taPlaceSegments {
+                
+                // Get the info of the last place
+                let startLat = lastPlace.lat
+                let startLon = lastPlace.lon
+                let startTime = lastPlace.endTime!
+                let startName = lastPlace.name
+                
+                // Get the info of the current place
+                let endLat = thisPlace.lat
+                let endLon = thisPlace.lon
+                let endTime = thisPlace.startTime!
+                let endName = thisPlace.name
+                
+                // Create a new commute object with that information
+                createNewTACommuteObject(startTime, endTime, startLat, startLon, endLat, endLon, startName, endName, context)
+                
+                // Set last object to current
+                lastPlace = thisPlace
+                
+                DispatchQueue.main.async {
+                    // Send notification that we completed processing one chunk
+                    NotificationCenter.default.post(name: Notification.Name("didProcessDataChunk"), object: nil)
+                }
+            }
         }
     }
-
     
-    func generateTAPlaceObjects(_ fromDate:Date,_ toDate:Date, _ context:NSManagedObjectContext) {
+    func getAllTAPlaceSegments(_ context:NSManagedObjectContext) -> [TAPlaceSegment] {
+        let fr = NSFetchRequest<NSFetchRequestResult>(entityName: "TAPlaceSegment")
+        let sort = NSSortDescriptor(key: "startTime", ascending: true)
+        fr.sortDescriptors = [sort]
+        var result:[TAPlaceSegment]
+        do {
+            result = try context.fetch(fr) as! [TAPlaceSegment]
+        } catch {
+            fatalError("Unable to access persistent data")
+        }
+        return result
+    }
+    
+    func generateTAPlaceObjects(_ context:NSManagedObjectContext) {
 
         // Retrieve all moves place segments
-        let movesPlaceSegments = getMovesPlaceSegmentsBetween(fromDate as NSDate, toDate as NSDate, context)
+        let movesPlaceSegments = getAllMovesPlaceSegments(context)
         
         for movesPlaceSegment in movesPlaceSegments {
             let movesStartTime = movesPlaceSegment.startTime!
@@ -380,6 +439,11 @@ class TAModel {
                 }
             }
             createNewTAPlaceObject(movesStartTime, actualStartTime, actualEndTime, lat, lon, name, context)
+            
+            DispatchQueue.main.async {
+                // Send notification that we completed processing one chunk
+                NotificationCenter.default.post(name: Notification.Name("didProcessDataChunk"), object: nil)
+            }
         }
     }
     
@@ -425,6 +489,11 @@ class TAModel {
     func getCoreDataStack() -> CoreDataStack {
         let delegate = UIApplication.shared.delegate as! AppDelegate
         return delegate.stack
+    }
+    
+    func save() {
+        let stack = getCoreDataStack()
+        stack.save()
     }
     
     func save(_ context:NSManagedObjectContext) {
