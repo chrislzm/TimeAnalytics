@@ -225,9 +225,8 @@ class TAModel {
         let calendar = NSCalendar.current
         // TODO: This calculation may or may not be accurate
         let totalDays = (calendar.dateComponents([.day], from: calendar.startOfDay(for: beginDate), to: calendar.startOfDay(for: today))).day! + 1
-        print("Total days: \(totalDays)")
         
-        var dataChunks:Int = totalDays / TANetClient.MovesApi.Constants.MaxDaysPerRequest
+        let dataChunks:Int = totalDays / TANetClient.MovesApi.Constants.MaxDaysPerRequest
         
         while (beginDate < today) {
             
@@ -255,10 +254,6 @@ class TAModel {
 
     func downloadAndProcessMovesDataInRange(_ startDate:Date, _ endDate: Date, completionHandler: @escaping (_ error: String?) -> Void) {
         let stack = getCoreDataStack()
-        
-        let calendar = NSCalendar.current
-        let totalDays = calendar.dateComponents([.day], from: calendar.startOfDay(for: startDate), to: calendar.startOfDay(for: endDate))
-        print("Total days: \(totalDays.day!)")
         
         // Try getting moves data
         TANetClient.sharedInstance().getMovesDataFrom(startDate, endDate) { (result,error) in
@@ -353,7 +348,6 @@ class TAModel {
             DispatchQueue.main.async {
                 // Send notification that we completed processing
                 NotificationCenter.default.post(name: Notification.Name("didCompleteProcessing"), object: nil)
-                print("Completed processing notification sent")
             }
         }
         

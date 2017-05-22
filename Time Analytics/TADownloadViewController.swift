@@ -36,7 +36,6 @@ class TADownloadViewController:UIViewController {
     }
     
     func didCompleteDataChunk(_ notification:Notification) {
-        print("Saw data chunk downloaded \(dataChunksDownloaded) of \(dataChunksToDownload)")
         dataChunksDownloaded += 1
         if dataChunksToDownload == dataChunksDownloaded {
             
@@ -71,7 +70,6 @@ class TADownloadViewController:UIViewController {
     
     // Remove the progress view and all observers when we're done processing
     func didCompleteProcessing(_ notification:Notification) {
-        print("Completed processing notification received")
         if let progressView = view.viewWithTag(100) as? TAProgressView {
             progressView.progressView.setProgress(1.0, animated: true)
             progressView.fadeOut() { (finished) in
