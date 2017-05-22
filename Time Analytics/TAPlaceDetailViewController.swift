@@ -15,7 +15,11 @@ import UIKit
 class TAPlaceDetailViewController: UIViewController, UITableViewDataSource {
     
     @IBOutlet weak var placeTableView: UITableView!
+    @IBOutlet weak var commuteTableView: UITableView!
+    @IBOutlet weak var activityTableView: UITableView!
     @IBOutlet weak var visitHistoryLabel: UILabel!
+    @IBOutlet weak var commuteHistoryLabel: UILabel!
+    @IBOutlet weak var activityHistoryLabel: UILabel!
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var totalTimeLabel: UILabel!
     @IBOutlet weak var averageTimeLabel: UILabel!
@@ -27,16 +31,22 @@ class TAPlaceDetailViewController: UIViewController, UITableViewDataSource {
     var lon:Double! = nil
     var name:String! = nil
     var placeHistoryTableData = [TAPlaceSegment]()
+    var commuteHistoryTableData = [TACommuteSegment]()
+    var activityHistoryTableData = [String]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
+        // Setup the view
+        navigationController?.setToolbarHidden(true, animated: true)
         title = name
         placeTableView.separatorStyle = .none
-        let stack = getCoreDataStack()
-
+        commuteTableView.separatorStyle = .none
+        activityTableView.separatorStyle = .none
+        
         // Create a fetchrequest
-        let fr = NSFetchRequest<NSFetchRequestResult>(entityName: "TAPlaceSegment")
+        let stack = getCoreDataStack()
+        var fr = NSFetchRequest<NSFetchRequestResult>(entityName: "TAPlaceSegment")
         
         // Update label with total visits over last month
         let oneMonthAgo = Date() - 2678400 // There are this many seconds in a month
@@ -45,14 +55,13 @@ class TAPlaceDetailViewController: UIViewController, UITableViewDataSource {
         let lastMonthVisits = try! stack.context.fetch(fr) as! [TAPlaceSegment]
         pastMonthLabel.text = "\(lastMonthVisits.count)"
         
-        
         // Get data for summary labels and chart
         pred = NSPredicate(format: "(lat == %@) AND (lon == %@)", argumentArray: [lat,lon])
         fr.predicate = pred
         fr.sortDescriptors = [NSSortDescriptor(key: "startTime", ascending: true)]
         let places = try! stack.context.fetch(fr) as! [TAPlaceSegment]
         
-        // Update labels with total visits
+        // Update label with totals
         let totalVisits = places.count
         visitHistoryLabel.text = "  Visit History - \(totalVisits) Total"
         totalVisitsLabel.text = "\(totalVisits)"
@@ -134,11 +143,29 @@ class TAPlaceDetailViewController: UIViewController, UITableViewDataSource {
         let viewRegion = MKCoordinateRegionMakeWithDistance(coordinate, 1000, 1000);
         mapView.setRegion(viewRegion, animated: true)
         
-        // Now generate data for the TableView
+        // Generate data for the Place History view
         fr.sortDescriptors = [NSSortDescriptor(key: "startTime", ascending: false)]
         pred = NSPredicate(format: "(lat == %@) AND (lon == %@)", argumentArray: [lat,lon])
         fr.predicate = pred
         placeHistoryTableData = try! stack.context.fetch(fr) as! [TAPlaceSegment]
+        
+        // Generate data for the Commute History view
+        fr = NSFetchRequest<NSFetchRequestResult>(entityName: "TACommuteSegment")
+        pred = NSPredicate(format: "(startLat == %@ AND startLon == %@) OR (endLat == %@ AND endLon == %@)", argumentArray: [lat,lon,lat,lon])
+        fr.predicate = pred
+        commuteHistoryTableData = try! stack.context.fetch(fr) as! [TACommuteSegment]
+        
+        // Update label with totals
+        let totalCommutes = commuteHistoryTableData.count
+        commuteHistoryLabel.text = "  Commute History - \(totalCommutes) Total"
+
+        if activityHistoryTableData.isEmpty {
+            let tableEmptyMessage = UILabel(frame: activityTableView.frame)
+            tableEmptyMessage.text = "No activities recorded"
+            tableEmptyMessage.textAlignment = .center
+            tableEmptyMessage.backgroundColor = UIColor.white
+            activityTableView.backgroundView = tableEmptyMessage
+        }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -146,6 +173,8 @@ class TAPlaceDetailViewController: UIViewController, UITableViewDataSource {
         
         if tableView == self.placeTableView {
             count = placeHistoryTableData.count
+        } else if tableView == self.commuteTableView {
+            count = commuteHistoryTableData.count
         }
         
         return count!
@@ -153,43 +182,43 @@ class TAPlaceDetailViewController: UIViewController, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        var cell:TAPlaceDetailTableViewCell?
+        var cell = UITableViewCell()
         
         if tableView == self.placeTableView {
+            
             // Find the right notebook for this indexpath
             let place = placeHistoryTableData[indexPath.row]
             
             // Create the cell
-            cell = tableView.dequeueReusableCell(withIdentifier: "TAPlaceDetailTableViewCell", for: indexPath) as! TAPlaceDetailTableViewCell
+            let placeCell = tableView.dequeueReusableCell(withIdentifier: "TAPlaceTableViewCell", for: indexPath) as! TAPlaceDetailTableViewCell
             
-            // Sync notebook -> cell
-            let formatter = DateFormatter()
-            let startTime = place.startTime! as Date
-            let endTime = place.endTime! as Date
-            formatter.dateFormat = "h:mm a"
-            let timeIn = formatter.string(from: startTime)
-            var timeOut:String
-            let cal = Calendar(identifier: .gregorian)
-            let nextDay = cal.startOfDay(for: startTime.addingTimeInterval(86400))
-            if endTime > nextDay {
-                formatter.dateFormat = "MMM d"
+            // Get descriptions and assign to cell label
+            let (timeInOutString,lengthString,_,dateString) = generatePlaceStringDescriptions(place)
+            placeCell.timeInOutLabel.text = timeInOutString
+            placeCell.lengthLabel.text = lengthString
+            placeCell.dateLabel.text = dateString
+            cell = placeCell
+            
+        } else if tableView == self.commuteTableView {
+            // Find the right notebook for this indexpath
+            let commute = commuteHistoryTableData[indexPath.row]
+            
+            // Create the cell
+            let commuteCell = tableView.dequeueReusableCell(withIdentifier: "TACommuteDetailTableViewCell", for: indexPath) as! TACommuteDetailTableViewCell
+            
+            // Get descriptions and assign to cell label
+            let (timeInOutString,lengthString,startName,endName,dateString) = generateCommuteStringDescriptions(commute)
+            commuteCell.timeLabel.text = timeInOutString
+            commuteCell.lengthLabel.text = lengthString
+            if commute.startLat == lat && commute.startLon == lon {
+                commuteCell.locationLabel.text = "To \(endName)"
             } else {
-                formatter.dateFormat = "h:mm a"
+                commuteCell.locationLabel.text = "From \(startName)"
             }
-            timeOut = formatter.string(from: endTime)
-            
-            let visitSeconds = Int((place.endTime! as Date).timeIntervalSince(place.startTime! as Date))
-            let visitTime = StopWatch(totalSeconds: visitSeconds)
-            
-            cell!.timeInOutLabel.text = timeIn + " - " + timeOut
-            cell!.lengthLabel.text = visitTime.simpleTimeString
-            
-            formatter.dateFormat = "E, MMM d"
-            let date = formatter.string(from: startTime)
-            
-            cell!.dateLabel.text = date
+            //commuteCell.locationLabel.text = dateString
+            cell = commuteCell
         }
-        return cell!
+        return cell
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
