@@ -208,6 +208,53 @@ class TAModel {
             }
         }
     }
+    
+    func renamePlaceInAllTAData(_ lat:Double, _ lon:Double, _ newName:String) {
+        let stack = getCoreDataStack()
+        let context = stack.context
+        
+        // Update place segments
+        var fr = NSFetchRequest<NSFetchRequestResult>(entityName: "TAPlaceSegment")
+        var pred = NSPredicate(format: "lat == %@ AND lon == %@", argumentArray: [lat,lon])
+        fr.predicate = pred
+        do {
+            let result = try context.fetch(fr) as! [TAPlaceSegment]
+            for place in result {
+                place.setValue(newName, forKey: "name")
+                stack.save()
+            }
+        } catch {
+            fatalError("Unable to access persistent data")
+        }
+        
+        // Update commute segments starting from this place
+        fr = NSFetchRequest<NSFetchRequestResult>(entityName: "TACommuteSegment")
+        pred = NSPredicate(format: "(startLat == %@ AND startLon == %@)", argumentArray: [lat,lon,lat,lon])
+        fr.predicate = pred
+        do {
+            let result = try context.fetch(fr) as! [TACommuteSegment]
+            for commute in result {
+                commute.setValue(newName, forKey: "startName")
+                stack.save()
+            }
+        } catch {
+            fatalError("Unable to access persistent data")
+        }
+
+        // Update commute segments ending at this place
+        fr = NSFetchRequest<NSFetchRequestResult>(entityName: "TACommuteSegment")
+        pred = NSPredicate(format: "(endLat == %@ AND endLon == %@)", argumentArray: [lat,lon,lat,lon])
+        fr.predicate = pred
+        do {
+            let result = try context.fetch(fr) as! [TACommuteSegment]
+            for commute in result {
+                commute.setValue(newName, forKey: "endName")
+                stack.save()
+            }
+        } catch {
+            fatalError("Unable to access persistent data")
+        }
+     }
 
     // Downloads all moves data for the user from the beginning of time
 
