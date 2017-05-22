@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TACommuteDetailTableViewCell : UITableViewCell {
+class TAPlaceDetailCommuteTableViewCell : UITableViewCell {
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var lengthLabel: UILabel!
     @IBOutlet weak var locationLabel: UILabel!
