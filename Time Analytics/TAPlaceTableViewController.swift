@@ -21,7 +21,9 @@ class TAPlaceTableViewController: TATableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Setup tableview
         tableView = placeTableView
+        tableView.separatorStyle = .none
         
         // Set the title
         title = "Recent Places"
