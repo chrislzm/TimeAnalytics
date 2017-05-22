@@ -113,19 +113,22 @@ class TAPlaceDetailViewController: TATableViewController {
         lineChartDataSet.circleColors = [UIColor.purple]
         lineChartDataSet.drawCircleHoleEnabled = false
         
-        // Add trendline to chart
-        let (slope,yintercept) = calculateTrendLine(visitDates,visitLengths)
-        // Get y values for first and last dates on the chart
-        let trendy1 = (slope*visitDates.first!)+yintercept
-        let trendy2 = (slope*visitDates.last!)+yintercept
-        let trendStartPoint = ChartDataEntry(x: visitDates.first!, y: trendy1)
-        let trendEndPoint = ChartDataEntry(x: visitDates.last!, y: trendy2)
-        let trendLineDataSet = LineChartDataSet(values: [trendStartPoint,trendEndPoint], label: "Trend Line")
-        trendLineDataSet.drawCirclesEnabled = false
-        trendLineDataSet.drawCircleHoleEnabled = false
-        trendLineDataSet.colors = [UIColor.red]
-        
-        let lineChartData = LineChartData(dataSets: [lineChartDataSet,trendLineDataSet])
+        var lineCharDataSets = [lineChartDataSet]
+        // Add trendline if we have enough data
+        if visitDates.count > 2 {
+            let (slope,yintercept) = calculateTrendLine(visitDates,visitLengths)
+            // Get y values for first and last dates on the chart
+            let trendy1 = (slope*visitDates.first!)+yintercept
+            let trendy2 = (slope*visitDates.last!)+yintercept
+            let trendStartPoint = ChartDataEntry(x: visitDates.first!, y: trendy1)
+            let trendEndPoint = ChartDataEntry(x: visitDates.last!, y: trendy2)
+            let trendLineDataSet = LineChartDataSet(values: [trendStartPoint,trendEndPoint], label: "Trend Line")
+            trendLineDataSet.drawCirclesEnabled = false
+            trendLineDataSet.drawCircleHoleEnabled = false
+            trendLineDataSet.colors = [UIColor.red]
+            lineCharDataSets.append(trendLineDataSet)
+        }
+        let lineChartData = LineChartData(dataSets: lineCharDataSets)
         chartView.data = lineChartData
         
         // Setup Mapview = Add the geocoded location as an annotation to the map
