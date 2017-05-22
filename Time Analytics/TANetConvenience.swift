@@ -110,8 +110,6 @@ extension TANetClient {
         // Check: Has our session expired?
         if Date() > movesAccessTokenExpiration! {
 
-            print("authorizeMovesSession: Our Moves session expired. Refreshing.")
-
             // Attempt to refresh our session
             /* 1. Create and run HTTP request to authenticate the userId and password with Udacity */
             
@@ -126,7 +124,6 @@ extension TANetClient {
             }
         }
         
-        print("authorizeMovesSession: Our Moves session has not expired. Authorized.")
         // Our session hasn't expired -- return with no error
         completionHandler(nil)
     }
