@@ -13,7 +13,7 @@ class TAProgressView: UIView {
     @IBOutlet weak var progressView: UIProgressView!
     @IBOutlet weak var titleLabel: UILabel!
     
-    var defaultText = "Downloading and Processing Data"
+    var defaultText = "Downloading Data"
     var totalProgress:Float!
     var currentProgress:Float = 0
     
@@ -30,6 +30,7 @@ class TAProgressView: UIView {
         if currentProgress == totalProgress {
             fadeOut() { (finished) in
                 if finished {
+                    self.removeFromObservers()
                     self.removeFromSuperview()
                 }
             }
@@ -42,6 +43,9 @@ class TAProgressView: UIView {
         NotificationCenter.default.addObserver(self, selector: #selector(TAProgressView.didCompleteDataChunk(_:)), name: Notification.Name("didProcessDataChunk"), object: nil)
     }
     
+    func removeFromObservers() {
+        NotificationCenter.default.removeObserver(self)
+    }
     class func instanceFromNib() -> TAProgressView {
         return UINib(nibName: "TAProgressView", bundle: nil).instantiate(withOwner: nil, options: nil)[0] as! TAProgressView
     }
