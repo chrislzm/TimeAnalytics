@@ -182,9 +182,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="OGs-rh-Oqy">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="OGs-rh-Oqy">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TACommuteTableViewCell" id="3To-A5-rOx" customClass="TACommuteTableViewCell" customModule="Time_Analytics" customModuleProvider="target">
@@ -271,6 +270,12 @@
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="OGs-rh-Oqy" firstAttribute="centerX" secondItem="li2-8i-9Un" secondAttribute="centerX" id="4XK-E1-9kN"/>
+                            <constraint firstItem="OGs-rh-Oqy" firstAttribute="centerY" secondItem="li2-8i-9Un" secondAttribute="centerY" id="5hZ-ge-cXh"/>
+                            <constraint firstItem="OGs-rh-Oqy" firstAttribute="width" secondItem="li2-8i-9Un" secondAttribute="width" id="MNn-0u-Etv"/>
+                            <constraint firstItem="OGs-rh-Oqy" firstAttribute="height" secondItem="li2-8i-9Un" secondAttribute="height" id="un8-qc-IKj"/>
+                        </constraints>
                     </view>
                     <connections>
                         <outlet property="commuteTableView" destination="OGs-rh-Oqy" id="WDm-Gn-lll"/>
@@ -300,7 +305,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="30"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="oKh-Tl-4NK" id="lL3-zR-IHq">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="30"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="29.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="B8E-gj-8FH" userLabel="Separator">
