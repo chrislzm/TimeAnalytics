@@ -50,32 +50,81 @@ class TAPlaceDetailViewController: TATableViewController {
         let lastMonthVisits = try! stack.context.fetch(fr) as! [TAPlaceSegment]
         pastMonthLabel.text = "\(lastMonthVisits.count)"
         
-        // Now create the FetchedResultsController for the TableView
-        fr.sortDescriptors = [NSSortDescriptor(key: "startTime", ascending: false)]
+        
+        // Get data for summary labels and chart
         pred = NSPredicate(format: "(lat == %@) AND (lon == %@)", argumentArray: [lat,lon])
         fr.predicate = pred
-        fetchedResultsController = NSFetchedResultsController(fetchRequest: fr, managedObjectContext: context, sectionNameKeyPath: "startTime", cacheName: nil)
+        fr.sortDescriptors = [NSSortDescriptor(key: "startTime", ascending: true)]
+        let places = try! stack.context.fetch(fr) as! [TAPlaceSegment]
         
         // Update labels with total visits
-        let totalVisits = fetchedResultsController!.fetchedObjects!.count
+        let totalVisits = places.count
         visitHistoryLabel.text = "  Visit History - \(totalVisits) Total"
         totalVisitsLabel.text = "\(totalVisits)"
         
         // Update labels with average visit time
-        let places = fetchedResultsController?.fetchedObjects as! [TAPlaceSegment]
         var totalVisitSeconds:Double = 0.0
         var visitLengths = [Double]()
+        var visitDates = [Double]()
         for place in places {
             let startTime = place.startTime! as Date
             let endTime = place.endTime! as Date
             let visitTime = endTime.timeIntervalSince(startTime)
             totalVisitSeconds += visitTime
             visitLengths.append(visitTime)
+            visitDates.append(startTime.timeIntervalSinceReferenceDate)
         }
         let averageVisitTime = StopWatch(totalSeconds: Int(totalVisitSeconds)/totalVisits)
         let totalVisitTime = StopWatch(totalSeconds: Int(totalVisitSeconds))
         totalTimeLabel.text = "\(totalVisitTime.simpleTimeString)"
         averageTimeLabel.text = "\(averageVisitTime.simpleTimeString)"
+        
+        // Setup Chart
+        chartView.chartDescription!.text = ""
+        chartView.maxVisibleCount = 0
+        let legend = chartView.legend
+        legend.enabled = false
+        let leftAxis = chartView.leftAxis
+        leftAxis.drawGridLinesEnabled = false
+        leftAxis.drawAxisLineEnabled = false
+        leftAxis.drawLabelsEnabled = false
+        leftAxis.drawTopYLabelEntryEnabled = false
+        leftAxis.drawBottomYLabelEntryEnabled = false
+        let rightAxis = chartView.rightAxis
+        rightAxis.drawGridLinesEnabled = false
+        rightAxis.drawAxisLineEnabled = false
+        rightAxis.drawLabelsEnabled = false
+        rightAxis.drawTopYLabelEntryEnabled = false
+        rightAxis.drawBottomYLabelEntryEnabled = false
+        let xAxis = chartView.xAxis
+        xAxis.drawGridLinesEnabled = false
+        xAxis.drawAxisLineEnabled = false
+        xAxis.drawLabelsEnabled = false
+        
+        var dataEntries = [ChartDataEntry]()
+        for i in 0..<visitLengths.count {
+            let dataEntry = ChartDataEntry(x: visitDates[i], y: visitLengths[i])
+            dataEntries.append(dataEntry)
+        }
+        let lineChartDataSet = LineChartDataSet(values: dataEntries, label: "Visit Time")
+        lineChartDataSet.circleRadius = 1
+        lineChartDataSet.circleColors = [UIColor.purple]
+        lineChartDataSet.drawCircleHoleEnabled = false
+        
+        // Add trendline to chart
+        let (slope,yintercept) = calculateTrendLine(visitDates,visitLengths)
+        // Get y values for first and last dates on the chart
+        let trendy1 = (slope*visitDates.first!)+yintercept
+        let trendy2 = (slope*visitDates.last!)+yintercept
+        let trendStartPoint = ChartDataEntry(x: visitDates.first!, y: trendy1)
+        let trendEndPoint = ChartDataEntry(x: visitDates.last!, y: trendy2)
+        let trendLineDataSet = LineChartDataSet(values: [trendStartPoint,trendEndPoint], label: "Trend Line")
+        trendLineDataSet.drawCirclesEnabled = false
+        trendLineDataSet.drawCircleHoleEnabled = false
+        trendLineDataSet.colors = [UIColor.red]
+        
+        let lineChartData = LineChartData(dataSets: [lineChartDataSet,trendLineDataSet])
+        chartView.data = lineChartData
         
         // Setup Mapview = Add the geocoded location as an annotation to the map
         let annotation = MKPointAnnotation()
@@ -87,15 +136,11 @@ class TAPlaceDetailViewController: TATableViewController {
         let viewRegion = MKCoordinateRegionMakeWithDistance(coordinate, 1000, 1000);
         mapView.setRegion(viewRegion, animated: true)
         
-        // Setup Chart
-        var dataEntries = [ChartDataEntry]()
-        for i in 0..<visitLengths.count {
-            let dataEntry = ChartDataEntry(x: Double(i), y: visitLengths[i])
-            dataEntries.append(dataEntry)
-        }
-        let lineChartDataSet = LineChartDataSet(values: dataEntries, label: nil)
-        let lineChartData = LineChartData(dataSet: lineChartDataSet)
-        chartView.data = lineChartData
+        // Now create the FetchedResultsController for the TableView
+        fr.sortDescriptors = [NSSortDescriptor(key: "startTime", ascending: false)]
+        pred = NSPredicate(format: "(lat == %@) AND (lon == %@)", argumentArray: [lat,lon])
+        fr.predicate = pred
+        fetchedResultsController = NSFetchedResultsController(fetchRequest: fr, managedObjectContext: context, sectionNameKeyPath: "startTime", cacheName: nil)
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -149,6 +194,34 @@ class TAPlaceDetailViewController: TATableViewController {
     }
     
     // MARK: Helper Functions
+    
+    func calculateTrendLine(_ xValues:[Double],_ yValues:[Double]) -> (Double,Double) {
+        let n = xValues.count
+        var a:Double = 0.0
+        var sumx:Double = 0.0
+        var sumxsquared:Double = 0.0
+        var sumy:Double = 0.0
+        for i in 0..<n {
+            a += xValues[i] * yValues[i]
+            sumx += xValues[i]
+            sumy += yValues[i]
+            sumxsquared += xValues[i] * xValues[i]
+            print("sumxsquared: \(sumxsquared)")
+        }
+        a *= Double(n)
+        let b = sumx * sumy
+        let c = sumxsquared * Double(n)
+        let d = sumx * sumx
+        let slope_m = (a-b)/(c-d)
+        print("Slope: \(slope_m)")
+        
+        let e = sumy
+        let f = slope_m*sumx
+        let y_intercept = (e-f)/Double(n)
+        
+        print("y-intercept:\(y_intercept)")
+        return (slope_m,y_intercept)
+    }
     
     func getCoreDataStack() -> CoreDataStack {
         let delegate = UIApplication.shared.delegate as! AppDelegate
