@@ -226,7 +226,8 @@ class TAModel {
         // TODO: This calculation may or may not be accurate
         let totalDays = (calendar.dateComponents([.day], from: calendar.startOfDay(for: beginDate), to: calendar.startOfDay(for: today))).day! + 1
         
-        let dataChunks:Int = totalDays / TANetClient.MovesApi.Constants.MaxDaysPerRequest
+        var dataChunks:Int = totalDays / TANetClient.MovesApi.Constants.MaxDaysPerRequest
+        dataChunks += totalDays % TANetClient.MovesApi.Constants.MaxDaysPerRequest > 0 ? 1 : 0
         
         while (beginDate < today) {
             
