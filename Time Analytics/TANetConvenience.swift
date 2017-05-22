@@ -145,8 +145,6 @@ extension TANetClient {
             let formattedStartDate = self.getFormattedDate(startDate)
             let formattedEndDate = self.getFormattedDate(endDate)
             
-            print("Getting Moves Data from \(formattedStartDate) to \(formattedEndDate)")
-
             let parameters:[String:String] = [TANetClient.MovesApi.ParameterKeys.AccessToken:self.movesAccessToken!,
                                               TANetClient.MovesApi.ParameterKeys.FromDate:formattedStartDate,
                                               TANetClient.MovesApi.ParameterKeys.ToDate:formattedEndDate,
