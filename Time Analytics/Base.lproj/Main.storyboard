@@ -86,10 +86,10 @@
             </objects>
             <point key="canvasLocation" x="117.59999999999999" y="123.68815592203899"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Navigation View Controller-->
         <scene sceneID="bmg-sn-xnd">
             <objects>
-                <navigationController id="cCK-cW-tTG" sceneMemberID="viewController">
+                <navigationController id="cCK-cW-tTG" customClass="TANavigationViewController" customModule="Time_Analytics" customModuleProvider="target" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="BTb-TH-5Xq">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
