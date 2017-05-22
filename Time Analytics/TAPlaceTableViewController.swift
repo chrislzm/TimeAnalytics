@@ -88,7 +88,11 @@ class TAPlaceTableViewController: TATableViewController {
         let place = fetchedResultsController?.object(at: indexPath) as? TAPlaceSegment
         detailController.lat = place?.lat
         detailController.lon = place?.lon
-        detailController.name = place?.name
+        if let name = place?.name {
+            detailController.name = name
+        } else {
+            detailController.name = "Unknown"
+        }
         
         // Present the view controller using navigation
         navigationController!.pushViewController(detailController, animated: true)
