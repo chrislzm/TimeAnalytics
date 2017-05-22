@@ -36,4 +36,53 @@ extension UIViewController {
         let bottomConstraint = NSLayoutConstraint(item: view, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: parent, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: 0)
         parent.addConstraints([horizontalConstraint,widthConstraint,heightConstraint,bottomConstraint])
     }
+    
+    // Creates length of time string in days minutes and hours
+    struct StopWatch {
+        
+        var totalSeconds: Int
+        
+        var years: Int {
+            return totalSeconds / 31536000
+        }
+        
+        var days: Int {
+            return (totalSeconds % 31536000) / 86400
+        }
+        
+        var hours: Int {
+            return (totalSeconds % 86400) / 3600
+        }
+        
+        var minutes: Int {
+            return (totalSeconds % 3600) / 60
+        }
+        
+        var seconds: Int {
+            return totalSeconds % 60
+        }
+        
+        //simplified to what OP wanted
+        var hoursMinutesAndSeconds: (hours: Int, minutes: Int, seconds: Int) {
+            return (hours, minutes, seconds)
+        }
+        var simpleTimeString: String {
+            //let hoursText = timeText(from: hours)
+            //let minutesText = timeText(from: minutes)
+            //let secondsText = timeText(from: seconds)
+            //return "\(hoursText):\(minutesText):\(secondsText)"
+            if (days > 0) {
+                return "\(days)d \(hours)h \(minutes)m"
+            } else if (hours > 0) {
+                return "\(hours)h \(minutes)m"
+            } else {
+                return "\(minutes)m"
+            }
+            //return "\(hoursText):\(minutesText)"
+        }
+        
+        private func timeText(from number: Int) -> String {
+            return number < 10 ? "0\(number)" : "\(number)"
+        }
+    }
 }
