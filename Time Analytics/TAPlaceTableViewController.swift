@@ -33,10 +33,7 @@ class TAPlaceTableViewController: TATableViewController {
         // Setup tableview
         tableView = placeTableView
         tableView.separatorStyle = .none
-        
-        // Set the title
-        title = "Places"
-        
+
         // Get the context
         let delegate = UIApplication.shared.delegate as! AppDelegate
         let context = delegate.stack.context

@@ -147,7 +147,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NZi-m3-ZD6" customClass="BorderedButton" customModule="Time_Analytics" customModuleProvider="target">
-                                <rect key="frame" x="76" y="318.5" width="225" height="30"/>
+                                <rect key="frame" x="75" y="318.5" width="225" height="30"/>
                                 <state key="normal" title="Log Out"/>
                                 <connections>
                                     <action selector="logOutButtonPressed:" destination="5Uy-fx-J0M" eventType="touchUpInside" id="WTt-OU-E9b"/>
@@ -199,10 +199,10 @@
             </objects>
             <point key="canvasLocation" x="1701.5999999999999" y="805.54722638680664"/>
         </scene>
-        <!--Place Table View Controller-->
+        <!--Places-->
         <scene sceneID="iP9-PR-fWd">
             <objects>
-                <viewController storyboardIdentifier="TAPlaceTableViewController" automaticallyAdjustsScrollViewInsets="NO" id="auE-rE-b5u" customClass="TAPlaceTableViewController" customModule="Time_Analytics" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TAPlaceTableViewController" title="Places" automaticallyAdjustsScrollViewInsets="NO" id="auE-rE-b5u" customClass="TAPlaceTableViewController" customModule="Time_Analytics" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="tAv-9h-RBk"/>
                         <viewControllerLayoutGuide type="bottom" id="yFL-Ec-SNR"/>
