@@ -23,7 +23,6 @@ extension TANetClient {
         // Try to open the Moves app, if we have it installed
         if app.canOpenURL(moveUrl!) {
             app.open(moveUrl!, options: [:]) { (result) in
-                print("Success")
             }
         // Else try to open the App Store app page for moves
         } else if let url = URL(string: "itms-apps://itunes.apple.com/app/id509204969"), app.canOpenURL(url){
