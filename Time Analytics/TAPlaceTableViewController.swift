@@ -14,7 +14,7 @@ class TAPlaceTableViewController: TATableViewController {
     
     @IBOutlet weak var placeTableView: UITableView!
     
-    // Actions
+    // MARK: Actions
     
     func showCommutesButtonPressed() {
         // Grab the DetailVC from Storyboard
@@ -22,17 +22,15 @@ class TAPlaceTableViewController: TATableViewController {
         
         let navigationController = self.navigationController!
         navigationController.setViewControllers([commutesController], animated: false)
-        
     }
     
     // MARK: Life Cycle
     
     override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        // Setup tableview
+        // First set tableview for superclass before calling super method
         tableView = placeTableView
-        tableView.separatorStyle = .none
+        super.viewDidLoad()
+
 
         // Get the context
         let delegate = UIApplication.shared.delegate as! AppDelegate
@@ -45,18 +43,9 @@ class TAPlaceTableViewController: TATableViewController {
         // Create the FetchedResultsController
         fetchedResultsController = NSFetchedResultsController(fetchRequest: fr, managedObjectContext: context, sectionNameKeyPath: "daySectionIdentifier", cacheName: nil)
         
-        // Navigation setup
-        let showCommutesButton = UIBarButtonItem(title: "Commutes", style: UIBarButtonItemStyle.plain, target: self, action: #selector(TAPlaceTableViewController.showCommutesButtonPressed))
-        
-        self.navigationController?.setToolbarHidden(false, animated: true)
-        
-        self.setToolbarItems([showCommutesButton], animated: true)
+        setupBottomNavigationBar()
     }
-    
-    override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
-        return nil
-    }
-    
+
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         // This method must be implemented by our subclass. There's no way
@@ -121,8 +110,11 @@ class TAPlaceTableViewController: TATableViewController {
         navigationController!.pushViewController(detailController, animated: true)
     }
 
-    func didProcessDataChunk(_ notification:Notification) {
-        executeSearch()
-        tableView.reloadData()
+    func setupBottomNavigationBar() {
+        let showCommutesButton = UIBarButtonItem(title: "Commutes", style: UIBarButtonItemStyle.plain, target: self, action: #selector(TAPlaceTableViewController.showCommutesButtonPressed))
+        
+        self.navigationController?.setToolbarHidden(false, animated: true)
+        
+        self.setToolbarItems([showCommutesButton], animated: true)
     }
 }
