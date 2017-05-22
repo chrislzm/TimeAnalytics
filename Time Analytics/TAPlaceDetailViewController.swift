@@ -34,6 +34,48 @@ class TAPlaceDetailViewController: UIViewController, UITableViewDataSource {
     var commuteHistoryTableData = [TACommuteSegment]()
     var activityHistoryTableData = [String]()
     
+    // MARK: Actions
+    func editButtonPressed() {
+        let editDialog = UIAlertController(title: "Edit Place Name", message: nil, preferredStyle: UIAlertControllerStyle.alert)
+        editDialog.addTextField() { (textField) in
+            textField.text = self.name
+        }
+        editDialog.addAction(UIAlertAction(title: "Done", style: UIAlertActionStyle.default, handler: {
+            alert -> Void in
+            let textField = editDialog.textFields![0] as UITextField
+            self.confirmRenamePlace(textField.text!)
+        }))
+        editDialog.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default, handler: nil))
+        self.present(editDialog, animated: true, completion: nil)
+    }
+    
+    func confirmRenamePlace(_ newName:String) {
+        let confirmDialog = UIAlertController(title: "Confirm", message: "Rename this place as:\n'\(newName)' ", preferredStyle: UIAlertControllerStyle.alert)
+        confirmDialog.addAction(UIAlertAction(title: "Rename", style: UIAlertActionStyle.default, handler: {
+            alert -> Void in
+            self.renamePlace(newName)
+        }))
+        confirmDialog.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default, handler: nil))
+        self.present(confirmDialog, animated: true, completion: nil)
+    }
+    
+    func renamePlace(_ newName:String) {
+        // Start activity indicator and display message that we are updating
+        let updatingDialog = UIAlertController(title: "Updating", message: " \n", preferredStyle: UIAlertControllerStyle.alert)
+        let spinner = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+        spinner.startAnimating()
+        spinner.center = CGPoint(x: 135.0, y: 65.5)
+        spinner.color = UIColor.black
+        updatingDialog.view.addSubview(spinner)
+        self.present(updatingDialog, animated: true) { () in
+            TAModel.sharedInstance().renamePlaceInAllTAData(self.lat, self.lon, newName)
+            self.name = newName
+            self.title = newName
+            updatingDialog.dismiss(animated: true, completion: nil)
+        }
+    }
+    
+    // MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -43,6 +85,10 @@ class TAPlaceDetailViewController: UIViewController, UITableViewDataSource {
         placeTableView.separatorStyle = .none
         commuteTableView.separatorStyle = .none
         activityTableView.separatorStyle = .none
+        
+        // Setup and add the Edit button
+        let settingsButton = UIBarButtonItem(title: "Edit", style: UIBarButtonItemStyle.plain, target:self, action: #selector(TAPlaceDetailViewController.editButtonPressed))
+        navigationItem.rightBarButtonItem = settingsButton
         
         // Create a fetchrequest
         let stack = getCoreDataStack()
