@@ -11,7 +11,7 @@ import UIKit
 extension UIViewController {
     
     // MARK: Managed Object Description Strings
-    // TODO: Consider moving this method somewhere closer to the table view controllers that use it
+    // TODO: Consider moving these methods to TADetailViewController
 
     func generatePlaceStringDescriptions(_ place:TAPlaceSegment) -> (String,String,String,String) {
         let startTime = place.startTime! as Date
@@ -31,7 +31,7 @@ extension UIViewController {
         let timeInOutString = generateTimeInOutString(startTime,endTime)
         let commuteLengthString = generateLengthString(startTime,endTime)
         let startNameString = generatePlaceNameString(commute.startName)
-        let endNameString = "to " + generatePlaceNameString(commute.endName)
+        let endNameString = generatePlaceNameString(commute.endName)
         let dateString = generateDateString(startTime)
         
         return (timeInOutString,commuteLengthString,startNameString,endNameString,dateString)
