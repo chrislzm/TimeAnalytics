@@ -15,7 +15,7 @@ class TAPlaceTableViewController: TATableViewController {
     @IBOutlet weak var placeTableView: UITableView!
     
     var settingsButton:UIBarButtonItem?
-    
+
     // Actions
     
     func showCommutesButtonPressed() {
@@ -25,8 +25,6 @@ class TAPlaceTableViewController: TATableViewController {
         let navigationController = self.navigationController!
         navigationController.setViewControllers([commutesController], animated: false)
         
-//        self.navigationController?.popToRootViewController(animated: false)
-  //      self.navigationController?.pushViewController(commutesController, animated: true)
     }
     
     // MARK: Life Cycle
@@ -60,8 +58,16 @@ class TAPlaceTableViewController: TATableViewController {
         let showCommutesButton = UIBarButtonItem(title: "Commutes", style: UIBarButtonItemStyle.plain, target: self, action: #selector(TAPlaceTableViewController.showCommutesButtonPressed))
         
         self.navigationController?.setToolbarHidden(false, animated: true)
-
+        
         self.setToolbarItems([showCommutesButton], animated: true)
+    }
+
+    // TODO: Should remove this later
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        executeSearch()
+        tableView.reloadData()
     }
 
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
