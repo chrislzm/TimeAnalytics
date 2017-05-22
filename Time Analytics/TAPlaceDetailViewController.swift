@@ -250,7 +250,7 @@ class TAPlaceDetailViewController: UIViewController, UITableViewDataSource {
             let commute = commuteHistoryTableData[indexPath.row]
             
             // Create the cell
-            let commuteCell = tableView.dequeueReusableCell(withIdentifier: "TACommuteDetailTableViewCell", for: indexPath) as! TACommuteDetailTableViewCell
+            let commuteCell = tableView.dequeueReusableCell(withIdentifier: "TAPlaceDetailCommuteTableViewCell", for: indexPath) as! TAPlaceDetailCommuteTableViewCell
             
             // Get descriptions and assign to cell label
             let (timeInOutString,lengthString,startName,endName,dateString) = generateCommuteStringDescriptions(commute)
