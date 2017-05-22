@@ -23,7 +23,22 @@ class TATableViewController: UIViewController, UITableViewDelegate, UITableViewD
             executeSearch()
             tableView.reloadData()
         }
-    }    
+    }
+    
+    // MARK: Lifecycle
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        // Setup and add the Edit button
+        let settingsButton = UIBarButtonItem(title: "Settings", style: UIBarButtonItemStyle.plain, target:self, action: #selector(TATableViewController.showSettingsMenu))
+        navigationItem.rightBarButtonItem = settingsButton
+    }
+    
+    func showSettingsMenu() {
+        let controller = self.storyboard?.instantiateViewController(withIdentifier: "TASettingsView") as! TASettingsViewController
+        navigationController?.pushViewController(controller, animated: true)
+    }
+    
 }
 
 // MARK: - CoreDataTableViewController (Subclass Must Implement)
@@ -38,6 +53,7 @@ extension TATableViewController {
 // MARK: - CoreDataTableViewController (Table Data Source)
 
 extension TATableViewController {
+
     
     func numberOfSections(in tableView: UITableView) -> Int {
         if let fc = fetchedResultsController {
@@ -56,11 +72,29 @@ extension TATableViewController {
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if let fc = fetchedResultsController {
-            return fc.sections![section].name
-        } else {
-            return nil
+        var sectionTitle: String?
+        if let sectionIdentifier = fetchedResultsController!.sections?[section].name {
+            if let numericSection = Int(sectionIdentifier) {
+                // Parse the numericSection into its year/month/day components.
+                let year = numericSection / 10000
+                let month = (numericSection / 100) % 100
+                let day = numericSection % 100
+                
+                // Reconstruct the date from these components.
+                var components = DateComponents()
+                components.calendar = Calendar.current
+                components.day = day
+                components.month = month
+                components.year = year
+                
+                // Set the section title with this date
+                if let date = components.date {
+                    sectionTitle = DateFormatter.localizedString(from: date, dateStyle: .full, timeStyle: .none)
+                }
+            }
         }
+        
+        return sectionTitle
     }
     
     func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
@@ -189,4 +223,5 @@ extension TATableViewController {
             return number < 10 ? "0\(number)" : "\(number)"
         }
     }
+    
 }

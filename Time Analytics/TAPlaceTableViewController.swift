@@ -14,8 +14,6 @@ class TAPlaceTableViewController: TATableViewController {
     
     @IBOutlet weak var placeTableView: UITableView!
     
-    var settingsButton:UIBarButtonItem?
-
     // Actions
     
     func showCommutesButtonPressed() {
@@ -50,50 +48,12 @@ class TAPlaceTableViewController: TATableViewController {
         // Create the FetchedResultsController
         fetchedResultsController = NSFetchedResultsController(fetchRequest: fr, managedObjectContext: context, sectionNameKeyPath: "daySectionIdentifier", cacheName: nil)
         
-        // Setup and add the Edit button
-        settingsButton = UIBarButtonItem(title: "Settings", style: UIBarButtonItemStyle.plain, target:self, action: #selector(TAPlaceTableViewController.showSettingsMenu))
-        navigationItem.rightBarButtonItem = settingsButton
-        
         // Navigation setup
         let showCommutesButton = UIBarButtonItem(title: "Commutes", style: UIBarButtonItemStyle.plain, target: self, action: #selector(TAPlaceTableViewController.showCommutesButtonPressed))
         
         self.navigationController?.setToolbarHidden(false, animated: true)
         
         self.setToolbarItems([showCommutesButton], animated: true)
-    }
-
-    // TODO: Should remove this later
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        executeSearch()
-        tableView.reloadData()
-    }
-
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        var sectionTitle: String?
-        if let sectionIdentifier = fetchedResultsController!.sections?[section].name {
-            if let numericSection = Int(sectionIdentifier) {
-                // Parse the numericSection into its year/month/day components.
-                let year = numericSection / 10000
-                let month = (numericSection / 100) % 100
-                let day = numericSection % 100
-                
-                // Reconstruct the date from these components.
-                var components = DateComponents()
-                components.calendar = Calendar.current
-                components.day = day
-                components.month = month
-                components.year = year
-                
-                // Set the section title with this date
-                if let date = components.date {
-                    sectionTitle = DateFormatter.localizedString(from: date, dateStyle: .full, timeStyle: .none)
-                }
-            }
-        }
-        
-        return sectionTitle
     }
     
     override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
@@ -163,12 +123,7 @@ class TAPlaceTableViewController: TATableViewController {
         // Present the view controller using navigation
         navigationController!.pushViewController(detailController, animated: true)
     }
-    
-    func showSettingsMenu() {
-        let controller = self.storyboard?.instantiateViewController(withIdentifier: "TASettingsView") as! TASettingsViewController
-        navigationController?.pushViewController(controller, animated: true)
-    }
- 
+
     func didProcessDataChunk(_ notification:Notification) {
         executeSearch()
         tableView.reloadData()
