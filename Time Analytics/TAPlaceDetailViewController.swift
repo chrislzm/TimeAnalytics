@@ -12,7 +12,7 @@ import Foundation
 import MapKit
 import UIKit
 
-class TAPlaceDetailViewController: TATableViewController {
+class TAPlaceDetailViewController: UIViewController, UITableViewDataSource {
     
     @IBOutlet weak var placeTableView: UITableView!
     @IBOutlet weak var visitHistoryLabel: UILabel!
@@ -26,21 +26,15 @@ class TAPlaceDetailViewController: TATableViewController {
     var lat:Double! = nil
     var lon:Double! = nil
     var name:String! = nil
-
+    var placeHistoryTableData = [TAPlaceSegment]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Setup tableview
-        tableView = placeTableView
-        tableView.separatorStyle = .none
-
-        // Set the title
+        
         title = name
-        
-        // Get the context
-        let delegate = UIApplication.shared.delegate as! AppDelegate
-        let context = delegate.stack.context
-        
+        placeTableView.separatorStyle = .none
+        let stack = getCoreDataStack()
+
         // Create a fetchrequest
         let fr = NSFetchRequest<NSFetchRequestResult>(entityName: "TAPlaceSegment")
         
@@ -48,7 +42,6 @@ class TAPlaceDetailViewController: TATableViewController {
         let oneMonthAgo = Date() - 2678400 // There are this many seconds in a month
         var pred = NSPredicate(format: "(lat == %@) AND (lon == %@) AND (startTime >= %@)", argumentArray: [lat,lon,oneMonthAgo])
         fr.predicate = pred
-        let stack = getCoreDataStack()
         let lastMonthVisits = try! stack.context.fetch(fr) as! [TAPlaceSegment]
         pastMonthLabel.text = "\(lastMonthVisits.count)"
         
@@ -141,60 +134,69 @@ class TAPlaceDetailViewController: TATableViewController {
         let viewRegion = MKCoordinateRegionMakeWithDistance(coordinate, 1000, 1000);
         mapView.setRegion(viewRegion, animated: true)
         
-        // Now create the FetchedResultsController for the TableView
+        // Now generate data for the TableView
         fr.sortDescriptors = [NSSortDescriptor(key: "startTime", ascending: false)]
         pred = NSPredicate(format: "(lat == %@) AND (lon == %@)", argumentArray: [lat,lon])
         fr.predicate = pred
-        fetchedResultsController = NSFetchedResultsController(fetchRequest: fr, managedObjectContext: context, sectionNameKeyPath: "startTime", cacheName: nil)
+        placeHistoryTableData = try! stack.context.fetch(fr) as! [TAPlaceSegment]
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        var count:Int?
         
-        // This method must be implemented by our subclass. There's no way
-        // CoreDataTableViewController can know what type of cell we want to
-        // use.
-        
-        // Find the right notebook for this indexpath
-        let place = fetchedResultsController!.object(at: indexPath) as! TAPlaceSegment
-        
-        // Create the cell
-        let cell = tableView.dequeueReusableCell(withIdentifier: "TAPlaceDetailTableViewCell", for: indexPath) as! TAPlaceDetailTableViewCell
-        
-        // Sync notebook -> cell
-        let formatter = DateFormatter()
-        let startTime = place.startTime! as Date
-        let endTime = place.endTime! as Date
-        formatter.dateFormat = "h:mm a"
-        let timeIn = formatter.string(from: startTime)
-        var timeOut:String
-        let cal = Calendar(identifier: .gregorian)
-        let nextDay = cal.startOfDay(for: startTime.addingTimeInterval(86400))
-        if endTime > nextDay {
-            formatter.dateFormat = "MMM d"
-        } else {
-            formatter.dateFormat = "h:mm a"
+        if tableView == self.placeTableView {
+            count = placeHistoryTableData.count
         }
-        timeOut = formatter.string(from: endTime)
         
-        let visitSeconds = Int((place.endTime! as Date).timeIntervalSince(place.startTime! as Date))
-        let visitTime = StopWatch(totalSeconds: visitSeconds)
-        
-        cell.timeInOutLabel.text = timeIn + " - " + timeOut
-        cell.lengthLabel.text = visitTime.simpleTimeString
-        
-        formatter.dateFormat = "E, MMM d"
-        let date = formatter.string(from: startTime)
-        
-        cell.dateLabel.text = date
-
-        return cell
+        return count!
     }
     
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        var cell:TAPlaceDetailTableViewCell?
+        
+        if tableView == self.placeTableView {
+            // Find the right notebook for this indexpath
+            let place = placeHistoryTableData[indexPath.row]
+            
+            // Create the cell
+            cell = tableView.dequeueReusableCell(withIdentifier: "TAPlaceDetailTableViewCell", for: indexPath) as! TAPlaceDetailTableViewCell
+            
+            // Sync notebook -> cell
+            let formatter = DateFormatter()
+            let startTime = place.startTime! as Date
+            let endTime = place.endTime! as Date
+            formatter.dateFormat = "h:mm a"
+            let timeIn = formatter.string(from: startTime)
+            var timeOut:String
+            let cal = Calendar(identifier: .gregorian)
+            let nextDay = cal.startOfDay(for: startTime.addingTimeInterval(86400))
+            if endTime > nextDay {
+                formatter.dateFormat = "MMM d"
+            } else {
+                formatter.dateFormat = "h:mm a"
+            }
+            timeOut = formatter.string(from: endTime)
+            
+            let visitSeconds = Int((place.endTime! as Date).timeIntervalSince(place.startTime! as Date))
+            let visitTime = StopWatch(totalSeconds: visitSeconds)
+            
+            cell!.timeInOutLabel.text = timeIn + " - " + timeOut
+            cell!.lengthLabel.text = visitTime.simpleTimeString
+            
+            formatter.dateFormat = "E, MMM d"
+            let date = formatter.string(from: startTime)
+            
+            cell!.dateLabel.text = date
+        }
+        return cell!
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return nil
     }
     
-    override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+    func sectionIndexTitles(for tableView: UITableView) -> [String]? {
         return nil
     }
     
