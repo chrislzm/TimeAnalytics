@@ -14,6 +14,8 @@ class TAPlaceTableViewController: TATableViewController {
     
     @IBOutlet weak var placeTableView: UITableView!
     
+    let viewTitle = "My Places"
+    
     // MARK: Actions
     
     func showCommutesButtonPressed() {
@@ -30,7 +32,7 @@ class TAPlaceTableViewController: TATableViewController {
         // First set tableview for superclass before calling super method
         tableView = placeTableView
         super.viewDidLoad()
-
+        title = viewTitle
 
         // Get the context
         let delegate = UIApplication.shared.delegate as! AppDelegate
@@ -42,7 +44,10 @@ class TAPlaceTableViewController: TATableViewController {
         
         // Create the FetchedResultsController
         fetchedResultsController = NSFetchedResultsController(fetchRequest: fr, managedObjectContext: context, sectionNameKeyPath: "daySectionIdentifier", cacheName: nil)
-        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         setupBottomNavigationBar()
     }
 
@@ -58,39 +63,18 @@ class TAPlaceTableViewController: TATableViewController {
         // Create the cell
         let cell = tableView.dequeueReusableCell(withIdentifier: "TAPlaceTableViewCell", for: indexPath) as! TAPlaceTableViewCell
         
-        // Sync notebook -> cell
-        let formatter = DateFormatter()
-        let startTime = place.startTime! as Date
-        let endTime = place.endTime! as Date
-        formatter.dateFormat = "h:mm a"
-        let timeIn = formatter.string(from: startTime)
-        var timeOut:String
-        let cal = Calendar(identifier: .gregorian)
-        let nextDay = cal.startOfDay(for: startTime.addingTimeInterval(86400))
-        if endTime > nextDay {
-            formatter.dateFormat = "MMM d"
-        } else {
-            formatter.dateFormat = "h:mm a"
-        }
-        timeOut = formatter.string(from: endTime)
+        // Generate descriptions and assign to cell
         
-        let visitSeconds = Int((place.endTime! as Date).timeIntervalSince(place.startTime! as Date))
-        let visitTime = StopWatch(totalSeconds: visitSeconds)
+        // Get descriptions and assign to cell labels
+        let (timeInOutString,lengthString,nameString,_) = generatePlaceStringDescriptions(place)
+        cell.timeInOutLabel.text = timeInOutString
+        cell.lengthLabel.text = lengthString
+        cell.locationLabel.text = nameString
         
-        var name:String
-        if let _ = place.name {
-            name = place.name!
-        } else {
-            name = "Unknown"
-        }
-
-        
-        cell.timeInOutLabel.text = timeIn + " - " + timeOut
-        cell.lengthLabel.text = visitTime.simpleTimeString
-        cell.locationLabel.text = name
+        // Save data in cell for detail view
         cell.lat = place.lat
         cell.lon = place.lon
-        cell.name = place.name
+        cell.name = nameString
         
         return cell
     }
