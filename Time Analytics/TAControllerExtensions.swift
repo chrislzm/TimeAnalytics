@@ -10,6 +10,66 @@ import UIKit
 
 extension UIViewController {
     
+    // MARK: Managed Object Description Strings
+    // TODO: Consider moving this method somewhere closer to the table view controllers that use it
+
+    func generatePlaceStringDescriptions(_ place:TAPlaceSegment) -> (String,String,String,String) {
+        let startTime = place.startTime! as Date
+        let endTime = place.endTime! as Date
+        
+        let timeInOutString = generateTimeInOutString(startTime,endTime)
+        let lengthString = generateLengthString(startTime,endTime)
+        let nameString = generatePlaceNameString(place.name)
+        let dateString = generateDateString(startTime)
+        return (timeInOutString,lengthString,nameString,dateString)
+    }
+
+    func generateCommuteStringDescriptions(_ commute:TACommuteSegment) -> (String,String,String,String,String) {
+        let startTime = commute.startTime! as Date
+        let endTime = commute.endTime! as Date
+        
+        let timeInOutString = generateTimeInOutString(startTime,endTime)
+        let commuteLengthString = generateLengthString(startTime,endTime)
+        let startNameString = generatePlaceNameString(commute.startName)
+        let endNameString = "to " + generatePlaceNameString(commute.endName)
+        let dateString = generateDateString(startTime)
+        
+        return (timeInOutString,commuteLengthString,startNameString,endNameString,dateString)
+    }
+    
+    func generateTimeInOutString(_ startTime:Date, _ endTime:Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "h:mm a"
+        let timeIn = formatter.string(from: startTime)
+        let timeOut = formatter.string(from: endTime)
+        let timeInOutString = timeIn + " - " + timeOut
+        return timeInOutString
+    }
+    
+    func generateLengthString(_ startTime:Date,_ endTime:Date) -> String {
+        let seconds = Int(endTime.timeIntervalSince(startTime))
+        let length = StopWatch(totalSeconds: seconds)
+        let lengthString = length.simpleTimeString
+        return lengthString
+    }
+    
+    func generateDateString(_ time:Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "E, MMM d"
+        let dateString = formatter.string(from: time)
+        return dateString
+    }
+    
+    func generatePlaceNameString(_ placeName:String?) -> String {
+        let nameString:String
+        if let name = placeName {
+            nameString = name
+        } else {
+            nameString = "Unknown"
+        }
+        return nameString
+    }
+    
     // Returns the core data stack
     func getCoreDataStack() -> CoreDataStack {
         let delegate = UIApplication.shared.delegate as! AppDelegate
