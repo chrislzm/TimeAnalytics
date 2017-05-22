@@ -15,7 +15,7 @@ class ViewController: UIViewController {
     @IBAction func loginButtonPressed(_ sender: Any) {
         TANetClient.sharedInstance().obtainMovesAuthCode()
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -31,7 +31,7 @@ class ViewController: UIViewController {
                 return
             }
             DispatchQueue.main.async {
-                self.performSegue(withIdentifier: "ShowLocationTableViewController", sender: nil)
+                self.performSegue(withIdentifier: "AlreadyLoggedIn", sender: nil)
             }
         }
     }
@@ -51,7 +51,7 @@ class ViewController: UIViewController {
                     return
                 }
                 DispatchQueue.main.async {
-                    self.performSegue(withIdentifier: "ShowLocationTableViewController", sender: nil)
+                    self.performSegue(withIdentifier: "FirstLogin", sender: nil)
                 }
             }
         }
