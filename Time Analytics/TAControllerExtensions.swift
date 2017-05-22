@@ -10,6 +10,12 @@ import UIKit
 
 extension UIViewController {
     
+    // Returns the core data stack
+    func getCoreDataStack() -> CoreDataStack {
+        let delegate = UIApplication.shared.delegate as! AppDelegate
+        return delegate.stack
+    }
+    
     // Creates sets up overlay attributes, hides it, and adds it to the navigation controller view hierarchy
     func setupOverlayView(_ view:UIView, _ parent:UIView) {
         
