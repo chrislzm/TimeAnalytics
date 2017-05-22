@@ -76,6 +76,8 @@ class TADownloadViewController:UIViewController {
                 progressView.removeFromObservers()
                 progressView.removeFromSuperview()
                 NotificationCenter.default.removeObserver(self)
+                let stack = self.getCoreDataStack()
+                stack.save()
                 self.performSegue(withIdentifier: "DataDidFinishProcessing", sender: nil)
             }
         }
