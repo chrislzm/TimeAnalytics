@@ -16,6 +16,19 @@ class TAPlaceTableViewController: TATableViewController {
     
     var settingsButton:UIBarButtonItem?
     
+    // Actions
+    
+    func showCommutesButtonPressed() {
+        // Grab the DetailVC from Storyboard
+        let commutesController = self.storyboard!.instantiateViewController(withIdentifier: "TACommuteTableViewController") as! TACommuteTableViewController
+        
+        let navigationController = self.navigationController!
+        navigationController.setViewControllers([commutesController], animated: false)
+        
+//        self.navigationController?.popToRootViewController(animated: false)
+  //      self.navigationController?.pushViewController(commutesController, animated: true)
+    }
+    
     // MARK: Life Cycle
     
     override func viewDidLoad() {
@@ -26,7 +39,7 @@ class TAPlaceTableViewController: TATableViewController {
         tableView.separatorStyle = .none
         
         // Set the title
-        title = "Recent Places"
+        title = "Places"
         
         // Get the context
         let delegate = UIApplication.shared.delegate as! AppDelegate
@@ -42,6 +55,13 @@ class TAPlaceTableViewController: TATableViewController {
         // Setup and add the Edit button
         settingsButton = UIBarButtonItem(title: "Settings", style: UIBarButtonItemStyle.plain, target:self, action: #selector(TAPlaceTableViewController.showSettingsMenu))
         navigationItem.rightBarButtonItem = settingsButton
+        
+        // Navigation setup
+        let showCommutesButton = UIBarButtonItem(title: "Commutes", style: UIBarButtonItemStyle.plain, target: self, action: #selector(TAPlaceTableViewController.showCommutesButtonPressed))
+        
+        self.navigationController?.setToolbarHidden(false, animated: true)
+
+        self.setToolbarItems([showCommutesButton], animated: true)
     }
 
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
