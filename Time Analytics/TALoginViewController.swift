@@ -15,13 +15,6 @@ class ViewController: UIViewController {
     @IBAction func loginButtonPressed(_ sender: Any) {
         TANetClient.sharedInstance().obtainMovesAuthCode()
     }
-    
-    @IBAction func deleteMovesDataPressed(_ sender: Any) {
-        TAModel.sharedInstance().deleteAllDataFor(["MovesMove","MovesPlace","TAPlace"])
-    }
-    @IBAction func downloadMovesDataPressed(_ sender: Any) {
-        
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,12 +24,10 @@ class ViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         let delegate = UIApplication.shared.delegate as! AppDelegate
-        if let query = delegate.query {
-            print("Received query in viewcontroller: \(query)")
+        if let _ = delegate.query {
         }
         TANetClient.sharedInstance().verifyLoggedIntoMoves() { (error) in
             guard error == nil else {
-                print("Error: Still not logged into Moves")
                 return
             }
             DispatchQueue.main.async {
@@ -45,24 +36,18 @@ class ViewController: UIViewController {
         }
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
     func didGetMovesAuthCode(_ notification:Notification) {
         let authCode = notification.userInfo![AnyHashable("code")] as! String
-        print("Got auth code! \(authCode)")
         
         TANetClient.sharedInstance().loginWithMovesAuthCode(authCode: authCode) { (error) in
             guard error == nil else {
-                print("Error login in: \(error!)")
+                self.displayErrorAlert(error!)
                 return
             }
-            print("Moves login successful!")
+
             TANetClient.sharedInstance().verifyLoggedIntoMoves() { (error) in
                 guard error == nil else {
-                    print("Error: Still not logged into Moves")
+                    self.displayErrorAlert(error!)
                     return
                 }
                 DispatchQueue.main.async {
