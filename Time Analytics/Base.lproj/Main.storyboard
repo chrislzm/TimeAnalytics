@@ -305,7 +305,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="30"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="oKh-Tl-4NK" id="lL3-zR-IHq">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="29.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="30"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="B8E-gj-8FH" userLabel="Separator">
@@ -416,7 +416,7 @@
                                 <rect key="frame" x="0.0" y="317" width="375" height="100"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TAPlaceDetailTableViewCell" rowHeight="30" id="vEh-Qt-oZI" customClass="TAPlaceDetailTableViewCell" customModule="Time_Analytics" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TAPlaceTableViewCell" rowHeight="30" id="vEh-Qt-oZI" customClass="TAPlaceDetailTableViewCell" customModule="Time_Analytics" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="375" height="30"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="vEh-Qt-oZI" id="1nQ-es-mrx">
@@ -618,19 +618,78 @@
                                 <rect key="frame" x="0.0" y="567" width="375" height="100"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </tableView>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="5a6-DL-1To" userLabel="Commute Table View">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="30" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="5a6-DL-1To" userLabel="Commute Table View">
                                 <rect key="frame" x="0.0" y="442" width="375" height="100"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="EhV-Qq-BwC">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TACommuteDetailTableViewCell" rowHeight="30" id="EhV-Qq-BwC" customClass="TACommuteDetailTableViewCell" customModule="Time_Analytics" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="30"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="EhV-Qq-BwC" id="9Dk-7I-YE3">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="30"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MLo-ai-IgK" userLabel="Separator">
+                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="29.5"/>
+                                                    <subviews>
+                                                        <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tWf-fL-lWh">
+                                                            <rect key="frame" x="-0.5" y="1" width="375" height="27.5"/>
+                                                            <subviews>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KRj-hD-Dgx">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="149.5" height="27.5"/>
+                                                                    <color key="backgroundColor" red="0.99942404029999998" green="0.97040138229999995" blue="0.86234215339999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                                    <nil key="textColor"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Length" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="odY-Zf-zQu">
+                                                                    <rect key="frame" x="149.5" y="0.0" width="93" height="27.5"/>
+                                                                    <color key="backgroundColor" red="1" green="0.88996063209999998" blue="0.8102506894" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                                    <nil key="textColor"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XdD-UP-Utp">
+                                                                    <rect key="frame" x="242.5" y="0.0" width="132.5" height="27.5"/>
+                                                                    <color key="backgroundColor" red="0.80238165340000001" green="0.84112655329999997" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                                    <nil key="textColor"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                            </subviews>
+                                                            <constraints>
+                                                                <constraint firstItem="KRj-hD-Dgx" firstAttribute="width" secondItem="tWf-fL-lWh" secondAttribute="width" multiplier="0.4" id="UbX-8T-6Wd"/>
+                                                                <constraint firstItem="odY-Zf-zQu" firstAttribute="width" secondItem="tWf-fL-lWh" secondAttribute="width" multiplier="0.25" id="Up9-WH-9He"/>
+                                                            </constraints>
+                                                        </stackView>
+                                                    </subviews>
+                                                    <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                                    <constraints>
+                                                        <constraint firstItem="tWf-fL-lWh" firstAttribute="centerX" secondItem="MLo-ai-IgK" secondAttribute="centerX" id="3gn-cq-hFV"/>
+                                                        <constraint firstItem="tWf-fL-lWh" firstAttribute="height" secondItem="MLo-ai-IgK" secondAttribute="height" constant="-2" id="ADs-b6-P61"/>
+                                                        <constraint firstItem="tWf-fL-lWh" firstAttribute="centerY" secondItem="MLo-ai-IgK" secondAttribute="centerY" id="C2e-vO-Aqk"/>
+                                                        <constraint firstItem="tWf-fL-lWh" firstAttribute="width" secondItem="MLo-ai-IgK" secondAttribute="width" id="biR-x9-1oJ"/>
+                                                    </constraints>
+                                                </view>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="MLo-ai-IgK" firstAttribute="width" secondItem="9Dk-7I-YE3" secondAttribute="width" id="54L-DZ-HsE"/>
+                                                <constraint firstItem="MLo-ai-IgK" firstAttribute="centerY" secondItem="9Dk-7I-YE3" secondAttribute="centerY" id="ATT-lq-gPo"/>
+                                                <constraint firstItem="MLo-ai-IgK" firstAttribute="height" secondItem="9Dk-7I-YE3" secondAttribute="height" id="ODf-da-QS0"/>
+                                                <constraint firstItem="MLo-ai-IgK" firstAttribute="centerX" secondItem="9Dk-7I-YE3" secondAttribute="centerX" id="i0d-sA-Nre"/>
+                                            </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="lengthLabel" destination="odY-Zf-zQu" id="Jyg-hg-wHp"/>
+                                            <outlet property="locationLabel" destination="XdD-UP-Utp" id="oFa-uJ-hj1"/>
+                                            <outlet property="timeLabel" destination="KRj-hD-Dgx" id="yjo-28-aXP"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="PIb-cT-0y2" id="ocn-U7-e5d"/>
+                                    <outlet property="delegate" destination="PIb-cT-0y2" id="e5H-co-2G6"/>
+                                </connections>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -673,8 +732,12 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="activityHistoryLabel" destination="sx6-pP-A4Z" id="cfC-Ny-Tn9"/>
+                        <outlet property="activityTableView" destination="Gh4-vq-AWt" id="RJ2-rH-Ftl"/>
                         <outlet property="averageTimeLabel" destination="R8e-ye-tpe" id="cpq-9H-4Dn"/>
                         <outlet property="chartView" destination="tOl-AM-4qw" id="sGQ-Lq-fv4"/>
+                        <outlet property="commuteHistoryLabel" destination="Dja-2N-iZR" id="7Zm-cC-7jC"/>
+                        <outlet property="commuteTableView" destination="5a6-DL-1To" id="SR8-jq-gZz"/>
                         <outlet property="mapView" destination="dXY-R5-ap4" id="vp1-PO-Gw0"/>
                         <outlet property="pastMonthLabel" destination="dwW-y8-MM9" id="ai3-QC-RsM"/>
                         <outlet property="placeTableView" destination="c5X-iT-b0P" id="fBi-Z2-eso"/>
