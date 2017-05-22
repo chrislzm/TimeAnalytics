@@ -12,7 +12,7 @@ import Foundation
 import MapKit
 import UIKit
 
-class TAPlaceDetailViewController: UIViewController, UITableViewDataSource {
+class TAPlaceDetailViewController: TADetailViewController, UITableViewDataSource {
     
     @IBOutlet weak var placeTableView: UITableView!
     @IBOutlet weak var commuteTableView: UITableView!
@@ -107,77 +107,11 @@ class TAPlaceDetailViewController: UIViewController, UITableViewDataSource {
         fr.sortDescriptors = [NSSortDescriptor(key: "startTime", ascending: true)]
         let places = try! stack.context.fetch(fr) as! [TAPlaceSegment]
         
-        // Update label with totals
-        let totalVisits = places.count
-        visitHistoryLabel.text = "  Visit History - \(totalVisits) Total"
-        totalVisitsLabel.text = "\(totalVisits)"
-        
-        // Update labels with average visit time
-        var totalVisitSeconds:Double = 0.0
-        var visitLengths = [Double]()
-        var visitDates = [Double]()
-        for place in places {
-            let startTime = place.startTime! as Date
-            let endTime = place.endTime! as Date
-            let visitTime = endTime.timeIntervalSince(startTime)
-            totalVisitSeconds += visitTime
-            visitLengths.append(visitTime)
-            visitDates.append(startTime.timeIntervalSinceReferenceDate)
-        }
-        let averageVisitTime = StopWatch(totalSeconds: Int(totalVisitSeconds)/totalVisits)
-        let totalVisitTime = StopWatch(totalSeconds: Int(totalVisitSeconds))
-        totalTimeLabel.text = "\(totalVisitTime.simpleTimeString)"
-        averageTimeLabel.text = "\(averageVisitTime.simpleTimeString)"
+        // Extract data from places
+        let(visitDates,visitLengths,totalVisits,totalVisitTime) = extractVisitData(places)
         
         // Setup Chart
-        chartView.chartDescription!.text = ""
-        chartView.maxVisibleCount = 0
-        let legend = chartView.legend
-        legend.enabled = false
-        let leftAxis = chartView.leftAxis
-        leftAxis.drawGridLinesEnabled = false
-        leftAxis.drawAxisLineEnabled = false
-        leftAxis.drawLabelsEnabled = false
-        leftAxis.drawTopYLabelEntryEnabled = false
-        leftAxis.drawBottomYLabelEntryEnabled = false
-        let rightAxis = chartView.rightAxis
-        rightAxis.drawGridLinesEnabled = false
-        rightAxis.drawAxisLineEnabled = false
-        rightAxis.drawLabelsEnabled = false
-        rightAxis.drawTopYLabelEntryEnabled = false
-        rightAxis.drawBottomYLabelEntryEnabled = false
-        let xAxis = chartView.xAxis
-        xAxis.drawGridLinesEnabled = false
-        xAxis.drawAxisLineEnabled = false
-        xAxis.drawLabelsEnabled = false
-        
-        var dataEntries = [ChartDataEntry]()
-        for i in 0..<visitLengths.count {
-            let dataEntry = ChartDataEntry(x: visitDates[i], y: visitLengths[i])
-            dataEntries.append(dataEntry)
-        }
-        let lineChartDataSet = LineChartDataSet(values: dataEntries, label: "Visit Time")
-        lineChartDataSet.circleRadius = 1
-        lineChartDataSet.circleColors = [UIColor.purple]
-        lineChartDataSet.drawCircleHoleEnabled = false
-        
-        var lineCharDataSets = [lineChartDataSet]
-        // Add trendline if we have enough data
-        if visitDates.count > 2 {
-            let (slope,yintercept) = calculateTrendLine(visitDates,visitLengths)
-            // Get y values for first and last dates on the chart
-            let trendy1 = (slope*visitDates.first!)+yintercept
-            let trendy2 = (slope*visitDates.last!)+yintercept
-            let trendStartPoint = ChartDataEntry(x: visitDates.first!, y: trendy1)
-            let trendEndPoint = ChartDataEntry(x: visitDates.last!, y: trendy2)
-            let trendLineDataSet = LineChartDataSet(values: [trendStartPoint,trendEndPoint], label: "Trend Line")
-            trendLineDataSet.drawCirclesEnabled = false
-            trendLineDataSet.drawCircleHoleEnabled = false
-            trendLineDataSet.colors = [UIColor.red]
-            lineCharDataSets.append(trendLineDataSet)
-        }
-        let lineChartData = LineChartData(dataSets: lineCharDataSets)
-        chartView.data = lineChartData
+        setupLineChartView(chartView, visitDates, visitLengths)
         
         // Setup Mapview = Add the geocoded location as an annotation to the map
         let annotation = MKPointAnnotation()
@@ -201,7 +135,7 @@ class TAPlaceDetailViewController: UIViewController, UITableViewDataSource {
         fr.predicate = pred
         commuteHistoryTableData = try! stack.context.fetch(fr) as! [TACommuteSegment]
         
-        // Update label with totals
+        // Update commute history label with totals
         let totalCommutes = commuteHistoryTableData.count
         commuteHistoryLabel.text = "  Commute History - \(totalCommutes) Total"
 
@@ -212,6 +146,18 @@ class TAPlaceDetailViewController: UIViewController, UITableViewDataSource {
             tableEmptyMessage.backgroundColor = UIColor.white
             activityTableView.backgroundView = tableEmptyMessage
         }
+        
+        // Update summary labels with average visit time
+        let averageVisitTimeString = (StopWatch(totalSeconds: Int(totalVisitTime)/totalVisits)).simpleTimeString
+        let totalVisitTimeString = (StopWatch(totalSeconds: Int(totalVisitTime))).simpleTimeString
+        
+        totalTimeLabel.text = totalVisitTimeString
+        averageTimeLabel.text = averageVisitTimeString
+        
+        // Update label with totals
+        visitHistoryLabel.text = "  Visit History - \(totalVisits) Total"
+        totalVisitsLabel.text = "\(totalVisits)"
+
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -253,7 +199,7 @@ class TAPlaceDetailViewController: UIViewController, UITableViewDataSource {
             let commuteCell = tableView.dequeueReusableCell(withIdentifier: "TAPlaceDetailCommuteTableViewCell", for: indexPath) as! TAPlaceDetailCommuteTableViewCell
             
             // Get descriptions and assign to cell label
-            let (timeInOutString,lengthString,startName,endName,dateString) = generateCommuteStringDescriptions(commute)
+            let (timeInOutString,lengthString,startName,endName,_) = generateCommuteStringDescriptions(commute)
             commuteCell.timeLabel.text = timeInOutString
             commuteCell.lengthLabel.text = lengthString
             if commute.startLat == lat && commute.startLon == lon {
@@ -277,28 +223,19 @@ class TAPlaceDetailViewController: UIViewController, UITableViewDataSource {
     
     // MARK: Helper Functions
     
-    func calculateTrendLine(_ xValues:[Double],_ yValues:[Double]) -> (Double,Double) {
-        let n = xValues.count
-        var a:Double = 0.0
-        var sumx:Double = 0.0
-        var sumxsquared:Double = 0.0
-        var sumy:Double = 0.0
-        for i in 0..<n {
-            a += xValues[i] * yValues[i]
-            sumx += xValues[i]
-            sumy += yValues[i]
-            sumxsquared += xValues[i] * xValues[i]
+    func extractVisitData(_ places:[TAPlaceSegment]) -> ([Double],[Double],Int,Double) {
+        let totalVisits = places.count
+        var totalVisitTime:Double = 0
+        var visitLengths = [Double]()
+        var visitDates = [Double]()
+        for place in places {
+            let startTime = place.startTime! as Date
+            let endTime = place.endTime! as Date
+            let visitTime = endTime.timeIntervalSince(startTime)
+            totalVisitTime += visitTime
+            visitLengths.append(visitTime)
+            visitDates.append(startTime.timeIntervalSinceReferenceDate)
         }
-        a *= Double(n)
-        let b = sumx * sumy
-        let c = sumxsquared * Double(n)
-        let d = sumx * sumx
-        let slope_m = (a-b)/(c-d)
-        
-        let e = sumy
-        let f = slope_m*sumx
-        let y_intercept = (e-f)/Double(n)
-        
-        return (slope_m,y_intercept)
+        return (visitDates,visitLengths,totalVisits,totalVisitTime)
     }
 }
