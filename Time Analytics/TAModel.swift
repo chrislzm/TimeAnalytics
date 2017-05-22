@@ -473,6 +473,21 @@ class TAModel {
         UserDefaults.standard.synchronize()
     }
     
+    func deleteMovesLoginInfo() {
+        UserDefaults.standard.removeObject(forKey: "movesAuthCode")
+        UserDefaults.standard.removeObject(forKey: "movesUserId")
+        UserDefaults.standard.removeObject(forKey: "movesAccessToken")
+        UserDefaults.standard.removeObject(forKey: "movesAccessTokenExpiration")
+        UserDefaults.standard.removeObject(forKey: "movesRefreshToken")
+        UserDefaults.standard.removeObject(forKey: "movesUserFirstDate")
+        TANetClient.sharedInstance().movesUserId = nil
+        TANetClient.sharedInstance().movesAccessToken = nil
+        TANetClient.sharedInstance().movesAccessTokenExpiration = nil
+        TANetClient.sharedInstance().movesAuthCode = nil
+        TANetClient.sharedInstance().movesRefreshToken = nil
+        TANetClient.sharedInstance().movesUserFirstDate = nil
+    }
+    
     // MARK: Helper Functions
     
     func getAppDelegate() -> AppDelegate {
