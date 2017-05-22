@@ -60,6 +60,24 @@ class TAModel {
         taPlaceSegment.setValue(name, forKey: "name")
         save(context)
     }
+    
+    func createNewTACommuteObject(_ startTime:NSDate, _ endTime:NSDate,_ startLat:Double, _ startLon:Double, _ endLat:Double, _ endLon:Double,_ startName:String,_ endName:String,_ context:NSManagedObjectContext) {
+        if(containsObject("TACommuteSegment","startTime",startTime,context)) {
+            deleteObject("TACommuteSegment","startTime",startTime,context)
+        }
+        let taMoveSegmentEntity = NSEntityDescription.entity(forEntityName: "TAMoveSegment", in: context)!
+        let taMoveSegment = NSManagedObject(entity: taMoveSegmentEntity, insertInto: context)
+        taMoveSegment.setValue(startTime, forKey:"startTime")
+        taMoveSegment.setValue(endTime, forKey: "endTime")
+        taMoveSegment.setValue(startLat, forKey: "startLat")
+        taMoveSegment.setValue(startLon, forKey: "startLon")
+        taMoveSegment.setValue(endLat, forKey: "endLat")
+        taMoveSegment.setValue(endLon, forKey: "endLon")
+        taMoveSegment.setValue(startName, forKey: "startName")
+        taMoveSegment.setValue(endName, forKey: "endName")
+        save(context)
+    }
+    
     func getLastTAPlaceBefore(_ time:NSDate,_ context:NSManagedObjectContext) -> TAPlaceSegment? {
         let fr = NSFetchRequest<NSFetchRequestResult>(entityName: "TAPlaceSegment")
         let pred = NSPredicate(format: "startTime <= %@", argumentArray: [time])
