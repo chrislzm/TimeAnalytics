@@ -18,7 +18,6 @@ extension TANetClient {
     func obtainMovesAuthCode() {
         let moveHook = "moves://app/authorize?" + "client_id=Z0hQuORANlkEb_BmDVu8TntptuUoTv6o&redirect_uri=time-analytics://app&scope=activity location".addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)!
         let moveUrl = URL(string: moveHook)
-        print(moveUrl!.absoluteString)
         let app = UIApplication.shared
         // Try to open the Moves app, if we have it installed
         if app.canOpenURL(moveUrl!) {
