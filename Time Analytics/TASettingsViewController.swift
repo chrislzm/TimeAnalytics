@@ -9,26 +9,23 @@
 import UIKit
 
 class TASettingsViewController:UIViewController {
-    
-    @IBOutlet weak var startDate: UIDatePicker!
-    @IBOutlet weak var endDate: UIDatePicker!
 
-    @IBAction func downloadAllUserDataButtonPressed(_ sender: Any) {
-
+    @IBAction func logOutButtonPressed(_ sender: Any) {
+        let alert = UIAlertController(title: "Confirm Log Out", message: "All Time Analytics data will cleared. You can download your Moves data again by logging back in.", preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "Log Out", style: UIAlertActionStyle.default, handler: confirmLogout))
+        alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
     }
     
-    @IBAction func downloadButtonPressed(_ sender: Any) {
-        TAModel.sharedInstance().downloadAndProcessMovesDataInRange(startDate.date, endDate.date) { (error) in
-            guard error == nil else {
-                print(error!)
-                return
-            }
-        }
+    func confirmLogout(alert:UIAlertAction!) {
+        // Clear persistent data
+        TAModel.sharedInstance().deleteAllDataFor(["MovesMoveSegment","MovesPlaceSegment","TAPlaceSegment","TACommuteSegment"])
+        
+        // Clear session variables
+        TAModel.sharedInstance().deleteMovesLoginInfo()
+        
+        // Logout, unwind and display login screen
+        self.performSegue(withIdentifier: "LogOut", sender: self)
     }
-    
-    @IBAction func deleteButtonPressed(_ sender: Any) {
-        TAModel.sharedInstance().deleteAllDataFor(["MovesMoveSegment","MovesPlaceSegment","TAPlaceSegment"])
-    }
-
 }
 
