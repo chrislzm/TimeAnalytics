@@ -19,13 +19,18 @@ extension TANetClient {
         let moveHook = "moves://app/authorize?" + "client_id=Z0hQuORANlkEb_BmDVu8TntptuUoTv6o&redirect_uri=time-analytics://app&scope=activity location".addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)!
         let moveUrl = URL(string: moveHook)
         print(moveUrl!.absoluteString)
-        if UIApplication.shared.canOpenURL(moveUrl!)
-        {
-            UIApplication.shared.open(moveUrl!, options: [:]) { (result) in
+        let app = UIApplication.shared
+        // Try to open the Moves app, if we have it installed
+        if app.canOpenURL(moveUrl!) {
+            app.open(moveUrl!, options: [:]) { (result) in
                 print("Success")
             }
+        // Else try to open the App Store app page for moves
+        } else if let url = URL(string: "itms-apps://itunes.apple.com/app/id509204969"), app.canOpenURL(url){
+            app.open(url, options: [:], completionHandler: nil)
+        // Else open moves app page website
         } else {
-            print("That didn't work")
+            app.open(URL(string: "https://moves-app.com")!,options: [:],completionHandler: nil)
         }
     }
     
