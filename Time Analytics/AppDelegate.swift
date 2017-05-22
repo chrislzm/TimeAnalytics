@@ -17,14 +17,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let stack = CoreDataStack(modelName: "Managed Objects")!
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
-        query = url.query
-        let keyValues = query!.components(separatedBy: "&")
-        for keyValue in keyValues {
-            let keyValuePair = keyValue.components(separatedBy: "=")
-            if keyValuePair[0] == "code" {
-                NotificationCenter.default.post(name: Notification.Name("didGetMovesAuthCode"), object: nil, userInfo: [AnyHashable("code"):keyValuePair[1]])
-            } else if keyValuePair[0] == "error" {
-                //TODO: Implement -- see error codes on https://dev.moves-app.com/docs/authentication
+        if let query = url.query {
+            let keyValues = query.components(separatedBy: "&")
+            for keyValue in keyValues {
+                let keyValuePair = keyValue.components(separatedBy: "=")
+                if keyValuePair[0] == "code" {
+                    NotificationCenter.default.post(name: Notification.Name("didGetMovesAuthCode"), object: nil, userInfo: [AnyHashable("code"):keyValuePair[1]])
+                } else if keyValuePair[0] == "error" {
+                    //TODO: Implement -- see error codes on https://dev.moves-app.com/docs/authentication
+                }
             }
         }
         return true
