@@ -221,9 +221,4 @@ class TAPlaceDetailViewController: TATableViewController {
         
         return (slope_m,y_intercept)
     }
-    
-    func getCoreDataStack() -> CoreDataStack {
-        let delegate = UIApplication.shared.delegate as! AppDelegate
-        return delegate.stack
-    }
 }
