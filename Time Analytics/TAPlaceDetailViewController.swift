@@ -208,20 +208,17 @@ class TAPlaceDetailViewController: TATableViewController {
             sumx += xValues[i]
             sumy += yValues[i]
             sumxsquared += xValues[i] * xValues[i]
-            print("sumxsquared: \(sumxsquared)")
         }
         a *= Double(n)
         let b = sumx * sumy
         let c = sumxsquared * Double(n)
         let d = sumx * sumx
         let slope_m = (a-b)/(c-d)
-        print("Slope: \(slope_m)")
         
         let e = sumy
         let f = slope_m*sumx
         let y_intercept = (e-f)/Double(n)
         
-        print("y-intercept:\(y_intercept)")
         return (slope_m,y_intercept)
     }
     
