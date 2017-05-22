@@ -64,12 +64,13 @@
                     </view>
                     <connections>
                         <outlet property="activityView" destination="9Yv-SL-pHJ" id="VMJ-ob-dQB"/>
-                        <segue destination="cCK-cW-tTG" kind="show" identifier="ShowLocationTableViewController" id="mwG-dX-Dp6"/>
+                        <segue destination="dmf-Sc-aow" kind="show" identifier="FirstLogin" id="24D-Zy-7Dt"/>
+                        <segue destination="cCK-cW-tTG" kind="show" identifier="AlreadyLoggedIn" id="zQK-Fs-xZM"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="117.59999999999999" y="123.68815592203899"/>
+            <point key="canvasLocation" x="65" y="-645"/>
         </scene>
         <!--Navigation View Controller-->
         <scene sceneID="bmg-sn-xnd">
@@ -86,6 +87,52 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Cq6-nL-bh1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="889" y="124"/>
+        </scene>
+        <!--Download View Controller-->
+        <scene sceneID="5ev-e2-8lo">
+            <objects>
+                <viewController id="dmf-Sc-aow" customClass="TADownloadViewController" customModule="Time_Analytics" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="OZA-vf-nQb"/>
+                        <viewControllerLayoutGuide type="bottom" id="6IT-Vi-rlI"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Dyg-yJ-Vg2">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please wait while we're preparing your data" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dxv-TW-XD7" userLabel="Message">
+                                <rect key="frame" x="19.5" y="343.5" width="337.5" height="18.5"/>
+                                <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="14"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Time Analytics Logo" translatesAutoresizingMaskIntoConstraints="NO" id="fPg-eF-gna">
+                                <rect key="frame" x="0.0" y="133" width="375" height="200.5"/>
+                            </imageView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="os4-cG-73P">
+                                <rect key="frame" x="169" y="412" width="37" height="37"/>
+                            </activityIndicatorView>
+                        </subviews>
+                        <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <constraints>
+                            <constraint firstItem="dxv-TW-XD7" firstAttribute="centerX" secondItem="Dyg-yJ-Vg2" secondAttribute="centerX" id="9T1-kD-iVa"/>
+                            <constraint firstItem="fPg-eF-gna" firstAttribute="centerY" secondItem="Dyg-yJ-Vg2" secondAttribute="centerY" multiplier="0.7" id="9WD-HY-CN3"/>
+                            <constraint firstItem="fPg-eF-gna" firstAttribute="height" secondItem="Dyg-yJ-Vg2" secondAttribute="height" multiplier="0.3" id="GId-HE-WmQ"/>
+                            <constraint firstItem="fPg-eF-gna" firstAttribute="width" secondItem="Dyg-yJ-Vg2" secondAttribute="width" id="KWp-Vw-yqR"/>
+                            <constraint firstItem="dxv-TW-XD7" firstAttribute="top" secondItem="fPg-eF-gna" secondAttribute="bottom" constant="10" id="KaY-5m-jNp"/>
+                            <constraint firstItem="os4-cG-73P" firstAttribute="centerX" secondItem="Dyg-yJ-Vg2" secondAttribute="centerX" id="O4y-TB-ioH"/>
+                            <constraint firstItem="dxv-TW-XD7" firstAttribute="width" secondItem="Dyg-yJ-Vg2" secondAttribute="width" multiplier="0.9" id="YwE-dY-Hzl"/>
+                            <constraint firstItem="fPg-eF-gna" firstAttribute="centerX" secondItem="Dyg-yJ-Vg2" secondAttribute="centerX" id="lLK-up-Uln"/>
+                            <constraint firstItem="os4-cG-73P" firstAttribute="top" secondItem="dxv-TW-XD7" secondAttribute="bottom" constant="50" id="rcD-tc-FMF"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <segue destination="cCK-cW-tTG" kind="show" identifier="DataDidFinishProcessing" id="v76-eW-6Ky"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pNG-OA-DhU" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="65" y="122"/>
         </scene>
         <!--Settings View Controller-->
         <scene sceneID="jXC-Ta-pW8">
@@ -617,4 +664,7 @@
     <resources>
         <image name="Time Analytics Logo" width="3840" height="2532"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="v76-eW-6Ky"/>
+    </inferredMetricsTieBreakers>
 </document>
