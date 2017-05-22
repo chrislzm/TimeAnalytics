@@ -28,7 +28,10 @@ class TATableViewController: UIViewController, UITableViewDelegate, UITableViewD
     // MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
+        // Setup table style
+        tableView.separatorStyle = .none
+
         // Setup and add the Edit button
         let settingsButton = UIBarButtonItem(title: "Settings", style: UIBarButtonItemStyle.plain, target:self, action: #selector(TATableViewController.showSettingsMenu))
         navigationItem.rightBarButtonItem = settingsButton
@@ -104,13 +107,9 @@ extension TATableViewController {
             return 0
         }
     }
-    
+
     func sectionIndexTitles(for tableView: UITableView) -> [String]? {
-        if let fc = fetchedResultsController {
-            return fc.sectionIndexTitles
-        } else {
-            return nil
-        }
+        return nil
     }
 }
 
