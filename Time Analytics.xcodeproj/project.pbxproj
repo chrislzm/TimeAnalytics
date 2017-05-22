@@ -27,6 +27,7 @@
 		A5866A201EC966870025D38F /* TANetConvenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5866A1F1EC966870025D38F /* TANetConvenience.swift */; };
 		A599677B1ED3378900B77D2F /* TAControllerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A599677A1ED3378900B77D2F /* TAControllerExtensions.swift */; };
 		A599677D1ED3384B00B77D2F /* TADownloadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A599677C1ED3384B00B77D2F /* TADownloadViewController.swift */; };
+		A599677F1ED359DF00B77D2F /* TACommuteTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A599677E1ED359DF00B77D2F /* TACommuteTableViewCell.swift */; };
 		A5AA02ED1ED11A6C0046CCB4 /* TAProgressView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A5AA02EC1ED11A6C0046CCB4 /* TAProgressView.xib */; };
 		A5AA02EF1ED11ACC0046CCB4 /* TAProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5AA02EE1ED11ACC0046CCB4 /* TAProgressView.swift */; };
 		A5AB93FB1ECA65B10055301C /* Managed Objects.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A5AB93F91ECA65B10055301C /* Managed Objects.xcdatamodeld */; };
@@ -62,6 +63,7 @@
 		A5866A1F1EC966870025D38F /* TANetConvenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TANetConvenience.swift; sourceTree = "<group>"; };
 		A599677A1ED3378900B77D2F /* TAControllerExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TAControllerExtensions.swift; sourceTree = "<group>"; };
 		A599677C1ED3384B00B77D2F /* TADownloadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TADownloadViewController.swift; sourceTree = "<group>"; };
+		A599677E1ED359DF00B77D2F /* TACommuteTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TACommuteTableViewCell.swift; sourceTree = "<group>"; };
 		A5AA02EC1ED11A6C0046CCB4 /* TAProgressView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TAProgressView.xib; sourceTree = "<group>"; };
 		A5AA02EE1ED11ACC0046CCB4 /* TAProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TAProgressView.swift; sourceTree = "<group>"; };
 		A5AB93FA1ECA65B10055301C /* Managed Objects.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Managed Objects.xcdatamodel"; sourceTree = "<group>"; };
@@ -176,6 +178,7 @@
 				A5B09F5E1ECD47230019CA4A /* TAPlaceDetailViewController.swift */,
 				A56811281ED22708002FF4D0 /* TAPlaceDetailTableViewCell.swift */,
 				A568112C1ED27A7B002FF4D0 /* TACommuteTableViewController.swift */,
+				A599677E1ED359DF00B77D2F /* TACommuteTableViewCell.swift */,
 				A5FFFD921ECAC6F200B55020 /* TASettingsViewController.swift */,
 				A5668BEB1ED2AB2E00CB688D /* TANavigationViewController.swift */,
 				A599677C1ED3384B00B77D2F /* TADownloadViewController.swift */,
@@ -316,6 +319,7 @@
 				A5866A201EC966870025D38F /* TANetConvenience.swift in Sources */,
 				A5CE10231ED210B600AE5BDB /* CoreDataStack.swift in Sources */,
 				A55B13801ECC318900FA14FB /* TAPlaceTableViewCell.swift in Sources */,
+				A599677F1ED359DF00B77D2F /* TACommuteTableViewCell.swift in Sources */,
 				A55B137D1ECC04A600FA14FB /* TAPlaceSegment+CoreDataClass.swift in Sources */,
 				A5B6D1AA1ED16ECE00890BC4 /* TAViewExtensions.swift in Sources */,
 				A5668BEC1ED2AB2E00CB688D /* TANavigationViewController.swift in Sources */,
