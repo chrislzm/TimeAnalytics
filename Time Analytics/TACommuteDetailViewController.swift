@@ -85,6 +85,8 @@ class TACommuteDetailViewController: TADetailViewController, MKMapViewDelegate {
         // SETUP TABLE HEADER LABELS
         
         commuteHistoryTableHeaderLabel.text = "  Commute History - \(totalCommutes) Total"
+        timeBeforeDepartingTableHeaderLabel.text = "  Before Departure - \(startName!)"
+        timeAfterArrivingTableHeaderLabel.text = "  After Arrival - \(endName!)"
     }
     
     
