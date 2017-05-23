@@ -484,7 +484,6 @@
                                 </prototypes>
                                 <connections>
                                     <outlet property="dataSource" destination="PIb-cT-0y2" id="e4i-0p-qrO"/>
-                                    <outlet property="delegate" destination="PIb-cT-0y2" id="S54-u7-Ujq"/>
                                 </connections>
                             </tableView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Visit History" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eUR-83-rfy">
