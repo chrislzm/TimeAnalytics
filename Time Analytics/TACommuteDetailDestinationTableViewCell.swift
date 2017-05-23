@@ -10,4 +10,8 @@ import UIKit
 
 class TACommuteDetailDestinationTableViewCell: UITableViewCell {
     
+    @IBOutlet weak var timeLabel: UILabel!
+    @IBOutlet weak var lengthLabel: UILabel!
+    @IBOutlet weak var dateLabel: UILabel!
+    
 }

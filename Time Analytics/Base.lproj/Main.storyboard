@@ -951,9 +951,10 @@
                                                     </constraints>
                                                 </tableViewCellContentView>
                                                 <connections>
-                                                    <outlet property="dateLabel" destination="0iw-oz-v8J" id="Jyj-6Y-NxC"/>
-                                                    <outlet property="lengthLabel" destination="oDe-dU-uWa" id="gtL-wc-3mE"/>
+                                                    <outlet property="dateLabel" destination="0iw-oz-v8J" id="MfS-rp-W1R"/>
+                                                    <outlet property="lengthLabel" destination="oDe-dU-uWa" id="aFb-XJ-NFf"/>
                                                     <outlet property="timeInOutLabel" destination="QYF-Qr-Swt" id="HvJ-Bo-LY7"/>
+                                                    <outlet property="timeLabel" destination="QYF-Qr-Swt" id="Wg1-33-mjc"/>
                                                 </connections>
                                             </tableViewCell>
                                         </prototypes>
@@ -1034,9 +1035,10 @@
                                                     </constraints>
                                                 </tableViewCellContentView>
                                                 <connections>
-                                                    <outlet property="lengthLabel" destination="5i3-m9-FG3" id="QKc-w8-aj3"/>
+                                                    <outlet property="dateLabel" destination="Cje-17-xsy" id="c2d-CP-2js"/>
+                                                    <outlet property="lengthLabel" destination="5i3-m9-FG3" id="fMj-ah-F4a"/>
                                                     <outlet property="locationLabel" destination="Cje-17-xsy" id="xsf-Jj-LY5"/>
-                                                    <outlet property="timeLabel" destination="xTD-e1-Zbr" id="DOO-0u-WkS"/>
+                                                    <outlet property="timeLabel" destination="xTD-e1-Zbr" id="YRn-2n-grQ"/>
                                                 </connections>
                                             </tableViewCell>
                                         </prototypes>
@@ -1063,7 +1065,7 @@
                                                 <rect key="frame" x="0.0" y="28" width="375" height="30"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="7b6-8Y-hED" id="Af5-bk-Ge4">
-                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="29.5"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="29"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SnT-U5-mWE" userLabel="Separator">
@@ -1116,6 +1118,11 @@
                                                         <constraint firstItem="SnT-U5-mWE" firstAttribute="centerX" secondItem="Af5-bk-Ge4" secondAttribute="centerX" id="wG5-FL-ihO"/>
                                                     </constraints>
                                                 </tableViewCellContentView>
+                                                <connections>
+                                                    <outlet property="dateLabel" destination="TfF-dX-qzn" id="ZSx-iC-ct6"/>
+                                                    <outlet property="lengthLabel" destination="AMP-Qu-B3M" id="IuN-pq-oKu"/>
+                                                    <outlet property="timeLabel" destination="Uv8-ZF-Lbr" id="az8-hp-Wko"/>
+                                                </connections>
                                             </tableViewCell>
                                         </prototypes>
                                     </tableView>
