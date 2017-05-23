@@ -14,6 +14,17 @@ import UIKit
 
 class TAPlaceDetailViewController: TADetailViewController, UITableViewDataSource {
     
+    // MARK: Properties
+    
+    var lat:Double! = nil
+    var lon:Double! = nil
+    var name:String! = nil
+    var placeHistoryTableData = [TAPlaceSegment]()
+    var commuteHistoryTableData = [TACommuteSegment]()
+    var activityHistoryTableData = [String]()
+    
+    // MARK: Outlets
+    
     @IBOutlet weak var placeTableView: UITableView!
     @IBOutlet weak var commuteTableView: UITableView!
     @IBOutlet weak var activityTableView: UITableView!
@@ -26,15 +37,9 @@ class TAPlaceDetailViewController: TADetailViewController, UITableViewDataSource
     @IBOutlet weak var pastMonthLabel: UILabel!
     @IBOutlet weak var totalVisitsLabel: UILabel!
     @IBOutlet weak var chartView: LineChartView!
+
+    // MARK: Action + Alerts for Renaming Place
     
-    var lat:Double! = nil
-    var lon:Double! = nil
-    var name:String! = nil
-    var placeHistoryTableData = [TAPlaceSegment]()
-    var commuteHistoryTableData = [TACommuteSegment]()
-    var activityHistoryTableData = [String]()
-    
-    // MARK: Actions
     func editButtonPressed() {
         let editDialog = UIAlertController(title: "Edit Place Name", message: nil, preferredStyle: UIAlertControllerStyle.alert)
         editDialog.addTextField() { (textField) in
@@ -76,89 +81,63 @@ class TAPlaceDetailViewController: TADetailViewController, UITableViewDataSource
     }
     
     // MARK: Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Setup the view
         navigationController?.setToolbarHidden(true, animated: true)
         title = name
+        addEditButton()
+        
+        // Get data for this place, to be used below
+        let(visitDates,visitLengths,totalVisits,totalVisitTime) = getVisitDataForThisPlace()
+        
+        setupLineChartView(chartView, visitDates, visitLengths)
+        setupMapView()
+        
+        // SETUP SUMMARY LABELS
+        
+        totalVisitsLabel.text = "\(totalVisits)"
+        
+        let lastMonthVisits = getNumLastMonthVisits()
+        pastMonthLabel.text = "\(lastMonthVisits)"
+        
+        let averageVisitTimeString = (StopWatch(totalSeconds: Int(totalVisitTime)/totalVisits)).simpleTimeString
+        averageTimeLabel.text = averageVisitTimeString
+
+        let totalVisitTimeString = (StopWatch(totalSeconds: Int(totalVisitTime))).simpleTimeString
+        totalTimeLabel.text = totalVisitTimeString
+
+        // SETUP TABLEVIEWS
+
+        // Styles
         placeTableView.separatorStyle = .none
         commuteTableView.separatorStyle = .none
         activityTableView.separatorStyle = .none
-        
-        // Setup and add the Edit button
-        let settingsButton = UIBarButtonItem(title: "Edit", style: UIBarButtonItemStyle.plain, target:self, action: #selector(TAPlaceDetailViewController.editButtonPressed))
-        navigationItem.rightBarButtonItem = settingsButton
-        
-        // Create a fetchrequest
-        let stack = getCoreDataStack()
-        var fr = NSFetchRequest<NSFetchRequestResult>(entityName: "TAPlaceSegment")
-        
-        // Update label with total visits over last month
-        let oneMonthAgo = Date() - 2678400 // There are this many seconds in a month
-        var pred = NSPredicate(format: "(lat == %@) AND (lon == %@) AND (startTime >= %@)", argumentArray: [lat,lon,oneMonthAgo])
-        fr.predicate = pred
-        let lastMonthVisits = try! stack.context.fetch(fr) as! [TAPlaceSegment]
-        pastMonthLabel.text = "\(lastMonthVisits.count)"
-        
-        // Get data for summary labels and chart
-        pred = NSPredicate(format: "(lat == %@) AND (lon == %@)", argumentArray: [lat,lon])
-        fr.predicate = pred
-        fr.sortDescriptors = [NSSortDescriptor(key: "startTime", ascending: true)]
-        let places = try! stack.context.fetch(fr) as! [TAPlaceSegment]
-        
-        // Extract data from places
-        let(visitDates,visitLengths,totalVisits,totalVisitTime) = extractVisitData(places)
-        
-        // Setup Chart
-        setupLineChartView(chartView, visitDates, visitLengths)
-        
-        // Setup Mapview = Add the geocoded location as an annotation to the map
-        let annotation = MKPointAnnotation()
-        let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: lon)
-        annotation.coordinate = coordinate
-        mapView.addAnnotation(annotation)
-        
-        // Set the MapView to a 1km * 1km box around the geocoded location
-        let viewRegion = MKCoordinateRegionMakeWithDistance(coordinate, 1000, 1000);
-        mapView.setRegion(viewRegion, animated: true)
-        
-        // Generate data for the Place History view
-        fr.sortDescriptors = [NSSortDescriptor(key: "startTime", ascending: false)]
-        pred = NSPredicate(format: "(lat == %@) AND (lon == %@)", argumentArray: [lat,lon])
-        fr.predicate = pred
-        placeHistoryTableData = try! stack.context.fetch(fr) as! [TAPlaceSegment]
-        
-        // Generate data for the Commute History view
-        fr = NSFetchRequest<NSFetchRequestResult>(entityName: "TACommuteSegment")
-        pred = NSPredicate(format: "(startLat == %@ AND startLon == %@) OR (endLat == %@ AND endLon == %@)", argumentArray: [lat,lon,lat,lon])
-        fr.predicate = pred
-        commuteHistoryTableData = try! stack.context.fetch(fr) as! [TACommuteSegment]
-        
-        // Update commute history label with totals
-        let totalCommutes = commuteHistoryTableData.count
-        commuteHistoryLabel.text = "  Commute History - \(totalCommutes) Total"
 
+        // Data Source
+        placeHistoryTableData = getEntityObjectsWithQuery("TAPlaceSegment", "(lat == %@) AND (lon == %@)", [lat,lon], "startTime", false) as! [TAPlaceSegment]
+
+        commuteHistoryTableData = getEntityObjectsWithQuery("TACommuteSegment", "(startLat == %@ AND startLon == %@) OR (endLat == %@ AND endLon == %@)", [lat,lon,lat,lon], "startTime", false) as! [TACommuteSegment]
+
+        // If empty
+        if commuteHistoryTableData.isEmpty {
+            createTableEmptyMessageIn(commuteTableView,"No commutes recorded")
+        }
         if activityHistoryTableData.isEmpty {
-            let tableEmptyMessage = UILabel(frame: activityTableView.frame)
-            tableEmptyMessage.text = "No activities recorded"
-            tableEmptyMessage.textAlignment = .center
-            tableEmptyMessage.backgroundColor = UIColor.white
-            activityTableView.backgroundView = tableEmptyMessage
+            createTableEmptyMessageIn(activityTableView,"No activities recorded")
         }
         
-        // Update summary labels with average visit time
-        let averageVisitTimeString = (StopWatch(totalSeconds: Int(totalVisitTime)/totalVisits)).simpleTimeString
-        let totalVisitTimeString = (StopWatch(totalSeconds: Int(totalVisitTime))).simpleTimeString
+        // SETUP TABLE HEADER LABELS
         
-        totalTimeLabel.text = totalVisitTimeString
-        averageTimeLabel.text = averageVisitTimeString
-        
-        // Update label with totals
         visitHistoryLabel.text = "  Visit History - \(totalVisits) Total"
-        totalVisitsLabel.text = "\(totalVisits)"
-
+        
+        let totalCommutes = commuteHistoryTableData.count
+        commuteHistoryLabel.text = "  Commute History - \(totalCommutes) Total"
     }
+    
+    // MARK: UITableView Data Source Methods
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var count:Int?
@@ -221,9 +200,21 @@ class TAPlaceDetailViewController: TADetailViewController, UITableViewDataSource
         return nil
     }
     
-    // MARK: Helper Functions
+    // MARK: Data Methods
     
-    func extractVisitData(_ places:[TAPlaceSegment]) -> ([Double],[Double],Int,Double) {
+    func getEntityObjectsWithQuery(_ entityName:String, _ query:String,_ argumentArray:[Any], _ sortKey:String?, _ isAscending:Bool?) -> [AnyObject] {
+        let stack = getCoreDataStack()
+        let fr = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
+        let pred = NSPredicate(format: query, argumentArray: argumentArray)
+        fr.predicate = pred
+        if let sort = sortKey, let ascending = isAscending {
+            fr.sortDescriptors = [NSSortDescriptor(key: sort, ascending: ascending)]
+        }
+        return try! stack.context.fetch(fr)
+    }
+    
+    func getVisitDataForThisPlace() -> ([Double],[Double],Int,Double) {
+        let places = getEntityObjectsWithQuery("TAPlaceSegment", "(lat == %@) AND (lon == %@)", [lat,lon], "startTime", true) as! [TAPlaceSegment]
         let totalVisits = places.count
         var totalVisitTime:Double = 0
         var visitLengths = [Double]()
@@ -238,4 +229,36 @@ class TAPlaceDetailViewController: TADetailViewController, UITableViewDataSource
         }
         return (visitDates,visitLengths,totalVisits,totalVisitTime)
     }
+    
+    func getNumLastMonthVisits() -> Int {
+        let oneMonthAgo = Date() - 2678400 // There are this many seconds in a month
+        let lastMonthVisits = getEntityObjectsWithQuery("TAPlaceSegment", "(lat == %@) AND (lon == %@) AND (startTime >= %@)", [lat,lon,oneMonthAgo], nil, nil)
+        return lastMonthVisits.count
+    }
+    
+    // MARK: View Helper Methods
+    
+    func createTableEmptyMessageIn(_ table:UITableView, _ message:String) {
+        let tableEmptyMessage = UILabel(frame: table.frame)
+        tableEmptyMessage.text = message
+        tableEmptyMessage.textAlignment = .center
+        tableEmptyMessage.backgroundColor = UIColor.white
+        table.backgroundView = tableEmptyMessage
+    }
+
+    func addEditButton() {
+        let settingsButton = UIBarButtonItem(title: "Edit", style: UIBarButtonItemStyle.plain, target:self, action: #selector(TAPlaceDetailViewController.editButtonPressed))
+        navigationItem.rightBarButtonItem = settingsButton
+    }
+    
+    func setupMapView() {
+        let annotation = MKPointAnnotation()
+        let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: lon)
+        annotation.coordinate = coordinate
+        mapView.addAnnotation(annotation)
+        // Set the MapView to a 1km * 1km box around the geocoded location
+        let viewRegion = MKCoordinateRegionMakeWithDistance(coordinate, 1000, 1000);
+        mapView.setRegion(viewRegion, animated: true)
+    }
+
 }
