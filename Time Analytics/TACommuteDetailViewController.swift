@@ -14,16 +14,22 @@ import UIKit
 class TACommuteDetailViewController: TADetailViewController, MKMapViewDelegate {
     
     // MARK: Properties
+    
     var startName:String?
     var startLat:Double!
     var startLon:Double!
+    var startTime:Date!
     var endName:String?
     var endLat:Double!
     var endLon:Double!
+    var endTime:Date!
     
     var commuteHistoryTableData = [TACommuteSegment]()
     var timeBeforeDepartingTableData = [TAPlaceSegment]()
     var timeAfterArrivingTableData = [TAPlaceSegment]()
+    
+    var didTapOnDepartureTable:Bool = false
+    var didTapOnArrivalTable:Bool = false
     
     // MARK: Outlets
     
@@ -43,14 +49,32 @@ class TACommuteDetailViewController: TADetailViewController, MKMapViewDelegate {
     
     @IBOutlet weak var timeAfterArrivingTableHeaderLabel: UILabel!
     @IBOutlet weak var timeAfterArrivingTableView: UITableView!
+
+    // MARK: Actions
     
+    @IBAction func didTapOnDepartureTable(_ sender: Any) {
+        if !timeBeforeDepartingTableData.isEmpty {
+            didTapOnDepartureTable = true
+            let place = timeBeforeDepartingTableData[0]
+            showDetailControllerFor(place)
+        }
+    }
+    
+    @IBAction func didTapOnArrivalTable(_ sender: Any) {
+        if !timeBeforeDepartingTableData.isEmpty {
+            didTapOnArrivalTable = true
+            let place = timeAfterArrivingTableData[0]
+            showDetailControllerFor(place)
+        }
+    }
+
     //MARK: Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Setup the view
-        title = "\(startName!) to \(endName!)"
+        setTitle()
         
         // Get data for this place, to be used below
         let(commuteDates,commuteLengths,totalCommutes,totalCommuteTime) = getDataForThisCommute()
@@ -75,8 +99,11 @@ class TACommuteDetailViewController: TADetailViewController, MKMapViewDelegate {
         
         // Styles
         commuteHistoryTableView.separatorStyle = .none
+        commuteHistoryTableView.allowsSelection = false
         timeBeforeDepartingTableView.separatorStyle = .none
+        timeBeforeDepartingTableView.allowsSelection = false
         timeAfterArrivingTableView.separatorStyle = .none
+        timeAfterArrivingTableView.allowsSelection = false
         
         // Data Source
         commuteHistoryTableData = getEntityObjectsWithQuery("TACommuteSegment", "startLat == %@ AND startLon == %@ AND endLat == %@ AND endLon == %@", [startLat,startLon,endLat,endLon], "startTime", false) as! [TACommuteSegment]
@@ -86,11 +113,23 @@ class TACommuteDetailViewController: TADetailViewController, MKMapViewDelegate {
         
         // SETUP TABLE HEADER LABELS
         
-        commuteHistoryTableHeaderLabel.text = "  Commute History - \(totalCommutes) Total"
-        timeBeforeDepartingTableHeaderLabel.text = "  Before Departure - \(startName!)"
-        timeAfterArrivingTableHeaderLabel.text = "  After Arrival - \(endName!)"
+        setCommuteHistoryTableHeaderLabelText(totalCommutes)
+        setTimeBeforeDepartingTableHeaderLabel()
+        setTimeAfterArrivingTableHeaderLabel()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        // Check if place names were updated, and update if necessary
+        if didTapOnDepartureTable {
+            updatePlaceNames(true)
+            didTapOnDepartureTable = false
+        } else if didTapOnArrivalTable {
+            updatePlaceNames(false)
+            didTapOnArrivalTable = false
+        }
+    }
     
     // MARK: UITableView Data Source Methods
     
@@ -158,10 +197,9 @@ class TACommuteDetailViewController: TADetailViewController, MKMapViewDelegate {
         }
         return cell
     }
-    
+
     // MARK: Data Methods
     
-    //let(commuteDates,commuteLengths,totalCommutes,totalCommuteTime) = getDataForThisCommute()
     func getDataForThisCommute() -> ([Double],[Double],Int,Double) {
         let commutes = getEntityObjectsWithQuery("TACommuteSegment", "startLat == %@ AND startLon == %@ AND endLat == %@ AND endLon == %@", [startLat,startLon,endLat,endLon], "startTime", true) as! [TACommuteSegment]
         let totalCommutes = commutes.count
@@ -205,8 +243,58 @@ class TACommuteDetailViewController: TADetailViewController, MKMapViewDelegate {
         return destinationPlaceHistory
     }
     
+    func updatePlaceNames(_ isDeparturePlace:Bool) {
+        if isDeparturePlace {
+            let startPlace = getTAPlaceSegment(startLat, startLon, startTime, false)
+            if startName != startPlace.name  {
+                startName = startPlace.name
+                setTitle()
+                setTimeBeforeDepartingTableHeaderLabel()
+            }
+        } else {
+            let endPlace = getTAPlaceSegment(endLat, endLon, endTime, true)
+            if endName != endPlace.name {
+                endName = endPlace.name
+                setTitle()
+                setTimeAfterArrivingTableHeaderLabel()
+            }
+            
+        }
+    }
+    
     // MARK: View Methods
     
+    func showDetailControllerFor(_ place:TAPlaceSegment) {
+        let detailController = self.storyboard!.instantiateViewController(withIdentifier: "TAPlaceDetailViewController") as! TAPlaceDetailViewController
+        
+        // Populate view controller with data from the selected item
+        detailController.lat = place.lat
+        detailController.lon = place.lon
+        if let name = place.name {
+            detailController.name = name
+        } else {
+            detailController.name = "Unknown"
+        }
+        
+        // Present the view controller using navigation
+        navigationController!.pushViewController(detailController, animated: true)
+    }
+    
+    func setTitle() {
+        title = "\(startName!) to \(endName!)"
+    }
+    
+    func setCommuteHistoryTableHeaderLabelText(_ totalCommutes:Int) {
+        commuteHistoryTableHeaderLabel.text = "  Commute History - \(totalCommutes) Total"
+    }
+    
+    func setTimeBeforeDepartingTableHeaderLabel() {
+        timeBeforeDepartingTableHeaderLabel.text = "  \(startName!) - Before Departure"
+    }
+    func setTimeAfterArrivingTableHeaderLabel() {
+        timeAfterArrivingTableHeaderLabel.text = "  \(endName!) - After Arrival"
+    }
+
     func setupMapView() {
         let startAnnotation = MKPointAnnotation()
         let startCoordinate = CLLocationCoordinate2D(latitude: startLat, longitude: startLon)
