@@ -959,7 +959,6 @@
                                         </prototypes>
                                         <connections>
                                             <outlet property="dataSource" destination="Un9-wR-MFr" id="Ton-GG-KBD"/>
-                                            <outlet property="delegate" destination="Un9-wR-MFr" id="2GE-Uw-Bbh"/>
                                         </connections>
                                     </tableView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="  Time at Place Before Departure" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vTc-Of-CNc" userLabel="TimeAtDepartureLabel">
@@ -975,6 +974,7 @@
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="30" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="fBA-3M-dpK" userLabel="TimeAtDepartureTableView">
                                         <rect key="frame" x="0.0" y="397" width="375" height="90.5"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <gestureRecognizers/>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TACommuteDetailDepartureTableViewCell" rowHeight="30" id="5a2-im-NWZ" customClass="TACommuteDetailDepartureTableViewCell" customModule="Time_Analytics" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="28" width="375" height="30"/>
@@ -1043,6 +1043,7 @@
                                         <connections>
                                             <outlet property="dataSource" destination="Un9-wR-MFr" id="9OA-fs-FbV"/>
                                             <outlet property="delegate" destination="Un9-wR-MFr" id="tSr-VA-yr9"/>
+                                            <outletCollection property="gestureRecognizers" destination="cbX-eg-OBk" appends="YES" id="IPs-h1-uAz"/>
                                         </connections>
                                     </tableView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="  Time at Place After Arrival" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ikm-Kp-mx0" userLabel="TimeAtDestinationLabel">
@@ -1058,6 +1059,7 @@
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="30" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="md3-aT-pOl" userLabel="TimeAtDestinationTableView">
                                         <rect key="frame" x="0.0" y="512.5" width="375" height="90.5"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <gestureRecognizers/>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TACommuteDetailDestinationTableViewCell" rowHeight="30" id="7b6-8Y-hED" customClass="TACommuteDetailDestinationTableViewCell" customModule="Time_Analytics" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="28" width="375" height="30"/>
@@ -1126,6 +1128,7 @@
                                         <connections>
                                             <outlet property="dataSource" destination="Un9-wR-MFr" id="jVC-y9-OuK"/>
                                             <outlet property="delegate" destination="Un9-wR-MFr" id="2jC-17-420"/>
+                                            <outletCollection property="gestureRecognizers" destination="7sh-bI-vL6" appends="YES" id="ndm-Ca-R7W"/>
                                         </connections>
                                     </tableView>
                                 </subviews>
@@ -1193,6 +1196,16 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nfq-CP-biL" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="cbX-eg-OBk" userLabel="Tap Gesture Recognizer for TimeAtDepartureTableView">
+                    <connections>
+                        <action selector="didTapOnDepartureTable:" destination="Un9-wR-MFr" id="r2Z-jg-YFl"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="7sh-bI-vL6">
+                    <connections>
+                        <action selector="didTapOnArrivalTable:" destination="Un9-wR-MFr" id="dEl-Fd-0wm"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="2557.5999999999999" y="901.79910044977521"/>
         </scene>
