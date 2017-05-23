@@ -85,10 +85,12 @@ class TACommuteTableViewController: TATableViewController {
             detailController.endName = "Unknown"
         }
 
-        detailController.startLat = commute?.startLat
-        detailController.startLon = commute?.startLon
-        detailController.endLat = commute?.endLat
-        detailController.endLon = commute?.endLon
+        detailController.startLat = commute!.startLat
+        detailController.startLon = commute!.startLon
+        detailController.startTime = commute!.startTime! as Date
+        detailController.endLat = commute!.endLat
+        detailController.endLon = commute!.endLon
+        detailController.endTime = commute!.endTime! as Date
         
         // Present the view controller using navigation
         navigationController!.pushViewController(detailController, animated: true)
