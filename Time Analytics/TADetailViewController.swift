@@ -10,12 +10,35 @@ import CoreData
 import Charts
 import UIKit
 
-class TADetailViewController: UIViewController {
+class TADetailViewController: UIViewController, UITableViewDataSource {
     
+    // MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.setToolbarHidden(true, animated: true)
     }
+    
+    // MARK: Table Data Source Delegate Methods
+    
+    // Must be implemented by subclass
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 0
+    }
+
+    // Must be implemented by subclass
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        return UITableViewCell()
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return nil
+    }
+    
+    func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+        return nil
+    }
+    
+    // MARK: Data Methods
     
     func getEntityObjectsWithQuery(_ entityName:String, _ query:String,_ argumentArray:[Any], _ sortKey:String?, _ isAscending:Bool?) -> [AnyObject] {
         let stack = getCoreDataStack()
@@ -28,6 +51,8 @@ class TADetailViewController: UIViewController {
         return try! stack.context.fetch(fr)
     }
 
+    // MARK: View Methods
+    
     func setupLineChartView(_ chartView:LineChartView, _ xValues:[Double],_ yValues:[Double]) {
         
         // Setup appearance: Remove all labels, gridlines, annotations, etc...
@@ -94,7 +119,6 @@ class TADetailViewController: UIViewController {
         let lineChartData = LineChartData(dataSets: lineCharDataSets)
         chartView.data = lineChartData
     }
-    
     
     func calculateTrendLine(_ xValues:[Double],_ yValues:[Double]) -> (Double,Double) {
         let n = xValues.count

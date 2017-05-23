@@ -12,7 +12,7 @@ import Foundation
 import MapKit
 import UIKit
 
-class TAPlaceDetailViewController: TADetailViewController, UITableViewDataSource {
+class TAPlaceDetailViewController: TADetailViewController {
     
     // MARK: Properties
     
@@ -138,7 +138,7 @@ class TAPlaceDetailViewController: TADetailViewController, UITableViewDataSource
     
     // MARK: UITableView Data Source Methods
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var count:Int?
         
         if tableView == self.placeTableView {
@@ -150,7 +150,7 @@ class TAPlaceDetailViewController: TADetailViewController, UITableViewDataSource
         return count!
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         var cell = UITableViewCell()
         
@@ -189,14 +189,6 @@ class TAPlaceDetailViewController: TADetailViewController, UITableViewDataSource
             cell = commuteCell
         }
         return cell
-    }
-    
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return nil
-    }
-    
-    func sectionIndexTitles(for tableView: UITableView) -> [String]? {
-        return nil
     }
     
     // MARK: Data Methods
