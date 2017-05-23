@@ -38,6 +38,17 @@ extension UIViewController {
         return (timeInOutString,commuteLengthString,startNameString,endNameString,dateString)
     }
     
+    func generateActivityStringDescriptions(_ activity:TAActivitySegment) -> (String,String,String) {
+        let startTime = activity.startTime! as Date
+        let endTime = activity.endTime! as Date
+        
+        let timeInOutString = generateTimeInOutString(startTime,endTime)
+        let activityLengthString = generateLengthString(startTime,endTime)
+        let dateString = generateDateString(startTime)
+        
+        return (timeInOutString,activityLengthString,dateString)
+    }
+    
     func generateTimeInOutString(_ startTime:Date, _ endTime:Date) -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "h:mm a"
@@ -79,7 +90,7 @@ extension UIViewController {
         return delegate.stack
     }
     
-    func getHealthStore() -> HKHealthStore? {
+    func getHealthStore() -> HKHealthStore {
         let delegate =  UIApplication.shared.delegate as! AppDelegate
         return delegate.healthStore
     }
@@ -195,6 +206,22 @@ extension UIViewController {
         
         private func timeText(from number: Int) -> String {
             return number < 10 ? "0\(number)" : "\(number)"
+        }
+    }
+    
+    
+    // Remove the progress view and all observers when we're done processing
+    func didCompleteProcessing(_ notification:Notification) {
+        if let progressView = view.viewWithTag(100) as? TAProgressView {
+            progressView.progressView.setProgress(1.0, animated: true)
+            progressView.fadeOut() { (finished) in
+                progressView.removeFromObservers()
+                progressView.removeFromSuperview()
+                NotificationCenter.default.removeObserver(self)
+                let stack = self.getCoreDataStack()
+                stack.save()
+                self.performSegue(withIdentifier: "HealthKit", sender: nil)
+            }
         }
     }
 }
