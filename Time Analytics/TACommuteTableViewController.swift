@@ -63,15 +63,35 @@ class TACommuteTableViewController: TATableViewController {
         cell.startNameLabel.text = startNameLabelText
         cell.endNameLabel.text = endNameLabelText
         
-        // Store commute information in cell
-        cell.startName = commute.startName
-        cell.startLat = commute.startLat
-        cell.startLon = commute.startLon
-        cell.endName = commute.startName
-        cell.endLat = commute.startLat
-        cell.endLon = commute.startLon
-        
         return cell
+    }
+    
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // Grab the DetailVC from Storyboard
+        let detailController = self.storyboard!.instantiateViewController(withIdentifier: "TACommuteDetailViewController") as! TACommuteDetailViewController
+        
+        // Populate view controller with data from the selected item
+        let commute = fetchedResultsController?.object(at: indexPath) as? TACommuteSegment
+
+        if let name = commute?.startName {
+            detailController.startName = name
+        } else {
+            detailController.startName = "Unknown"
+        }
+        if let name = commute?.endName {
+            detailController.endName = name
+        } else {
+            detailController.endName = "Unknown"
+        }
+
+        detailController.startLat = commute?.startLat
+        detailController.startLon = commute?.startLon
+        detailController.endLat = commute?.endLat
+        detailController.endLon = commute?.endLon
+        
+        // Present the view controller using navigation
+        navigationController!.pushViewController(detailController, animated: true)
     }
     
     // MARK: Helper functions
