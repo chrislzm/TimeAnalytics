@@ -875,6 +875,9 @@
                                     </view>
                                     <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="cAS-tr-LqX">
                                         <rect key="frame" x="187" y="60.5" width="188" height="196"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="Un9-wR-MFr" id="rXL-KD-mql"/>
+                                        </connections>
                                     </mapView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="  Commute History" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZN7-69-UOf" userLabel="Commute History Label">
                                         <rect key="frame" x="0.0" y="256" width="375" height="25"/>
@@ -959,7 +962,7 @@
                                             <outlet property="delegate" destination="PIb-cT-0y2" id="XZk-BA-I3j"/>
                                         </connections>
                                     </tableView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="  Time Before Departing" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vTc-Of-CNc" userLabel="TimeAtDepartureLabel">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="  Time at Place Before Departure" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vTc-Of-CNc" userLabel="TimeAtDepartureLabel">
                                         <rect key="frame" x="0.0" y="372" width="375" height="25"/>
                                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                         <constraints>
@@ -1042,7 +1045,7 @@
                                             <outlet property="delegate" destination="PIb-cT-0y2" id="Rei-aa-vQG"/>
                                         </connections>
                                     </tableView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="  Time After Arriving" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ikm-Kp-mx0" userLabel="TimeAtDestinationLabel">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="  Time at Place After Arrival" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ikm-Kp-mx0" userLabel="TimeAtDestinationLabel">
                                         <rect key="frame" x="0.0" y="487.5" width="375" height="25"/>
                                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                         <constraints>
