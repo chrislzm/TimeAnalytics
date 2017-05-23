@@ -14,12 +14,4 @@ class TACommuteTableViewCell : UITableViewCell {
     @IBOutlet weak var lengthLabel: UILabel!
     @IBOutlet weak var startNameLabel: UILabel!
     @IBOutlet weak var endNameLabel: UILabel!
-
-    // Properties
-    var startLat:Double! = nil
-    var startLon:Double! = nil
-    var startName:String! = nil
-    var endLat:Double! = nil
-    var endLon:Double! = nil
-    var endName:String! = nil
 }
