@@ -78,9 +78,8 @@ class TADownloadViewController:UIViewController {
                 NotificationCenter.default.removeObserver(self)
                 let stack = self.getCoreDataStack()
                 stack.save()
-                self.performSegue(withIdentifier: "DataDidFinishProcessing", sender: nil)
+                self.performSegue(withIdentifier: "HealthKit", sender: nil)
             }
         }
     }
-
 }

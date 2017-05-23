@@ -70,6 +70,8 @@ extension UIViewController {
         return nameString
     }
     
+    // MARK - Data and App Methods
+    
     // Returns the core data stack
     func getCoreDataStack() -> CoreDataStack {
         let delegate = UIApplication.shared.delegate as! AppDelegate

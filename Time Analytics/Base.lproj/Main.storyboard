@@ -128,12 +128,85 @@
                         </constraints>
                     </view>
                     <connections>
-                        <segue destination="cCK-cW-tTG" kind="show" identifier="DataDidFinishProcessing" id="v76-eW-6Ky"/>
+                        <segue destination="vu4-gK-h2O" kind="show" identifier="HealthKit" id="G0L-Ss-wC8"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pNG-OA-DhU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="65" y="122"/>
+            <point key="canvasLocation" x="889" y="-645"/>
+        </scene>
+        <!--Health Kit Access Controller-->
+        <scene sceneID="ha7-Yu-Ydh">
+            <objects>
+                <viewController id="vu4-gK-h2O" customClass="TAHealthKitAccessController" customModule="Time_Analytics" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Lck-Fp-fAm"/>
+                        <viewControllerLayoutGuide type="bottom" id="5Wp-IB-rgn"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="omE-pv-ue0">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PAT-Um-j3X">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="HEALTH KIT ACCESS" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CO1-s6-aHh">
+                                        <rect key="frame" x="19.5" y="343.5" width="337.5" height="20"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="20" id="w48-QY-jMh"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="14"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Time Analytics Logo" translatesAutoresizingMaskIntoConstraints="NO" id="7Rm-Je-CDy">
+                                        <rect key="frame" x="0.0" y="133" width="375" height="200.5"/>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="750" text="Allowing access to Health Kit will show your activity data and trends in Time Analytics" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="6" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o1M-tx-uX0" userLabel="Health Kit Instrucitons">
+                                        <rect key="frame" x="38" y="386" width="300" height="133.5"/>
+                                        <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="15"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QRj-Qi-wbm" customClass="BorderedButton" customModule="Time_Analytics" customModuleProvider="target">
+                                        <rect key="frame" x="37.5" y="540" width="300" height="30"/>
+                                        <state key="normal" title="Continue"/>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <constraints>
+                                    <constraint firstItem="CO1-s6-aHh" firstAttribute="centerX" secondItem="PAT-Um-j3X" secondAttribute="centerX" id="20W-oI-RgF"/>
+                                    <constraint firstItem="7Rm-Je-CDy" firstAttribute="centerX" secondItem="PAT-Um-j3X" secondAttribute="centerX" id="6Os-LC-nA9"/>
+                                    <constraint firstItem="QRj-Qi-wbm" firstAttribute="centerX" secondItem="PAT-Um-j3X" secondAttribute="centerX" id="FAl-dM-FWK"/>
+                                    <constraint firstItem="7Rm-Je-CDy" firstAttribute="centerY" secondItem="PAT-Um-j3X" secondAttribute="centerY" multiplier="0.7" id="Im1-sV-dmX"/>
+                                    <constraint firstItem="o1M-tx-uX0" firstAttribute="top" secondItem="CO1-s6-aHh" secondAttribute="bottom" constant="22.5" id="JJh-93-ptE"/>
+                                    <constraint firstItem="7Rm-Je-CDy" firstAttribute="width" secondItem="PAT-Um-j3X" secondAttribute="width" id="M6m-iy-ZK9"/>
+                                    <constraint firstItem="o1M-tx-uX0" firstAttribute="width" secondItem="PAT-Um-j3X" secondAttribute="width" multiplier="0.8" id="Sj5-Zd-bNa"/>
+                                    <constraint firstItem="CO1-s6-aHh" firstAttribute="top" secondItem="7Rm-Je-CDy" secondAttribute="bottom" constant="10" id="SzB-JO-KV1"/>
+                                    <constraint firstItem="QRj-Qi-wbm" firstAttribute="width" secondItem="PAT-Um-j3X" secondAttribute="width" multiplier="0.8" id="VQu-hY-bTE"/>
+                                    <constraint firstItem="o1M-tx-uX0" firstAttribute="height" secondItem="PAT-Um-j3X" secondAttribute="height" multiplier="0.2" id="aPz-Uo-TX0"/>
+                                    <constraint firstItem="7Rm-Je-CDy" firstAttribute="height" secondItem="PAT-Um-j3X" secondAttribute="height" multiplier="0.3" id="bgJ-RB-uxY"/>
+                                    <constraint firstItem="QRj-Qi-wbm" firstAttribute="top" secondItem="o1M-tx-uX0" secondAttribute="bottom" constant="20" id="cL7-uZ-CMw"/>
+                                    <constraint firstItem="o1M-tx-uX0" firstAttribute="centerX" secondItem="PAT-Um-j3X" secondAttribute="centerX" id="fv8-wJ-aZi"/>
+                                    <constraint firstItem="CO1-s6-aHh" firstAttribute="width" secondItem="PAT-Um-j3X" secondAttribute="width" multiplier="0.9" id="nSO-AF-CS3"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="PAT-Um-j3X" firstAttribute="width" secondItem="omE-pv-ue0" secondAttribute="width" id="XPC-ZV-TSD"/>
+                            <constraint firstItem="PAT-Um-j3X" firstAttribute="height" secondItem="omE-pv-ue0" secondAttribute="height" id="bv8-ZP-4JN"/>
+                            <constraint firstItem="PAT-Um-j3X" firstAttribute="centerX" secondItem="omE-pv-ue0" secondAttribute="centerX" id="cmo-ET-3r2"/>
+                            <constraint firstItem="PAT-Um-j3X" firstAttribute="centerY" secondItem="omE-pv-ue0" secondAttribute="centerY" id="eWn-gn-CU1"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <segue destination="cCK-cW-tTG" kind="show" id="oXS-RJ-DSL"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5ME-wG-6rM" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1702" y="-645"/>
         </scene>
         <!--Settings View Controller-->
         <scene sceneID="jXC-Ta-pW8">
@@ -1211,6 +1284,6 @@
         <image name="Time Analytics Logo" width="3840" height="2532"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="v76-eW-6Ky"/>
+        <segue reference="oXS-RJ-DSL"/>
     </inferredMetricsTieBreakers>
 </document>
