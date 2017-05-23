@@ -67,19 +67,5 @@ class TADownloadViewController:UIViewController {
             }
         }
     }
-    
-    // Remove the progress view and all observers when we're done processing
-    func didCompleteProcessing(_ notification:Notification) {
-        if let progressView = view.viewWithTag(100) as? TAProgressView {
-            progressView.progressView.setProgress(1.0, animated: true)
-            progressView.fadeOut() { (finished) in
-                progressView.removeFromObservers()
-                progressView.removeFromSuperview()
-                NotificationCenter.default.removeObserver(self)
-                let stack = self.getCoreDataStack()
-                stack.save()
-                self.performSegue(withIdentifier: "HealthKit", sender: nil)
-            }
-        }
-    }
+
 }
