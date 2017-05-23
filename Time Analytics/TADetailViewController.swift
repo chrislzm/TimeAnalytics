@@ -6,11 +6,12 @@
 //  Copyright © 2017 Chris Leung. All rights reserved.
 //
 
+import CoreData
 import Charts
 import UIKit
 
 class TADetailViewController: UIViewController {
-        
+    
     func getEntityObjectsWithQuery(_ entityName:String, _ query:String,_ argumentArray:[Any], _ sortKey:String?, _ isAscending:Bool?) -> [AnyObject] {
         let stack = getCoreDataStack()
         let fr = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
