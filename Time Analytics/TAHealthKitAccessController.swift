@@ -17,10 +17,7 @@ class TAHealthKitAccessController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if HKHealthStore.isHealthDataAvailable() {
-            let delegate =  UIApplication.shared.delegate as! AppDelegate
-            delegate.healthStore = HKHealthStore()
-        } else {
+        if !HKHealthStore.isHealthDataAvailable() {
             self.performSegue(withIdentifier: "NoHealthKit", sender: nil)
         }
     }
@@ -39,9 +36,9 @@ class TAHealthKitAccessController: UIViewController {
     
     func authorizeHealthKit(completion: ((_ success: Bool, _ error: Error?) -> Void)!) {
         
-        let healthKitStore = getHealthStore()!
+        let healthKitStore = getHealthStore()
         // State the health data type(s) we want to read from HealthKit.
-        let readableTypes: Set<HKSampleType> = [HKWorkoutType.workoutType(), HKObjectType.categoryType(forIdentifier: .mindfulSession)!, HKObjectType.categoryType(forIdentifier: .sleepAnalysis)!]
+        let readableTypes: Set<HKSampleType> = [HKWorkoutType.workoutType(), HKObjectType.categoryType(forIdentifier: .sleepAnalysis)!]
 
         healthKitStore.requestAuthorization(toShare: nil, read: readableTypes) { (success, error) -> Void in
             if( completion != nil ) {
