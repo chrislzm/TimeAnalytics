@@ -56,7 +56,7 @@ class TACommuteDetailViewController: TADetailViewController, MKMapViewDelegate {
         if !timeBeforeDepartingTableData.isEmpty {
             didTapOnDepartureTable = true
             let place = timeBeforeDepartingTableData[0]
-            showDetailControllerFor(place)
+            showPlaceDetailViewController(place)
         }
     }
     
@@ -64,7 +64,7 @@ class TACommuteDetailViewController: TADetailViewController, MKMapViewDelegate {
         if !timeBeforeDepartingTableData.isEmpty {
             didTapOnArrivalTable = true
             let place = timeAfterArrivingTableData[0]
-            showDetailControllerFor(place)
+            showPlaceDetailViewController(place)
         }
     }
 
@@ -263,22 +263,6 @@ class TACommuteDetailViewController: TADetailViewController, MKMapViewDelegate {
     }
     
     // MARK: View Methods
-    
-    func showDetailControllerFor(_ place:TAPlaceSegment) {
-        let detailController = self.storyboard!.instantiateViewController(withIdentifier: "TAPlaceDetailViewController") as! TAPlaceDetailViewController
-        
-        // Populate view controller with data from the selected item
-        detailController.lat = place.lat
-        detailController.lon = place.lon
-        if let name = place.name {
-            detailController.name = name
-        } else {
-            detailController.name = "Unknown"
-        }
-        
-        // Present the view controller using navigation
-        navigationController!.pushViewController(detailController, animated: true)
-    }
     
     func setTitle() {
         title = "\(startName!) to \(endName!)"
