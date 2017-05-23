@@ -6,6 +6,7 @@
 //  Copyright © 2017 Chris Leung. All rights reserved.
 //
 
+import HealthKit
 import UIKit
 
 extension UIViewController {
@@ -76,6 +77,11 @@ extension UIViewController {
     func getCoreDataStack() -> CoreDataStack {
         let delegate = UIApplication.shared.delegate as! AppDelegate
         return delegate.stack
+    }
+    
+    func getHealthStore() -> HKHealthStore? {
+        let delegate =  UIApplication.shared.delegate as! AppDelegate
+        return delegate.healthStore
     }
     
     // MARK - View Methods
