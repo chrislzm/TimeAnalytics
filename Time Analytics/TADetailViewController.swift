@@ -40,6 +40,18 @@ class TADetailViewController: UIViewController, UITableViewDataSource {
     
     // MARK: Data Methods
     
+    func getTAPlaceSegment(_ lat:Double,_ lon:Double,_ time:Date,_ startTime:Bool) -> TAPlaceSegment {
+        let queryTimeKey:String
+        if startTime {
+            queryTimeKey = "startTime"
+        } else {
+            queryTimeKey = "endTime"
+        }
+        
+        let place = getEntityObjectsWithQuery("TAPlaceSegment", "lat == %@ AND lon == %@ AND \(queryTimeKey) == %@", [lat,lon,time], nil, nil) as! [TAPlaceSegment]
+        return place[0]
+    }
+    
     func getEntityObjectsWithQuery(_ entityName:String, _ query:String,_ argumentArray:[Any], _ sortKey:String?, _ isAscending:Bool?) -> [AnyObject] {
         let stack = getCoreDataStack()
         let fr = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
