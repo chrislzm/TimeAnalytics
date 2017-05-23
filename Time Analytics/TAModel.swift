@@ -45,6 +45,18 @@ class TAModel {
         save(context)
     }
     
+    func createNewTAActivityObject(_ startTime:NSDate,_ endTime:NSDate,_ name:String,_ context:NSManagedObjectContext) {
+        if(containsObject("TAActivitySegment","startTime",startTime,context)) {
+            deleteObject("TAActivitySegment","startTime",startTime,context)
+        }
+        let taActivitySegmentEntity = NSEntityDescription.entity(forEntityName: "TAActivitySegment", in: context)!
+        let taActivitySegment = NSManagedObject(entity: taActivitySegmentEntity, insertInto: context)
+        taActivitySegment.setValue(startTime, forKey:"startTime")
+        taActivitySegment.setValue(endTime, forKey: "endTime")
+        taActivitySegment.setValue(name, forKey:"name")
+        save(context)
+    }
+    
     func createNewTAPlaceObject(_ movesStartTime:NSDate, _ startTime:NSDate, _ endTime:NSDate, _ lat:Double, _ lon:Double, _ name:String?,_ context:NSManagedObjectContext) {
 
         if(containsObject("TAPlaceSegment","startTime",startTime,context)) {
