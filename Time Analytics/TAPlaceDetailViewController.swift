@@ -86,7 +86,6 @@ class TAPlaceDetailViewController: TADetailViewController, UITableViewDataSource
         super.viewDidLoad()
 
         // Setup the view
-        navigationController?.setToolbarHidden(true, animated: true)
         title = name
         addEditButton()
         

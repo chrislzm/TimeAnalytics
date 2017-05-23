@@ -12,6 +12,11 @@ import UIKit
 
 class TADetailViewController: UIViewController {
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        navigationController?.setToolbarHidden(true, animated: true)
+    }
+    
     func getEntityObjectsWithQuery(_ entityName:String, _ query:String,_ argumentArray:[Any], _ sortKey:String?, _ isAscending:Bool?) -> [AnyObject] {
         let stack = getCoreDataStack()
         let fr = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
