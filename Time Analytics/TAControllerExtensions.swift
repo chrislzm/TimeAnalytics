@@ -76,6 +76,8 @@ extension UIViewController {
         return delegate.stack
     }
     
+    // MARK - View Methods
+    
     // Creates sets up overlay attributes, hides it, and adds it to the navigation controller view hierarchy
     func setupOverlayView(_ view:UIView, _ parent:UIView) {
         
@@ -95,6 +97,48 @@ extension UIViewController {
         let heightConstraint = NSLayoutConstraint(item: view, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: 50)
         let bottomConstraint = NSLayoutConstraint(item: view, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: parent, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: 0)
         parent.addConstraints([horizontalConstraint,widthConstraint,heightConstraint,bottomConstraint])
+    }
+    
+    func showPlaceDetailViewController(_ place:TAPlaceSegment) {
+        // Grab the DetailVC from Storyboard
+        let detailController = self.storyboard!.instantiateViewController(withIdentifier: "TAPlaceDetailViewController") as! TAPlaceDetailViewController
+        
+        detailController.lat = place.lat
+        detailController.lon = place.lon
+        if let name = place.name {
+            detailController.name = name
+        } else {
+            detailController.name = "Unknown"
+        }
+        
+        // Present the view controller using navigation
+        navigationController!.pushViewController(detailController, animated: true)
+    }
+    
+    func showCommuteDetailViewController(_ commute:TACommuteSegment) {
+        // Grab the DetailVC from Storyboard
+        let detailController = self.storyboard!.instantiateViewController(withIdentifier: "TACommuteDetailViewController") as! TACommuteDetailViewController
+        
+        if let name = commute.startName {
+            detailController.startName = name
+        } else {
+            detailController.startName = "Unknown"
+        }
+        if let name = commute.endName {
+            detailController.endName = name
+        } else {
+            detailController.endName = "Unknown"
+        }
+        
+        detailController.startLat = commute.startLat
+        detailController.startLon = commute.startLon
+        detailController.startTime = commute.startTime! as Date
+        detailController.endLat = commute.endLat
+        detailController.endLon = commute.endLon
+        detailController.endTime = commute.endTime! as Date
+        
+        // Present the view controller using navigation
+        navigationController!.pushViewController(detailController, animated: true)
     }
     
     // Creates length of time string in days minutes and hours
