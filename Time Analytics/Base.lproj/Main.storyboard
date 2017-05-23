@@ -893,7 +893,7 @@
                                         <rect key="frame" x="0.0" y="281" width="375" height="90.5"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <prototypes>
-                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TAPlaceTableViewCell" rowHeight="30" id="tBd-vK-X3Q" customClass="TAPlaceDetailTableViewCell" customModule="Time_Analytics" customModuleProvider="target">
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TACommuteDetailCommuteTableViewCell" rowHeight="30" id="tBd-vK-X3Q" customClass="TACommuteDetailCommuteTableViewCell" customModule="Time_Analytics" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="28" width="375" height="30"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="tBd-vK-X3Q" id="HqX-S3-eRX">
@@ -976,7 +976,7 @@
                                         <rect key="frame" x="0.0" y="397" width="375" height="90.5"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <prototypes>
-                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TAPlaceDetailCommuteTableViewCell" rowHeight="30" id="5a2-im-NWZ" customClass="TAPlaceDetailCommuteTableViewCell" customModule="Time_Analytics" customModuleProvider="target">
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TACommuteDetailDepartureTableViewCell" rowHeight="30" id="5a2-im-NWZ" customClass="TACommuteDetailDepartureTableViewCell" customModule="Time_Analytics" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="28" width="375" height="30"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5a2-im-NWZ" id="e2u-az-GkE">
@@ -1055,16 +1055,66 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="md3-aT-pOl" userLabel="TimeAtDestinationTableView">
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="30" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="md3-aT-pOl" userLabel="TimeAtDestinationTableView">
                                         <rect key="frame" x="0.0" y="512.5" width="375" height="90.5"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <prototypes>
-                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="7b6-8Y-hED">
-                                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TACommuteDetailDestinationTableViewCell" rowHeight="30" id="7b6-8Y-hED" customClass="TACommuteDetailDestinationTableViewCell" customModule="Time_Analytics" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="28" width="375" height="30"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="7b6-8Y-hED" id="Af5-bk-Ge4">
-                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="29.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
+                                                    <subviews>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SnT-U5-mWE" userLabel="Separator">
+                                                            <rect key="frame" x="0.0" y="0.0" width="375" height="29.5"/>
+                                                            <subviews>
+                                                                <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MOm-1Z-LdZ">
+                                                                    <rect key="frame" x="-0.5" y="1" width="375" height="27.5"/>
+                                                                    <subviews>
+                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uv8-ZF-Lbr">
+                                                                            <rect key="frame" x="0.0" y="0.0" width="149.5" height="27.5"/>
+                                                                            <color key="backgroundColor" red="0.99942404029999998" green="0.97040138229999995" blue="0.86234215339999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                                            <nil key="textColor"/>
+                                                                            <nil key="highlightedColor"/>
+                                                                        </label>
+                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Length" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AMP-Qu-B3M">
+                                                                            <rect key="frame" x="149.5" y="0.0" width="93" height="27.5"/>
+                                                                            <color key="backgroundColor" red="1" green="0.88996063209999998" blue="0.8102506894" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                                            <nil key="textColor"/>
+                                                                            <nil key="highlightedColor"/>
+                                                                        </label>
+                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TfF-dX-qzn">
+                                                                            <rect key="frame" x="242.5" y="0.0" width="132.5" height="27.5"/>
+                                                                            <color key="backgroundColor" red="0.80238165340000001" green="0.84112655329999997" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                                            <nil key="textColor"/>
+                                                                            <nil key="highlightedColor"/>
+                                                                        </label>
+                                                                    </subviews>
+                                                                    <constraints>
+                                                                        <constraint firstItem="AMP-Qu-B3M" firstAttribute="width" secondItem="MOm-1Z-LdZ" secondAttribute="width" multiplier="0.25" id="AG0-g0-vxR"/>
+                                                                        <constraint firstItem="Uv8-ZF-Lbr" firstAttribute="width" secondItem="MOm-1Z-LdZ" secondAttribute="width" multiplier="0.4" id="jEa-GX-s8U"/>
+                                                                    </constraints>
+                                                                </stackView>
+                                                            </subviews>
+                                                            <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                                            <constraints>
+                                                                <constraint firstItem="MOm-1Z-LdZ" firstAttribute="width" secondItem="SnT-U5-mWE" secondAttribute="width" id="2Ec-rM-b7M"/>
+                                                                <constraint firstItem="MOm-1Z-LdZ" firstAttribute="centerX" secondItem="SnT-U5-mWE" secondAttribute="centerX" id="DAp-1Y-1n3"/>
+                                                                <constraint firstItem="MOm-1Z-LdZ" firstAttribute="centerY" secondItem="SnT-U5-mWE" secondAttribute="centerY" id="RjI-nM-AS2"/>
+                                                                <constraint firstItem="MOm-1Z-LdZ" firstAttribute="height" secondItem="SnT-U5-mWE" secondAttribute="height" constant="-2" id="kUE-Zr-CGF"/>
+                                                            </constraints>
+                                                        </view>
+                                                    </subviews>
+                                                    <constraints>
+                                                        <constraint firstItem="SnT-U5-mWE" firstAttribute="centerY" secondItem="Af5-bk-Ge4" secondAttribute="centerY" id="Ad5-9d-5yg"/>
+                                                        <constraint firstItem="SnT-U5-mWE" firstAttribute="height" secondItem="Af5-bk-Ge4" secondAttribute="height" id="HGt-KV-hs4"/>
+                                                        <constraint firstItem="SnT-U5-mWE" firstAttribute="width" secondItem="Af5-bk-Ge4" secondAttribute="width" id="LgV-D2-Kuu"/>
+                                                        <constraint firstItem="SnT-U5-mWE" firstAttribute="centerX" secondItem="Af5-bk-Ge4" secondAttribute="centerX" id="wG5-FL-ihO"/>
+                                                    </constraints>
                                                 </tableViewCellContentView>
                                             </tableViewCell>
                                         </prototypes>
