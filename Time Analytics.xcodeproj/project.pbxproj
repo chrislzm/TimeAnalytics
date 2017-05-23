@@ -31,6 +31,9 @@
 		A59967811ED36D6C00B77D2F /* TAPlaceDetailCommuteTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59967801ED36D6C00B77D2F /* TAPlaceDetailCommuteTableViewCell.swift */; };
 		A59D8FBF1ED3903500E119F2 /* TACommuteDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59D8FBE1ED3903500E119F2 /* TACommuteDetailViewController.swift */; };
 		A59D8FC11ED3911D00E119F2 /* TADetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59D8FC01ED3911D00E119F2 /* TADetailViewController.swift */; };
+		A5A25B961ED3D36C00CC65B9 /* TACommuteDetailCommuteTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A25B951ED3D36C00CC65B9 /* TACommuteDetailCommuteTableViewCell.swift */; };
+		A5A25B981ED3D38000CC65B9 /* TACommuteDetailDepartureTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A25B971ED3D38000CC65B9 /* TACommuteDetailDepartureTableViewCell.swift */; };
+		A5A25B9A1ED3D39100CC65B9 /* TACommuteDetailDestinationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A25B991ED3D39100CC65B9 /* TACommuteDetailDestinationTableViewCell.swift */; };
 		A5AA02ED1ED11A6C0046CCB4 /* TAProgressView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A5AA02EC1ED11A6C0046CCB4 /* TAProgressView.xib */; };
 		A5AA02EF1ED11ACC0046CCB4 /* TAProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5AA02EE1ED11ACC0046CCB4 /* TAProgressView.swift */; };
 		A5AB93FB1ECA65B10055301C /* Managed Objects.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A5AB93F91ECA65B10055301C /* Managed Objects.xcdatamodeld */; };
@@ -70,6 +73,9 @@
 		A59967801ED36D6C00B77D2F /* TAPlaceDetailCommuteTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TAPlaceDetailCommuteTableViewCell.swift; sourceTree = "<group>"; };
 		A59D8FBE1ED3903500E119F2 /* TACommuteDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TACommuteDetailViewController.swift; sourceTree = "<group>"; };
 		A59D8FC01ED3911D00E119F2 /* TADetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TADetailViewController.swift; sourceTree = "<group>"; };
+		A5A25B951ED3D36C00CC65B9 /* TACommuteDetailCommuteTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TACommuteDetailCommuteTableViewCell.swift; sourceTree = "<group>"; };
+		A5A25B971ED3D38000CC65B9 /* TACommuteDetailDepartureTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TACommuteDetailDepartureTableViewCell.swift; sourceTree = "<group>"; };
+		A5A25B991ED3D39100CC65B9 /* TACommuteDetailDestinationTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TACommuteDetailDestinationTableViewCell.swift; sourceTree = "<group>"; };
 		A5AA02EC1ED11A6C0046CCB4 /* TAProgressView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TAProgressView.xib; sourceTree = "<group>"; };
 		A5AA02EE1ED11ACC0046CCB4 /* TAProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TAProgressView.swift; sourceTree = "<group>"; };
 		A5AB93FA1ECA65B10055301C /* Managed Objects.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Managed Objects.xcdatamodel"; sourceTree = "<group>"; };
@@ -191,6 +197,9 @@
 				A568112C1ED27A7B002FF4D0 /* TACommuteTableViewController.swift */,
 				A599677E1ED359DF00B77D2F /* TACommuteTableViewCell.swift */,
 				A59D8FBE1ED3903500E119F2 /* TACommuteDetailViewController.swift */,
+				A5A25B951ED3D36C00CC65B9 /* TACommuteDetailCommuteTableViewCell.swift */,
+				A5A25B971ED3D38000CC65B9 /* TACommuteDetailDepartureTableViewCell.swift */,
+				A5A25B991ED3D39100CC65B9 /* TACommuteDetailDestinationTableViewCell.swift */,
 			);
 			name = Commute;
 			sourceTree = "<group>";
@@ -366,8 +375,11 @@
 				A5B6D1AA1ED16ECE00890BC4 /* TAViewExtensions.swift in Sources */,
 				A5668BEC1ED2AB2E00CB688D /* TANavigationViewController.swift in Sources */,
 				A5FFFD931ECAC6F200B55020 /* TASettingsViewController.swift in Sources */,
+				A5A25B981ED3D38000CC65B9 /* TACommuteDetailDepartureTableViewCell.swift in Sources */,
 				A5AA02EF1ED11ACC0046CCB4 /* TAProgressView.swift in Sources */,
+				A5A25B9A1ED3D39100CC65B9 /* TACommuteDetailDestinationTableViewCell.swift in Sources */,
 				A5FFFD8D1ECAB38C00B55020 /* TATableViewController.swift in Sources */,
+				A5A25B961ED3D36C00CC65B9 /* TACommuteDetailCommuteTableViewCell.swift in Sources */,
 				A55B137E1ECC04A600FA14FB /* TAPlaceSegment+CoreDataProperties.swift in Sources */,
 				A59D8FBF1ED3903500E119F2 /* TACommuteDetailViewController.swift in Sources */,
 				A599677D1ED3384B00B77D2F /* TADownloadViewController.swift in Sources */,
