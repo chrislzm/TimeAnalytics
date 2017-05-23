@@ -959,8 +959,8 @@
                                             </tableViewCell>
                                         </prototypes>
                                         <connections>
-                                            <outlet property="dataSource" destination="PIb-cT-0y2" id="geH-RS-Zwo"/>
-                                            <outlet property="delegate" destination="PIb-cT-0y2" id="XZk-BA-I3j"/>
+                                            <outlet property="dataSource" destination="Un9-wR-MFr" id="Ton-GG-KBD"/>
+                                            <outlet property="delegate" destination="Un9-wR-MFr" id="2GE-Uw-Bbh"/>
                                         </connections>
                                     </tableView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="  Time at Place Before Departure" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vTc-Of-CNc" userLabel="TimeAtDepartureLabel">
@@ -1043,8 +1043,8 @@
                                             </tableViewCell>
                                         </prototypes>
                                         <connections>
-                                            <outlet property="dataSource" destination="PIb-cT-0y2" id="eaw-5a-y6S"/>
-                                            <outlet property="delegate" destination="PIb-cT-0y2" id="Rei-aa-vQG"/>
+                                            <outlet property="dataSource" destination="Un9-wR-MFr" id="9OA-fs-FbV"/>
+                                            <outlet property="delegate" destination="Un9-wR-MFr" id="tSr-VA-yr9"/>
                                         </connections>
                                     </tableView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="  Time at Place After Arrival" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ikm-Kp-mx0" userLabel="TimeAtDestinationLabel">
@@ -1125,6 +1125,10 @@
                                                 </connections>
                                             </tableViewCell>
                                         </prototypes>
+                                        <connections>
+                                            <outlet property="dataSource" destination="Un9-wR-MFr" id="jVC-y9-OuK"/>
+                                            <outlet property="delegate" destination="Un9-wR-MFr" id="2jC-17-420"/>
+                                        </connections>
                                     </tableView>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
