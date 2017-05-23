@@ -112,6 +112,7 @@ class TAPlaceDetailViewController: TADetailViewController {
 
         // Styles
         placeTableView.separatorStyle = .none
+        placeTableView.allowsSelection = false
         commuteTableView.separatorStyle = .none
         activityTableView.separatorStyle = .none
 
@@ -134,6 +135,18 @@ class TAPlaceDetailViewController: TADetailViewController {
         
         let totalCommutes = commuteHistoryTableData.count
         commuteHistoryLabel.text = "  Commute History - \(totalCommutes) Total"
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        // Deselect row if we selected one that caused a segue
+        if let selectedRowIndexPath = commuteTableView.indexPathForSelectedRow {
+            commuteTableView.deselectRow(at: selectedRowIndexPath, animated: true)
+        }
+        else if let selectedRowIndexPath = activityTableView.indexPathForSelectedRow {
+            activityTableView.deselectRow(at: selectedRowIndexPath, animated: true)
+        }
     }
     
     // MARK: UITableView Data Source Methods
