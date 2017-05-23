@@ -16,7 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     var query:String?
     let stack = CoreDataStack(modelName: "Managed Objects")!
-    var healthStore: HKHealthStore! = nil
+    var healthStore = HKHealthStore()
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
         if let query = url.query {
