@@ -17,10 +17,9 @@ class TAProcessHealthKitDataController: UIViewController {
         
         let stack = getCoreDataStack()
         let dateFormatter = DateFormatter()
-        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-        
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")        
         dateFormatter.dateFormat = "yyyyMMdd"
-        let fromDate = dateFormatter.date(from: "20161201")!
+        let fromDate = dateFormatter.date(from: TANetClient.sharedInstance().movesUserFirstDate!)!
         
         let sleepType = HKObjectType.categoryType(forIdentifier: .sleepAnalysis)!
         retrieveHealthStoreData(sleepType,fromDate) { (query,result,error) in
@@ -30,40 +29,37 @@ class TAProcessHealthKitDataController: UIViewController {
                 }
                 return
             }
-            
-            for item in result! {
-                let sample = item as! HKCategorySample
-                if sample.value == HKCategoryValueSleepAnalysis.inBed.rawValue {
-                    // Create the TAActivity object
-                    DispatchQueue.main.async {
+            stack.performBackgroundBatchOperation() { (context) in
+                for item in result! {
+                    let sample = item as! HKCategorySample
+                    if sample.value == HKCategoryValueSleepAnalysis.inBed.rawValue {
+                        // Create the TAActivity object
                         TAModel.sharedInstance().createNewTAActivityObject(sample.startDate as NSDate, sample.endDate as NSDate, "In Bed", stack.context)
                     }
                 }
-            }
-            DispatchQueue.main.async {
                 stack.save()
                 self.completedCategory()
             }
         }
-        
+    
         let workoutType = HKWorkoutType.workoutType()
         retrieveHealthStoreData(workoutType,fromDate) { (query,result,error) in
+            
             if error != nil {
                 DispatchQueue.main.async {
                     self.displayErrorAlert("There was an error processing your HealthKit data")
                 }
                 return
             }
-            
-            for item in result! {
-                let workout = item as! HKWorkout
-                let workoutType = self.getWorkoutTypeString(workout.workoutActivityType.rawValue)
-                // Create the TAActivity object
-                DispatchQueue.main.async {
-                    TAModel.sharedInstance().createNewTAActivityObject(item.startDate as NSDate, item.endDate as NSDate, workoutType, stack.context)
+            stack.performBackgroundBatchOperation() { (context) in
+                for item in result! {
+                    let workout = item as! HKWorkout
+                    let workoutType = self.getWorkoutTypeString(workout.workoutActivityType.rawValue)
+                    // Create the TAActivity object
+                    DispatchQueue.main.async {
+                        TAModel.sharedInstance().createNewTAActivityObject(item.startDate as NSDate, item.endDate as NSDate, workoutType, context)
+                    }
                 }
-            }
-            DispatchQueue.main.async {
                 stack.save()
                 self.completedCategory()
             }
@@ -73,6 +69,8 @@ class TAProcessHealthKitDataController: UIViewController {
     func completedCategory() {
         categoriesComplete += 1
         if categoriesComplete == 2 {
+            let stack = getCoreDataStack()
+            stack.save()
             self.performSegue(withIdentifier: "FinishedProcessingHealthKitData", sender: nil)
         }
     }
