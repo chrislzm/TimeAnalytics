@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="vu4-gK-h2O">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -171,6 +171,9 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QRj-Qi-wbm" customClass="BorderedButton" customModule="Time_Analytics" customModuleProvider="target">
                                         <rect key="frame" x="37.5" y="540" width="300" height="30"/>
                                         <state key="normal" title="Continue"/>
+                                        <connections>
+                                            <action selector="didPressContinue:" destination="vu4-gK-h2O" eventType="touchUpInside" id="naT-uT-PYf"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -201,12 +204,71 @@
                         </constraints>
                     </view>
                     <connections>
-                        <segue destination="cCK-cW-tTG" kind="show" id="oXS-RJ-DSL"/>
+                        <segue destination="sGX-OK-cog" kind="show" identifier="ProcessHealthKitData" id="eoH-EQ-065"/>
+                        <segue destination="auE-rE-b5u" kind="show" identifier="NoHealthKit" id="Vtp-pn-sNn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5ME-wG-6rM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1702" y="-645"/>
+        </scene>
+        <!--Process Health Kit Data Controller-->
+        <scene sceneID="K2h-vc-Flv">
+            <objects>
+                <viewController id="sGX-OK-cog" customClass="TAProcessHealthKitDataController" customModule="Time_Analytics" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="tEl-7f-GGC"/>
+                        <viewControllerLayoutGuide type="bottom" id="R1t-AI-NmF"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Ga2-38-ycb">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qVa-SM-XLM">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Processing your HealthKit data" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YU9-al-36O" userLabel="Message">
+                                        <rect key="frame" x="18.5" y="343.5" width="338" height="19"/>
+                                        <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="14"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Time Analytics Logo" translatesAutoresizingMaskIntoConstraints="NO" id="wY6-7L-p6V">
+                                        <rect key="frame" x="0.0" y="133" width="375" height="200.5"/>
+                                    </imageView>
+                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="Orb-le-62q">
+                                        <rect key="frame" x="169" y="412" width="37" height="37"/>
+                                    </activityIndicatorView>
+                                </subviews>
+                                <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <constraints>
+                                    <constraint firstItem="wY6-7L-p6V" firstAttribute="centerX" secondItem="qVa-SM-XLM" secondAttribute="centerX" id="0VL-ns-8VP"/>
+                                    <constraint firstItem="YU9-al-36O" firstAttribute="top" secondItem="wY6-7L-p6V" secondAttribute="bottom" constant="10" id="J7W-ja-fkU"/>
+                                    <constraint firstItem="wY6-7L-p6V" firstAttribute="width" secondItem="qVa-SM-XLM" secondAttribute="width" id="JRq-Je-aXG"/>
+                                    <constraint firstItem="Orb-le-62q" firstAttribute="centerX" secondItem="qVa-SM-XLM" secondAttribute="centerX" id="SAG-bg-v9M"/>
+                                    <constraint firstItem="YU9-al-36O" firstAttribute="centerX" secondItem="qVa-SM-XLM" secondAttribute="centerX" id="Z7r-3l-Iv0"/>
+                                    <constraint firstItem="wY6-7L-p6V" firstAttribute="centerY" secondItem="qVa-SM-XLM" secondAttribute="centerY" multiplier="0.7" id="lZE-g8-lBI"/>
+                                    <constraint firstItem="YU9-al-36O" firstAttribute="width" secondItem="qVa-SM-XLM" secondAttribute="width" multiplier="0.9" id="oHW-oZ-PLq"/>
+                                    <constraint firstItem="Orb-le-62q" firstAttribute="top" secondItem="YU9-al-36O" secondAttribute="bottom" constant="50" id="qXT-4l-dwi"/>
+                                    <constraint firstItem="wY6-7L-p6V" firstAttribute="height" secondItem="qVa-SM-XLM" secondAttribute="height" multiplier="0.3" id="yEb-OY-vpG"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <constraints>
+                            <constraint firstItem="qVa-SM-XLM" firstAttribute="centerX" secondItem="Ga2-38-ycb" secondAttribute="centerX" id="TRK-LQ-7aI"/>
+                            <constraint firstItem="qVa-SM-XLM" firstAttribute="height" secondItem="Ga2-38-ycb" secondAttribute="height" id="TjE-06-hjy"/>
+                            <constraint firstItem="qVa-SM-XLM" firstAttribute="centerY" secondItem="Ga2-38-ycb" secondAttribute="centerY" id="Xll-gS-yyA"/>
+                            <constraint firstItem="qVa-SM-XLM" firstAttribute="width" secondItem="Ga2-38-ycb" secondAttribute="width" id="YkP-fw-F7M"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <segue destination="auE-rE-b5u" kind="show" identifier="FinishedProcessingHealthKitData" id="ClF-5a-uSF"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="VLk-jZ-fRz" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2558" y="-645"/>
         </scene>
         <!--Settings View Controller-->
         <scene sceneID="jXC-Ta-pW8">
@@ -373,7 +435,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="30" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="M6a-WE-AXI">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TAPlaceTableViewCell" rowHeight="30" id="oKh-Tl-4NK" customClass="TAPlaceTableViewCell" customModule="Time_Analytics" customModuleProvider="target">
@@ -1284,6 +1346,6 @@
         <image name="Time Analytics Logo" width="3840" height="2532"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="oXS-RJ-DSL"/>
+        <segue reference="ClF-5a-uSF"/>
     </inferredMetricsTieBreakers>
 </document>
