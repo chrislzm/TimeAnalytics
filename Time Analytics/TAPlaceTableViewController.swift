@@ -14,7 +14,7 @@ class TAPlaceTableViewController: TATableViewController {
     
     @IBOutlet weak var placeTableView: UITableView!
     
-    let viewTitle = "My Places"
+    let viewTitle = "Places"
     
     // MARK: Actions
     
