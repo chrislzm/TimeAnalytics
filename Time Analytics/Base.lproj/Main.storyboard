@@ -953,7 +953,6 @@
                                                 <connections>
                                                     <outlet property="dateLabel" destination="0iw-oz-v8J" id="MfS-rp-W1R"/>
                                                     <outlet property="lengthLabel" destination="oDe-dU-uWa" id="aFb-XJ-NFf"/>
-                                                    <outlet property="timeInOutLabel" destination="QYF-Qr-Swt" id="HvJ-Bo-LY7"/>
                                                     <outlet property="timeLabel" destination="QYF-Qr-Swt" id="Wg1-33-mjc"/>
                                                 </connections>
                                             </tableViewCell>
@@ -1037,7 +1036,6 @@
                                                 <connections>
                                                     <outlet property="dateLabel" destination="Cje-17-xsy" id="c2d-CP-2js"/>
                                                     <outlet property="lengthLabel" destination="5i3-m9-FG3" id="fMj-ah-F4a"/>
-                                                    <outlet property="locationLabel" destination="Cje-17-xsy" id="xsf-Jj-LY5"/>
                                                     <outlet property="timeLabel" destination="xTD-e1-Zbr" id="YRn-2n-grQ"/>
                                                 </connections>
                                             </tableViewCell>
