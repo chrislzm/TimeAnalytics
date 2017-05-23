@@ -51,6 +51,15 @@ class TAPlaceTableViewController: TATableViewController {
         setupBottomNavigationBar()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        // Deselect row if we selected one that caused a segue
+        if let selectedRowIndexPath = placeTableView.indexPathForSelectedRow {
+            placeTableView.deselectRow(at: selectedRowIndexPath, animated: true)
+        }
+    }
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         // This method must be implemented by our subclass. There's no way
@@ -81,21 +90,9 @@ class TAPlaceTableViewController: TATableViewController {
     
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // Grab the DetailVC from Storyboard
-        let detailController = self.storyboard!.instantiateViewController(withIdentifier: "TAPlaceDetailViewController") as! TAPlaceDetailViewController
-        
-        // Populate view controller with data from the selected item
-        let place = fetchedResultsController?.object(at: indexPath) as? TAPlaceSegment
-        detailController.lat = place?.lat
-        detailController.lon = place?.lon
-        if let name = place?.name {
-            detailController.name = name
-        } else {
-            detailController.name = "Unknown"
-        }
-        
-        // Present the view controller using navigation
-        navigationController!.pushViewController(detailController, animated: true)
+        let place = fetchedResultsController?.object(at: indexPath) as! TAPlaceSegment
+
+        showPlaceDetailViewController(place)
     }
 
     func setupBottomNavigationBar() {
