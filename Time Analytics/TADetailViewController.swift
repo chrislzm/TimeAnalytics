@@ -10,7 +10,18 @@ import Charts
 import UIKit
 
 class TADetailViewController: UIViewController {
-    
+        
+    func getEntityObjectsWithQuery(_ entityName:String, _ query:String,_ argumentArray:[Any], _ sortKey:String?, _ isAscending:Bool?) -> [AnyObject] {
+        let stack = getCoreDataStack()
+        let fr = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
+        let pred = NSPredicate(format: query, argumentArray: argumentArray)
+        fr.predicate = pred
+        if let sort = sortKey, let ascending = isAscending {
+            fr.sortDescriptors = [NSSortDescriptor(key: sort, ascending: ascending)]
+        }
+        return try! stack.context.fetch(fr)
+    }
+
     func setupLineChartView(_ chartView:LineChartView, _ xValues:[Double],_ yValues:[Double]) {
         
         // Setup appearance: Remove all labels, gridlines, annotations, etc...
