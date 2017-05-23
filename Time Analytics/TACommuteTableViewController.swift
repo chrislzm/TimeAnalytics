@@ -13,13 +13,15 @@ class TACommuteTableViewController: TATableViewController {
 
     @IBOutlet weak var commuteTableView: UITableView!
     
-    let viewTitle = "My Commutes"
+    let viewTitle = "Commutes"
     
     // MARK: Actions
+    
+    // TODO: Rename this method
     func showPlacesButtonPressed() {
-        let placesController = self.storyboard!.instantiateViewController(withIdentifier: "TAPlaceTableViewController") as! TAPlaceTableViewController
+        let activitiesController = self.storyboard!.instantiateViewController(withIdentifier: "TAActivityTableViewController") as! TAActivityTableViewController
         let navigationController = self.navigationController!
-        navigationController.setViewControllers([placesController], animated: false)
+        navigationController.setViewControllers([activitiesController], animated: false)
     }
 
     // MARK: Lifecycle
@@ -83,9 +85,9 @@ class TACommuteTableViewController: TATableViewController {
     
     // MARK: Helper functions
     func setupBottomNavigationBar() {
-        let showCommutesButton = UIBarButtonItem(title: "Places", style: UIBarButtonItemStyle.plain, target: self, action: #selector(TACommuteTableViewController.showPlacesButtonPressed))
+        let showActivitiesButton = UIBarButtonItem(title: "Activities", style: UIBarButtonItemStyle.plain, target: self, action: #selector(TACommuteTableViewController.showPlacesButtonPressed))
         self.navigationController?.setToolbarHidden(false, animated: true)
-        self.setToolbarItems([showCommutesButton], animated: true)
+        self.setToolbarItems([showActivitiesButton], animated: true)
     }
     
     
