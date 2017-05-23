@@ -47,6 +47,15 @@ class TACommuteTableViewController: TATableViewController {
         setupBottomNavigationBar()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        // Deselect row if we selected one that caused a segue
+        if let selectedRowIndexPath = commuteTableView.indexPathForSelectedRow {
+            commuteTableView.deselectRow(at: selectedRowIndexPath, animated: true)
+        }
+    }
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // Find the right notebook for this indexpath
         let commute = fetchedResultsController!.object(at: indexPath) as! TACommuteSegment
@@ -68,32 +77,8 @@ class TACommuteTableViewController: TATableViewController {
     
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // Grab the DetailVC from Storyboard
-        let detailController = self.storyboard!.instantiateViewController(withIdentifier: "TACommuteDetailViewController") as! TACommuteDetailViewController
-        
-        // Populate view controller with data from the selected item
-        let commute = fetchedResultsController?.object(at: indexPath) as? TACommuteSegment
-
-        if let name = commute?.startName {
-            detailController.startName = name
-        } else {
-            detailController.startName = "Unknown"
-        }
-        if let name = commute?.endName {
-            detailController.endName = name
-        } else {
-            detailController.endName = "Unknown"
-        }
-
-        detailController.startLat = commute!.startLat
-        detailController.startLon = commute!.startLon
-        detailController.startTime = commute!.startTime! as Date
-        detailController.endLat = commute!.endLat
-        detailController.endLon = commute!.endLon
-        detailController.endTime = commute!.endTime! as Date
-        
-        // Present the view controller using navigation
-        navigationController!.pushViewController(detailController, animated: true)
+        let commute = fetchedResultsController!.object(at: indexPath) as! TACommuteSegment
+        showCommuteDetailViewController(commute)
     }
     
     // MARK: Helper functions
