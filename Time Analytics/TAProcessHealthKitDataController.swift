@@ -34,7 +34,7 @@ class TAProcessHealthKitDataController: UIViewController {
                     let sample = item as! HKCategorySample
                     if sample.value == HKCategoryValueSleepAnalysis.inBed.rawValue {
                         // Create the TAActivity object
-                        TAModel.sharedInstance().createNewTAActivityObject(sample.startDate as NSDate, sample.endDate as NSDate, "In Bed", stack.context)
+                        TAModel.sharedInstance().createNewTAActivityObject(sample.startDate as NSDate, sample.endDate as NSDate, "In Bed", context)
                     }
                 }
                 stack.save()
