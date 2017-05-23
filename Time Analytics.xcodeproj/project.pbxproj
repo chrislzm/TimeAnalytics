@@ -222,8 +222,8 @@
 				A52564A81EC929D900DD843F /* AppDelegate.swift */,
 				A59D8FC51ED3918400E119F2 /* Login */,
 				A59D8FC41ED3916300E119F2 /* Shared */,
-				A59D8FC31ED3913D00E119F2 /* Commute */,
 				A59D8FC21ED3913200E119F2 /* Place */,
+				A59D8FC31ED3913D00E119F2 /* Commute */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
