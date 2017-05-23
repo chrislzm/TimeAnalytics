@@ -12,7 +12,7 @@ import Foundation
 import MapKit
 import UIKit
 
-class TAPlaceDetailViewController: TADetailViewController {
+class TAPlaceDetailViewController: TADetailViewController, UITableViewDelegate {
     
     // MARK: Properties
     
@@ -204,6 +204,15 @@ class TAPlaceDetailViewController: TADetailViewController {
         return cell
     }
     
+    // MARK: Table Delegate methods
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if tableView == commuteTableView {
+            let commute = commuteHistoryTableData[indexPath.row]
+            showCommuteDetailViewController(commute)
+        }
+    }
+    
     // MARK: Data Methods
     
     func getVisitDataForThisPlace() -> ([Double],[Double],Int,Double) {
@@ -253,5 +262,4 @@ class TAPlaceDetailViewController: TADetailViewController {
         let viewRegion = MKCoordinateRegionMakeWithDistance(coordinate, 1000, 1000);
         mapView.setRegion(viewRegion, animated: true)
     }
-
 }
