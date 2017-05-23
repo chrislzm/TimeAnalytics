@@ -82,7 +82,8 @@
                     </navigationBar>
                     <connections>
                         <segue destination="oHr-pP-H39" kind="show" id="qRX-N6-kY9"/>
-                        <segue destination="15a-Kj-Xnc" kind="relationship" relationship="rootViewController" id="boK-Bo-Yja"/>
+                        <segue destination="auE-rE-b5u" kind="relationship" relationship="rootViewController" id="S4U-B6-d7v"/>
+                        <segue destination="15a-Kj-Xnc" kind="show" id="cmn-wx-3l0"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Cq6-nL-bh1" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -434,9 +435,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="30" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Zi9-JZ-bFM">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="30" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Zi9-JZ-bFM">
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TAActivityTableViewCell" rowHeight="30" id="ny4-vv-74o" customClass="TAActivityTableViewCell" customModule="Time_Analytics" customModuleProvider="target">
@@ -510,6 +510,12 @@
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="Zi9-JZ-bFM" secondAttribute="trailing" id="9rG-ep-C6x"/>
+                            <constraint firstItem="Zi9-JZ-bFM" firstAttribute="top" secondItem="jSJ-GQ-d4Y" secondAttribute="bottom" id="IEd-nm-jOM"/>
+                            <constraint firstItem="wZE-E1-Lkg" firstAttribute="top" secondItem="Zi9-JZ-bFM" secondAttribute="bottom" id="ckr-fY-K7o"/>
+                            <constraint firstItem="Zi9-JZ-bFM" firstAttribute="leading" secondItem="fwM-bY-Zav" secondAttribute="leading" id="jGb-Au-ybG"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Activities" id="BGx-rl-9AQ"/>
                     <connections>
@@ -533,7 +539,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="30" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="M6a-WE-AXI">
-                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TAPlaceTableViewCell" rowHeight="30" id="oKh-Tl-4NK" customClass="TAPlaceTableViewCell" customModule="Time_Analytics" customModuleProvider="target">
