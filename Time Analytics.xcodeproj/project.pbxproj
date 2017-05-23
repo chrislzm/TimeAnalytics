@@ -17,12 +17,15 @@
 		A54502F61ED3FCC5003523CB /* TAHealthKitAccessController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54502F51ED3FCC5003523CB /* TAHealthKitAccessController.swift */; };
 		A556EB7C1ED3FFAB003F8E2B /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A556EB7B1ED3FFAB003F8E2B /* HealthKit.framework */; };
 		A556EB7E1ED40B1C003F8E2B /* TAProcessHealthKitDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A556EB7D1ED40B1C003F8E2B /* TAProcessHealthKitDataController.swift */; };
+		A556EB811ED424C0003F8E2B /* TAActivityTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A556EB801ED424C0003F8E2B /* TAActivityTableViewController.swift */; };
+		A556EB831ED424EC003F8E2B /* TAActivityTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A556EB821ED424EC003F8E2B /* TAActivityTableViewCell.swift */; };
+		A556EB861ED425DA003F8E2B /* TAActivitySegment+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = A556EB841ED425DA003F8E2B /* TAActivitySegment+CoreDataClass.swift */; };
+		A556EB871ED425DA003F8E2B /* TAActivitySegment+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = A556EB851ED425DA003F8E2B /* TAActivitySegment+CoreDataProperties.swift */; };
 		A55B137D1ECC04A600FA14FB /* TAPlaceSegment+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = A55B137B1ECC04A600FA14FB /* TAPlaceSegment+CoreDataClass.swift */; };
 		A55B137E1ECC04A600FA14FB /* TAPlaceSegment+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = A55B137C1ECC04A600FA14FB /* TAPlaceSegment+CoreDataProperties.swift */; };
 		A55B13801ECC318900FA14FB /* TAPlaceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A55B137F1ECC318900FA14FB /* TAPlaceTableViewCell.swift */; };
 		A5668BE91ED2888000CB688D /* TACommuteSegment+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5668BE71ED2888000CB688D /* TACommuteSegment+CoreDataClass.swift */; };
 		A5668BEA1ED2888000CB688D /* TACommuteSegment+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5668BE81ED2888000CB688D /* TACommuteSegment+CoreDataProperties.swift */; };
-		A5668BEC1ED2AB2E00CB688D /* TANavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5668BEB1ED2AB2E00CB688D /* TANavigationViewController.swift */; };
 		A56811291ED22708002FF4D0 /* TAPlaceDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56811281ED22708002FF4D0 /* TAPlaceDetailTableViewCell.swift */; };
 		A568112D1ED27A7B002FF4D0 /* TACommuteTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A568112C1ED27A7B002FF4D0 /* TACommuteTableViewController.swift */; };
 		A5866A1C1EC964450025D38F /* TANetClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5866A1B1EC964440025D38F /* TANetClient.swift */; };
@@ -63,12 +66,15 @@
 		A556EB7A1ED3FFAB003F8E2B /* Time Analytics.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Time Analytics.entitlements"; sourceTree = "<group>"; };
 		A556EB7B1ED3FFAB003F8E2B /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		A556EB7D1ED40B1C003F8E2B /* TAProcessHealthKitDataController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TAProcessHealthKitDataController.swift; sourceTree = "<group>"; };
+		A556EB801ED424C0003F8E2B /* TAActivityTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TAActivityTableViewController.swift; sourceTree = "<group>"; };
+		A556EB821ED424EC003F8E2B /* TAActivityTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TAActivityTableViewCell.swift; sourceTree = "<group>"; };
+		A556EB841ED425DA003F8E2B /* TAActivitySegment+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TAActivitySegment+CoreDataClass.swift"; sourceTree = "<group>"; };
+		A556EB851ED425DA003F8E2B /* TAActivitySegment+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TAActivitySegment+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		A55B137B1ECC04A600FA14FB /* TAPlaceSegment+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TAPlaceSegment+CoreDataClass.swift"; sourceTree = "<group>"; };
 		A55B137C1ECC04A600FA14FB /* TAPlaceSegment+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TAPlaceSegment+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		A55B137F1ECC318900FA14FB /* TAPlaceTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TAPlaceTableViewCell.swift; sourceTree = "<group>"; };
 		A5668BE71ED2888000CB688D /* TACommuteSegment+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TACommuteSegment+CoreDataClass.swift"; sourceTree = "<group>"; };
 		A5668BE81ED2888000CB688D /* TACommuteSegment+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TACommuteSegment+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		A5668BEB1ED2AB2E00CB688D /* TANavigationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TANavigationViewController.swift; sourceTree = "<group>"; };
 		A56811281ED22708002FF4D0 /* TAPlaceDetailTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TAPlaceDetailTableViewCell.swift; sourceTree = "<group>"; };
 		A568112C1ED27A7B002FF4D0 /* TACommuteTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TACommuteTableViewController.swift; sourceTree = "<group>"; };
 		A5866A1B1EC964440025D38F /* TANetClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TANetClient.swift; sourceTree = "<group>"; };
@@ -172,6 +178,15 @@
 			name = View;
 			sourceTree = "<group>";
 		};
+		A556EB7F1ED42497003F8E2B /* Activity */ = {
+			isa = PBXGroup;
+			children = (
+				A556EB801ED424C0003F8E2B /* TAActivityTableViewController.swift */,
+				A556EB821ED424EC003F8E2B /* TAActivityTableViewCell.swift */,
+			);
+			name = Activity;
+			sourceTree = "<group>";
+		};
 		A5866A1A1EC9641A0025D38F /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -184,6 +199,8 @@
 				A55B137C1ECC04A600FA14FB /* TAPlaceSegment+CoreDataProperties.swift */,
 				A5668BE71ED2888000CB688D /* TACommuteSegment+CoreDataClass.swift */,
 				A5668BE81ED2888000CB688D /* TACommuteSegment+CoreDataProperties.swift */,
+				A556EB841ED425DA003F8E2B /* TAActivitySegment+CoreDataClass.swift */,
+				A556EB851ED425DA003F8E2B /* TAActivitySegment+CoreDataProperties.swift */,
 				A5AB93F91ECA65B10055301C /* Managed Objects.xcdatamodeld */,
 			);
 			name = Model;
@@ -221,7 +238,6 @@
 				A59D8FC01ED3911D00E119F2 /* TADetailViewController.swift */,
 				A5FFFD921ECAC6F200B55020 /* TASettingsViewController.swift */,
 				A599677A1ED3378900B77D2F /* TAControllerExtensions.swift */,
-				A5668BEB1ED2AB2E00CB688D /* TANavigationViewController.swift */,
 			);
 			name = Shared;
 			sourceTree = "<group>";
@@ -245,6 +261,7 @@
 				A59D8FC41ED3916300E119F2 /* Shared */,
 				A59D8FC21ED3913200E119F2 /* Place */,
 				A59D8FC31ED3913D00E119F2 /* Commute */,
+				A556EB7F1ED42497003F8E2B /* Activity */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -390,7 +407,6 @@
 				A599677F1ED359DF00B77D2F /* TACommuteTableViewCell.swift in Sources */,
 				A55B137D1ECC04A600FA14FB /* TAPlaceSegment+CoreDataClass.swift in Sources */,
 				A5B6D1AA1ED16ECE00890BC4 /* TAViewExtensions.swift in Sources */,
-				A5668BEC1ED2AB2E00CB688D /* TANavigationViewController.swift in Sources */,
 				A5FFFD931ECAC6F200B55020 /* TASettingsViewController.swift in Sources */,
 				A5A25B981ED3D38000CC65B9 /* TACommuteDetailDepartureTableViewCell.swift in Sources */,
 				A5AA02EF1ED11ACC0046CCB4 /* TAProgressView.swift in Sources */,
@@ -403,14 +419,18 @@
 				A5668BE91ED2888000CB688D /* TACommuteSegment+CoreDataClass.swift in Sources */,
 				A59967811ED36D6C00B77D2F /* TAPlaceDetailCommuteTableViewCell.swift in Sources */,
 				A5668BEA1ED2888000CB688D /* TACommuteSegment+CoreDataProperties.swift in Sources */,
+				A556EB861ED425DA003F8E2B /* TAActivitySegment+CoreDataClass.swift in Sources */,
+				A556EB811ED424C0003F8E2B /* TAActivityTableViewController.swift in Sources */,
 				A52564AB1EC929D900DD843F /* TALoginViewController.swift in Sources */,
 				A5AB93FB1ECA65B10055301C /* Managed Objects.xcdatamodeld in Sources */,
 				A56811291ED22708002FF4D0 /* TAPlaceDetailTableViewCell.swift in Sources */,
 				A52564A91EC929D900DD843F /* AppDelegate.swift in Sources */,
 				A52564BC1EC93E4000DD843F /* BorderedButton.swift in Sources */,
+				A556EB871ED425DA003F8E2B /* TAActivitySegment+CoreDataProperties.swift in Sources */,
 				A54502F61ED3FCC5003523CB /* TAHealthKitAccessController.swift in Sources */,
 				A5FFFD8F1ECAB4A700B55020 /* TAPlaceTableViewController.swift in Sources */,
 				A556EB7E1ED40B1C003F8E2B /* TAProcessHealthKitDataController.swift in Sources */,
+				A556EB831ED424EC003F8E2B /* TAActivityTableViewCell.swift in Sources */,
 				A5866A1E1EC9649C0025D38F /* TANetConstants.swift in Sources */,
 				A5AB93FD1ECA68A40055301C /* TAModel.swift in Sources */,
 			);
