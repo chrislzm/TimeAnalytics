@@ -8,6 +8,6 @@
 
 import UIKit
 
-class TACommuteDetailCommuteTableViewCell.swift : UITableViewCell {
+class TACommuteDetailCommuteTableViewCell : UITableViewCell {
     
 }
