@@ -23,7 +23,7 @@ class TACommuteDetailViewController: TADetailViewController, MKMapViewDelegate {
     
     var commuteHistoryTableData = [TACommuteSegment]()
     var timeBeforeDepartingTableData = [TAPlaceSegment]()
-    var timeAfterDepartingTableData = [TAPlaceSegment]()
+    var timeAfterArrivingTableData = [TAPlaceSegment]()
     
     // MARK: Outlets
     
@@ -43,6 +43,8 @@ class TACommuteDetailViewController: TADetailViewController, MKMapViewDelegate {
     
     @IBOutlet weak var timeAfterArrivingTableHeaderLabel: UILabel!
     @IBOutlet weak var timeAfterArrivingTableView: UITableView!
+    
+    //MARK: Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -80,7 +82,7 @@ class TACommuteDetailViewController: TADetailViewController, MKMapViewDelegate {
         commuteHistoryTableData = getEntityObjectsWithQuery("TACommuteSegment", "startLat == %@ AND startLon == %@ AND endLat == %@ AND endLon == %@", [startLat,startLon,endLat,endLon], "startTime", false) as! [TACommuteSegment]
         
         timeBeforeDepartingTableData = getDeparturePlaceHistory(commuteHistoryTableData)
-        timeAfterDepartingTableData = getDestinationPlaceHistory(commuteHistoryTableData)
+        timeAfterArrivingTableData = getDestinationPlaceHistory(commuteHistoryTableData)
         
         // SETUP TABLE HEADER LABELS
         
@@ -89,6 +91,73 @@ class TACommuteDetailViewController: TADetailViewController, MKMapViewDelegate {
         timeAfterArrivingTableHeaderLabel.text = "  After Arrival - \(endName!)"
     }
     
+    
+    // MARK: UITableView Data Source Methods
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        var count:Int?
+        
+        if tableView == commuteHistoryTableView {
+            count = commuteHistoryTableData.count
+        } else if tableView == timeBeforeDepartingTableView {
+            count = timeBeforeDepartingTableData.count
+        } else if tableView == timeAfterArrivingTableView {
+            count = timeAfterArrivingTableData.count
+        }
+        
+        return count!
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        var cell = UITableViewCell()
+        
+        if tableView == commuteHistoryTableView {
+            // Find the right notebook for this indexpath
+            let commute = commuteHistoryTableData[indexPath.row]
+            
+            // Create the cell
+            let commuteCell = tableView.dequeueReusableCell(withIdentifier: "TACommuteDetailCommuteTableViewCell", for: indexPath) as! TACommuteDetailCommuteTableViewCell
+            
+            // Get descriptions and assign to cell label
+            let (timeInOutString,lengthString,_,_,dateString) = generateCommuteStringDescriptions(commute)
+            commuteCell.timeLabel.text = timeInOutString
+            commuteCell.lengthLabel.text = lengthString
+            commuteCell.dateLabel.text = dateString
+            cell = commuteCell
+            
+        } else if tableView == timeBeforeDepartingTableView {
+            
+            // Find the right notebook for this indexpath
+            let place = timeBeforeDepartingTableData[indexPath.row]
+            
+            // Create the cell
+            let placeCell = tableView.dequeueReusableCell(withIdentifier: "TACommuteDetailDepartureTableViewCell", for: indexPath) as! TACommuteDetailDepartureTableViewCell
+            
+            // Get descriptions and assign to cell label
+            let (timeInOutString,lengthString,_,dateString) = generatePlaceStringDescriptions(place)
+            placeCell.timeLabel.text = timeInOutString
+            placeCell.lengthLabel.text = lengthString
+            placeCell.dateLabel.text = dateString
+            cell = placeCell
+            
+        } else if tableView == timeAfterArrivingTableView {
+            
+            // Find the right notebook for this indexpath
+            let place = timeAfterArrivingTableData[indexPath.row]
+            
+            // Create the cell
+            let placeCell = tableView.dequeueReusableCell(withIdentifier: "TACommuteDetailDestinationTableViewCell", for: indexPath) as! TACommuteDetailDestinationTableViewCell
+            
+            // Get descriptions and assign to cell label
+            let (timeInOutString,lengthString,_,dateString) = generatePlaceStringDescriptions(place)
+            placeCell.timeLabel.text = timeInOutString
+            placeCell.lengthLabel.text = lengthString
+            placeCell.dateLabel.text = dateString
+            cell = placeCell
+        }
+        return cell
+    }
     
     // MARK: Data Methods
     
