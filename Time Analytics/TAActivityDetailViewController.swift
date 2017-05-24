@@ -14,8 +14,9 @@ import UIKit
 class TAActivityDetailViewController: TADetailViewController {
     var type:String?
     var name:String?
-    var activityHistoryTableData = [TAActivitySegment]()
     
+    var activityHistoryTableData = [TAActivitySegment]()
+    var placeHistoryTableData = [(name:String,lat:Double,lon:Double,startTime:Date,endTime:Date)]()
     @IBOutlet weak var totalLabel: UILabel!
     @IBOutlet weak var pastMonthLabel: UILabel!
     @IBOutlet weak var averageTimeLabel: UILabel!
@@ -31,6 +32,7 @@ class TAActivityDetailViewController: TADetailViewController {
     @IBOutlet weak var placeHistoryTableView: UITableView!
     
     override func viewDidLoad() {
+        super.viewDidLoad()
         
         // Setup the view
         setTitle()
@@ -38,7 +40,8 @@ class TAActivityDetailViewController: TADetailViewController {
         // Setup Data Sources
         activityHistoryTableData = getEntityObjectsWithQuery("TAActivitySegment", "name == %@ AND type == %@", [name!,type!], "startTime", false) as! [TAActivitySegment]
         
-        //timeBeforeDepartingTableData = getDeparturePlaceHistory(commuteHistoryTableData)
+        placeHistoryTableData = getActivityPlaceHistory(activityHistoryTableData)
+
         //timeAfterArrivingTableData = getDestinationPlaceHistory(commuteHistoryTableData)
 
         // Get data for this place, to be used below
@@ -65,6 +68,7 @@ class TAActivityDetailViewController: TADetailViewController {
         // Styles
         activityHistoryTableView.separatorStyle = .none
         activityHistoryTableView.allowsSelection = false
+        placeHistoryTableView.separatorStyle = .none
         
         // SETUP TABLE HEADER LABELS
         
@@ -80,6 +84,8 @@ class TAActivityDetailViewController: TADetailViewController {
         
         if tableView == activityHistoryTableView {
             count = activityHistoryTableData.count
+        } else if tableView == placeHistoryTableView {
+            count = placeHistoryTableData.count
         }
         
         return count!
@@ -97,11 +103,22 @@ class TAActivityDetailViewController: TADetailViewController {
             let activityCell = tableView.dequeueReusableCell(withIdentifier: "TAActivityDetailActivityTableViewCell", for: indexPath) as! TAActivityDetailActivityTableViewCell
             
             // Get descriptions and assign to cell label
-            let (timeInOutString,lengthString,dateString) = generateActivityStringDescriptions(activity)
+            let (timeInOutString,lengthString,dateString) = generateActivityStringDescriptions(activity,currentYear)
             activityCell.timeLabel.text = timeInOutString
             activityCell.lengthLabel.text = lengthString
             activityCell.dateLabel.text = dateString
             cell = activityCell
+        } else if tableView == placeHistoryTableView {
+            let place = placeHistoryTableData[indexPath.row]
+            
+            let placeCell = tableView.dequeueReusableCell(withIdentifier: "TAActivityDetailPlaceTableViewCell", for: indexPath) as! TAActivityDetailPlaceTableViewCell
+            
+            let (timeInOutString,lengthString,dateString) = generatePlaceStringDescriptionsShortDateFromTuple(place.startTime, place.endTime,currentYear)
+            placeCell.timeLabel.text = timeInOutString
+            placeCell.lengthLabel.text = lengthString
+            placeCell.dateLabel.text = dateString
+            placeCell.nameLabel.text = place.name
+            cell = placeCell
         }
         
         return cell
@@ -124,6 +141,18 @@ class TAActivityDetailViewController: TADetailViewController {
             activityDates.append(startTime.timeIntervalSinceReferenceDate)
         }
         return (activityDates,activityLengths,totalActivities,totalActivityTime)
+    }
+    
+    func getActivityPlaceHistory(_ activities:[TAActivitySegment]) -> [(String,Double,Double,Date,Date)] {
+        var places = [(String,Double,Double,Date,Date)]()
+        for activity in activities {
+            if let name = activity.placeName, let startTime = activity.placeStartTime, let endTime = activity.placeEndTime {
+                let lat = activity.placeLat
+                let lon = activity.placeLon
+                places.append((name,lat,lon,startTime as Date,endTime as Date))
+            }
+        }
+        return places
     }
     
     // MARK: View Methods
