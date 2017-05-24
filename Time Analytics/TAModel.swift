@@ -461,7 +461,7 @@ class TAModel {
         }
         
         // Update activity segments
-        let activities = getCoreDataManagedObject("TAActivitySegment", nil, nil, "(placeLat == %@ AND placeLon == %@)", [lat,lon], context) as! [TACommuteSegment]
+        let activities = getCoreDataManagedObject("TAActivitySegment", nil, nil, "(placeLat == %@ AND placeLon == %@)", [lat,lon], context) as! [TAActivitySegment]
         for activity in activities {
             activity.setValue(newName, forKey: "placeName")
             stack.save()
