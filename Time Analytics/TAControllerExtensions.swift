@@ -14,18 +14,28 @@ extension UIViewController {
     // MARK: Managed Object Description Strings
     // TODO: Consider moving these methods to TADetailViewController
 
-    func generatePlaceStringDescriptions(_ place:TAPlaceSegment) -> (String,String,String,String) {
+    func generatePlaceStringDescriptions(_ place:TAPlaceSegment,_ currentYear:String?) -> (String,String,String) {
         let startTime = place.startTime! as Date
         let endTime = place.endTime! as Date
-        
+
+        return generatePlaceStringDescriptionsFromTuple(startTime,endTime,currentYear)
+    }
+    
+    func generatePlaceStringDescriptionsFromTuple(_ startTime:Date,_ endTime:Date,_ currentYear:String?) -> (String,String,String) {
         let timeInOutString = generateTimeInOutString(startTime,endTime)
         let lengthString = generateLengthString(startTime,endTime)
-        let nameString = place.name!
-        let dateString = generateDateString(startTime)
-        return (timeInOutString,lengthString,nameString,dateString)
+        let dateString = generateLongDateString(startTime,currentYear)
+        return (timeInOutString,lengthString,dateString)
     }
 
-    func generateCommuteStringDescriptions(_ commute:TACommuteSegment) -> (String,String,String,String,String) {
+    func generatePlaceStringDescriptionsShortDateFromTuple(_ startTime:Date,_ endTime:Date,_ currentYear:String?) -> (String,String,String) {
+        let timeInOutString = generateTimeInOutString(startTime,endTime)
+        let lengthString = generateLengthString(startTime,endTime)
+        let dateString = generateShortDateString(startTime,currentYear)
+        return (timeInOutString,lengthString,dateString)
+    }
+
+    func generateCommuteStringDescriptions(_ commute:TACommuteSegment,_ currentYear:String?) -> (String,String,String,String,String) {
         let startTime = commute.startTime! as Date
         let endTime = commute.endTime! as Date
         
@@ -33,18 +43,18 @@ extension UIViewController {
         let commuteLengthString = generateLengthString(startTime,endTime)
         let startNameString = commute.startName!
         let endNameString = commute.endName!
-        let dateString = generateDateString(startTime)
+        let dateString = generateLongDateString(startTime,currentYear)
         
         return (timeInOutString,commuteLengthString,startNameString,endNameString,dateString)
     }
     
-    func generateActivityStringDescriptions(_ activity:TAActivitySegment) -> (String,String,String) {
+    func generateActivityStringDescriptions(_ activity:TAActivitySegment,_ currentYear:String?) -> (String,String,String) {
         let startTime = activity.startTime! as Date
         let endTime = activity.endTime! as Date
         
         let timeInOutString = generateTimeInOutString(startTime,endTime)
         let activityLengthString = generateLengthString(startTime,endTime)
-        let dateString = generateDateString(startTime)
+        let dateString = generateLongDateString(startTime,currentYear)
         
         return (timeInOutString,activityLengthString,dateString)
     }
@@ -65,10 +75,35 @@ extension UIViewController {
         return lengthString
     }
     
-    func generateDateString(_ time:Date) -> String {
+    func generateLongDateString(_ time:Date,_ currentYear:String?) -> String {
         let formatter = DateFormatter()
-        formatter.dateFormat = "E, MMM d"
-        let dateString = formatter.string(from: time)
+        formatter.dateFormat = "E, MMM d ''yy"
+        var dateString = formatter.string(from: time)
+        if let year = currentYear {
+            var dateDigits = dateString.characters
+            let yearDigit2 = dateDigits.popLast()!
+            let yearDigit1 = dateDigits.popLast()!
+            var curYearDigits = year.characters
+            if yearDigit2 == curYearDigits.popLast()!, yearDigit1 == curYearDigits.popLast()! {
+                dateString = dateString.substring(to: dateString.index(dateString.endIndex, offsetBy: -4))
+            }
+        }
+        return dateString
+    }
+    
+    func generateShortDateString(_ time:Date,_ currentYear:String?) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "M/d/yy"
+        var dateString = formatter.string(from: time)
+        if let year = currentYear {
+            var dateDigits = dateString.characters
+            let yearDigit2 = dateDigits.popLast()!
+            let yearDigit1 = dateDigits.popLast()!
+            var curYearDigits = year.characters
+            if yearDigit2 == curYearDigits.popLast()!, yearDigit1 == curYearDigits.popLast()! {
+                dateString = dateString.substring(to: dateString.index(dateString.endIndex, offsetBy: -3))
+            }
+        }
         return dateString
     }
 
