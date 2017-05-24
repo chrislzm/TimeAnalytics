@@ -19,7 +19,7 @@ class TASettingsViewController:UIViewController {
     
     func confirmLogout(alert:UIAlertAction!) {
         // Clear persistent data
-        TAModel.sharedInstance().deleteAllDataFor(["MovesMoveSegment","MovesPlaceSegment","TAPlaceSegment","TACommuteSegment"])
+        TAModel.sharedInstance().deleteAllDataFor(["MovesMoveSegment","MovesPlaceSegment","TAPlaceSegment","TACommuteSegment","TAActivitySegment"])
         
         // Clear session variables
         TAModel.sharedInstance().deleteMovesLoginInfo()
