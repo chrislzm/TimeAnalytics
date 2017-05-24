@@ -15,7 +15,19 @@ class TAActivityDetailViewController: TADetailViewController {
     var name:String?
     var activityHistoryTableData = [TAActivitySegment]()
     
+    @IBOutlet weak var totalLabel: UILabel!
+    @IBOutlet weak var pastMonthLabel: UILabel!
+    @IBOutlet weak var averageTimeLabel: UILabel!
+    @IBOutlet weak var totalTimeLabel: UILabel!
+    
+    @IBOutlet weak var lineChartView: LineChartView!
+    @IBOutlet weak var mapView: MKMapView!
+    
+    @IBOutlet weak var activityHistoryTableHeaderLabel: UILabel!
     @IBOutlet weak var activityHistoryTableView: UITableView!
+    
+    @IBOutlet weak var activityPlacesTableHeaderLabel: UILabel!
+    @IBOutlet weak var placeHistoryTableView: UITableView!
     
     override func viewDidLoad() {
         
