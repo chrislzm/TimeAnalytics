@@ -440,16 +440,23 @@ class TAModel {
         }
         
         // Update commute segments starting from this place
-        let departure = getCoreDataManagedObject("TACommuteSegment", nil, nil, "(startLat == %@ AND startLon == %@)", [lat,lon,lat,lon], context) as! [TACommuteSegment]
+        let departure = getCoreDataManagedObject("TACommuteSegment", nil, nil, "(startLat == %@ AND startLon == %@)", [lat,lon], context) as! [TACommuteSegment]
         for commute in departure {
             commute.setValue(newName, forKey: "startName")
             stack.save()
         }
         
         // Update commute segments ending at this place
-        let destination = getCoreDataManagedObject("TACommuteSegment", nil, nil, "(endLat == %@ AND endLon == %@)", [lat,lon,lat,lon], context) as! [TACommuteSegment]
+        let destination = getCoreDataManagedObject("TACommuteSegment", nil, nil, "(endLat == %@ AND endLon == %@)", [lat,lon], context) as! [TACommuteSegment]
         for commute in destination {
             commute.setValue(newName, forKey: "endName")
+            stack.save()
+        }
+        
+        // Update activity segments
+        let activities = getCoreDataManagedObject("TAActivitySegment", nil, nil, "(placeLat == %@ AND placeLon == %@)", [lat,lon], context) as! [TACommuteSegment]
+        for activity in activities {
+            activity.setValue(newName, forKey: "placeName")
             stack.save()
         }
     }
