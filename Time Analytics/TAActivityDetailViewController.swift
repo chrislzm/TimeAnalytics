@@ -11,7 +11,7 @@ import CoreLocation
 import MapKit
 import UIKit
 
-class TAActivityDetailViewController: TADetailViewController {
+class TAActivityDetailViewController: TADetailViewController, UITableViewDelegate {
     var type:String?
     var name:String?
     
@@ -77,6 +77,15 @@ class TAActivityDetailViewController: TADetailViewController {
         //setTimeAfterArrivingTableHeaderLabel()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        // Deselect row if we selected one that caused a segue
+        if let selectedRowIndexPath = placeHistoryTableView.indexPathForSelectedRow {
+            placeHistoryTableView.deselectRow(at: selectedRowIndexPath, animated: true)
+        }
+    }
+    
     // MARK: Table Data Source Methods
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -122,6 +131,17 @@ class TAActivityDetailViewController: TADetailViewController {
         }
         
         return cell
+    }
+    
+    // MARK: Table Delegate methods
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+
+        if tableView == placeHistoryTableView {
+            let placeData = placeHistoryTableData[indexPath.row]
+            let place = TAModel.sharedInstance().getTAPlace(placeData.startTime, placeData.lat, placeData.lon)
+            showPlaceDetailViewController(place)
+        }
     }
     
     // MARK: Data Methods
