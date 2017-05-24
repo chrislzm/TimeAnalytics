@@ -241,7 +241,7 @@ class TAModel {
     
     // MARK: Time Analytics Data Methods
     
-    func createNewTAActivityObject(_ startTime:Date,_ endTime:Date,_ name:String,_ movesFirstTime:Date, _ context:NSManagedObjectContext) {
+    func createNewTAActivityObject(_ startTime:Date,_ endTime:Date,_ type:String, _ name:String,_ movesFirstTime:Date, _ context:NSManagedObjectContext) {
         if(containsObject("TAActivitySegment","startTime",startTime,context)) {
             deleteObject("TAActivitySegment","startTime",startTime,context)
         }
@@ -249,6 +249,7 @@ class TAModel {
         let taActivitySegment = NSManagedObject(entity: taActivitySegmentEntity, insertInto: context)
         taActivitySegment.setValue(startTime, forKey:"startTime")
         taActivitySegment.setValue(endTime, forKey: "endTime")
+        taActivitySegment.setValue(type, forKey:"type")
         taActivitySegment.setValue(name, forKey:"name")
         
         // If this activity occurs during the Moves data window, and during a Place Segment

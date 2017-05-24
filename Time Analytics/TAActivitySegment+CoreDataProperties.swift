@@ -24,5 +24,6 @@ extension TAActivitySegment {
     @NSManaged public var placeName: String?
     @NSManaged public var placeStartTime: NSDate?
     @NSManaged public var startTime: NSDate?
+    @NSManaged public var type: String?
 
 }
