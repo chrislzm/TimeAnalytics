@@ -29,10 +29,12 @@ class TAProcessHealthKitDataController: UIViewController {
     func didCompleteDataChunk(_ notification:Notification) {
         dataChunksImported += 1
         if dataChunksImported == dataChunksToImport {
-            // Save to persistent data since the import was done on a background context
-            let stack = getCoreDataStack()
-            stack.save()
-            performSegue(withIdentifier: "FinishedProcessingHealthKitData", sender: nil)
+            DispatchQueue.main.async {
+                // Save to persistent data since the import was done on a background context
+                let stack = self.getCoreDataStack()
+                stack.save()
+                performSegue(withIdentifier: "FinishedProcessingHealthKitData", sender: nil)
+            }
         }
     }
 }
