@@ -35,12 +35,18 @@ class TAActivityDetailViewController: TADetailViewController {
         // Setup the view
         setTitle()
         
+        // Setup Data Sources
+        activityHistoryTableData = getEntityObjectsWithQuery("TAActivitySegment", "name == %@ AND type == %@", [name!,type!], "startTime", false) as! [TAActivitySegment]
+        
+        //timeBeforeDepartingTableData = getDeparturePlaceHistory(commuteHistoryTableData)
+        //timeAfterArrivingTableData = getDestinationPlaceHistory(commuteHistoryTableData)
+
         // Get data for this place, to be used below
-        /*let(commuteDates,commuteLengths,totalCommutes,totalCommuteTime) = getDataForThisCommute()
+        let(activityDates,activityLengths,totalActivities,totalActivityTime) = getDataForThisActivity()
         
-        setupLineChartView(lineChartView, commuteDates, commuteLengths)
+        setupLineChartView(lineChartView, activityDates, activityLengths)
         setupMapView()
-        
+        /*
         // SETUP SUMMARY LABELS
         
         totalCommutesLabel.text = "\(totalCommutes)"
@@ -59,12 +65,6 @@ class TAActivityDetailViewController: TADetailViewController {
         // Styles
         activityHistoryTableView.separatorStyle = .none
         activityHistoryTableView.allowsSelection = false
-        
-        // Data Source
-        activityHistoryTableData = getEntityObjectsWithQuery("TAActivitySegment", "name == %@", [name!], "startTime", false) as! [TAActivitySegment]
-        
-        //timeBeforeDepartingTableData = getDeparturePlaceHistory(commuteHistoryTableData)
-        //timeAfterArrivingTableData = getDestinationPlaceHistory(commuteHistoryTableData)
         
         // SETUP TABLE HEADER LABELS
         
@@ -130,5 +130,86 @@ class TAActivityDetailViewController: TADetailViewController {
     
     func setTitle() {
         title = "\(name!)"
+    }
+    
+    func setupMapView() {
+        
+        class TACoordinate {
+            let lat:Double
+            let lon:Double
+            
+            init(latitude:Double,longitude:Double) {
+                lat = latitude
+                lon = longitude
+            }
+            
+            func inArray(_ inTACoordinates:[TACoordinate]) -> Bool {
+                for coordinate in inTACoordinates {
+                    if coordinate.lat == lat, coordinate.lon == lon {
+                        return true
+                    }
+                }
+                return false
+            }
+        }
+        
+        var activityCoordinates = [TACoordinate]()
+        
+        // Put unique coordinates into a set
+        for activity in activityHistoryTableData {
+            if activity.placeLat != 0, activity.placeLon != 0 {
+                let coordinate = TACoordinate(latitude: activity.placeLat, longitude: activity.placeLon)
+                if !coordinate.inArray(activityCoordinates) {
+                    activityCoordinates.append(coordinate)
+                    print("Inserted Lat: \(activity.placeLat) Lon: \(activity.placeLon)")
+                }
+            }
+        }
+        print("Set: \(activityCoordinates)")
+        // Add coordinates to the map as annotations
+        for activity in activityCoordinates {
+            let coordinate = CLLocationCoordinate2D(latitude: activity.lat, longitude: activity.lon)
+            let annotation = MKPointAnnotation()
+            annotation.coordinate = coordinate
+            mapView.addAnnotation(annotation)
+        }
+        
+        // If we have a coordinate, then get the min/max of all coordinates, used to center the view
+        if let activityCoordinate = activityCoordinates.first {
+            
+            // Setup variables for loop
+            var maxLat = activityCoordinate.lat
+            var minLat = activityCoordinate.lat
+            var maxLon = activityCoordinate.lon
+            var minLon = activityCoordinate.lon
+            
+            for activity in activityCoordinates {
+                if activity.lat > maxLat {
+                    maxLat = activity.lat
+                }
+                if activity.lat < minLat {
+                    minLat = activity.lat
+                }
+                if activity.lon > maxLon {
+                    maxLon = activity.lon
+                }
+                if activity.lon < maxLon {
+                    minLon = activity.lon
+                }
+            }
+            
+            // Move the screen up slightly since the pin sticks out at the top
+            var centerLat = (maxLat+minLat) / 2
+            centerLat += abs(maxLat-minLat) / 8
+            let centerCoordinate = CLLocationCoordinate2D(latitude: centerLat, longitude: (maxLon+minLon)/2)
+            
+            let bboxCorner1  = CLLocation(latitude: maxLat, longitude: maxLon)
+            let bboxCorner2 = CLLocation(latitude: minLat, longitude: minLon)
+            let distanceInMeters = bboxCorner1.distance(from: bboxCorner2) // result is in meter
+            
+            let bboxLength = distanceInMeters * 1.5 > 1000 ? distanceInMeters * 1.5 : 1000
+            let viewRegion = MKCoordinateRegionMakeWithDistance(centerCoordinate, bboxLength, bboxLength);
+            mapView.setRegion(viewRegion, animated: true)
+        }
     }
 }
