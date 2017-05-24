@@ -75,6 +75,11 @@ class TAActivityTableViewController: TATableViewController {
         return cell
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let activity = fetchedResultsController!.object(at: indexPath) as! TAActivitySegment
+        showActivityDetailViewController(activity)
+    }
+    
     // MARK: Helper functions
     func setupBottomNavigationBar() {
         let showCommutesButton = UIBarButtonItem(title: "Places", style: UIBarButtonItemStyle.plain, target: self, action: #selector(TACommuteTableViewController.showPlacesButtonPressed))
