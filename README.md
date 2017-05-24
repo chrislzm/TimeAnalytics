@@ -23,11 +23,15 @@ If the user makes a network request within the time buffer (default: 60 seconds)
 
 How to Use
 ----------
-Requires Internet connection, Moves App, and Moves API access  
+Basic requirements: Internet connection, Moves App
 
-* Open the app and download your Moves data by opening Settings and tapping "Download ALL Moves Data" or "Download Moves Data" (which will download data for the selected date range)
-* Time Analytics processes and interpolate the data, displaying it immediately in the "Recent Locations" view as it progresses
-* Tap on any location for detail view, which contains statistics and visit history for the location
+* Open the app and follow prompts to login with moves
+* Optionally allow access to Health Data
+* Once Health Data import is complete, tap "Continue" go enter the app
+* Tap on the lower left "Commutes" button to toggle through the three main views: Places, Commutes, Activities
+* Tap on any item to view detailed information about it
+* Tapping on some items in detail views will allow you to view that item's detailed information
+* To log out and clear all data, on any main view, tap "Settings" and then "Log Out"
 
 Data Assumptions
 ----------------
