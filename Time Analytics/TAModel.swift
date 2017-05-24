@@ -241,7 +241,7 @@ class TAModel {
     
     // MARK: Time Analytics Data Methods
     
-    func createNewTAActivityObject(_ startTime:NSDate,_ endTime:NSDate,_ name:String,_ context:NSManagedObjectContext) {
+    func createNewTAActivityObject(_ startTime:Date,_ endTime:Date,_ name:String,_ movesFirstTime:Date, _ context:NSManagedObjectContext) {
         if(containsObject("TAActivitySegment","startTime",startTime,context)) {
             deleteObject("TAActivitySegment","startTime",startTime,context)
         }
@@ -250,6 +250,17 @@ class TAModel {
         taActivitySegment.setValue(startTime, forKey:"startTime")
         taActivitySegment.setValue(endTime, forKey: "endTime")
         taActivitySegment.setValue(name, forKey:"name")
+        
+        // If this activity occurs during the Moves data window, and during a Place Segment
+        if startTime >= movesFirstTime, let place = TAModel.sharedInstance().getTAPlaceThatContains(startTime,endTime, context) {
+            // Save place into the activity data (this activity occurs entire during this place segment)
+            taActivitySegment.setValue(place.startTime,forKey:"placeStartTime")
+            taActivitySegment.setValue(place.endTime,forKey:"placeEndTime")
+            taActivitySegment.setValue(place.lat,forKey:"placeLat")
+            taActivitySegment.setValue(place.lon,forKey:"placeLon")
+            taActivitySegment.setValue(place.name,forKey:"placeName")
+        }
+
         save(context)
     }
     
@@ -298,6 +309,19 @@ class TAModel {
             lastTAPlace = result[0] as TAPlaceSegment
         }
         return lastTAPlace
+    }
+    
+    
+    func getTAPlaceThatContains(_ startTime:Date,_ endTime:Date,_ context:NSManagedObjectContext) -> TAPlaceSegment? {
+        var result:TAPlaceSegment? = nil
+        
+        if let place = getLastTAPlaceBefore(startTime as NSDate, context) {
+            let placeEndTime = place.endTime! as Date
+            if placeEndTime <= endTime {
+                result = place
+            }
+        }
+        return result
     }
     
     // MARK: Time Analytics Data Processing Methods

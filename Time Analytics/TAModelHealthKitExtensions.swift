@@ -16,7 +16,7 @@ extension TAModel {
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         dateFormatter.dateFormat = "yyyyMMdd"
-        let fromDate = dateFormatter.date(from: TANetClient.sharedInstance().movesUserFirstDate!)!
+        let firstMovesDataDate = dateFormatter.date(from: TANetClient.sharedInstance().movesUserFirstDate!)! as Date
         
         // Import Sleep Data
         let sleepType = HKObjectType.categoryType(forIdentifier: .sleepAnalysis)!
@@ -30,14 +30,14 @@ extension TAModel {
                     let sample = item as! HKCategorySample
                     if sample.value == HKCategoryValueSleepAnalysis.inBed.rawValue {
                         // Create the TAActivity object
-                        TAModel.sharedInstance().createNewTAActivityObject(sample.startDate as NSDate, sample.endDate as NSDate, "In Bed", context)
+                        TAModel.sharedInstance().createNewTAActivityObject(sample.startDate, sample.endDate, "In Bed",firstMovesDataDate, context)
                     }
                 }
                 stack.save()
                 NotificationCenter.default.post(name: Notification.Name("didProcessDataChunk"), object: nil)
             }
         }
-
+        
         // Import Workout Data
         let workoutType = HKWorkoutType.workoutType()
         retrieveHealthStoreData(workoutType) { (query,result,error) in
@@ -50,9 +50,7 @@ extension TAModel {
                     let workout = item as! HKWorkout
                     let workoutType = self.getHealthKitWorkoutTypeString(workout.workoutActivityType.rawValue)
                     // Create the TAActivity object
-                    DispatchQueue.main.async {
-                        TAModel.sharedInstance().createNewTAActivityObject(item.startDate as NSDate, item.endDate as NSDate, workoutType, context)
-                    }
+                    TAModel.sharedInstance().createNewTAActivityObject(item.startDate, item.endDate, workoutType, firstMovesDataDate, context)
                 }
                 stack.save()
                 NotificationCenter.default.post(name: Notification.Name("didProcessDataChunk"), object: nil)
@@ -62,7 +60,7 @@ extension TAModel {
         // Tell the completion handler we have 4 total data chunks to complete
         completionHandler(4)
     }
-    
+ 
     func getHealthStore() -> HKHealthStore {
         let delegate =  UIApplication.shared.delegate as! AppDelegate
         return delegate.healthStore
