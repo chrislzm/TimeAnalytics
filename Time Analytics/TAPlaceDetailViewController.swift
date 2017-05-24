@@ -176,7 +176,7 @@ class TAPlaceDetailViewController: TADetailViewController, UITableViewDelegate {
             let placeCell = tableView.dequeueReusableCell(withIdentifier: "TAPlaceTableViewCell", for: indexPath) as! TAPlaceDetailTableViewCell
             
             // Get descriptions and assign to cell label
-            let (timeInOutString,lengthString,_,dateString) = generatePlaceStringDescriptions(place)
+            let (timeInOutString,lengthString,dateString) = generatePlaceStringDescriptions(place,currentYear)
             placeCell.timeInOutLabel.text = timeInOutString
             placeCell.lengthLabel.text = lengthString
             placeCell.dateLabel.text = dateString
@@ -190,7 +190,7 @@ class TAPlaceDetailViewController: TADetailViewController, UITableViewDelegate {
             let commuteCell = tableView.dequeueReusableCell(withIdentifier: "TAPlaceDetailCommuteTableViewCell", for: indexPath) as! TAPlaceDetailCommuteTableViewCell
             
             // Get descriptions and assign to cell label
-            let (timeInOutString,lengthString,startName,endName,_) = generateCommuteStringDescriptions(commute)
+            let (timeInOutString,lengthString,startName,endName,_) = generateCommuteStringDescriptions(commute,nil)
             commuteCell.timeLabel.text = timeInOutString
             commuteCell.lengthLabel.text = lengthString
             if commute.startLat == lat && commute.startLon == lon {

@@ -159,7 +159,7 @@ class TACommuteDetailViewController: TADetailViewController {
             let commuteCell = tableView.dequeueReusableCell(withIdentifier: "TACommuteDetailCommuteTableViewCell", for: indexPath) as! TACommuteDetailCommuteTableViewCell
             
             // Get descriptions and assign to cell label
-            let (timeInOutString,lengthString,_,_,dateString) = generateCommuteStringDescriptions(commute)
+            let (timeInOutString,lengthString,_,_,dateString) = generateCommuteStringDescriptions(commute,currentYear)
             commuteCell.timeLabel.text = timeInOutString
             commuteCell.lengthLabel.text = lengthString
             commuteCell.dateLabel.text = dateString
@@ -174,7 +174,7 @@ class TACommuteDetailViewController: TADetailViewController {
             let placeCell = tableView.dequeueReusableCell(withIdentifier: "TACommuteDetailDepartureTableViewCell", for: indexPath) as! TACommuteDetailDepartureTableViewCell
             
             // Get descriptions and assign to cell label
-            let (timeInOutString,lengthString,_,dateString) = generatePlaceStringDescriptions(place)
+            let (timeInOutString,lengthString,dateString) = generatePlaceStringDescriptions(place,currentYear)
             placeCell.timeLabel.text = timeInOutString
             placeCell.lengthLabel.text = lengthString
             placeCell.dateLabel.text = dateString
@@ -189,7 +189,7 @@ class TACommuteDetailViewController: TADetailViewController {
             let placeCell = tableView.dequeueReusableCell(withIdentifier: "TACommuteDetailDestinationTableViewCell", for: indexPath) as! TACommuteDetailDestinationTableViewCell
             
             // Get descriptions and assign to cell label
-            let (timeInOutString,lengthString,_,dateString) = generatePlaceStringDescriptions(place)
+            let (timeInOutString,lengthString,dateString) = generatePlaceStringDescriptions(place,currentYear)
             placeCell.timeLabel.text = timeInOutString
             placeCell.lengthLabel.text = lengthString
             placeCell.dateLabel.text = dateString

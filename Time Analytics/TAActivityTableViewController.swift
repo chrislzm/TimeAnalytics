@@ -65,7 +65,7 @@ class TAActivityTableViewController: TATableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TAActivityTableViewCell", for: indexPath) as! TAActivityTableViewCell
         
         // Get label values
-        let (timeInOutString,activityLengthString,_) = generateActivityStringDescriptions(activity)
+        let (timeInOutString,activityLengthString,_) = generateActivityStringDescriptions(activity,nil)
         
         // Set label values
         cell.timeLabel.text = timeInOutString
