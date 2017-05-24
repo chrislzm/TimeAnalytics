@@ -10,4 +10,8 @@ import UIKit
 
 class TAActivityDetailPlaceTableViewCell : UITableViewCell {
 
+    @IBOutlet weak var timeLabel: UILabel!
+    @IBOutlet weak var lengthLabel: UILabel!
+    @IBOutlet weak var dateLabel: UILabel!
+    @IBOutlet weak var nameLabel: UILabel!
 }
