@@ -1374,6 +1374,10 @@
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="PIb-cT-0y2" id="QWe-Tg-T5b"/>
+                                    <outlet property="delegate" destination="PIb-cT-0y2" id="drZ-AA-rtf"/>
+                                </connections>
                             </tableView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="30" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="5a6-DL-1To" userLabel="Commute Table View">
                                 <rect key="frame" x="0.0" y="442" width="375" height="100"/>
