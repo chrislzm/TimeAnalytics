@@ -42,27 +42,26 @@ class TAActivityDetailViewController: TADetailViewController, UITableViewDelegat
         
         placeHistoryTableData = getActivityPlaceHistory(activityHistoryTableData)
 
-        //timeAfterArrivingTableData = getDestinationPlaceHistory(commuteHistoryTableData)
 
         // Get data for this place, to be used below
         let(activityDates,activityLengths,totalActivities,totalActivityTime) = getDataForThisActivity()
         
         setupLineChartView(lineChartView, activityDates, activityLengths)
         setupMapView()
-        /*
+
         // SETUP SUMMARY LABELS
         
-        totalCommutesLabel.text = "\(totalCommutes)"
+        totalLabel.text = "\(totalActivities)"
         
-        let lastMonthCommutes = getNumLastMonthCommutes()
-        pastMonthTotalCommutesLabel.text = "\(lastMonthCommutes)"
+        let lastMonthActivity = getNumLastMonthActivities()
+        pastMonthLabel.text = "\(lastMonthActivity)"
         
-        let averageCommuteTimeString = (StopWatch(totalSeconds: Int(totalCommuteTime)/totalCommutes)).simpleTimeString
-        averageTimeLabel.text = averageCommuteTimeString
+        let averageActivityTimeString = (StopWatch(totalSeconds: Int(totalActivityTime)/totalActivities)).simpleTimeString
+        averageTimeLabel.text = averageActivityTimeString
         
-        let totalCommuteTimeString = (StopWatch(totalSeconds: Int(totalCommuteTime))).simpleTimeString
-        totalTimeLabel.text = totalCommuteTimeString
-        */
+        let totalActivityTimeString = (StopWatch(totalSeconds: Int(totalActivityTime))).simpleTimeString
+        totalTimeLabel.text = totalActivityTimeString
+
         // SETUP TABLEVIEWS
         
         // Styles
@@ -72,9 +71,8 @@ class TAActivityDetailViewController: TADetailViewController, UITableViewDelegat
         
         // SETUP TABLE HEADER LABELS
         
-        //setCommuteHistoryTableHeaderLabelText(totalCommutes)
-        //setTimeBeforeDepartingTableHeaderLabel()
-        //setTimeAfterArrivingTableHeaderLabel()
+        setActivityHistoryTableHeaderLabelText(totalActivities)
+        setActivityPlacesTableHeaderLabelText()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -83,6 +81,18 @@ class TAActivityDetailViewController: TADetailViewController, UITableViewDelegat
         // Deselect row if we selected one that caused a segue
         if let selectedRowIndexPath = placeHistoryTableView.indexPathForSelectedRow {
             placeHistoryTableView.deselectRow(at: selectedRowIndexPath, animated: true)
+            
+            // Check if place name has been updated
+            let placeData = placeHistoryTableData[selectedRowIndexPath.row]
+            let place = getTAPlaceSegment(placeData.lat, placeData.lon, placeData.startTime, true)
+            if placeData.name != place.name!  {
+                
+                // Reload data
+                activityHistoryTableData = getEntityObjectsWithQuery("TAActivitySegment", "name == %@ AND type == %@", [name!,type!], "startTime", false) as! [TAActivitySegment]
+                
+                placeHistoryTableData = getActivityPlaceHistory(activityHistoryTableData)
+                placeHistoryTableView.reloadData()
+            }
         }
     }
     
@@ -146,6 +156,12 @@ class TAActivityDetailViewController: TADetailViewController, UITableViewDelegat
     
     // MARK: Data Methods
     
+    func getNumLastMonthActivities() -> Int {
+        let oneMonthAgo = Date() - 2678400 // There are this many seconds in a month
+        let lastMonthActivities = getEntityObjectsWithQuery("TAActivitySegment", "name == %@ AND type == %@ AND startTime >= %@", [name!,type!,oneMonthAgo], nil, nil)
+        return lastMonthActivities.count
+    }
+    
     func getDataForThisActivity() -> ([Double],[Double],Int,Double) {
         let activities = getEntityObjectsWithQuery("TAActivitySegment", "type == %@ AND name == %@", [type!,name!], "startTime", true) as! [TAActivitySegment]
         let totalActivities = activities.count
@@ -179,6 +195,14 @@ class TAActivityDetailViewController: TADetailViewController, UITableViewDelegat
     
     func setTitle() {
         title = "\(name!)"
+    }
+    
+    func setActivityHistoryTableHeaderLabelText(_ totalActivities:Int) {
+        activityHistoryTableHeaderLabel.text = "  Activity History - \(totalActivities) Total"
+    }
+    
+    func setActivityPlacesTableHeaderLabelText() {
+        activityPlacesTableHeaderLabel.text = "  Activity Places - \(placeHistoryTableData.count) Total"
     }
     
     func setupMapView() {
