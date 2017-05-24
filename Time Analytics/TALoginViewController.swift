@@ -33,7 +33,7 @@ class ViewController: UIViewController {
             DispatchQueue.main.async {
                 guard error == nil else {
                     self.launchScreenImageView.fadeOut() { (finished) in
-                        self.launchScreenImageView.removeFromSuperview()
+                        self.launchScreenImageView.isHidden = true
                     }
                     return
                 }
