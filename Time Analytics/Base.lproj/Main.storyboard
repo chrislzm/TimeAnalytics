@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -70,7 +70,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="65" y="-645"/>
+            <point key="canvasLocation" x="65" y="-1007"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="bmg-sn-xnd">
@@ -134,7 +134,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pNG-OA-DhU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="889" y="-645"/>
+            <point key="canvasLocation" x="889" y="-1007"/>
         </scene>
         <!--Health Kit Access Controller-->
         <scene sceneID="ha7-Yu-Ydh">
@@ -151,7 +151,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PAT-Um-j3X">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="HEALTH KIT ACCESS" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CO1-s6-aHh">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Health Data Access" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CO1-s6-aHh">
                                         <rect key="frame" x="19.5" y="343.5" width="337.5" height="20"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="20" id="w48-QY-jMh"/>
@@ -163,7 +163,7 @@
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Time Analytics Logo" translatesAutoresizingMaskIntoConstraints="NO" id="7Rm-Je-CDy">
                                         <rect key="frame" x="0.0" y="133" width="375" height="200.5"/>
                                     </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="750" text="Allowing access to Health Kit will show your activity data and trends in Time Analytics" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="6" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o1M-tx-uX0" userLabel="Health Kit Instrucitons">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="750" text="This will enable Time Analytics to analyze your health activities and display them with your places and commutes" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="6" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o1M-tx-uX0" userLabel="Health Kit Instrucitons">
                                         <rect key="frame" x="38" y="386" width="300" height="133.5"/>
                                         <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="15"/>
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -211,7 +211,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5ME-wG-6rM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1702" y="-645"/>
+            <point key="canvasLocation" x="1702" y="-1007"/>
         </scene>
         <!--Process Health Kit Data Controller-->
         <scene sceneID="K2h-vc-Flv">
@@ -228,7 +228,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qVa-SM-XLM">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Processing your HealthKit data" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YU9-al-36O" userLabel="Message">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Processing Your Health Data" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YU9-al-36O" userLabel="Message">
                                         <rect key="frame" x="18.5" y="343.5" width="338" height="19"/>
                                         <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="14"/>
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -264,12 +264,85 @@
                         </constraints>
                     </view>
                     <connections>
-                        <segue destination="cCK-cW-tTG" kind="show" identifier="FinishedProcessingHealthKitData" id="gDs-9X-TMD"/>
+                        <segue destination="LTQ-vO-dku" kind="show" identifier="FinishedProcessingHealthKitData" id="Ppy-S0-0mk"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VLk-jZ-fRz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2558" y="-645"/>
+            <point key="canvasLocation" x="2558" y="-1007"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="ftb-Cc-sQa">
+            <objects>
+                <viewController id="LTQ-vO-dku" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="pjh-fv-u2f"/>
+                        <viewControllerLayoutGuide type="bottom" id="Z7o-a8-EaU"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Azr-V6-QLL">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hzU-hP-AQM">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Complete" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cZ9-yt-6iC">
+                                        <rect key="frame" x="19.5" y="343.5" width="337.5" height="20"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="20" id="z4o-uU-cvb"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="14"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Time Analytics Logo" translatesAutoresizingMaskIntoConstraints="NO" id="buI-5u-JRn">
+                                        <rect key="frame" x="0.0" y="133" width="375" height="200.5"/>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="750" text="Your analytics have been prepared. Your data will be refreshed automatically (requires Internet connection)" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="6" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TCm-XV-kaD" userLabel="Health Kit Instrucitons">
+                                        <rect key="frame" x="38" y="386" width="300" height="133.5"/>
+                                        <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="15"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ngG-Lw-zlS" customClass="BorderedButton" customModule="Time_Analytics" customModuleProvider="target">
+                                        <rect key="frame" x="37.5" y="540" width="300" height="30"/>
+                                        <state key="normal" title="Continue"/>
+                                        <connections>
+                                            <segue destination="cCK-cW-tTG" kind="show" id="2f9-9V-5NI"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <constraints>
+                                    <constraint firstItem="ngG-Lw-zlS" firstAttribute="centerX" secondItem="hzU-hP-AQM" secondAttribute="centerX" id="3RD-LR-fmG"/>
+                                    <constraint firstItem="TCm-XV-kaD" firstAttribute="centerX" secondItem="hzU-hP-AQM" secondAttribute="centerX" id="DdF-JI-Rsz"/>
+                                    <constraint firstItem="TCm-XV-kaD" firstAttribute="height" secondItem="hzU-hP-AQM" secondAttribute="height" multiplier="0.2" id="EM2-SD-rFq"/>
+                                    <constraint firstItem="cZ9-yt-6iC" firstAttribute="centerX" secondItem="hzU-hP-AQM" secondAttribute="centerX" id="HfX-lA-13c"/>
+                                    <constraint firstItem="ngG-Lw-zlS" firstAttribute="top" secondItem="TCm-XV-kaD" secondAttribute="bottom" constant="20" id="JWF-44-tO0"/>
+                                    <constraint firstItem="ngG-Lw-zlS" firstAttribute="width" secondItem="hzU-hP-AQM" secondAttribute="width" multiplier="0.8" id="NKo-O8-Q7r"/>
+                                    <constraint firstItem="cZ9-yt-6iC" firstAttribute="width" secondItem="hzU-hP-AQM" secondAttribute="width" multiplier="0.9" id="Tky-AP-pOW"/>
+                                    <constraint firstItem="buI-5u-JRn" firstAttribute="width" secondItem="hzU-hP-AQM" secondAttribute="width" id="Z9E-gD-6oS"/>
+                                    <constraint firstItem="cZ9-yt-6iC" firstAttribute="top" secondItem="buI-5u-JRn" secondAttribute="bottom" constant="10" id="eM0-m0-cBu"/>
+                                    <constraint firstItem="buI-5u-JRn" firstAttribute="centerX" secondItem="hzU-hP-AQM" secondAttribute="centerX" id="fIJ-9y-xqn"/>
+                                    <constraint firstItem="buI-5u-JRn" firstAttribute="centerY" secondItem="hzU-hP-AQM" secondAttribute="centerY" multiplier="0.7" id="hjF-vX-Tsw"/>
+                                    <constraint firstItem="TCm-XV-kaD" firstAttribute="top" secondItem="cZ9-yt-6iC" secondAttribute="bottom" constant="22.5" id="rem-Su-YsH"/>
+                                    <constraint firstItem="buI-5u-JRn" firstAttribute="height" secondItem="hzU-hP-AQM" secondAttribute="height" multiplier="0.3" id="tWS-Ia-Z9h"/>
+                                    <constraint firstItem="TCm-XV-kaD" firstAttribute="width" secondItem="hzU-hP-AQM" secondAttribute="width" multiplier="0.8" id="zhz-wy-CXZ"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="hzU-hP-AQM" firstAttribute="centerY" secondItem="Azr-V6-QLL" secondAttribute="centerY" id="Cjt-43-vdl"/>
+                            <constraint firstItem="hzU-hP-AQM" firstAttribute="height" secondItem="Azr-V6-QLL" secondAttribute="height" id="LWs-GO-GHe"/>
+                            <constraint firstItem="hzU-hP-AQM" firstAttribute="centerX" secondItem="Azr-V6-QLL" secondAttribute="centerX" id="mep-Ug-t3n"/>
+                            <constraint firstItem="hzU-hP-AQM" firstAttribute="width" secondItem="Azr-V6-QLL" secondAttribute="width" id="oXA-eD-EQx"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="XYh-Nf-bmX" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3414" y="-1007"/>
         </scene>
         <!--Settings View Controller-->
         <scene sceneID="jXC-Ta-pW8">
@@ -546,7 +619,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="30"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="oKh-Tl-4NK" id="lL3-zR-IHq">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="30"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="29.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="B8E-gj-8FH" userLabel="Separator">
@@ -736,7 +809,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="k2X-xT-cfa" userLabel="Stack View Background">
-                                <rect key="frame" x="-0.5" y="20" width="375" height="66.5"/>
+                                <rect key="frame" x="-0.5" y="64" width="375" height="66.5"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="UnH-yP-as2">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="66.5"/>
@@ -838,11 +911,11 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tOl-AM-4qw" userLabel="ChartView" customClass="LineChartView" customModule="Charts">
-                                <rect key="frame" x="0.0" y="86.5" width="187.5" height="205.5"/>
+                                <rect key="frame" x="0.0" y="130.5" width="187.5" height="161.5"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="dXY-R5-ap4">
-                                <rect key="frame" x="187.5" y="86.5" width="187.5" height="205.5"/>
+                                <rect key="frame" x="187.5" y="130.5" width="187.5" height="161.5"/>
                             </mapView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="  Activity History" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sx6-pP-A4Z" userLabel="Activity History Label">
                                 <rect key="frame" x="0.0" y="542" width="375" height="25"/>
@@ -1450,6 +1523,6 @@
         <image name="Time Analytics Logo" width="3840" height="2532"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="gMc-nV-rNF"/>
+        <segue reference="2f9-9V-5NI"/>
     </inferredMetricsTieBreakers>
 </document>
