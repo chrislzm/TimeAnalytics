@@ -322,7 +322,7 @@ class TAModel {
         
         if let place = getLastTAPlaceBefore(startTime as NSDate, context) {
             let placeEndTime = place.endTime! as Date
-            if placeEndTime <= endTime {
+            if endTime <= placeEndTime {
                 result = place
             }
         }
