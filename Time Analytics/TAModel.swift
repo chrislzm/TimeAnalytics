@@ -91,17 +91,7 @@ class TAModel {
     }
     
     func getLastTAPlaceBefore(_ time:NSDate,_ context:NSManagedObjectContext) -> TAPlaceSegment? {
-        let fr = NSFetchRequest<NSFetchRequestResult>(entityName: "TAPlaceSegment")
-        let pred = NSPredicate(format: "startTime <= %@", argumentArray: [time])
-        fr.predicate = pred
-        let sort = NSSortDescriptor(key: "startTime", ascending: false)
-        fr.sortDescriptors = [sort]
-        var result:[TAPlaceSegment]
-        do {
-            result = try context.fetch(fr) as! [TAPlaceSegment]
-        } catch {
-            fatalError("Unable to access persistent data")
-        }
+        let result = getCoreDataManagedObject("TAPlaceSegment", "startTime", false, "startTime <= %@", [time], context) as! [TAPlaceSegment]
         var lastTAPlace:TAPlaceSegment? = nil
         if result.count > 0 {
             lastTAPlace = result[0] as TAPlaceSegment
