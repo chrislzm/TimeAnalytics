@@ -66,13 +66,13 @@ class TACommuteTableViewController: TATableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TACommuteTableViewCell", for: indexPath) as! TACommuteTableViewCell
 
         // Get label values
-        let (timeLabelText,commuteLengthLabelText,startNameLabelText,endNameLabelText,_) = generateCommuteStringDescriptions(commute,nil)
+        let (timeLabelText,commuteLengthLabelText,_) = generateCommuteStringDescriptions(commute,nil)
         
         // Set label values
         cell.timeLabel.text = timeLabelText
         cell.lengthLabel.text = commuteLengthLabelText
-        cell.startNameLabel.text = startNameLabelText
-        cell.endNameLabel.text = endNameLabelText
+        cell.startNameLabel.text = commute.startName!
+        cell.endNameLabel.text = commute.endName!
         
         return cell
     }

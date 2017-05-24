@@ -159,7 +159,7 @@ class TACommuteDetailViewController: TADetailViewController {
             let commuteCell = tableView.dequeueReusableCell(withIdentifier: "TACommuteDetailCommuteTableViewCell", for: indexPath) as! TACommuteDetailCommuteTableViewCell
             
             // Get descriptions and assign to cell label
-            let (timeInOutString,lengthString,_,_,dateString) = generateCommuteStringDescriptions(commute,currentYear)
+            let (timeInOutString,lengthString,dateString) = generateCommuteStringDescriptions(commute,currentYear)
             commuteCell.timeLabel.text = timeInOutString
             commuteCell.lengthLabel.text = lengthString
             commuteCell.dateLabel.text = dateString
