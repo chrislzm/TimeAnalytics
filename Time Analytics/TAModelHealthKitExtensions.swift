@@ -7,11 +7,11 @@
 //
 
 import HealthKit
+import UIKit
 
 extension TAModel {
     
-    func importHealthKitData() {
-
+    func importHealthKitData(completionHandler: @escaping (_ dataChunks:Int) -> Void) {
         let stack = getCoreDataStack()
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
@@ -21,12 +21,10 @@ extension TAModel {
         // Import Sleep Data
         let sleepType = HKObjectType.categoryType(forIdentifier: .sleepAnalysis)!
         retrieveHealthStoreData(sleepType,fromDate) { (query,result,error) in
-            if error != nil {
-                DispatchQueue.main.async {
-                    self.displayErrorAlert("There was an error processing your HealthKit data")
-                }
+            guard error == nil else {
                 return
             }
+            NotificationCenter.default.post(name: Notification.Name("didProcessDataChunk"), object: nil)
             stack.performBackgroundBatchOperation() { (context) in
                 for item in result! {
                     let sample = item as! HKCategorySample
@@ -36,20 +34,17 @@ extension TAModel {
                     }
                 }
                 stack.save()
-                self.completedCategory()
+                NotificationCenter.default.post(name: Notification.Name("didProcessDataChunk"), object: nil)
             }
         }
 
         // Import Workout Data
         let workoutType = HKWorkoutType.workoutType()
         retrieveHealthStoreData(workoutType,fromDate) { (query,result,error) in
-            
-            if error != nil {
-                DispatchQueue.main.async {
-                    self.displayErrorAlert("There was an error processing your HealthKit data")
-                }
+            guard error == nil else {
                 return
             }
+            NotificationCenter.default.post(name: Notification.Name("didProcessDataChunk"), object: nil)
             stack.performBackgroundBatchOperation() { (context) in
                 for item in result! {
                     let workout = item as! HKWorkout
@@ -60,9 +55,12 @@ extension TAModel {
                     }
                 }
                 stack.save()
-                self.completedCategory()
+                NotificationCenter.default.post(name: Notification.Name("didProcessDataChunk"), object: nil)
             }
         }
+
+        // Tell the completion handler we have 4 total data chunks to complete
+        completionHandler(4)
     }
     
     func getHealthStore() -> HKHealthStore {
