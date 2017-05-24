@@ -11,19 +11,36 @@ import HealthKit
 extension TAModel {
     
     func importHealthKitData() {
-        
-        
-        
-    }
-    
-    func generateWorkoutTAActivityObjects(_ context:NSManagedObjectContext) {
+
         let stack = getCoreDataStack()
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         dateFormatter.dateFormat = "yyyyMMdd"
         let fromDate = dateFormatter.date(from: TANetClient.sharedInstance().movesUserFirstDate!)!
         
-        
+        // Import Sleep Data
+        let sleepType = HKObjectType.categoryType(forIdentifier: .sleepAnalysis)!
+        retrieveHealthStoreData(sleepType,fromDate) { (query,result,error) in
+            if error != nil {
+                DispatchQueue.main.async {
+                    self.displayErrorAlert("There was an error processing your HealthKit data")
+                }
+                return
+            }
+            stack.performBackgroundBatchOperation() { (context) in
+                for item in result! {
+                    let sample = item as! HKCategorySample
+                    if sample.value == HKCategoryValueSleepAnalysis.inBed.rawValue {
+                        // Create the TAActivity object
+                        TAModel.sharedInstance().createNewTAActivityObject(sample.startDate as NSDate, sample.endDate as NSDate, "In Bed", context)
+                    }
+                }
+                stack.save()
+                self.completedCategory()
+            }
+        }
+
+        // Import Workout Data
         let workoutType = HKWorkoutType.workoutType()
         retrieveHealthStoreData(workoutType,fromDate) { (query,result,error) in
             
@@ -40,36 +57,6 @@ extension TAModel {
                     // Create the TAActivity object
                     DispatchQueue.main.async {
                         TAModel.sharedInstance().createNewTAActivityObject(item.startDate as NSDate, item.endDate as NSDate, workoutType, context)
-                    }
-                }
-                stack.save()
-                self.completedCategory()
-            }
-        }
-    }
-    
-    func generateSleepTAActivityObjects(_ context:NSManagedObjectContext) {
-        
-        let stack = getCoreDataStack()
-        let dateFormatter = DateFormatter()
-        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-        dateFormatter.dateFormat = "yyyyMMdd"
-        let fromDate = dateFormatter.date(from: TANetClient.sharedInstance().movesUserFirstDate!)!
-        
-        let sleepType = HKObjectType.categoryType(forIdentifier: .sleepAnalysis)!
-        retrieveHealthStoreData(sleepType,fromDate) { (query,result,error) in
-            if error != nil {
-                DispatchQueue.main.async {
-                    self.displayErrorAlert("There was an error processing your HealthKit data")
-                }
-                return
-            }
-            stack.performBackgroundBatchOperation() { (context) in
-                for item in result! {
-                    let sample = item as! HKCategorySample
-                    if sample.value == HKCategoryValueSleepAnalysis.inBed.rawValue {
-                        // Create the TAActivity object
-                        TAModel.sharedInstance().createNewTAActivityObject(sample.startDate as NSDate, sample.endDate as NSDate, "In Bed", context)
                     }
                 }
                 stack.save()
