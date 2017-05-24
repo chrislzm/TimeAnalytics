@@ -57,6 +57,15 @@ extension UIViewController {
         return (timeInOutString,activityLengthString,dateString)
     }
     
+    func generateActivityStringDescriptionsShortDate(_ activity:TAActivitySegment,_ currentYear:String?) -> (String,String,String) {
+        let startTime = activity.startTime! as Date
+        
+        let (timeInOutString,activityLengthString,_) = generateActivityStringDescriptions(activity,nil)
+        let dateString = generateShortDateString(startTime,currentYear)
+        
+        return (timeInOutString,activityLengthString,dateString)
+    }
+    
     func generateTimeInOutString(_ startTime:Date, _ endTime:Date) -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "h:mm a"
