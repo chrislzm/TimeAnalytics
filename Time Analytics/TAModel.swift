@@ -13,8 +13,53 @@ import Foundation
 import UIKit
 
 class TAModel {
-
-    // MARK: Moves API Methods
+    
+    // MARK: Moves Login Methods
+    
+    func loadMovesSessionData() {
+        // Check first if we even have an access token expiration date
+        if let accessTokenExpiration = UserDefaults.standard.value(forKey: "movesAccessTokenExpiration") as? Date {
+            
+            // If the access token is still valid
+            if Date() < accessTokenExpiration {
+                // Save the session information into our Net Client
+                TANetClient.sharedInstance().movesAccessTokenExpiration = accessTokenExpiration
+                TANetClient.sharedInstance().movesAccessToken = UserDefaults.standard.value(forKey: "movesAccessToken") as? String
+                TANetClient.sharedInstance().movesAuthCode = UserDefaults.standard.value(forKey: "movesAuthCode") as? String
+                TANetClient.sharedInstance().movesRefreshToken = UserDefaults.standard.value(forKey: "movesRefreshToken") as? String
+                TANetClient.sharedInstance().movesUserId = UserDefaults.standard.value(forKey: "movesUserId") as? UInt64
+                TANetClient.sharedInstance().movesUserFirstDate = UserDefaults.standard.value(forKey: "movesUserFirstDate") as? String
+            }
+        }
+    }
+    
+    func saveMovesLoginInfo(_ authCode:String, _ userId:UInt64, _ accessToken:String,_ accessTokenExpiration:Date,_ refreshToken:String, _ userFirstDate:String) {
+        UserDefaults.standard.set(authCode, forKey: "movesAuthCode")
+        UserDefaults.standard.set(userId, forKey: "movesUserId")
+        UserDefaults.standard.set(accessToken, forKey: "movesAccessToken")
+        UserDefaults.standard.set(accessTokenExpiration, forKey: "movesAccessTokenExpiration")
+        UserDefaults.standard.set(refreshToken, forKey: "movesRefreshToken")
+        UserDefaults.standard.set(userFirstDate, forKey: "movesUserFirstDate")
+        UserDefaults.standard.synchronize()
+    }
+    
+    func deleteMovesLoginInfo() {
+        UserDefaults.standard.removeObject(forKey: "movesAuthCode")
+        UserDefaults.standard.removeObject(forKey: "movesUserId")
+        UserDefaults.standard.removeObject(forKey: "movesAccessToken")
+        UserDefaults.standard.removeObject(forKey: "movesAccessTokenExpiration")
+        UserDefaults.standard.removeObject(forKey: "movesRefreshToken")
+        UserDefaults.standard.removeObject(forKey: "movesUserFirstDate")
+        TANetClient.sharedInstance().movesUserId = nil
+        TANetClient.sharedInstance().movesAccessToken = nil
+        TANetClient.sharedInstance().movesAccessTokenExpiration = nil
+        TANetClient.sharedInstance().movesAuthCode = nil
+        TANetClient.sharedInstance().movesRefreshToken = nil
+        TANetClient.sharedInstance().movesUserFirstDate = nil
+    }
+    
+    // MARK: Moves Data Methods
+    
     func createMovesMoveObject(_ date:Date, _ startTime:Date, _ endTime:Date, _ lastUpdate:Date?, _ context:NSManagedObjectContext) {
         let entity = NSEntityDescription.entity(forEntityName: "MovesMoveSegment", in: context)!
         let movesMoveSegment = NSManagedObject(entity: entity, insertInto: context)
@@ -26,8 +71,7 @@ class TAModel {
     }
     
     func createMovesPlaceObject(_ date:Date, _ startTime:Date, _ endTime:Date, _ type:String,_ lat:Double,_ lon:Double,  _ lastUpdate:Date?,_ id:Int64?,_ name:String?,_ facebookPlaceId:String?,_ foursquareId:String?,_ foursquareCategoryIds:String?, _ context:NSManagedObjectContext) {
-        
-        // Create and store MovesPlace object
+
         let movesPlaceSegmentEntity = NSEntityDescription.entity(forEntityName: "MovesPlaceSegment", in: context)!
         let movesPlaceSegment = NSManagedObject(entity: movesPlaceSegmentEntity, insertInto: context)
         movesPlaceSegment.setValue(date, forKey: "date")
@@ -43,79 +87,6 @@ class TAModel {
         movesPlaceSegment.setValue(foursquareId, forKey: "foursquareId")
         movesPlaceSegment.setValue(foursquareCategoryIds, forKey: "foursquareCategoryIds")
         save(context)
-    }
-    
-    func createNewTAActivityObject(_ startTime:NSDate,_ endTime:NSDate,_ name:String,_ context:NSManagedObjectContext) {
-        if(containsObject("TAActivitySegment","startTime",startTime,context)) {
-            deleteObject("TAActivitySegment","startTime",startTime,context)
-        }
-        let taActivitySegmentEntity = NSEntityDescription.entity(forEntityName: "TAActivitySegment", in: context)!
-        let taActivitySegment = NSManagedObject(entity: taActivitySegmentEntity, insertInto: context)
-        taActivitySegment.setValue(startTime, forKey:"startTime")
-        taActivitySegment.setValue(endTime, forKey: "endTime")
-        taActivitySegment.setValue(name, forKey:"name")
-        save(context)
-    }
-    
-    func createNewTAPlaceObject(_ movesStartTime:NSDate, _ startTime:NSDate, _ endTime:NSDate, _ lat:Double, _ lon:Double, _ name:String?,_ context:NSManagedObjectContext) {
-
-        if(containsObject("TAPlaceSegment","startTime",startTime,context)) {
-            deleteObject("TAPlaceSegment","startTime",startTime,context)
-        }
-        let taPlaceSegmentEntity = NSEntityDescription.entity(forEntityName: "TAPlaceSegment", in: context)!
-        let taPlaceSegment = NSManagedObject(entity: taPlaceSegmentEntity, insertInto: context)
-        taPlaceSegment.setValue(movesStartTime, forKey:"movesStartTime")
-        taPlaceSegment.setValue(startTime, forKey:"startTime")
-        taPlaceSegment.setValue(endTime, forKey: "endTime")
-        taPlaceSegment.setValue(lat, forKey: "lat")
-        taPlaceSegment.setValue(lon, forKey: "lon")
-        taPlaceSegment.setValue(name, forKey: "name")
-        save(context)
-    }
-    
-    func createNewTACommuteObject(_ startTime:NSDate, _ endTime:NSDate,_ startLat:Double, _ startLon:Double, _ endLat:Double, _ endLon:Double,_ startName:String?,_ endName:String?,_ context:NSManagedObjectContext) {
-        if(containsObject("TACommuteSegment","startTime",startTime,context)) {
-            deleteObject("TACommuteSegment","startTime",startTime,context)
-        }
-        let taMoveSegmentEntity = NSEntityDescription.entity(forEntityName: "TACommuteSegment", in: context)!
-        let taMoveSegment = NSManagedObject(entity: taMoveSegmentEntity, insertInto: context)
-        taMoveSegment.setValue(startTime, forKey:"startTime")
-        taMoveSegment.setValue(endTime, forKey: "endTime")
-        taMoveSegment.setValue(startLat, forKey: "startLat")
-        taMoveSegment.setValue(startLon, forKey: "startLon")
-        taMoveSegment.setValue(endLat, forKey: "endLat")
-        taMoveSegment.setValue(endLon, forKey: "endLon")
-        taMoveSegment.setValue(startName, forKey: "startName")
-        taMoveSegment.setValue(endName, forKey: "endName")
-        save(context)
-    }
-    
-    func getLastTAPlaceBefore(_ time:NSDate,_ context:NSManagedObjectContext) -> TAPlaceSegment? {
-        let result = getCoreDataManagedObject("TAPlaceSegment", "startTime", false, "startTime <= %@", [time], context) as! [TAPlaceSegment]
-        var lastTAPlace:TAPlaceSegment? = nil
-        if result.count > 0 {
-            lastTAPlace = result[0] as TAPlaceSegment
-        }
-        return lastTAPlace
-    }
-    
-    func getCoreDataManagedObject(_ entityName:String,_ sortDescriptorKey:String?,_ sortAscending:Bool?,_ predFormat:String?,_ argumentArray:[Any]?,  _ context:NSManagedObjectContext) -> [Any]{
-        let fr = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
-        if let sortKey = sortDescriptorKey, let ascending = sortAscending {
-            let sort = NSSortDescriptor(key: sortKey, ascending: ascending)
-            fr.sortDescriptors = [sort]
-        }
-        if let predQuery = predFormat, let arguments = argumentArray {
-            let pred = NSPredicate(format: predQuery, argumentArray: arguments)
-            fr.predicate = pred
-        }
-        var result:[Any]
-        do {
-            result = try context.fetch(fr)
-        } catch {
-            fatalError("Unable to access persistent data")
-        }
-        return result
     }
     
     func getAllMovesPlaceSegments(_ context:NSManagedObjectContext) -> [MovesPlaceSegment] {
@@ -145,65 +116,9 @@ class TAModel {
             return time
         }
     }
-
-    func containsObject(_ entityName:String,_ attributeName:String, _ value:Any, _ context:NSManagedObjectContext) -> Bool {
-        let result = getCoreDataManagedObject(entityName, nil, nil, "\(attributeName) == %@", [value], context)
-        return result.count > 0
-    }
-
-    func deleteObject(_ entityName:String,_ attributeName:String, _ value:Any, _ context:NSManagedObjectContext) {
-        let result = getCoreDataManagedObject(entityName, nil, nil, "\(attributeName) == %@", [value], context)
-        for object in result {
-            context.delete(object as! NSManagedObject)
-        }
-        save(context)
-    }
-
-    func deleteAllDataFor(_ entities:[String]) {
-        let stack = getCoreDataStack()
-        let context = stack.context
-        let persistentStoreCoordinator = stack.coordinator
-        
-        for entity in entities {
-            let fr = NSFetchRequest<NSFetchRequestResult>(entityName: entity)
-            let deleteRequest = NSBatchDeleteRequest(fetchRequest: fr)
-            
-            do {
-                try persistentStoreCoordinator.execute(deleteRequest, with: context)
-            } catch {
-                fatalError("Unable to delete saved data")
-            }
-        }
-    }
     
-    func renamePlaceInAllTAData(_ lat:Double, _ lon:Double, _ newName:String) {
-        let stack = getCoreDataStack()
-        let context = stack.context
-        
-        // Update place segments
-        let places = getCoreDataManagedObject("TAPlaceSegment", nil, nil, "lat == %@ AND lon == %@", [lat,lon], context) as! [TAPlaceSegment]
-        for place in places {
-            place.setValue(newName, forKey: "name")
-            stack.save()
-        }
-        
-        // Update commute segments starting from this place
-        let departure = getCoreDataManagedObject("TACommuteSegment", nil, nil, "(startLat == %@ AND startLon == %@)", [lat,lon,lat,lon], context) as! [TACommuteSegment]
-        for commute in departure {
-            commute.setValue(newName, forKey: "startName")
-            stack.save()
-        }
-
-        // Update commute segments ending at this place
-        let destination = getCoreDataManagedObject("TACommuteSegment", nil, nil, "(endLat == %@ AND endLon == %@)", [lat,lon,lat,lon], context) as! [TACommuteSegment]
-        for commute in destination {
-            commute.setValue(newName, forKey: "endName")
-            stack.save()
-        }
-     }
-
-    // Downloads all moves data for the user from the beginning of time
-
+    // MARK: Moves Data Processing Methods
+    
     func downloadAndProcessAllMovesData(_ completionHandler: @escaping (_ dataChunks:Int, _ error: String?) -> Void) {
         
         let stack = getCoreDataStack()
@@ -240,18 +155,18 @@ class TAModel {
                     self.parseAndSaveMovesData(dataChunk!, context)
                     stack.save()
                 }
-            }            
+            }
             beginDate = endDate
         }
         completionHandler(dataChunks,nil)
     }
-
+    
     func downloadAndProcessMovesDataInRange(_ startDate:Date, _ endDate: Date, completionHandler: @escaping (_ error: String?) -> Void) {
         let stack = getCoreDataStack()
         
         // Try getting moves data
         TANetClient.sharedInstance().getMovesDataFrom(startDate, endDate) { (result,error) in
-
+            
             guard error == nil else {
                 completionHandler(error!)
                 return
@@ -265,9 +180,9 @@ class TAModel {
             
         }
     }
- 
+    
     func parseAndSaveMovesData(_ stories:[AnyObject], _ context:NSManagedObjectContext) {
- 
+        
         // Setup the date formatter
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
@@ -276,7 +191,7 @@ class TAModel {
             
             dateFormatter.dateFormat = "yyyyMMdd"
             let date = dateFormatter.date(from: story[TANetClient.MovesApi.JSONResponseKeys.Date] as! String)!
-
+            
             dateFormatter.dateFormat = "yyyyMMdd'T'HHmmssZ"
             if let segments = story[TANetClient.MovesApi.JSONResponseKeys.Segments] as? [AnyObject] {
                 for segment in segments {
@@ -323,6 +238,69 @@ class TAModel {
             NotificationCenter.default.post(name: Notification.Name("didProcessDataChunk"), object: nil)
         }
     }
+    
+    // MARK: Time Analytics Data Methods
+    
+    func createNewTAActivityObject(_ startTime:NSDate,_ endTime:NSDate,_ name:String,_ context:NSManagedObjectContext) {
+        if(containsObject("TAActivitySegment","startTime",startTime,context)) {
+            deleteObject("TAActivitySegment","startTime",startTime,context)
+        }
+        let taActivitySegmentEntity = NSEntityDescription.entity(forEntityName: "TAActivitySegment", in: context)!
+        let taActivitySegment = NSManagedObject(entity: taActivitySegmentEntity, insertInto: context)
+        taActivitySegment.setValue(startTime, forKey:"startTime")
+        taActivitySegment.setValue(endTime, forKey: "endTime")
+        taActivitySegment.setValue(name, forKey:"name")
+        save(context)
+    }
+    
+    func createNewTAPlaceObject(_ movesStartTime:NSDate, _ startTime:NSDate, _ endTime:NSDate, _ lat:Double, _ lon:Double, _ name:String?,_ context:NSManagedObjectContext) {
+        
+        if(containsObject("TAPlaceSegment","startTime",startTime,context)) {
+            deleteObject("TAPlaceSegment","startTime",startTime,context)
+        }
+        let taPlaceSegmentEntity = NSEntityDescription.entity(forEntityName: "TAPlaceSegment", in: context)!
+        let taPlaceSegment = NSManagedObject(entity: taPlaceSegmentEntity, insertInto: context)
+        taPlaceSegment.setValue(movesStartTime, forKey:"movesStartTime")
+        taPlaceSegment.setValue(startTime, forKey:"startTime")
+        taPlaceSegment.setValue(endTime, forKey: "endTime")
+        taPlaceSegment.setValue(lat, forKey: "lat")
+        taPlaceSegment.setValue(lon, forKey: "lon")
+        taPlaceSegment.setValue(name, forKey: "name")
+        save(context)
+    }
+    
+    func createNewTACommuteObject(_ startTime:NSDate, _ endTime:NSDate,_ startLat:Double, _ startLon:Double, _ endLat:Double, _ endLon:Double,_ startName:String?,_ endName:String?,_ context:NSManagedObjectContext) {
+        if(containsObject("TACommuteSegment","startTime",startTime,context)) {
+            deleteObject("TACommuteSegment","startTime",startTime,context)
+        }
+        let taMoveSegmentEntity = NSEntityDescription.entity(forEntityName: "TACommuteSegment", in: context)!
+        let taMoveSegment = NSManagedObject(entity: taMoveSegmentEntity, insertInto: context)
+        taMoveSegment.setValue(startTime, forKey:"startTime")
+        taMoveSegment.setValue(endTime, forKey: "endTime")
+        taMoveSegment.setValue(startLat, forKey: "startLat")
+        taMoveSegment.setValue(startLon, forKey: "startLon")
+        taMoveSegment.setValue(endLat, forKey: "endLat")
+        taMoveSegment.setValue(endLon, forKey: "endLon")
+        taMoveSegment.setValue(startName, forKey: "startName")
+        taMoveSegment.setValue(endName, forKey: "endName")
+        save(context)
+    }
+    
+    func getAllTAPlaceSegments(_ context:NSManagedObjectContext) -> [TAPlaceSegment] {
+        let result = getCoreDataManagedObject("TAPlaceSegment", "startTime", true, nil, nil, context) as! [TAPlaceSegment]
+        return result
+    }
+    
+    func getLastTAPlaceBefore(_ time:NSDate,_ context:NSManagedObjectContext) -> TAPlaceSegment? {
+        let result = getCoreDataManagedObject("TAPlaceSegment", "startTime", false, "startTime <= %@", [time], context) as! [TAPlaceSegment]
+        var lastTAPlace:TAPlaceSegment? = nil
+        if result.count > 0 {
+            lastTAPlace = result[0] as TAPlaceSegment
+        }
+        return lastTAPlace
+    }
+    
+    // MARK: Time Analytics Data Processing Methods
     
     func generateTADataFromMovesData(_ completionHandler: @escaping (_ totalRecordsToProcess:Int, _ error: String?) -> Void) {
         let stack = getCoreDataStack()
@@ -386,12 +364,7 @@ class TAModel {
             }
         }
     }
-    
-    func getAllTAPlaceSegments(_ context:NSManagedObjectContext) -> [TAPlaceSegment] {
-        let result = getCoreDataManagedObject("TAPlaceSegment", "startTime", true, nil, nil, context) as! [TAPlaceSegment]
-        return result
-    }
-    
+
     func generateTAPlaceObjects(_ context:NSManagedObjectContext) {
 
         // Retrieve all moves place segments
@@ -426,60 +399,83 @@ class TAModel {
             }
         }
     }
-    
 
-    // MARK: User Defaults Methods
-
-    func loadMovesSessionData() {
-        // Check first if we even have an access token expiration date
-        if let accessTokenExpiration = UserDefaults.standard.value(forKey: "movesAccessTokenExpiration") as? Date {
-            
-            // If the access token is still valid
-            if Date() < accessTokenExpiration {
-                // Save the session information into our Net Client
-                TANetClient.sharedInstance().movesAccessTokenExpiration = accessTokenExpiration
-                TANetClient.sharedInstance().movesAccessToken = UserDefaults.standard.value(forKey: "movesAccessToken") as? String
-                TANetClient.sharedInstance().movesAuthCode = UserDefaults.standard.value(forKey: "movesAuthCode") as? String
-                TANetClient.sharedInstance().movesRefreshToken = UserDefaults.standard.value(forKey: "movesRefreshToken") as? String
-                TANetClient.sharedInstance().movesUserId = UserDefaults.standard.value(forKey: "movesUserId") as? UInt64
-                TANetClient.sharedInstance().movesUserFirstDate = UserDefaults.standard.value(forKey: "movesUserFirstDate") as? String
-            }
+    func renamePlaceInAllTAData(_ lat:Double, _ lon:Double, _ newName:String) {
+        let stack = getCoreDataStack()
+        let context = stack.context
+        
+        // Update place segments
+        let places = getCoreDataManagedObject("TAPlaceSegment", nil, nil, "lat == %@ AND lon == %@", [lat,lon], context) as! [TAPlaceSegment]
+        for place in places {
+            place.setValue(newName, forKey: "name")
+            stack.save()
         }
         
+        // Update commute segments starting from this place
+        let departure = getCoreDataManagedObject("TACommuteSegment", nil, nil, "(startLat == %@ AND startLon == %@)", [lat,lon,lat,lon], context) as! [TACommuteSegment]
+        for commute in departure {
+            commute.setValue(newName, forKey: "startName")
+            stack.save()
+        }
+        
+        // Update commute segments ending at this place
+        let destination = getCoreDataManagedObject("TACommuteSegment", nil, nil, "(endLat == %@ AND endLon == %@)", [lat,lon,lat,lon], context) as! [TACommuteSegment]
+        for commute in destination {
+            commute.setValue(newName, forKey: "endName")
+            stack.save()
+        }
+    }
+
+    // MARK: Core Data Methods
+    
+    func containsObject(_ entityName:String,_ attributeName:String, _ value:Any, _ context:NSManagedObjectContext) -> Bool {
+        let result = getCoreDataManagedObject(entityName, nil, nil, "\(attributeName) == %@", [value], context)
+        return result.count > 0
     }
     
-    func saveMovesLoginInfo(_ authCode:String, _ userId:UInt64, _ accessToken:String,_ accessTokenExpiration:Date,_ refreshToken:String, _ userFirstDate:String) {
-        UserDefaults.standard.set(authCode, forKey: "movesAuthCode")
-        UserDefaults.standard.set(userId, forKey: "movesUserId")
-        UserDefaults.standard.set(accessToken, forKey: "movesAccessToken")
-        UserDefaults.standard.set(accessTokenExpiration, forKey: "movesAccessTokenExpiration")
-        UserDefaults.standard.set(refreshToken, forKey: "movesRefreshToken")
-        UserDefaults.standard.set(userFirstDate, forKey: "movesUserFirstDate")
-        UserDefaults.standard.synchronize()
+    func deleteObject(_ entityName:String,_ attributeName:String, _ value:Any, _ context:NSManagedObjectContext) {
+        let result = getCoreDataManagedObject(entityName, nil, nil, "\(attributeName) == %@", [value], context)
+        for object in result {
+            context.delete(object as! NSManagedObject)
+        }
+        save(context)
+    }
+
+    func deleteAllDataFor(_ entities:[String]) {
+        let stack = getCoreDataStack()
+        let context = stack.context
+        let persistentStoreCoordinator = stack.coordinator
+        
+        for entity in entities {
+            let fr = NSFetchRequest<NSFetchRequestResult>(entityName: entity)
+            let deleteRequest = NSBatchDeleteRequest(fetchRequest: fr)
+            
+            do {
+                try persistentStoreCoordinator.execute(deleteRequest, with: context)
+            } catch {
+                fatalError("Unable to delete saved data")
+            }
+        }
     }
     
-    func deleteMovesLoginInfo() {
-        UserDefaults.standard.removeObject(forKey: "movesAuthCode")
-        UserDefaults.standard.removeObject(forKey: "movesUserId")
-        UserDefaults.standard.removeObject(forKey: "movesAccessToken")
-        UserDefaults.standard.removeObject(forKey: "movesAccessTokenExpiration")
-        UserDefaults.standard.removeObject(forKey: "movesRefreshToken")
-        UserDefaults.standard.removeObject(forKey: "movesUserFirstDate")
-        TANetClient.sharedInstance().movesUserId = nil
-        TANetClient.sharedInstance().movesAccessToken = nil
-        TANetClient.sharedInstance().movesAccessTokenExpiration = nil
-        TANetClient.sharedInstance().movesAuthCode = nil
-        TANetClient.sharedInstance().movesRefreshToken = nil
-        TANetClient.sharedInstance().movesUserFirstDate = nil
+    func getCoreDataManagedObject(_ entityName:String,_ sortDescriptorKey:String?,_ sortAscending:Bool?,_ predFormat:String?,_ argumentArray:[Any]?,  _ context:NSManagedObjectContext) -> [Any]{
+        let fr = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
+        if let sortKey = sortDescriptorKey, let ascending = sortAscending {
+            let sort = NSSortDescriptor(key: sortKey, ascending: ascending)
+            fr.sortDescriptors = [sort]
+        }
+        if let predQuery = predFormat, let arguments = argumentArray {
+            let pred = NSPredicate(format: predQuery, argumentArray: arguments)
+            fr.predicate = pred
+        }
+        var result:[Any]
+        do {
+            result = try context.fetch(fr)
+        } catch {
+            fatalError("Unable to access persistent data")
+        }
+        return result
     }
-    
-    // MARK: Helper Functions
-    
-    func getAppDelegate() -> AppDelegate {
-        return UIApplication.shared.delegate as! AppDelegate
-    }
-    
-    // MARK: Helper Functions
     
     func getCoreDataStack() -> CoreDataStack {
         let delegate = UIApplication.shared.delegate as! AppDelegate
@@ -495,10 +491,16 @@ class TAModel {
         do {
             try context.save()
         } catch {
-           fatalError("Error saving data")
+            fatalError("Error saving data")
         }
     }
     
+    // MARK: Helper Functions
+    
+    func getAppDelegate() -> AppDelegate {
+        return UIApplication.shared.delegate as! AppDelegate
+    }
+
     // MARK: Shared Instance
     
     class func sharedInstance() -> TAModel {
