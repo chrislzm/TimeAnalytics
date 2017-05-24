@@ -43,17 +43,24 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </activityIndicatorView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchScreen" translatesAutoresizingMaskIntoConstraints="NO" id="5EA-SM-b6h">
+                                <rect key="frame" x="-0.5" y="-0.5" width="375" height="667"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="5EA-SM-b6h" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="04M-0Q-V6C"/>
                             <constraint firstItem="eKj-xb-K22" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="1IX-O4-L2B"/>
                             <constraint firstItem="eKj-xb-K22" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="3XN-Cs-Pze"/>
                             <constraint firstItem="9ha-cQ-xq6" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="4yg-lF-Wuj"/>
                             <constraint firstItem="eKj-xb-K22" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="8q7-h3-mlC"/>
+                            <constraint firstItem="5EA-SM-b6h" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" id="Ddx-wC-Ir5"/>
                             <constraint firstItem="uWh-rm-z5d" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="NiE-E7-7Oh"/>
                             <constraint firstItem="9Yv-SL-pHJ" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" id="NrR-jD-xjs"/>
+                            <constraint firstItem="5EA-SM-b6h" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="OXS-yr-8Kn"/>
                             <constraint firstItem="uWh-rm-z5d" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="QU0-sb-5Cf"/>
                             <constraint firstItem="uWh-rm-z5d" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="0.3" id="X87-Qg-TDW"/>
+                            <constraint firstItem="5EA-SM-b6h" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="XnI-hx-RGk"/>
                             <constraint firstItem="9ha-cQ-xq6" firstAttribute="top" secondItem="uWh-rm-z5d" secondAttribute="bottom" constant="10" id="aCS-hu-7nb"/>
                             <constraint firstAttribute="bottomMargin" secondItem="9Yv-SL-pHJ" secondAttribute="bottom" id="dbz-vL-cOJ"/>
                             <constraint firstItem="9Yv-SL-pHJ" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="hm4-3u-Ld2"/>
@@ -64,6 +71,7 @@
                     </view>
                     <connections>
                         <outlet property="activityView" destination="9Yv-SL-pHJ" id="VMJ-ob-dQB"/>
+                        <outlet property="launchScreenImageView" destination="5EA-SM-b6h" id="DY5-mZ-8ez"/>
                         <segue destination="dmf-Sc-aow" kind="show" identifier="FirstLogin" id="24D-Zy-7Dt"/>
                         <segue destination="cCK-cW-tTG" kind="show" identifier="AlreadyLoggedIn" id="zQK-Fs-xZM"/>
                     </connections>
@@ -298,8 +306,8 @@
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Time Analytics Logo" translatesAutoresizingMaskIntoConstraints="NO" id="buI-5u-JRn">
                                         <rect key="frame" x="0.0" y="133" width="375" height="200.5"/>
                                     </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="750" text="Your analytics have been prepared. Your data will be refreshed automatically (requires Internet connection)" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="6" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TCm-XV-kaD" userLabel="Health Kit Instrucitons">
-                                        <rect key="frame" x="38" y="386" width="300" height="133.5"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="750" text="Your analytics have been prepared. Your data will be automatically updated in the future (requires Internet connection)" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="6" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TCm-XV-kaD" userLabel="Health Kit Instrucitons">
+                                        <rect key="frame" x="37.5" y="386" width="300" height="133.5"/>
                                         <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="15"/>
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
@@ -619,7 +627,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="30"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="oKh-Tl-4NK" id="lL3-zR-IHq">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="29.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="30"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="B8E-gj-8FH" userLabel="Separator">
@@ -1520,6 +1528,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="LaunchScreen" width="1242" height="2208"/>
         <image name="Time Analytics Logo" width="3840" height="2532"/>
     </resources>
     <inferredMetricsTieBreakers>
