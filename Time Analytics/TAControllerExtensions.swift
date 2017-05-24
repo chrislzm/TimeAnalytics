@@ -152,6 +152,7 @@ extension UIViewController {
         let detailController = self.storyboard!.instantiateViewController(withIdentifier: "TAActivityDetailViewController") as! TAActivityDetailViewController
         
         detailController.name = activity.name
+        detailController.type = activity.type
         
         navigationController!.pushViewController(detailController, animated: true)
     }
