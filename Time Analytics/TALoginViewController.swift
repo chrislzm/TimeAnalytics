@@ -10,6 +10,7 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    @IBOutlet weak var launchScreenImageView: UIImageView!
     @IBOutlet weak var activityView: UIActivityIndicatorView!
     
     @IBAction func loginButtonPressed(_ sender: Any) {
@@ -27,14 +28,15 @@ class ViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        let delegate = UIApplication.shared.delegate as! AppDelegate
-        if let _ = delegate.query {
-        }
         TANetClient.sharedInstance().verifyLoggedIntoMoves() { (error) in
-            guard error == nil else {
-                return
-            }
+            // Show the login screen if there was an error (e.g. we are not logged in)
             DispatchQueue.main.async {
+                guard error == nil else {
+                    self.launchScreenImageView.fadeOut() { (finished) in
+                        self.launchScreenImageView.removeFromSuperview()
+                    }
+                    return
+                }
                 self.performSegue(withIdentifier: "AlreadyLoggedIn", sender: nil)
             }
         }
