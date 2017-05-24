@@ -80,13 +80,7 @@ extension UIViewController {
         formatter.dateFormat = "E, MMM d ''yy"
         var dateString = formatter.string(from: time)
         if let year = currentYear {
-            var dateDigits = dateString.characters
-            let yearDigit2 = dateDigits.popLast()!
-            let yearDigit1 = dateDigits.popLast()!
-            var curYearDigits = year.characters
-            if yearDigit2 == curYearDigits.popLast()!, yearDigit1 == curYearDigits.popLast()! {
-                dateString = dateString.substring(to: dateString.index(dateString.endIndex, offsetBy: -4))
-            }
+            dateString = removeYearIfSame(dateString,year,-4)
         }
         return dateString
     }
@@ -96,15 +90,21 @@ extension UIViewController {
         formatter.dateFormat = "M/d/yy"
         var dateString = formatter.string(from: time)
         if let year = currentYear {
-            var dateDigits = dateString.characters
-            let yearDigit2 = dateDigits.popLast()!
-            let yearDigit1 = dateDigits.popLast()!
-            var curYearDigits = year.characters
-            if yearDigit2 == curYearDigits.popLast()!, yearDigit1 == curYearDigits.popLast()! {
-                dateString = dateString.substring(to: dateString.index(dateString.endIndex, offsetBy: -3))
-            }
+            dateString = removeYearIfSame(dateString,year,-3)
         }
         return dateString
+    }
+    
+    func removeYearIfSame(_ dateString:String,_ year:String,_ offset:Int) -> String {
+        var dateDigits = dateString.characters
+        let yearDigit2 = dateDigits.popLast()!
+        let yearDigit1 = dateDigits.popLast()!
+        var curYearDigits = year.characters
+        if yearDigit2 == curYearDigits.popLast()!, yearDigit1 == curYearDigits.popLast()! {
+            return dateString.substring(to: dateString.index(dateString.endIndex, offsetBy: offset))
+        } else {
+            return dateString
+        }
     }
 
     // MARK - Data and App Methods
