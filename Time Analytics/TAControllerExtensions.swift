@@ -20,7 +20,7 @@ extension UIViewController {
         
         let timeInOutString = generateTimeInOutString(startTime,endTime)
         let lengthString = generateLengthString(startTime,endTime)
-        let nameString = generatePlaceNameString(place.name)
+        let nameString = place.name!
         let dateString = generateDateString(startTime)
         return (timeInOutString,lengthString,nameString,dateString)
     }
@@ -31,8 +31,8 @@ extension UIViewController {
         
         let timeInOutString = generateTimeInOutString(startTime,endTime)
         let commuteLengthString = generateLengthString(startTime,endTime)
-        let startNameString = generatePlaceNameString(commute.startName)
-        let endNameString = generatePlaceNameString(commute.endName)
+        let startNameString = commute.startName!
+        let endNameString = commute.endName!
         let dateString = generateDateString(startTime)
         
         return (timeInOutString,commuteLengthString,startNameString,endNameString,dateString)
@@ -71,17 +71,7 @@ extension UIViewController {
         let dateString = formatter.string(from: time)
         return dateString
     }
-    
-    func generatePlaceNameString(_ placeName:String?) -> String {
-        let nameString:String
-        if let name = placeName {
-            nameString = name
-        } else {
-            nameString = "Unknown"
-        }
-        return nameString
-    }
-    
+
     // MARK - Data and App Methods
     
     // Returns the core data stack

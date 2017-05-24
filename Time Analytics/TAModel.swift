@@ -276,7 +276,11 @@ class TAModel {
         taPlaceSegment.setValue(endTime, forKey: "endTime")
         taPlaceSegment.setValue(lat, forKey: "lat")
         taPlaceSegment.setValue(lon, forKey: "lon")
-        taPlaceSegment.setValue(name, forKey: "name")
+        if let placeName = name {
+            taPlaceSegment.setValue(placeName, forKey: "name")
+        } else {
+            taPlaceSegment.setValue("Unknown", forKey: "name")
+        }
         save(context)
     }
     
