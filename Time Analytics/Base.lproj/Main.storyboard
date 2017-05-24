@@ -388,10 +388,10 @@
             </objects>
             <point key="canvasLocation" x="65" y="124"/>
         </scene>
-        <!--View Controller-->
+        <!--Activity Detail View Controller-->
         <scene sceneID="Uqj-Ul-9Ec">
             <objects>
-                <viewController id="Am9-mG-H76" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TAActivityDetailViewController" id="Am9-mG-H76" customClass="TAActivityDetailViewController" customModule="Time_Analytics" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="wJ8-uc-Yxk"/>
                         <viewControllerLayoutGuide type="bottom" id="0nA-kX-7iw"/>
@@ -529,11 +529,11 @@
                                         <rect key="frame" x="0.0" y="274.5" width="375" height="183.5"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <prototypes>
-                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TACommuteDetailCommuteTableViewCell" rowHeight="30" id="4cf-uq-5SS" customClass="TACommuteDetailCommuteTableViewCell" customModule="Time_Analytics" customModuleProvider="target">
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TAActivityDetailActivityTableViewCell" rowHeight="30" id="4cf-uq-5SS" customClass="TAActivityDetailActivityTableViewCell" customModule="Time_Analytics" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="28" width="375" height="30"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="4cf-uq-5SS" id="KKG-Kc-f8g">
-                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="30"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="29"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CAw-XE-eBB" userLabel="Separator">
@@ -587,14 +587,14 @@
                                                     </constraints>
                                                 </tableViewCellContentView>
                                                 <connections>
-                                                    <outlet property="dateLabel" destination="b7B-9M-IQ1" id="Q2J-J5-bNj"/>
-                                                    <outlet property="lengthLabel" destination="Qqu-z7-jei" id="wWI-KC-fJ9"/>
-                                                    <outlet property="timeLabel" destination="r9o-Yl-Hon" id="j0q-4D-4xD"/>
+                                                    <outlet property="dateLabel" destination="b7B-9M-IQ1" id="dx6-wa-513"/>
+                                                    <outlet property="lengthLabel" destination="Qqu-z7-jei" id="5wt-Yd-22E"/>
+                                                    <outlet property="timeLabel" destination="r9o-Yl-Hon" id="UxK-gg-O6y"/>
                                                 </connections>
                                             </tableViewCell>
                                         </prototypes>
                                         <connections>
-                                            <outlet property="dataSource" destination="Un9-wR-MFr" id="xfq-Mx-mJS"/>
+                                            <outlet property="dataSource" destination="Am9-mG-H76" id="Uni-ho-WCh"/>
                                         </connections>
                                     </tableView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="  Activity Places" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M2o-1p-YEw" userLabel="Place History Label">
@@ -612,11 +612,11 @@
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <gestureRecognizers/>
                                         <prototypes>
-                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TACommuteDetailDepartureTableViewCell" rowHeight="30" id="tYZ-uq-0M9" customClass="TACommuteDetailDepartureTableViewCell" customModule="Time_Analytics" customModuleProvider="target">
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="30" id="tYZ-uq-0M9">
                                                 <rect key="frame" x="0.0" y="28" width="375" height="30"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="tYZ-uq-0M9" id="gIe-di-hnL">
-                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="30"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="29"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ANv-sU-6Bi" userLabel="Separator">
@@ -722,6 +722,9 @@
                             <constraint firstItem="waa-Fs-VfE" firstAttribute="height" secondItem="jIo-3P-OCK" secondAttribute="height" id="oON-zz-pXS"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="activityHistoryTableView" destination="QQi-xk-lV7" id="XoN-Zh-Fao"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="y6w-Yt-fVZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1534,9 +1537,6 @@
                                     </view>
                                     <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="cAS-tr-LqX">
                                         <rect key="frame" x="187" y="60.5" width="188" height="196"/>
-                                        <connections>
-                                            <outlet property="delegate" destination="Un9-wR-MFr" id="rXL-KD-mql"/>
-                                        </connections>
                                     </mapView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="  Commute History" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZN7-69-UOf" userLabel="Commute History Label">
                                         <rect key="frame" x="0.0" y="256" width="375" height="25"/>
