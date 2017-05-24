@@ -139,17 +139,7 @@ class TAModel {
     }
     
     func getLastMoveEndTimeBefore(_ time:NSDate,_ context:NSManagedObjectContext) -> NSDate {
-        let fr = NSFetchRequest<NSFetchRequestResult>(entityName: "MovesMoveSegment")
-        let pred = NSPredicate(format: "endTime <= %@", argumentArray: [time])
-        fr.predicate = pred
-        let sort = NSSortDescriptor(key: "endTime", ascending: false)
-        fr.sortDescriptors = [sort]
-        var result:[MovesMoveSegment]
-        do {
-            result = try context.fetch(fr) as! [MovesMoveSegment]
-        } catch {
-            fatalError("Unable to access persistent data")
-        }
+        let result = getCoreDataManagedObject("MovesMoveSegment", "endTime", false, "endTime <= %@", [time], context) as! [MovesMoveSegment]
         if result.count > 0 {
             return result[0].endTime!
         } else {
@@ -158,17 +148,7 @@ class TAModel {
     }
     
     func getFirstMoveStartTimeAfter(_ time:NSDate, _ context:NSManagedObjectContext) -> NSDate {
-        let fr = NSFetchRequest<NSFetchRequestResult>(entityName: "MovesMoveSegment")
-        let pred = NSPredicate(format: "startTime >= %@", argumentArray: [time])
-        fr.predicate = pred
-        let sort = NSSortDescriptor(key: "startTime", ascending: true)
-        fr.sortDescriptors = [sort]
-        var result:[MovesMoveSegment]
-        do {
-            result = try context.fetch(fr) as! [MovesMoveSegment]
-        } catch {
-            fatalError("Unable to access persistent data")
-        }
+        let result = getCoreDataManagedObject("MovesMoveSegment", "startTime", true, "startTime >= %@", [time], context) as! [MovesMoveSegment]
         if result.count > 0 {
             return result[0].startTime!
         } else {
@@ -177,30 +157,14 @@ class TAModel {
     }
 
     func containsObject(_ entityName:String,_ attributeName:String, _ value:Any, _ context:NSManagedObjectContext) -> Bool {
-        let fr = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
-        let pred = NSPredicate(format: "\(attributeName) == %@", argumentArray: [value])
-        fr.predicate = pred
-        var numResults = 0
-        do {
-            let result = try context.fetch(fr)
-            numResults = result.count
-        } catch {
-            fatalError("Unable to access persistent data")
-        }
-        return numResults > 0
+        let result = getCoreDataManagedObject(entityName, nil, nil, "\(attributeName) == %@", [value], context)
+        return result.count > 0
     }
 
     func deleteObject(_ entityName:String,_ attributeName:String, _ value:Any, _ context:NSManagedObjectContext) {
-        let fr = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
-        let pred = NSPredicate(format: "\(attributeName) == %@", argumentArray: [value])
-        fr.predicate = pred
-        do {
-            let result = try context.fetch(fr)
-            for object in result {
-                context.delete(object as! NSManagedObject)
-            }
-        } catch {
-            fatalError("Unable to access persistent data")
+        let result = getCoreDataManagedObject(entityName, nil, nil, "\(attributeName) == %@", [value], context)
+        for object in result {
+            context.delete(object as! NSManagedObject)
         }
         save(context)
     }
@@ -227,45 +191,24 @@ class TAModel {
         let context = stack.context
         
         // Update place segments
-        var fr = NSFetchRequest<NSFetchRequestResult>(entityName: "TAPlaceSegment")
-        var pred = NSPredicate(format: "lat == %@ AND lon == %@", argumentArray: [lat,lon])
-        fr.predicate = pred
-        do {
-            let result = try context.fetch(fr) as! [TAPlaceSegment]
-            for place in result {
-                place.setValue(newName, forKey: "name")
-                stack.save()
-            }
-        } catch {
-            fatalError("Unable to access persistent data")
+        let places = getCoreDataManagedObject("TAPlaceSegment", nil, nil, "lat == %@ AND lon == %@", [lat,lon], context) as! [TAPlaceSegment]
+        for place in places {
+            place.setValue(newName, forKey: "name")
+            stack.save()
         }
         
         // Update commute segments starting from this place
-        fr = NSFetchRequest<NSFetchRequestResult>(entityName: "TACommuteSegment")
-        pred = NSPredicate(format: "(startLat == %@ AND startLon == %@)", argumentArray: [lat,lon,lat,lon])
-        fr.predicate = pred
-        do {
-            let result = try context.fetch(fr) as! [TACommuteSegment]
-            for commute in result {
-                commute.setValue(newName, forKey: "startName")
-                stack.save()
-            }
-        } catch {
-            fatalError("Unable to access persistent data")
+        let departure = getCoreDataManagedObject("TACommuteSegment", nil, nil, "(startLat == %@ AND startLon == %@)", [lat,lon,lat,lon], context) as! [TACommuteSegment]
+        for commute in departure {
+            commute.setValue(newName, forKey: "startName")
+            stack.save()
         }
 
         // Update commute segments ending at this place
-        fr = NSFetchRequest<NSFetchRequestResult>(entityName: "TACommuteSegment")
-        pred = NSPredicate(format: "(endLat == %@ AND endLon == %@)", argumentArray: [lat,lon,lat,lon])
-        fr.predicate = pred
-        do {
-            let result = try context.fetch(fr) as! [TACommuteSegment]
-            for commute in result {
-                commute.setValue(newName, forKey: "endName")
-                stack.save()
-            }
-        } catch {
-            fatalError("Unable to access persistent data")
+        let destination = getCoreDataManagedObject("TACommuteSegment", nil, nil, "(endLat == %@ AND endLon == %@)", [lat,lon,lat,lon], context) as! [TACommuteSegment]
+        for commute in destination {
+            commute.setValue(newName, forKey: "endName")
+            stack.save()
         }
      }
 
@@ -455,15 +398,7 @@ class TAModel {
     }
     
     func getAllTAPlaceSegments(_ context:NSManagedObjectContext) -> [TAPlaceSegment] {
-        let fr = NSFetchRequest<NSFetchRequestResult>(entityName: "TAPlaceSegment")
-        let sort = NSSortDescriptor(key: "startTime", ascending: true)
-        fr.sortDescriptors = [sort]
-        var result:[TAPlaceSegment]
-        do {
-            result = try context.fetch(fr) as! [TAPlaceSegment]
-        } catch {
-            fatalError("Unable to access persistent data")
-        }
+        let result = getCoreDataManagedObject("TAPlaceSegment", "startTime", true, nil, nil, context) as! [TAPlaceSegment]
         return result
     }
     
