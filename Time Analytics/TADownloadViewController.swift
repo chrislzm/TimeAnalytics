@@ -67,5 +67,11 @@ class TADownloadViewController:UIViewController {
             }
         }
     }
+    
+    func didCompleteProcessing(_ notification:Notification) {
+        removeProgressView() { () in
+            self.performSegue(withIdentifier: "HealthKit", sender: nil)
+        }
+    }
 
 }
