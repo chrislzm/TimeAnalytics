@@ -221,8 +221,11 @@ class TAPlaceDetailViewController: TADetailViewController, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if tableView == commuteTableView {
-            let commute = commuteHistoryTableData![indexPath.row]
+            let commute = commuteHistoryTableData[indexPath.row]
             showCommuteDetailViewController(commute)
+        } else if tableView == activityTableView {
+            let activity = activityHistoryTableData[indexPath.row]
+            showActivityDetailViewController(activity)
         }
     }
     
