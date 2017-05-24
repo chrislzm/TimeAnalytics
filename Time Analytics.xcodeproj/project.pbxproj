@@ -49,6 +49,7 @@
 		A5AB93FB1ECA65B10055301C /* Managed Objects.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A5AB93F91ECA65B10055301C /* Managed Objects.xcdatamodeld */; };
 		A5AB93FD1ECA68A40055301C /* TAModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5AB93FC1ECA68A40055301C /* TAModel.swift */; };
 		A5B09F5F1ECD47230019CA4A /* TAPlaceDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B09F5E1ECD47230019CA4A /* TAPlaceDetailViewController.swift */; };
+		A5B319161ED64CF900401BF8 /* TAPlaceDetailActivityTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B319151ED64CF900401BF8 /* TAPlaceDetailActivityTableViewCell.swift */; };
 		A5B6D1AA1ED16ECE00890BC4 /* TAViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B6D1A91ED16ECE00890BC4 /* TAViewExtensions.swift */; };
 		A5CE10231ED210B600AE5BDB /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5CE10221ED210B600AE5BDB /* CoreDataStack.swift */; };
 		A5FFFD8D1ECAB38C00B55020 /* TATableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5FFFD8C1ECAB38C00B55020 /* TATableViewController.swift */; };
@@ -102,6 +103,7 @@
 		A5AB93FA1ECA65B10055301C /* Managed Objects.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Managed Objects.xcdatamodel"; sourceTree = "<group>"; };
 		A5AB93FC1ECA68A40055301C /* TAModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TAModel.swift; sourceTree = "<group>"; };
 		A5B09F5E1ECD47230019CA4A /* TAPlaceDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TAPlaceDetailViewController.swift; sourceTree = "<group>"; };
+		A5B319151ED64CF900401BF8 /* TAPlaceDetailActivityTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TAPlaceDetailActivityTableViewCell.swift; sourceTree = "<group>"; };
 		A5B6D1A91ED16ECE00890BC4 /* TAViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TAViewExtensions.swift; sourceTree = "<group>"; };
 		A5CE10221ED210B600AE5BDB /* CoreDataStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		A5FFFD8C1ECAB38C00B55020 /* TATableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TATableViewController.swift; sourceTree = "<group>"; };
@@ -226,6 +228,7 @@
 				A5B09F5E1ECD47230019CA4A /* TAPlaceDetailViewController.swift */,
 				A56811281ED22708002FF4D0 /* TAPlaceDetailTableViewCell.swift */,
 				A59967801ED36D6C00B77D2F /* TAPlaceDetailCommuteTableViewCell.swift */,
+				A5B319151ED64CF900401BF8 /* TAPlaceDetailActivityTableViewCell.swift */,
 			);
 			name = Place;
 			sourceTree = "<group>";
@@ -416,6 +419,7 @@
 				A59D8FC11ED3911D00E119F2 /* TADetailViewController.swift in Sources */,
 				A5CE10231ED210B600AE5BDB /* CoreDataStack.swift in Sources */,
 				A55B13801ECC318900FA14FB /* TAPlaceTableViewCell.swift in Sources */,
+				A5B319161ED64CF900401BF8 /* TAPlaceDetailActivityTableViewCell.swift in Sources */,
 				A599677F1ED359DF00B77D2F /* TACommuteTableViewCell.swift in Sources */,
 				A55B137D1ECC04A600FA14FB /* TAPlaceSegment+CoreDataClass.swift in Sources */,
 				A5B6D1AA1ED16ECE00890BC4 /* TAViewExtensions.swift in Sources */,
