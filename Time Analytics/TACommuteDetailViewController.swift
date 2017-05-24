@@ -11,7 +11,7 @@ import CoreLocation
 import MapKit
 import UIKit
 
-class TACommuteDetailViewController: TADetailViewController, MKMapViewDelegate {
+class TACommuteDetailViewController: TADetailViewController {
     
     // MARK: Properties
     
