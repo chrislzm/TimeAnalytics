@@ -234,11 +234,9 @@ class TAActivityDetailViewController: TADetailViewController, UITableViewDelegat
                 let coordinate = TACoordinate(latitude: activity.placeLat, longitude: activity.placeLon)
                 if !coordinate.inArray(activityCoordinates) {
                     activityCoordinates.append(coordinate)
-                    print("Inserted Lat: \(activity.placeLat) Lon: \(activity.placeLon)")
                 }
             }
         }
-        print("Set: \(activityCoordinates)")
         // Add coordinates to the map as annotations
         for activity in activityCoordinates {
             let coordinate = CLLocationCoordinate2D(latitude: activity.lat, longitude: activity.lon)
