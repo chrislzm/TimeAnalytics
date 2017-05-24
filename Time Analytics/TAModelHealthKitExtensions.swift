@@ -30,7 +30,7 @@ extension TAModel {
                     let sample = item as! HKCategorySample
                     if sample.value == HKCategoryValueSleepAnalysis.inBed.rawValue {
                         // Create the TAActivity object
-                        TAModel.sharedInstance().createNewTAActivityObject(sample.startDate, sample.endDate, "In Bed",firstMovesDataDate, context)
+                        TAModel.sharedInstance().createNewTAActivityObject(sample.startDate, sample.endDate, "Sleep", "In Bed",firstMovesDataDate, context)
                     }
                 }
                 stack.save()
@@ -50,7 +50,7 @@ extension TAModel {
                     let workout = item as! HKWorkout
                     let workoutType = self.getHealthKitWorkoutTypeString(workout.workoutActivityType.rawValue)
                     // Create the TAActivity object
-                    TAModel.sharedInstance().createNewTAActivityObject(item.startDate, item.endDate, workoutType, firstMovesDataDate, context)
+                    TAModel.sharedInstance().createNewTAActivityObject(item.startDate, item.endDate, "Workout", workoutType, firstMovesDataDate, context)
                 }
                 stack.save()
                 NotificationCenter.default.post(name: Notification.Name("didProcessDataChunk"), object: nil)

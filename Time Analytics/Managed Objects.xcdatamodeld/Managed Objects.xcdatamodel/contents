@@ -30,6 +30,7 @@
         <attribute name="placeName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="placeStartTime" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="startTime" attributeType="Date" usesScalarValueType="NO" indexed="YES" syncable="YES"/>
+        <attribute name="type" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="TACommuteSegment" representedClassName="TACommuteSegment" syncable="YES">
         <attribute name="daySectionIdentifier" optional="YES" transient="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
@@ -54,7 +55,7 @@
     <elements>
         <element name="MovesMoveSegment" positionX="-54" positionY="63" width="128" height="105"/>
         <element name="MovesPlaceSegment" positionX="-63" positionY="-18" width="128" height="225"/>
-        <element name="TAActivitySegment" positionX="-54" positionY="99" width="128" height="180"/>
+        <element name="TAActivitySegment" positionX="-54" positionY="99" width="128" height="195"/>
         <element name="TACommuteSegment" positionX="-54" positionY="72" width="128" height="180"/>
         <element name="TAPlaceSegment" positionX="-54" positionY="63" width="128" height="150"/>
     </elements>
