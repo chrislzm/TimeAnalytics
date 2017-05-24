@@ -20,8 +20,8 @@ class TAPlaceDetailViewController: TADetailViewController, UITableViewDelegate {
     var lon:Double!
     var name:String!
     var placeHistoryTableData:[TAPlaceSegment]!
-    var commuteHistoryTableData:[TACommuteSegment]?
-    var activityHistoryTableData:[TAActivitySegment]?
+    var commuteHistoryTableData:[TACommuteSegment]!
+    var activityHistoryTableData:[TAActivitySegment]!
     
     // MARK: Outlets
     
@@ -119,17 +119,15 @@ class TAPlaceDetailViewController: TADetailViewController, UITableViewDelegate {
         // Data Source
         placeHistoryTableData = getEntityObjectsWithQuery("TAPlaceSegment", "(lat == %@) AND (lon == %@)", [lat,lon], "startTime", false) as! [TAPlaceSegment]
 
-        commuteHistoryTableData = getEntityObjectsWithQuery("TACommuteSegment", "(startLat == %@ AND startLon == %@) OR (endLat == %@ AND endLon == %@)", [lat,lon,lat,lon], "startTime", false) as? [TACommuteSegment]
+        commuteHistoryTableData = getEntityObjectsWithQuery("TACommuteSegment", "(startLat == %@ AND startLon == %@) OR (endLat == %@ AND endLon == %@)", [lat,lon,lat,lon], "startTime", false) as! [TACommuteSegment]
         
-        activityHistoryTableData = getEntityObjectsWithQuery("TAActivitySegment", "placeLat == %@ AND placeLon == %@",[lat,lon], "startTime", false) as? [TAActivitySegment]
+        activityHistoryTableData = getEntityObjectsWithQuery("TAActivitySegment", "placeLat == %@ AND placeLon == %@",[lat,lon], "startTime", false) as! [TAActivitySegment]
         
         // If no results, make sure we have an empty array
-        if commuteHistoryTableData == nil {
-            commuteHistoryTableData = [TACommuteSegment]()
+        if commuteHistoryTableData.isEmpty {
             createTableEmptyMessageIn(commuteTableView,"No commutes recorded")
         }
-        if activityHistoryTableData == nil {
-            activityHistoryTableData = [TAActivitySegment]()
+        if activityHistoryTableData.isEmpty {
             createTableEmptyMessageIn(activityTableView,"No activities recorded")
         }
         
@@ -207,7 +205,7 @@ class TAPlaceDetailViewController: TADetailViewController, UITableViewDelegate {
             let activityCell = tableView.dequeueReusableCell(withIdentifier: "TAPlaceDetailActivityTableViewCell", for: indexPath) as! TAPlaceDetailActivityTableViewCell
             
             // Get descriptions and assign to cell label
-            let (timeInOutString,lengthString,dateString) = generateActivityStringDescriptions(activity,currentYear)
+            let (timeInOutString,lengthString,dateString) = generateActivityStringDescriptionsShortDate(activity,currentYear)
             activityCell.timeLabel.text = timeInOutString
             activityCell.lengthLabel.text = lengthString
             activityCell.dateLabel.text = dateString
@@ -258,6 +256,7 @@ class TAPlaceDetailViewController: TADetailViewController, UITableViewDelegate {
     func createTableEmptyMessageIn(_ table:UITableView, _ message:String) {
         let tableEmptyMessage = UILabel(frame: table.frame)
         tableEmptyMessage.text = message
+        tableEmptyMessage.font = UIFont.systemFont(ofSize: 13)
         tableEmptyMessage.textAlignment = .center
         tableEmptyMessage.backgroundColor = UIColor.white
         table.backgroundView = tableEmptyMessage
