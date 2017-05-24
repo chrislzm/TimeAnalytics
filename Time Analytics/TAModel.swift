@@ -302,6 +302,12 @@ class TAModel {
         save(context)
     }
     
+    func getTAPlace(_ startTime:Date, _ lat:Double, _ lon:Double) -> TAPlaceSegment {
+        let stack = getCoreDataStack()
+        let result = getCoreDataManagedObject("TAPlaceSegment", "startTime", true,  "startTime == %@ AND lat == %@ AND lon == %@", [startTime,lat,lon], stack.context) as! [TAPlaceSegment]
+        return result.first!
+    }
+    
     func getAllTAPlaceSegments(_ context:NSManagedObjectContext) -> [TAPlaceSegment] {
         let result = getCoreDataManagedObject("TAPlaceSegment", "startTime", true, nil, nil, context) as! [TAPlaceSegment]
         return result
