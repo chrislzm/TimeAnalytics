@@ -626,28 +626,28 @@
                                                                     <rect key="frame" x="-0.5" y="1" width="375" height="27.5"/>
                                                                     <subviews>
                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dRl-8z-TcC">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="131.5" height="27.5"/>
+                                                                            <rect key="frame" x="0.0" y="0.0" width="150" height="27.5"/>
                                                                             <color key="backgroundColor" red="0.99942404029999998" green="0.97040138229999995" blue="0.86234215339999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                                             <nil key="textColor"/>
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Length" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PBV-EL-vaz">
-                                                                            <rect key="frame" x="131.5" y="0.0" width="56.5" height="27.5"/>
+                                                                            <rect key="frame" x="150" y="0.0" width="56.5" height="27.5"/>
                                                                             <color key="backgroundColor" red="1" green="0.88996063209999998" blue="0.8102506894" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                                             <nil key="textColor"/>
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YjC-pf-EJf">
-                                                                            <rect key="frame" x="188" y="0.0" width="56.5" height="27.5"/>
+                                                                            <rect key="frame" x="206.5" y="0.0" width="56.5" height="27.5"/>
                                                                             <color key="backgroundColor" red="0.80238165340000001" green="0.84112655329999997" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                                             <nil key="textColor"/>
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oKI-c7-AUr" userLabel="Name Label">
-                                                                            <rect key="frame" x="244.5" y="0.0" width="130.5" height="27.5"/>
+                                                                            <rect key="frame" x="263" y="0.0" width="112" height="27.5"/>
                                                                             <color key="backgroundColor" red="1" green="0.81310224779999996" blue="0.81288282460000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                                             <nil key="textColor"/>
@@ -656,7 +656,7 @@
                                                                     </subviews>
                                                                     <constraints>
                                                                         <constraint firstItem="PBV-EL-vaz" firstAttribute="width" secondItem="NcG-Ka-HzI" secondAttribute="width" multiplier="0.15" id="9Gc-U9-9uB"/>
-                                                                        <constraint firstItem="dRl-8z-TcC" firstAttribute="width" secondItem="NcG-Ka-HzI" secondAttribute="width" multiplier="0.35" id="INC-sY-oAn"/>
+                                                                        <constraint firstItem="dRl-8z-TcC" firstAttribute="width" secondItem="NcG-Ka-HzI" secondAttribute="width" multiplier="0.4" id="INC-sY-oAn"/>
                                                                         <constraint firstItem="YjC-pf-EJf" firstAttribute="width" secondItem="NcG-Ka-HzI" secondAttribute="width" multiplier="0.15" id="YlM-DB-YeQ"/>
                                                                     </constraints>
                                                                 </stackView>
@@ -686,7 +686,8 @@
                                             </tableViewCell>
                                         </prototypes>
                                         <connections>
-                                            <outlet property="dataSource" destination="Un9-wR-MFr" id="plk-fa-KkK"/>
+                                            <outlet property="dataSource" destination="Am9-mG-H76" id="ok6-kF-srZ"/>
+                                            <outlet property="delegate" destination="Am9-mG-H76" id="1FU-w9-JEL"/>
                                         </connections>
                                     </tableView>
                                 </subviews>
