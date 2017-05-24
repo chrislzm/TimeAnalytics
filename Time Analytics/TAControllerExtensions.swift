@@ -209,9 +209,8 @@ extension UIViewController {
         }
     }
     
-    
-    // Remove the progress view and all observers when we're done processing
-    func didCompleteProcessing(_ notification:Notification) {
+    // Remove a progress view and its observers
+    func removeProgressView(completionHandler: @escaping ()-> Void) {
         if let progressView = view.viewWithTag(100) as? TAProgressView {
             progressView.progressView.setProgress(1.0, animated: true)
             progressView.fadeOut() { (finished) in
@@ -220,7 +219,7 @@ extension UIViewController {
                 NotificationCenter.default.removeObserver(self)
                 let stack = self.getCoreDataStack()
                 stack.save()
-                self.performSegue(withIdentifier: "HealthKit", sender: nil)
+                completionHandler()
             }
         }
     }
