@@ -119,7 +119,7 @@ extension UIViewController {
     }
     
     func showPlaceDetailViewController(_ place:TAPlaceSegment) {
-        // Grab the DetailVC from Storyboard
+
         let detailController = self.storyboard!.instantiateViewController(withIdentifier: "TAPlaceDetailViewController") as! TAPlaceDetailViewController
         
         detailController.lat = place.lat
@@ -129,13 +129,12 @@ extension UIViewController {
         } else {
             detailController.name = "Unknown"
         }
-        
-        // Present the view controller using navigation
+
         navigationController!.pushViewController(detailController, animated: true)
     }
     
     func showCommuteDetailViewController(_ commute:TACommuteSegment) {
-        // Grab the DetailVC from Storyboard
+
         let detailController = self.storyboard!.instantiateViewController(withIdentifier: "TACommuteDetailViewController") as! TACommuteDetailViewController
         
         if let name = commute.startName {
@@ -155,8 +154,15 @@ extension UIViewController {
         detailController.endLat = commute.endLat
         detailController.endLon = commute.endLon
         detailController.endTime = commute.endTime! as Date
+
+        navigationController!.pushViewController(detailController, animated: true)
+    }
+    
+    func showActivityDetailViewController(_ activity:TAActivitySegment) {
+        let detailController = self.storyboard!.instantiateViewController(withIdentifier: "TAActivityDetailViewController") as! TAActivityDetailViewController
         
-        // Present the view controller using navigation
+        detailController.name = activity.name
+        
         navigationController!.pushViewController(detailController, animated: true)
     }
     
