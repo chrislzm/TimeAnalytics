@@ -109,11 +109,15 @@ class TAModel {
         return lastTAPlace
     }
     
-    func getCoreDataManagedObject(_ entityName:String,_ sortDescriptorKey:String?,_ sortAscending:Bool?,  _ context:NSManagedObjectContext) -> [Any]{
+    func getCoreDataManagedObject(_ entityName:String,_ sortDescriptorKey:String?,_ sortAscending:Bool?,_ predFormat:String?,_ argumentArray:[Any]?,  _ context:NSManagedObjectContext) -> [Any]{
         let fr = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
         if let sortKey = sortDescriptorKey, let ascending = sortAscending {
             let sort = NSSortDescriptor(key: sortKey, ascending: ascending)
             fr.sortDescriptors = [sort]
+        }
+        if let predQuery = predFormat, let arguments = argumentArray {
+            let pred = NSPredicate(format: predQuery, argumentArray: arguments)
+            fr.predicate = pred
         }
         var result:[Any]
         do {
@@ -125,22 +129,12 @@ class TAModel {
     }
     
     func getAllMovesPlaceSegments(_ context:NSManagedObjectContext) -> [MovesPlaceSegment] {
-        let result = getCoreDataManagedObject("MovesPlaceSegment", "startTime", true, context) as! [MovesPlaceSegment]
+        let result = getCoreDataManagedObject("MovesPlaceSegment", "startTime", true, nil, nil, context) as! [MovesPlaceSegment]
         return result
     }
     
     func getMovesPlaceSegmentsBetween(_ startDate:NSDate,_ endDate:NSDate,_ context:NSManagedObjectContext) -> [MovesPlaceSegment] {
-        let fr = NSFetchRequest<NSFetchRequestResult>(entityName: "MovesPlaceSegment")
-        let sort = NSSortDescriptor(key: "startTime", ascending: true)
-        fr.sortDescriptors = [sort]
-        let pred = NSPredicate(format: "(date >= %@) AND (date <= %@)", argumentArray: [startDate,endDate])
-        fr.predicate = pred
-        var result:[MovesPlaceSegment]
-        do {
-            result = try context.fetch(fr) as! [MovesPlaceSegment]
-        } catch {
-            fatalError("Unable to access persistent data")
-        }
+        let result = getCoreDataManagedObject("MovesPlaceSegment", "startTime", true, "(date >= %@) AND (date <= %@)", [startDate,endDate], context) as! [MovesPlaceSegment]
         return result
     }
     
