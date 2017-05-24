@@ -33,7 +33,7 @@ class TAProcessHealthKitDataController: UIViewController {
                 // Save to persistent data since the import was done on a background context
                 let stack = self.getCoreDataStack()
                 stack.save()
-                performSegue(withIdentifier: "FinishedProcessingHealthKitData", sender: nil)
+                self.performSegue(withIdentifier: "FinishedProcessingHealthKitData", sender: nil)
             }
         }
     }
