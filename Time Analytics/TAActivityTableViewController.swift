@@ -82,7 +82,7 @@ class TAActivityTableViewController: TATableViewController {
     
     // MARK: Helper functions
     func setupBottomNavigationBar() {
-        let showCommutesButton = UIBarButtonItem(title: "Places", style: UIBarButtonItemStyle.plain, target: self, action: #selector(TACommuteTableViewController.showPlacesButtonPressed))
+        let showCommutesButton = UIBarButtonItem(title: "Activities", style: UIBarButtonItemStyle.plain, target: self, action: #selector(TACommuteTableViewController.showPlacesButtonPressed))
         self.navigationController?.setToolbarHidden(false, animated: true)
         self.setToolbarItems([showCommutesButton], animated: true)
     }

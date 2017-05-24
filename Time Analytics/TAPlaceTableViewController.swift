@@ -96,7 +96,7 @@ class TAPlaceTableViewController: TATableViewController {
     }
 
     func setupBottomNavigationBar() {
-        let showCommutesButton = UIBarButtonItem(title: "Commutes", style: UIBarButtonItemStyle.plain, target: self, action: #selector(TAPlaceTableViewController.showCommutesButtonPressed))
+        let showCommutesButton = UIBarButtonItem(title: "Places", style: UIBarButtonItemStyle.plain, target: self, action: #selector(TAPlaceTableViewController.showCommutesButtonPressed))
         
         self.navigationController?.setToolbarHidden(false, animated: true)
         
