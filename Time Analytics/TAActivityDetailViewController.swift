@@ -12,6 +12,7 @@ import MapKit
 import UIKit
 
 class TAActivityDetailViewController: TADetailViewController {
+    var type:String?
     var name:String?
     var activityHistoryTableData = [TAActivitySegment]()
     
@@ -72,6 +73,8 @@ class TAActivityDetailViewController: TADetailViewController {
         //setTimeAfterArrivingTableHeaderLabel()
     }
     
+    // MARK: Table Data Source Methods
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var count:Int?
         
@@ -103,6 +106,27 @@ class TAActivityDetailViewController: TADetailViewController {
         
         return cell
     }
+    
+    // MARK: Data Methods
+    
+    func getDataForThisActivity() -> ([Double],[Double],Int,Double) {
+        let activities = getEntityObjectsWithQuery("TAActivitySegment", "type == %@ AND name == %@", [type!,name!], "startTime", true) as! [TAActivitySegment]
+        let totalActivities = activities.count
+        var totalActivityTime:Double = 0
+        var activityLengths = [Double]()
+        var activityDates = [Double]()
+        for activity in activities {
+            let startTime = activity.startTime! as Date
+            let endTime = activity.endTime! as Date
+            let activityTime = endTime.timeIntervalSince(startTime)
+            totalActivityTime += activityTime
+            activityLengths.append(activityTime)
+            activityDates.append(startTime.timeIntervalSinceReferenceDate)
+        }
+        return (activityDates,activityLengths,totalActivities,totalActivityTime)
+    }
+    
+    // MARK: View Methods
     
     func setTitle() {
         title = "\(name!)"
