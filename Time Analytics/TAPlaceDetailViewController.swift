@@ -16,12 +16,12 @@ class TAPlaceDetailViewController: TADetailViewController, UITableViewDelegate {
     
     // MARK: Properties
     
-    var lat:Double! = nil
-    var lon:Double! = nil
-    var name:String! = nil
-    var placeHistoryTableData = [TAPlaceSegment]()
-    var commuteHistoryTableData = [TACommuteSegment]()
-    var activityHistoryTableData = [String]()
+    var lat:Double!
+    var lon:Double!
+    var name:String!
+    var placeHistoryTableData:[TAPlaceSegment]!
+    var commuteHistoryTableData:[TACommuteSegment]?
+    var activityHistoryTableData:[TAActivitySegment]?
     
     // MARK: Outlets
     
@@ -119,13 +119,17 @@ class TAPlaceDetailViewController: TADetailViewController, UITableViewDelegate {
         // Data Source
         placeHistoryTableData = getEntityObjectsWithQuery("TAPlaceSegment", "(lat == %@) AND (lon == %@)", [lat,lon], "startTime", false) as! [TAPlaceSegment]
 
-        commuteHistoryTableData = getEntityObjectsWithQuery("TACommuteSegment", "(startLat == %@ AND startLon == %@) OR (endLat == %@ AND endLon == %@)", [lat,lon,lat,lon], "startTime", false) as! [TACommuteSegment]
-
-        // If empty
-        if commuteHistoryTableData.isEmpty {
+        commuteHistoryTableData = getEntityObjectsWithQuery("TACommuteSegment", "(startLat == %@ AND startLon == %@) OR (endLat == %@ AND endLon == %@)", [lat,lon,lat,lon], "startTime", false) as? [TACommuteSegment]
+        
+        activityHistoryTableData = getEntityObjectsWithQuery("TAActivitySegment", "placeLat == %@ AND placeLon == %@",[lat,lon], "startTime", false) as? [TAActivitySegment]
+        
+        // If no results, make sure we have an empty array
+        if commuteHistoryTableData == nil {
+            commuteHistoryTableData = [TACommuteSegment]()
             createTableEmptyMessageIn(commuteTableView,"No commutes recorded")
         }
-        if activityHistoryTableData.isEmpty {
+        if activityHistoryTableData == nil {
+            activityHistoryTableData = [TAActivitySegment]()
             createTableEmptyMessageIn(activityTableView,"No activities recorded")
         }
         
@@ -133,7 +137,7 @@ class TAPlaceDetailViewController: TADetailViewController, UITableViewDelegate {
         
         visitHistoryLabel.text = "  Visit History - \(totalVisits) Total"
         
-        let totalCommutes = commuteHistoryTableData.count
+        let totalCommutes = commuteHistoryTableData!.count
         commuteHistoryLabel.text = "  Commute History - \(totalCommutes) Total"
     }
     
@@ -152,27 +156,26 @@ class TAPlaceDetailViewController: TADetailViewController, UITableViewDelegate {
     // MARK: UITableView Data Source Methods
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        var count:Int?
+        var count:Int = 0
         
-        if tableView == self.placeTableView {
+        if tableView == placeTableView {
             count = placeHistoryTableData.count
-        } else if tableView == self.commuteTableView {
-            count = commuteHistoryTableData.count
+        } else if tableView == commuteTableView {
+            count = commuteHistoryTableData!.count
+        } else if tableView == activityTableView {
+            count = activityHistoryTableData!.count
         }
         
-        return count!
+        return count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         var cell = UITableViewCell()
         
-        if tableView == self.placeTableView {
-            
-            // Find the right notebook for this indexpath
+        if tableView == placeTableView {
             let place = placeHistoryTableData[indexPath.row]
             
-            // Create the cell
             let placeCell = tableView.dequeueReusableCell(withIdentifier: "TAPlaceTableViewCell", for: indexPath) as! TAPlaceDetailTableViewCell
             
             // Get descriptions and assign to cell label
@@ -182,24 +185,36 @@ class TAPlaceDetailViewController: TADetailViewController, UITableViewDelegate {
             placeCell.dateLabel.text = dateString
             cell = placeCell
             
-        } else if tableView == self.commuteTableView {
-            // Find the right notebook for this indexpath
-            let commute = commuteHistoryTableData[indexPath.row]
+        } else if tableView == commuteTableView {
+            let commute = commuteHistoryTableData![indexPath.row]
             
-            // Create the cell
             let commuteCell = tableView.dequeueReusableCell(withIdentifier: "TAPlaceDetailCommuteTableViewCell", for: indexPath) as! TAPlaceDetailCommuteTableViewCell
             
             // Get descriptions and assign to cell label
-            let (timeInOutString,lengthString,startName,endName,_) = generateCommuteStringDescriptions(commute,nil)
+            let (timeInOutString,lengthString,_) = generateCommuteStringDescriptions(commute,nil)
             commuteCell.timeLabel.text = timeInOutString
             commuteCell.lengthLabel.text = lengthString
             if commute.startLat == lat && commute.startLon == lon {
-                commuteCell.locationLabel.text = "To \(endName)"
+                commuteCell.locationLabel.text = "To \(commute.endName!)"
             } else {
-                commuteCell.locationLabel.text = "From \(startName)"
+                commuteCell.locationLabel.text = "From \(commute.startName!)"
             }
-            //commuteCell.locationLabel.text = dateString
             cell = commuteCell
+        } else if tableView == activityTableView {
+            let activity = activityHistoryTableData![indexPath.row]
+            
+            // Create the cell
+            let activityCell = tableView.dequeueReusableCell(withIdentifier: "TAPlaceDetailActivityTableViewCell", for: indexPath) as! TAPlaceDetailActivityTableViewCell
+            
+            // Get descriptions and assign to cell label
+            let (timeInOutString,lengthString,dateString) = generateActivityStringDescriptions(activity,currentYear)
+            activityCell.timeLabel.text = timeInOutString
+            activityCell.lengthLabel.text = lengthString
+            activityCell.dateLabel.text = dateString
+            activityCell.nameLabel.text = activity.name!
+            
+            //commuteCell.locationLabel.text = dateString
+            cell = activityCell
         }
         return cell
     }
@@ -208,7 +223,7 @@ class TAPlaceDetailViewController: TADetailViewController, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if tableView == commuteTableView {
-            let commute = commuteHistoryTableData[indexPath.row]
+            let commute = commuteHistoryTableData![indexPath.row]
             showCommuteDetailViewController(commute)
         }
     }
