@@ -16,16 +16,11 @@ class TAProcessHealthKitDataController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let progressView = TAProgressView.instanceFromNib()
-        setupOverlayView(progressView,view)
-        progressView.fadeIn(nil)
-        
         // Setup notifications so we know when we finished importing data
         NotificationCenter.default.addObserver(self, selector: #selector(TAProcessHealthKitDataController.didCompleteDataChunk(_:)), name: Notification.Name("didProcessDataChunk"), object: nil)
         
         TAModel.sharedInstance().importHealthKitData() { (dataChunks) in
             DispatchQueue.main.async {
-                progressView.totalProgress = Float(dataChunks)
                 self.dataChunksToImport = dataChunks
             }
         }
@@ -37,7 +32,7 @@ class TAProcessHealthKitDataController: UIViewController {
             // Save to persistent data since the import was done on a background context
             let stack = getCoreDataStack()
             stack.save()
-            self.performSegue(withIdentifier: "FinishedProcessingHealthKitData", sender: nil)
+            performSegue(withIdentifier: "FinishedProcessingHealthKitData", sender: nil)
         }
     }
 }
