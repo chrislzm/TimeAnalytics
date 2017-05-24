@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		935A8628BD61FFDBEBB0BE71 /* Pods_Time_Analytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F9E6F0E9144766F61922631 /* Pods_Time_Analytics.framework */; };
+		A52542AE1ED5F15E008F209C /* TAActivityDetailPlaceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52542AD1ED5F15E008F209C /* TAActivityDetailPlaceTableViewCell.swift */; };
 		A52564A91EC929D900DD843F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52564A81EC929D900DD843F /* AppDelegate.swift */; };
 		A52564AB1EC929D900DD843F /* TALoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52564AA1EC929D900DD843F /* TALoginViewController.swift */; };
 		A52564AE1EC929D900DD843F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A52564AC1EC929D900DD843F /* Main.storyboard */; };
@@ -57,6 +58,7 @@
 
 /* Begin PBXFileReference section */
 		9F9E6F0E9144766F61922631 /* Pods_Time_Analytics.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Time_Analytics.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A52542AD1ED5F15E008F209C /* TAActivityDetailPlaceTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TAActivityDetailPlaceTableViewCell.swift; sourceTree = "<group>"; };
 		A52564A51EC929D900DD843F /* Time Analytics.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Time Analytics.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A52564A81EC929D900DD843F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A52564AA1EC929D900DD843F /* TALoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TALoginViewController.swift; sourceTree = "<group>"; };
@@ -191,6 +193,7 @@
 				A556EB821ED424EC003F8E2B /* TAActivityTableViewCell.swift */,
 				A55715071ED5587900D2C520 /* TAActivityDetailViewController.swift */,
 				A55715091ED55B3E00D2C520 /* TAActivityDetailActivityTableViewCell.swift */,
+				A52542AD1ED5F15E008F209C /* TAActivityDetailPlaceTableViewCell.swift */,
 			);
 			name = Activity;
 			sourceTree = "<group>";
@@ -441,6 +444,7 @@
 				A556EB871ED425DA003F8E2B /* TAActivitySegment+CoreDataProperties.swift in Sources */,
 				A54502F61ED3FCC5003523CB /* TAHealthKitAccessController.swift in Sources */,
 				A5FFFD8F1ECAB4A700B55020 /* TAPlaceTableViewController.swift in Sources */,
+				A52542AE1ED5F15E008F209C /* TAActivityDetailPlaceTableViewCell.swift in Sources */,
 				A556EB7E1ED40B1C003F8E2B /* TAProcessHealthKitDataController.swift in Sources */,
 				A556EB831ED424EC003F8E2B /* TAActivityTableViewCell.swift in Sources */,
 				A5866A1E1EC9649C0025D38F /* TANetConstants.swift in Sources */,
