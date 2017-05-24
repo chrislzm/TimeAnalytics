@@ -47,6 +47,7 @@ class TADetailViewController: UIViewController, UITableViewDataSource {
     
     // MARK: Data Methods
     
+    // TODO: These should probably be moved to the model
     func getTAPlaceSegment(_ lat:Double,_ lon:Double,_ time:Date,_ startTime:Bool) -> TAPlaceSegment {
         let queryTimeKey:String
         if startTime {
