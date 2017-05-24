@@ -42,9 +42,10 @@ class TAActivityDetailViewController: TADetailViewController, UITableViewDelegat
         
         placeHistoryTableData = getActivityPlaceHistory(activityHistoryTableData)
 
-
         // Get data for this place, to be used below
         let(activityDates,activityLengths,totalActivities,totalActivityTime) = getDataForThisActivity()
+
+        // SETUP CHART AND MAP VIEWS
         
         setupLineChartView(lineChartView, activityDates, activityLengths)
         setupMapView()
@@ -205,7 +206,8 @@ class TAActivityDetailViewController: TADetailViewController, UITableViewDelegat
         activityPlacesTableHeaderLabel.text = "  Activity Places - \(placeHistoryTableData.count) Total"
     }
     
-    func setupMapView() {
+    override func setupMapView(_ mapView:MKMapView) {
+        super.setupMapView(mapView)
         
         class TACoordinate {
             let lat:Double

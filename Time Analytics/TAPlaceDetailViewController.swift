@@ -92,8 +92,10 @@ class TAPlaceDetailViewController: TADetailViewController, UITableViewDelegate {
         // Get data for this place, to be used below
         let(visitDates,visitLengths,totalVisits,totalVisitTime) = getVisitDataForThisPlace()
         
+        // SETUP CHART AND MAP VIEWS
+        
         setupLineChartView(chartView, visitDates, visitLengths)
-        setupMapView()
+        setupMapView(mapView)
         
         // SETUP SUMMARY LABELS
         
@@ -270,7 +272,9 @@ class TAPlaceDetailViewController: TADetailViewController, UITableViewDelegate {
         navigationItem.rightBarButtonItem = settingsButton
     }
     
-    func setupMapView() {
+    override func setupMapView(_ mapView:MKMapView) {
+        super.setupMapView(mapView)
+        
         let annotation = MKPointAnnotation()
         let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: lon)
         annotation.coordinate = coordinate

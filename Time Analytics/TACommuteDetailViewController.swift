@@ -79,8 +79,10 @@ class TACommuteDetailViewController: TADetailViewController {
         // Get data for this place, to be used below
         let(commuteDates,commuteLengths,totalCommutes,totalCommuteTime) = getDataForThisCommute()
         
+        // SETUP CHART AND MAP VIEWS
+        
         setupLineChartView(lineChartView, commuteDates, commuteLengths)
-        setupMapView()
+        setupMapView(mapView)
         
         // SETUP SUMMARY LABELS
         
@@ -279,7 +281,9 @@ class TACommuteDetailViewController: TADetailViewController {
         timeAfterArrivingTableHeaderLabel.text = "  \(endName!) - After Arrival"
     }
 
-    func setupMapView() {
+    override func setupMapView(_ mapView:MKMapView) {
+        super.setupMapView(mapView)
+        
         let startAnnotation = MKPointAnnotation()
         let startCoordinate = CLLocationCoordinate2D(latitude: startLat, longitude: startLon)
         startAnnotation.coordinate = startCoordinate

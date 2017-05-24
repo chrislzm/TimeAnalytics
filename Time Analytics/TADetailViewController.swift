@@ -9,6 +9,7 @@
 import CoreData
 import Charts
 import UIKit
+import MapKit
 
 class TADetailViewController: UIViewController, UITableViewDataSource {
     
@@ -73,9 +74,17 @@ class TADetailViewController: UIViewController, UITableViewDataSource {
 
     // MARK: View Methods
     
+    func setupMapView(_ mapView:MKMapView) {
+        mapView.isZoomEnabled = false
+        mapView.isScrollEnabled = false
+        mapView.isUserInteractionEnabled = false
+    }
+    
+    
     func setupLineChartView(_ chartView:LineChartView, _ xValues:[Double],_ yValues:[Double]) {
         
         // Setup appearance: Remove all labels, gridlines, annotations, etc...
+        chartView.isUserInteractionEnabled = false
         chartView.chartDescription!.text = ""
         chartView.maxVisibleCount = 0
         let legend = chartView.legend
