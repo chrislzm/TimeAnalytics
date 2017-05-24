@@ -48,7 +48,7 @@ extension TAModel {
             stack.performBackgroundBatchOperation() { (context) in
                 for item in result! {
                     let workout = item as! HKWorkout
-                    let workoutType = self.getWorkoutTypeString(workout.workoutActivityType.rawValue)
+                    let workoutType = self.getHealthKitWorkoutTypeString(workout.workoutActivityType.rawValue)
                     // Create the TAActivity object
                     DispatchQueue.main.async {
                         TAModel.sharedInstance().createNewTAActivityObject(item.startDate as NSDate, item.endDate as NSDate, workoutType, context)
@@ -76,7 +76,7 @@ extension TAModel {
         healthStore.execute(query)
     }
     
-    func getWorkoutTypeString(_ activityType:UInt) -> String {
+    func getHealthKitWorkoutTypeString(_ activityType:UInt) -> String {
         switch activityType {
         case 1:
             return "American Football"
