@@ -35,17 +35,15 @@ extension UIViewController {
         return (timeInOutString,lengthString,dateString)
     }
 
-    func generateCommuteStringDescriptions(_ commute:TACommuteSegment,_ currentYear:String?) -> (String,String,String,String,String) {
+    func generateCommuteStringDescriptions(_ commute:TACommuteSegment,_ currentYear:String?) -> (String,String,String) {
         let startTime = commute.startTime! as Date
         let endTime = commute.endTime! as Date
         
         let timeInOutString = generateTimeInOutString(startTime,endTime)
         let commuteLengthString = generateLengthString(startTime,endTime)
-        let startNameString = commute.startName!
-        let endNameString = commute.endName!
         let dateString = generateLongDateString(startTime,currentYear)
         
-        return (timeInOutString,commuteLengthString,startNameString,endNameString,dateString)
+        return (timeInOutString,commuteLengthString,dateString)
     }
     
     func generateActivityStringDescriptions(_ activity:TAActivitySegment,_ currentYear:String?) -> (String,String,String) {
