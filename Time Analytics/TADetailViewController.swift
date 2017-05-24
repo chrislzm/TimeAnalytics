@@ -12,10 +12,17 @@ import UIKit
 
 class TADetailViewController: UIViewController, UITableViewDataSource {
     
+    var currentYear:String?
+    
     // MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.setToolbarHidden(true, animated: true)
+        
+        // Set current year to accelerate string generation
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yy"
+        currentYear = formatter.string(from: Date())
     }
     
     // MARK: Table Data Source Delegate Methods
