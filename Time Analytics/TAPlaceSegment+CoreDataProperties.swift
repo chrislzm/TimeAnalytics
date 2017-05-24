@@ -2,7 +2,7 @@
 //  TAPlaceSegment+CoreDataProperties.swift
 //  Time Analytics
 //
-//  Created by Chris Leung on 5/16/17.
+//  Created by Chris Leung on 5/24/17.
 //  Copyright © 2017 Chris Leung. All rights reserved.
 //
 
@@ -20,7 +20,7 @@ extension TAPlaceSegment {
     @NSManaged public var lat: Double
     @NSManaged public var lon: Double
     @NSManaged public var movesStartTime: NSDate?
-    @NSManaged public var startTime: NSDate?
     @NSManaged public var name: String?
+    @NSManaged public var startTime: NSDate?
 
 }

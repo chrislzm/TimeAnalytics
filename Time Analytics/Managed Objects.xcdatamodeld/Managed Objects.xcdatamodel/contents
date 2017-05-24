@@ -35,11 +35,11 @@
         <attribute name="daySectionIdentifier" optional="YES" transient="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="endLat" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="endLon" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="endName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="endName" attributeType="String" syncable="YES"/>
         <attribute name="endTime" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="startLat" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="startLon" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="startName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="startName" attributeType="String" syncable="YES"/>
         <attribute name="startTime" attributeType="Date" usesScalarValueType="NO" indexed="YES" syncable="YES"/>
     </entity>
     <entity name="TAPlaceSegment" representedClassName="TAPlaceSegment" syncable="YES">
@@ -48,7 +48,7 @@
         <attribute name="lat" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="lon" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="movesStartTime" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" attributeType="String" syncable="YES"/>
         <attribute name="startTime" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
     </entity>
     <elements>

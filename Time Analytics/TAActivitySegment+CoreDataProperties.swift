@@ -2,7 +2,7 @@
 //  TAActivitySegment+CoreDataProperties.swift
 //  Time Analytics
 //
-//  Created by Chris Leung on 5/23/17.
+//  Created by Chris Leung on 5/24/17.
 //  Copyright © 2017 Chris Leung. All rights reserved.
 //
 
@@ -18,8 +18,10 @@ extension TAActivitySegment {
 
     @NSManaged public var endTime: NSDate?
     @NSManaged public var name: String?
+    @NSManaged public var placeEndTime: NSDate?
     @NSManaged public var placeLat: Double
     @NSManaged public var placeLon: Double
+    @NSManaged public var placeName: String?
     @NSManaged public var placeStartTime: NSDate?
     @NSManaged public var startTime: NSDate?
 
