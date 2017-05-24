@@ -16,8 +16,11 @@ extension TAActivitySegment {
         return NSFetchRequest<TAActivitySegment>(entityName: "TAActivitySegment")
     }
 
-    @NSManaged public var name: String?
-    @NSManaged public var startTime: NSDate?
     @NSManaged public var endTime: NSDate?
+    @NSManaged public var name: String?
+    @NSManaged public var placeLat: Double
+    @NSManaged public var placeLon: Double
+    @NSManaged public var placeStartTime: NSDate?
+    @NSManaged public var startTime: NSDate?
 
 }
