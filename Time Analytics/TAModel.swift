@@ -109,16 +109,23 @@ class TAModel {
         return lastTAPlace
     }
     
-    func getAllMovesPlaceSegments(_ context:NSManagedObjectContext) -> [MovesPlaceSegment] {
-        let fr = NSFetchRequest<NSFetchRequestResult>(entityName: "MovesPlaceSegment")
-        let sort = NSSortDescriptor(key: "startTime", ascending: true)
-        fr.sortDescriptors = [sort]
-        var result:[MovesPlaceSegment]
+    func getCoreDataManagedObject(_ entityName:String,_ sortDescriptorKey:String?,_ sortAscending:Bool?,  _ context:NSManagedObjectContext) -> [Any]{
+        let fr = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
+        if let sortKey = sortDescriptorKey, let ascending = sortAscending {
+            let sort = NSSortDescriptor(key: sortKey, ascending: ascending)
+            fr.sortDescriptors = [sort]
+        }
+        var result:[Any]
         do {
-            result = try context.fetch(fr) as! [MovesPlaceSegment]
+            result = try context.fetch(fr)
         } catch {
             fatalError("Unable to access persistent data")
         }
+        return result
+    }
+    
+    func getAllMovesPlaceSegments(_ context:NSManagedObjectContext) -> [MovesPlaceSegment] {
+        let result = getCoreDataManagedObject("MovesPlaceSegment", "startTime", true, context) as! [MovesPlaceSegment]
         return result
     }
     
