@@ -44,6 +44,8 @@ class TAPlaceDetailViewController: TADetailViewController, UITableViewDelegate {
         showDetailMapViewController()
     }
     
+    // Rename place methods
+    
     func editButtonPressed() {
         let editDialog = UIAlertController(title: "Edit Place Name", message: nil, preferredStyle: UIAlertControllerStyle.alert)
         editDialog.addTextField() { (textField) in
@@ -80,6 +82,7 @@ class TAPlaceDetailViewController: TADetailViewController, UITableViewDelegate {
             TAModel.sharedInstance().renamePlaceInAllTAData(self.lat, self.lon, newName)
             self.name = newName
             self.title = newName
+            self.updateMapViewAnnotationName()
             updatingDialog.dismiss(animated: true, completion: nil)
         }
     }
@@ -276,12 +279,19 @@ class TAPlaceDetailViewController: TADetailViewController, UITableViewDelegate {
         navigationItem.rightBarButtonItem = settingsButton
     }
     
+    func updateMapViewAnnotationName() {
+        mapView.removeAnnotations(mapView.annotations)
+        mapViewAnnotations.removeAll()
+        setupMapView(mapView)
+    }
+    
     override func setupMapView(_ mapView:MKMapView) {
         super.setupMapView(mapView)
         
         let annotation = MKPointAnnotation()
         let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: lon)
         annotation.coordinate = coordinate
+        annotation.title = name
         mapView.addAnnotation(annotation)
         // Set the MapView to a 1km * 1km box around the geocoded location
         let viewRegion = MKCoordinateRegionMakeWithDistance(coordinate, DefaultMapViewRegionSize, DefaultMapViewRegionSize);
