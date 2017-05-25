@@ -508,6 +508,10 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UzR-Zc-7uP" userLabel="ChartView" customClass="LineChartView" customModule="Charts">
                                         <rect key="frame" x="0.0" y="60.5" width="188" height="161"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <gestureRecognizers/>
+                                        <connections>
+                                            <outletCollection property="gestureRecognizers" destination="Id6-kt-cIB" appends="YES" id="LJ0-fI-UEo"/>
+                                        </connections>
                                     </view>
                                     <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="lbP-mj-EBN">
                                         <rect key="frame" x="187" y="60.5" width="188" height="161"/>
@@ -751,6 +755,11 @@
                 <tapGestureRecognizer id="cxc-VD-ooo" userLabel="Tap Gesture Recognizer for MapView">
                     <connections>
                         <action selector="didTapOnMapView:" destination="Am9-mG-H76" id="EtP-my-m38"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="Id6-kt-cIB" userLabel="Tap Gesture Recognizer for LineChartView">
+                    <connections>
+                        <action selector="didTapOnLineChartView:" destination="Am9-mG-H76" id="6Ua-Bn-uic"/>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
@@ -1290,6 +1299,10 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tOl-AM-4qw" userLabel="ChartView" customClass="LineChartView" customModule="Charts">
                                 <rect key="frame" x="0.0" y="130.5" width="187.5" height="161.5"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="13d-PN-pkh" appends="YES" id="8NB-p7-UL3"/>
+                                </connections>
                             </view>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="dXY-R5-ap4">
                                 <rect key="frame" x="187.5" y="130.5" width="187.5" height="161.5"/>
@@ -1524,6 +1537,11 @@
                         <action selector="didTapOnMapView:" destination="PIb-cT-0y2" id="XrC-6w-dFn"/>
                     </connections>
                 </tapGestureRecognizer>
+                <tapGestureRecognizer id="13d-PN-pkh" userLabel="Tap Gesture Recognizer for LineChartView">
+                    <connections>
+                        <action selector="didTapOnLineChartView:" destination="PIb-cT-0y2" id="WhE-So-39j"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1702" y="122"/>
         </scene>
@@ -1715,6 +1733,10 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kc6-O8-4VU" userLabel="ChartView" customClass="LineChartView" customModule="Charts">
                                         <rect key="frame" x="0.0" y="60.5" width="188" height="196"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <gestureRecognizers/>
+                                        <connections>
+                                            <outletCollection property="gestureRecognizers" destination="uRm-QV-ICz" appends="YES" id="VuA-87-ANT"/>
+                                        </connections>
                                     </view>
                                     <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="cAS-tr-LqX">
                                         <rect key="frame" x="187" y="60.5" width="188" height="196"/>
@@ -2051,6 +2073,11 @@
                 <tapGestureRecognizer id="QGK-2a-xub" userLabel="Tap Gesture Recognizer for MapView">
                     <connections>
                         <action selector="didTapOnMapView:" destination="Un9-wR-MFr" id="IaK-Br-3Pa"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="uRm-QV-ICz" userLabel="Tap Gesture Recognizer for LineChartView">
+                    <connections>
+                        <action selector="didTapOnLineChartView:" destination="Un9-wR-MFr" id="zdX-fg-sfb"/>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
