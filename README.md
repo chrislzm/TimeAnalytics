@@ -44,13 +44,17 @@ Because Moves data can contain gaps, Time Analytics interpolates the data using 
 * Move segments that begin and end at the same place are ignored
 * We are still located at a place for the place segment with the most recent endTime 
 
+Developer Notes
+---------------
+* Under active development
+* Data refresh uses's' Moves API "lastUpdate" (optional) value to request new data updated since then. So far, I have not seen any Moves Storyline data that does not contain this value. If this value disappears in the future, however, then the refresh process will take longer than needed -- it will continue to request data from either the last "lastUpdate" value ever received or if that value never existed in a user's data, then will request data from Moves user's first date on each refresh.
+
 Issues
 ------
 * No such module 'Charts': This is a known issue with Charts. To resolve, compile the project, and the error message should disappear. (May require Xcode restart.)
 
-Developer Notes
----------------
-* Under active development
+Credits
+------
 * Uses [Charts 3.0.2](https://github.com/danielgindi/Charts)
 
 Questions
