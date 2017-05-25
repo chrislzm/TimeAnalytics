@@ -365,21 +365,52 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NZi-m3-ZD6" customClass="BorderedButton" customModule="Time_Analytics" customModuleProvider="target">
-                                <rect key="frame" x="75" y="318.5" width="225" height="30"/>
+                                <rect key="frame" x="75" y="485.5" width="225" height="30"/>
                                 <state key="normal" title="Log Out"/>
                                 <connections>
                                     <action selector="logOutButtonPressed:" destination="5Uy-fx-J0M" eventType="touchUpInside" id="WTt-OU-E9b"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="65E-KJ-qsz">
+                                <rect key="frame" x="168.5" y="323" width="39.5" height="21"/>
+                                <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="16"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Last Automatically Updated " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nLY-y3-2cT">
+                                <rect key="frame" x="97.5" y="296" width="180" height="19"/>
+                                <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="14"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Time Analytics Logo" translatesAutoresizingMaskIntoConstraints="NO" id="17q-L0-hpj">
+                                <rect key="frame" x="94" y="66.5" width="187.5" height="200.5"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sT7-Dy-enQ" customClass="BorderedButton" customModule="Time_Analytics" customModuleProvider="target">
+                                <rect key="frame" x="75.5" y="385" width="225" height="30"/>
+                                <state key="normal" title="Refresh Data"/>
+                            </button>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="sT7-Dy-enQ" firstAttribute="centerX" secondItem="lZi-Qi-CjN" secondAttribute="centerX" id="0LO-du-ddt"/>
+                            <constraint firstItem="17q-L0-hpj" firstAttribute="height" secondItem="lZi-Qi-CjN" secondAttribute="height" multiplier="0.3" id="2nv-Zp-13P"/>
+                            <constraint firstItem="17q-L0-hpj" firstAttribute="width" secondItem="lZi-Qi-CjN" secondAttribute="width" multiplier="0.5" id="CsS-ek-m1s"/>
                             <constraint firstItem="NZi-m3-ZD6" firstAttribute="width" secondItem="lZi-Qi-CjN" secondAttribute="width" multiplier="0.6" id="DaB-nE-773"/>
-                            <constraint firstItem="NZi-m3-ZD6" firstAttribute="centerY" secondItem="lZi-Qi-CjN" secondAttribute="centerY" id="UBi-9k-r5c"/>
+                            <constraint firstItem="17q-L0-hpj" firstAttribute="centerX" secondItem="lZi-Qi-CjN" secondAttribute="centerX" id="OWf-SF-XSl"/>
+                            <constraint firstItem="NZi-m3-ZD6" firstAttribute="centerY" secondItem="lZi-Qi-CjN" secondAttribute="centerY" multiplier="1.5" id="UBi-9k-r5c"/>
                             <constraint firstItem="NZi-m3-ZD6" firstAttribute="centerX" secondItem="lZi-Qi-CjN" secondAttribute="centerX" id="ZX6-Wi-e2p"/>
+                            <constraint firstItem="sT7-Dy-enQ" firstAttribute="centerY" secondItem="lZi-Qi-CjN" secondAttribute="centerY" multiplier="1.2" id="add-5W-BvZ"/>
+                            <constraint firstItem="65E-KJ-qsz" firstAttribute="centerY" secondItem="lZi-Qi-CjN" secondAttribute="centerY" id="apT-3a-3ot"/>
+                            <constraint firstItem="65E-KJ-qsz" firstAttribute="centerX" secondItem="lZi-Qi-CjN" secondAttribute="centerX" id="gri-AW-6oi"/>
+                            <constraint firstItem="65E-KJ-qsz" firstAttribute="top" secondItem="nLY-y3-2cT" secondAttribute="bottom" constant="8" id="gul-dR-7j8"/>
+                            <constraint firstItem="sT7-Dy-enQ" firstAttribute="width" secondItem="lZi-Qi-CjN" secondAttribute="width" multiplier="0.6" id="i0d-g6-w0w"/>
+                            <constraint firstItem="nLY-y3-2cT" firstAttribute="centerX" secondItem="lZi-Qi-CjN" secondAttribute="centerX" id="iex-bc-gOP"/>
+                            <constraint firstItem="17q-L0-hpj" firstAttribute="centerY" secondItem="lZi-Qi-CjN" secondAttribute="centerY" multiplier="0.5" id="rIJ-pA-Y8D"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="lastUpdatedLabel" destination="65E-KJ-qsz" id="eHD-93-v1n"/>
                         <segue destination="jgb-gS-4dK" kind="unwind" identifier="LogOut" unwindAction="prepareForUnwindWithSegue:" id="TxY-GV-QQK"/>
                     </connections>
                 </viewController>
@@ -912,7 +943,7 @@
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ouj-o0-NX3">
                                                                     <rect key="frame" x="0.0" y="0.0" width="149.5" height="27.5"/>
-                                                                    <color key="backgroundColor" red="0.99942404029999998" green="0.97040138229999995" blue="0.86234215339999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                    <color key="backgroundColor" red="0.99946612119674683" green="0.97010987997055054" blue="0.86239749193191528" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
@@ -2089,6 +2120,6 @@
         <image name="Time Analytics Logo" width="3840" height="2532"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="zQK-Fs-xZM"/>
+        <segue reference="2f9-9V-5NI"/>
     </inferredMetricsTieBreakers>
 </document>
