@@ -9,7 +9,7 @@
 import Charts
 import UIKit
 
-class TADetailLineChartViewController:TADetailViewController {
+class TADetailLineChartViewController:TADetailViewController, IAxisValueFormatter {
     
     // MARK: Properties
     var xValues:[Double]!
@@ -60,8 +60,9 @@ class TADetailLineChartViewController:TADetailViewController {
         rightAxis.drawBottomYLabelEntryEnabled = false
         let xAxis = lineChartView.xAxis
         xAxis.drawGridLinesEnabled = false
-        xAxis.drawAxisLineEnabled = false
-        xAxis.drawLabelsEnabled = false
+        xAxis.drawAxisLineEnabled = true
+        xAxis.drawLabelsEnabled = true
+        xAxis.valueFormatter = self
         
         // Create line from data
         var dataEntries = [ChartDataEntry]()
@@ -106,5 +107,18 @@ class TADetailLineChartViewController:TADetailViewController {
         lineChartView.data = lineChartData
 
 
+    }
+    
+    // IAxisValueFormatter Delegate Method
+    func stringForValue(_ value: Double, axis: AxisBase?) -> String {
+
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMM d ''YY"
+        let date = Date(timeIntervalSinceReferenceDate: value)
+        var dateString = formatter.string(from: date)
+        if let year = currentYear {
+            dateString = removeYearIfSame(dateString,year,-4)
+        }
+        return dateString
     }
 }
