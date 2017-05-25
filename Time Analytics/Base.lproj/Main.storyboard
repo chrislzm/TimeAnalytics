@@ -421,6 +421,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="autoUpdateLabel" destination="ExN-yV-8gG" id="hrt-9V-PnG"/>
                         <outlet property="lastUpdatedLabel" destination="65E-KJ-qsz" id="eHD-93-v1n"/>
                         <segue destination="jgb-gS-4dK" kind="unwind" identifier="LogOut" unwindAction="prepareForUnwindWithSegue:" id="TxY-GV-QQK"/>
                     </connections>
