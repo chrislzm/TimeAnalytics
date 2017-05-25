@@ -29,6 +29,8 @@ class TAModel {
                 TANetClient.sharedInstance().movesRefreshToken = UserDefaults.standard.value(forKey: "movesRefreshToken") as? String
                 TANetClient.sharedInstance().movesUserId = UserDefaults.standard.value(forKey: "movesUserId") as? UInt64
                 TANetClient.sharedInstance().movesUserFirstDate = UserDefaults.standard.value(forKey: "movesUserFirstDate") as? String
+                TANetClient.sharedInstance().movesLatestUpdate = UserDefaults.standard.value(forKey: "movesLatestUpdate") as? Date
+                TANetClient.sharedInstance().movesLastChecked = UserDefaults.standard.value(forKey: "movesLastChecked") as? Date
             }
         }
     }
@@ -239,6 +241,33 @@ class TAModel {
         }
     }
     
+    // Retrieves the "latestUpdate" value from moves data, compares it to our stored value, updates our stored value if it's newer
+    func saveNewMovesLastUpdateDate(_ context:NSManagedObjectContext) {
+        let moveResults = getCoreDataManagedObject("MovesMoveSegment", "lastUpdate", false, nil, nil, context) as! [MovesMoveSegment]
+        var movesMoveLastUpdate:Date = Date(timeIntervalSince1970: 0)
+        if moveResults.count > 0 {
+            movesMoveLastUpdate = moveResults.first!.lastUpdate! as Date
+        }
+        let placeResults = getCoreDataManagedObject("MovesPlaceSegment", "lastUpdate", false, nil, nil, context) as! [MovesPlaceSegment]
+        var movesPlaceLastUpdate:Date = Date(timeIntervalSince1970: 0)
+        if placeResults.count > 0 {
+            movesPlaceLastUpdate = placeResults.first!.lastUpdate! as Date
+        }
+        let latestUpdate = movesMoveLastUpdate > movesPlaceLastUpdate ? movesMoveLastUpdate : movesPlaceLastUpdate
+        
+        if let savedLatestUpdate = UserDefaults.standard.value(forKey: "movesLatestUpdate") as? Date {
+            if latestUpdate > savedLatestUpdate {
+                UserDefaults.standard.set(latestUpdate, forKey: "movesLatestUpdate")
+                TANetClient.sharedInstance().movesLatestUpdate = latestUpdate
+            }
+        }
+        
+        let lastChecked = Date()
+        
+        UserDefaults.standard.set(lastChecked, forKey: "movesLastChecked")
+        TANetClient.sharedInstance().movesLastChecked = lastChecked
+    }
+    
     // MARK: Time Analytics Data Methods
     
     func createNewTAActivityObject(_ startTime:Date,_ endTime:Date,_ type:String, _ name:String,_ movesFirstTime:Date, _ context:NSManagedObjectContext) {
@@ -352,6 +381,8 @@ class TAModel {
         stack.performBackgroundBatchOperation() { (context) in
             self.generateTAPlaceObjects(context)
             self.generateTACommuteObject(context)
+            stack.save()
+            self.saveNewMovesLastUpdateDate(context)
             DispatchQueue.main.async {
                 // Send notification that we completed processing
                 NotificationCenter.default.post(name: Notification.Name("didCompleteProcessing"), object: nil)
