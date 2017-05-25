@@ -23,9 +23,8 @@ class TADetailMapViewController:UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        for annotation in annotations {
-            mapView.addAnnotation(annotation)
-        }
+        mapView.addAnnotations(annotations)
+        mapView.selectAnnotation(annotations.first!, animated: true)
 
         let viewRegion = MKCoordinateRegionMakeWithDistance(center, regionSize, regionSize);
         mapView.setRegion(viewRegion, animated: true)

@@ -290,11 +290,13 @@ class TACommuteDetailViewController: TADetailViewController {
         let startAnnotation = MKPointAnnotation()
         let startCoordinate = CLLocationCoordinate2D(latitude: startLat, longitude: startLon)
         startAnnotation.coordinate = startCoordinate
+        startAnnotation.title = startName
         mapView.addAnnotation(startAnnotation)
         
         let endAnnotation = MKPointAnnotation()
         let endCoordinate = CLLocationCoordinate2D(latitude: endLat, longitude: endLon)
         endAnnotation.coordinate = endCoordinate
+        endAnnotation.title = endName
         mapView.addAnnotation(endAnnotation)
         
         // Move the screen up slightly since the pin sticks out at the top

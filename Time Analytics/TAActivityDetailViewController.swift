@@ -226,10 +226,12 @@ class TAActivityDetailViewController: TADetailViewController, UITableViewDelegat
         class TACoordinate {
             let lat:Double
             let lon:Double
+            let placeName:String
             
-            init(latitude:Double,longitude:Double) {
+            init(latitude:Double,longitude:Double,name:String) {
                 lat = latitude
                 lon = longitude
+                placeName = name
             }
             
             func inArray(_ inTACoordinates:[TACoordinate]) -> Bool {
@@ -247,7 +249,7 @@ class TAActivityDetailViewController: TADetailViewController, UITableViewDelegat
         // Put unique coordinates into a set
         for activity in activityHistoryTableData {
             if activity.placeLat != 0, activity.placeLon != 0 {
-                let coordinate = TACoordinate(latitude: activity.placeLat, longitude: activity.placeLon)
+                let coordinate = TACoordinate(latitude: activity.placeLat, longitude: activity.placeLon, name: activity.placeName!)
                 if !coordinate.inArray(activityCoordinates) {
                     activityCoordinates.append(coordinate)
                 }
@@ -258,6 +260,7 @@ class TAActivityDetailViewController: TADetailViewController, UITableViewDelegat
             let coordinate = CLLocationCoordinate2D(latitude: activity.lat, longitude: activity.lon)
             let annotation = MKPointAnnotation()
             annotation.coordinate = coordinate
+            annotation.title = activity.placeName
             mapView.addAnnotation(annotation)
             
             // Save data for segue
