@@ -237,17 +237,22 @@ extension UIViewController {
     }
     
     // Remove a progress view and its observers
-    func removeProgressView(completionHandler: @escaping ()-> Void) {
+    func removeProgressView(completionHandler: (()-> Void)?) {
         if let progressView = view.viewWithTag(100) as? TAProgressView {
             progressView.progressView.setProgress(1.0, animated: true)
             progressView.fadeOut() { (finished) in
                 progressView.removeFromObservers()
                 progressView.removeFromSuperview()
                 NotificationCenter.default.removeObserver(self)
-                let stack = self.getCoreDataStack()
-                stack.save()
-                completionHandler()
+                if let closure = completionHandler {
+                    closure()
+                }
             }
         }
+    }
+    
+    func saveAllDataToPersistentStore() {
+        let stack = self.getCoreDataStack()
+        stack.save()
     }
 }
