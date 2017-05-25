@@ -163,26 +163,6 @@ class TAModel {
         completionHandler(dataChunks,nil)
     }
     
-    func downloadAndProcessMovesDataInRange(_ startDate:Date, _ endDate: Date, completionHandler: @escaping (_ error: String?) -> Void) {
-        let stack = getCoreDataStack()
-        
-        // Try getting moves data
-        TANetClient.sharedInstance().getMovesDataFrom(startDate, endDate) { (result,error) in
-            
-            guard error == nil else {
-                completionHandler(error!)
-                return
-            }
-            
-            stack.performBackgroundBatchOperation() { (context) in
-                self.parseAndSaveMovesData(result!, context)
-                stack.save()
-                completionHandler(nil)
-            }
-            
-        }
-    }
-    
     func parseAndSaveMovesData(_ stories:[AnyObject], _ context:NSManagedObjectContext) {
         
         // Setup the date formatter
