@@ -389,6 +389,9 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sT7-Dy-enQ" customClass="BorderedButton" customModule="Time_Analytics" customModuleProvider="target">
                                 <rect key="frame" x="75.5" y="385" width="225" height="30"/>
                                 <state key="normal" title="Refresh Data"/>
+                                <connections>
+                                    <action selector="refreshDataButtonPressed:" destination="5Uy-fx-J0M" eventType="touchUpInside" id="PZ6-f7-H2D"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
