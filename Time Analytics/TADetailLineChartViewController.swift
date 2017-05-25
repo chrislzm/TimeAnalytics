@@ -6,8 +6,20 @@
 //  Copyright © 2017 Chris Leung. All rights reserved.
 //
 
+import Charts
 import UIKit
 
-class TADetailLineChartViewController:UIViewController {
+class TADetailLineChartViewController:TADetailViewController {
     
+    // MARK: Properties
+    var xValues:[Double]!
+    var yValues:[Double]!
+
+    // MARK: Outlets
+    @IBOutlet weak var lineChartView: LineChartView!
+    
+    // MARK: Lifecycle
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
 }

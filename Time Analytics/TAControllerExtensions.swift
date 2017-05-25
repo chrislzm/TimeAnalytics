@@ -156,11 +156,7 @@ extension UIViewController {
         
         detailController.lat = place.lat
         detailController.lon = place.lon
-        if let name = place.name {
-            detailController.name = name
-        } else {
-            detailController.name = "Unknown"
-        }
+        detailController.name = place.name!
 
         navigationController!.pushViewController(detailController, animated: true)
     }
@@ -169,16 +165,8 @@ extension UIViewController {
 
         let detailController = self.storyboard!.instantiateViewController(withIdentifier: "TACommuteDetailViewController") as! TACommuteDetailViewController
         
-        if let name = commute.startName {
-            detailController.startName = name
-        } else {
-            detailController.startName = "Unknown"
-        }
-        if let name = commute.endName {
-            detailController.endName = name
-        } else {
-            detailController.endName = "Unknown"
-        }
+        detailController.startName = commute.startName!
+        detailController.endName = commute.endName!
         
         detailController.startLat = commute.startLat
         detailController.startLon = commute.startLon
