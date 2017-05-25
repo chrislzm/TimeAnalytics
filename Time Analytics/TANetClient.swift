@@ -23,6 +23,8 @@ class TANetClient {
     var movesRefreshToken:String?
     var movesUserId:UInt64?
     var movesUserFirstDate:String?
+    var movesLatestUpdate:Date?
+    var movesLastChecked:Date?
     
     // MARK: Methods
     
