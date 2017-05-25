@@ -96,7 +96,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Cq6-nL-bh1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="889" y="124"/>
+            <point key="canvasLocation" x="65" y="122"/>
         </scene>
         <!--Download View Controller-->
         <scene sceneID="5ev-e2-8lo">
@@ -386,7 +386,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TvM-F1-qzx" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="jgb-gS-4dK" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="65" y="124"/>
+            <point key="canvasLocation" x="3414" y="902"/>
         </scene>
         <!--Activity Detail View Controller-->
         <scene sceneID="Uqj-Ul-9Ec">
@@ -1072,7 +1072,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="a1o-ah-EEg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1701.5999999999999" y="121.88905547226388"/>
+            <point key="canvasLocation" x="889" y="122"/>
         </scene>
         <!--Place Detail View Controller-->
         <scene sceneID="brQ-d9-z2T">
@@ -1509,7 +1509,66 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="09X-Xj-mdM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="1702" y="122"/>
+        </scene>
+        <!--Detail Map View Controller-->
+        <scene sceneID="IBS-Ms-9mF">
+            <objects>
+                <viewController storyboardIdentifier="TADetailMapViewController" id="N91-mv-SYC" customClass="TADetailMapViewController" customModule="Time_Analytics" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="BTZ-It-a29"/>
+                        <viewControllerLayoutGuide type="bottom" id="jF6-jh-pxy"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="0z4-Ls-pNw">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="jej-4n-kz8">
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                            </mapView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="jF6-jh-pxy" firstAttribute="top" secondItem="jej-4n-kz8" secondAttribute="bottom" id="CPK-pA-3Wr"/>
+                            <constraint firstAttribute="trailing" secondItem="jej-4n-kz8" secondAttribute="trailing" id="Qg4-wf-Qxv"/>
+                            <constraint firstItem="jej-4n-kz8" firstAttribute="top" secondItem="BTZ-It-a29" secondAttribute="bottom" id="jOr-QF-wrs"/>
+                            <constraint firstItem="jej-4n-kz8" firstAttribute="leading" secondItem="0z4-Ls-pNw" secondAttribute="leading" id="wa0-Uh-xna"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="MO5-ey-jrn" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
             <point key="canvasLocation" x="2557.5999999999999" y="121.88905547226388"/>
+        </scene>
+        <!--Detail Line Chart View Controller-->
+        <scene sceneID="7GW-bY-hix">
+            <objects>
+                <viewController storyboardIdentifier="TADetailLineChartViewController" id="caB-Yo-gDD" customClass="TADetailLineChartViewController" customModule="Time_Analytics" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="7o8-5p-QBl"/>
+                        <viewControllerLayoutGuide type="bottom" id="osR-PG-yFR"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="xlb-sk-N5o">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Dsb-ap-KbQ" customClass="LineChartView" customModule="Charts">
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="Dsb-ap-KbQ" secondAttribute="trailing" id="BJJ-ci-ork"/>
+                            <constraint firstItem="Dsb-ap-KbQ" firstAttribute="leading" secondItem="xlb-sk-N5o" secondAttribute="leading" id="BeS-Mb-x7y"/>
+                            <constraint firstItem="Dsb-ap-KbQ" firstAttribute="top" secondItem="7o8-5p-QBl" secondAttribute="bottom" id="a4t-Xy-Yjz"/>
+                            <constraint firstItem="osR-PG-yFR" firstAttribute="top" secondItem="Dsb-ap-KbQ" secondAttribute="bottom" id="hEx-b4-g54"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="I7F-u5-r7h" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3413.5999999999999" y="121.88905547226388"/>
         </scene>
         <!--Commute Detail View Controller-->
         <scene sceneID="pIz-xB-BXd">
