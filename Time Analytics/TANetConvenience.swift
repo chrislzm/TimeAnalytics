@@ -133,7 +133,7 @@ extension TANetClient {
     
     // Retrieves all data from Moves for a given time period (note: for this type of request the Moves API limits to 7 days max per request)
     
-    func getMovesDataFrom(_ startDate:Date, _ endDate:Date, _ completionHandler: @escaping (_ response:[AnyObject]?, _ error: String?) -> Void) {
+    func getMovesDataFrom(_ startDate:Date, _ endDate:Date,_ lastUpdate:Date?, _ completionHandler: @escaping (_ response:[AnyObject]?, _ error: String?) -> Void) {
         
         verifyLoggedIntoMoves() { (error) in
             
@@ -145,10 +145,14 @@ extension TANetClient {
             let formattedStartDate = self.getFormattedDate(startDate)
             let formattedEndDate = self.getFormattedDate(endDate)
             
-            let parameters:[String:String] = [TANetClient.MovesApi.ParameterKeys.AccessToken:self.movesAccessToken!,
+            var parameters:[String:String] = [TANetClient.MovesApi.ParameterKeys.AccessToken:self.movesAccessToken!,
                                               TANetClient.MovesApi.ParameterKeys.FromDate:formattedStartDate,
                                               TANetClient.MovesApi.ParameterKeys.ToDate:formattedEndDate,
                                               TANetClient.MovesApi.ParameterKeys.TrackPoints:TANetClient.MovesApi.ParameterValues.False]
+            if let lastUpdate = lastUpdate {
+                parameters[TANetClient.MovesApi.ParameterKeys.UpdatedSince] = self.getFormattedDateISO8601Date(lastUpdate)
+                print("Requesting new moves data from \(lastUpdate)")
+            }
             
             let _ = self.taskForHTTPMethod(TANetClient.Constants.ApiScheme, TANetClient.Constants.HttpGet, TANetClient.MovesApi.Constants.Host, TANetClient.MovesApi.Methods.StoryLine, apiParameters: parameters, valuesForHTTPHeader: nil, httpBody: nil) { (results,error) in
                 
@@ -251,6 +255,11 @@ extension TANetClient {
         return formatter.string(from: date)
     }
     
+    private func getFormattedDateISO8601Date(_ date:Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyyMMdd'T'HHmmssZ"
+        return formatter.string(from: date)
+    }
     // Substitute a key for the value that is contained within the string
     private func substituteKey(_ string: String, key: String, value: String) -> String? {
         if string.range(of: key) != nil {
