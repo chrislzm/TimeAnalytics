@@ -55,6 +55,10 @@ class TACommuteDetailViewController: TADetailViewController {
         showDetailMapViewController()
     }
     
+    @IBAction func didTapOnLineChartView(_ sender: Any) {
+        showDetailLineChartViewController("Length of Commute from \(startName!) to \(endName!)")
+    }
+    
     @IBAction func didTapOnDepartureTable(_ sender: Any) {
         if !timeBeforeDepartingTableData.isEmpty {
             didTapOnDepartureTable = true
@@ -85,6 +89,9 @@ class TACommuteDetailViewController: TADetailViewController {
         // SETUP CHART AND MAP VIEWS
         
         setupLineChartView(lineChartView, commuteDates, commuteLengths)
+        lineChartXVals = commuteDates
+        lineChartYVals = commuteLengths
+
         setupMapView(mapView)
         
         // SETUP SUMMARY LABELS

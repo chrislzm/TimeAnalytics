@@ -18,7 +18,7 @@ class TAPlaceDetailViewController: TADetailViewController, UITableViewDelegate {
     
     var lat:Double!
     var lon:Double!
-    var name:String!
+    var name:String?
     var placeHistoryTableData:[TAPlaceSegment]!
     var commuteHistoryTableData:[TACommuteSegment]!
     var activityHistoryTableData:[TAActivitySegment]!    
@@ -42,6 +42,10 @@ class TAPlaceDetailViewController: TADetailViewController, UITableViewDelegate {
 
     @IBAction func didTapOnMapView(_ sender: Any) {
         showDetailMapViewController()
+    }
+    
+    @IBAction func didTapOnLineChartView(_ sender: Any) {
+        showDetailLineChartViewController("Length of Visit to \(name!)")
     }
     
     // Rename place methods
@@ -102,6 +106,8 @@ class TAPlaceDetailViewController: TADetailViewController, UITableViewDelegate {
         // SETUP CHART AND MAP VIEWS
         
         setupLineChartView(chartView, visitDates, visitLengths)
+        lineChartXVals = visitDates
+        lineChartYVals = visitLengths
         setupMapView(mapView)
         
         // SETUP SUMMARY LABELS

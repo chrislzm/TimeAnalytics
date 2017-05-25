@@ -43,6 +43,10 @@ class TAActivityDetailViewController: TADetailViewController, UITableViewDelegat
         showDetailMapViewController()
     }
     
+    @IBAction func didTapOnLineChartView(_ sender: Any) {
+        showDetailLineChartViewController("Length of Activity \"\(name!)\"")
+    }
+    
     // MARK: Lifecycle
     
     override func viewDidLoad() {
@@ -62,6 +66,8 @@ class TAActivityDetailViewController: TADetailViewController, UITableViewDelegat
         // SETUP CHART AND MAP VIEWS
         
         setupLineChartView(lineChartView, activityDates, activityLengths)
+        lineChartXVals = activityDates
+        lineChartYVals = activityLengths
         setupMapView(mapView)
 
         // SETUP SUMMARY LABELS
