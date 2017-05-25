@@ -383,6 +383,7 @@ class TAModel {
             self.generateTACommuteObject(context)
             stack.save()
             self.saveNewMovesLastUpdateDate(context)
+            self.deleteAllDataFor(["MovesMoveSegment","MovesPlaceSegment"]) // We no longer need old moves data, clear it out
             DispatchQueue.main.async {
                 // Send notification that we completed processing
                 NotificationCenter.default.post(name: Notification.Name("didCompleteProcessing"), object: nil)
