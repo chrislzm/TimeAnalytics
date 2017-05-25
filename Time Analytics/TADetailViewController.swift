@@ -20,6 +20,9 @@ class TADetailViewController: UIViewController, UITableViewDataSource {
     var mapViewAnnotations = [MKAnnotation]()
     var mapViewCenter:CLLocationCoordinate2D!
     
+    var lineChartXVals = [Double]()
+    var lineChartYVals = [Double]()
+    
     // MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -188,6 +191,17 @@ class TADetailViewController: UIViewController, UITableViewDataSource {
             detailController.regionSize = mapViewRegionSize
             detailController.center = mapViewCenter
                         
+            navigationController!.pushViewController(detailController, animated: true)
+        }
+    }
+    
+    func showDetailLineChartViewController() {
+        if lineChartXVals.count > 0 {
+            let detailController = self.storyboard!.instantiateViewController(withIdentifier: "TADetailLineChartViewController") as! TADetailLineChartViewController
+            
+            detailController.xValues = lineChartXVals
+            detailController.yValues = lineChartYVals
+            
             navigationController!.pushViewController(detailController, animated: true)
         }
     }
