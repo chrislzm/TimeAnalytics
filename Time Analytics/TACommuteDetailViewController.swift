@@ -51,6 +51,9 @@ class TACommuteDetailViewController: TADetailViewController {
     @IBOutlet weak var timeAfterArrivingTableView: UITableView!
 
     // MARK: Actions
+    @IBAction func didTapOnMapView(_ sender: Any) {
+        showDetailMapViewController()
+    }
     
     @IBAction func didTapOnDepartureTable(_ sender: Any) {
         if !timeBeforeDepartingTableData.isEmpty {
@@ -304,7 +307,14 @@ class TACommuteDetailViewController: TADetailViewController {
         let distanceInMeters = startLocation.distance(from: endLocation) // result is in meter
 
         // Set the MapView to a 1km * 1km box around the geocoded location
-        let viewRegion = MKCoordinateRegionMakeWithDistance(centerCoordinate, distanceInMeters * 1.5, distanceInMeters * 1.5);
+        let regionSize = CLLocationDistance(distanceInMeters * 1.5)
+        let viewRegion = MKCoordinateRegionMakeWithDistance(centerCoordinate, regionSize, regionSize);
         mapView.setRegion(viewRegion, animated: true)
+        
+        // Save data for segue
+        mapViewAnnotations.append(startAnnotation)
+        mapViewAnnotations.append(endAnnotation)
+        mapViewRegionSize = regionSize
+        mapViewCenter = centerCoordinate
     }
 }

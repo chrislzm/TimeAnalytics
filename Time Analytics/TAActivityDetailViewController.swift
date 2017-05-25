@@ -12,11 +12,17 @@ import MapKit
 import UIKit
 
 class TAActivityDetailViewController: TADetailViewController, UITableViewDelegate {
+    
+    // MARK: Properties
+    
     var type:String?
     var name:String?
     
     var activityHistoryTableData = [TAActivitySegment]()
     var placeHistoryTableData = [(name:String,lat:Double,lon:Double,startTime:Date,endTime:Date)]()
+    
+    // MARK: Outlets
+    
     @IBOutlet weak var totalLabel: UILabel!
     @IBOutlet weak var pastMonthLabel: UILabel!
     @IBOutlet weak var averageTimeLabel: UILabel!
@@ -30,6 +36,14 @@ class TAActivityDetailViewController: TADetailViewController, UITableViewDelegat
     
     @IBOutlet weak var activityPlacesTableHeaderLabel: UILabel!
     @IBOutlet weak var placeHistoryTableView: UITableView!
+    
+    // MARK: Actions
+    
+    @IBAction func didTapOnMapView(_ sender: Any) {
+        showDetailMapViewController()
+    }
+    
+    // MARK: Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -245,6 +259,9 @@ class TAActivityDetailViewController: TADetailViewController, UITableViewDelegat
             let annotation = MKPointAnnotation()
             annotation.coordinate = coordinate
             mapView.addAnnotation(annotation)
+            
+            // Save data for segue
+            mapViewAnnotations.append(annotation)
         }
         
         // If we have a coordinate, then get the min/max of all coordinates, used to center the view
@@ -280,9 +297,15 @@ class TAActivityDetailViewController: TADetailViewController, UITableViewDelegat
             let bboxCorner2 = CLLocation(latitude: minLat, longitude: minLon)
             let distanceInMeters = bboxCorner1.distance(from: bboxCorner2) // result is in meter
             
-            let bboxLength = distanceInMeters * 1.5 > 1000 ? distanceInMeters * 1.5 : 1000
-            let viewRegion = MKCoordinateRegionMakeWithDistance(centerCoordinate, bboxLength, bboxLength);
+            // Ensure region is a minimum size
+            let initialRegionSize = distanceInMeters * 1.5
+            let regionSize = initialRegionSize > DefaultMapViewRegionSize ? initialRegionSize : DefaultMapViewRegionSize
+            let viewRegion = MKCoordinateRegionMakeWithDistance(centerCoordinate, regionSize, regionSize);
             mapView.setRegion(viewRegion, animated: true)
+            
+            // Save data for segue
+            mapViewCenter = centerCoordinate
+            mapViewRegionSize = regionSize
         }
     }
 }

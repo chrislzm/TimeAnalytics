@@ -15,6 +15,11 @@ class TADetailViewController: UIViewController, UITableViewDataSource {
     
     var currentYear:String?
     
+    let DefaultMapViewRegionSize = CLLocationDistance(1000)
+    var mapViewRegionSize:CLLocationDistance!
+    var mapViewAnnotations = [MKAnnotation]()
+    var mapViewCenter:CLLocationCoordinate2D!
+    
     // MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -77,7 +82,6 @@ class TADetailViewController: UIViewController, UITableViewDataSource {
     func setupMapView(_ mapView:MKMapView) {
         mapView.isZoomEnabled = false
         mapView.isScrollEnabled = false
-        mapView.isUserInteractionEnabled = false
     }
     
     
@@ -174,4 +178,17 @@ class TADetailViewController: UIViewController, UITableViewDataSource {
         return (slope_m,y_intercept)
     }
 
+    // MARK: Segue methods
+    
+    func showDetailMapViewController() {
+        if mapViewAnnotations.count > 0 {
+            let detailController = self.storyboard!.instantiateViewController(withIdentifier: "TADetailMapViewController") as! TADetailMapViewController
+            
+            detailController.annotations = mapViewAnnotations
+            detailController.regionSize = mapViewRegionSize
+            detailController.center = mapViewCenter
+                        
+            navigationController!.pushViewController(detailController, animated: true)
+        }
+    }
 }

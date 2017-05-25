@@ -21,7 +21,7 @@ class TAPlaceDetailViewController: TADetailViewController, UITableViewDelegate {
     var name:String!
     var placeHistoryTableData:[TAPlaceSegment]!
     var commuteHistoryTableData:[TACommuteSegment]!
-    var activityHistoryTableData:[TAActivitySegment]!
+    var activityHistoryTableData:[TAActivitySegment]!    
     
     // MARK: Outlets
     
@@ -38,7 +38,11 @@ class TAPlaceDetailViewController: TADetailViewController, UITableViewDelegate {
     @IBOutlet weak var totalVisitsLabel: UILabel!
     @IBOutlet weak var chartView: LineChartView!
 
-    // MARK: Action + Alerts for Renaming Place
+    // MARK: Actions + Alerts
+
+    @IBAction func didTapOnMapView(_ sender: Any) {
+        showDetailMapViewController()
+    }
     
     func editButtonPressed() {
         let editDialog = UIAlertController(title: "Edit Place Name", message: nil, preferredStyle: UIAlertControllerStyle.alert)
@@ -280,7 +284,12 @@ class TAPlaceDetailViewController: TADetailViewController, UITableViewDelegate {
         annotation.coordinate = coordinate
         mapView.addAnnotation(annotation)
         // Set the MapView to a 1km * 1km box around the geocoded location
-        let viewRegion = MKCoordinateRegionMakeWithDistance(coordinate, 1000, 1000);
+        let viewRegion = MKCoordinateRegionMakeWithDistance(coordinate, DefaultMapViewRegionSize, DefaultMapViewRegionSize);
         mapView.setRegion(viewRegion, animated: true)
+        
+        // Save data for segue
+        mapViewAnnotations.append(annotation)
+        mapViewCenter = coordinate
+        mapViewRegionSize = DefaultMapViewRegionSize
     }
 }
