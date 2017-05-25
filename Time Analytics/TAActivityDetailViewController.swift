@@ -48,7 +48,7 @@ class TAActivityDetailViewController: TADetailViewController, UITableViewDelegat
         // SETUP CHART AND MAP VIEWS
         
         setupLineChartView(lineChartView, activityDates, activityLengths)
-        setupMapView()
+        setupMapView(mapView)
 
         // SETUP SUMMARY LABELS
         
