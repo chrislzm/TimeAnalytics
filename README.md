@@ -51,7 +51,7 @@ Developer Notes
 
 Issues
 ------
-* No such module 'Charts': This is a known issue with Charts. To resolve, compile the project, and the error message should disappear. (May require Xcode restart.)
+* Xcode "No such module 'Charts'": This is a known issue with Charts. To resolve, compile the project, and the error message should disappear. (May require Xcode restart.)
 
 Credits
 ------
