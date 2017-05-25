@@ -90,8 +90,23 @@ extension TATableViewController {
                 components.month = month
                 components.year = year
                 
+                let today = Date()
+                let calendar = Calendar.current
+                let todayDay = calendar.component(.day, from: today)
+                let todayMonth = calendar.component(.month, from: today)
+                let todayYear = calendar.component(.year, from: today)
+                
+                if month==todayMonth,year==todayYear {
+                    if day==todayDay {
+                        return "Today"
+                    } else if day == todayDay-1 {
+                        return "Yesterday"
+                    }
+                }
+                
                 // Set the section title with this date
                 if let date = components.date {
+                    
                     sectionTitle = DateFormatter.localizedString(from: date, dateStyle: .full, timeStyle: .none)
                 }
             }
