@@ -90,70 +90,72 @@ class TADetailViewController: UIViewController, UITableViewDataSource {
     
     func setupLineChartView(_ chartView:LineChartView, _ xValues:[Double],_ yValues:[Double]) {
         
-        // Setup appearance: Remove all labels, gridlines, annotations, etc...
-        chartView.isUserInteractionEnabled = false
-        chartView.chartDescription!.text = ""
-        chartView.maxVisibleCount = 0
-        let legend = chartView.legend
-        legend.enabled = false
-        let leftAxis = chartView.leftAxis
-        leftAxis.drawGridLinesEnabled = false
-        leftAxis.drawAxisLineEnabled = false
-        leftAxis.drawLabelsEnabled = false
-        leftAxis.drawTopYLabelEntryEnabled = false
-        leftAxis.drawBottomYLabelEntryEnabled = false
-        let rightAxis = chartView.rightAxis
-        rightAxis.drawGridLinesEnabled = false
-        rightAxis.drawAxisLineEnabled = false
-        rightAxis.drawLabelsEnabled = false
-        rightAxis.drawTopYLabelEntryEnabled = false
-        rightAxis.drawBottomYLabelEntryEnabled = false
-        let xAxis = chartView.xAxis
-        xAxis.drawGridLinesEnabled = false
-        xAxis.drawAxisLineEnabled = false
-        xAxis.drawLabelsEnabled = false
-        
-        // Create line from data
-        var dataEntries = [ChartDataEntry]()
-        for i in 0..<yValues.count {
-            let dataEntry = ChartDataEntry(x: xValues[i], y: yValues[i])
-            dataEntries.append(dataEntry)
-        }
-        let lineChartDataSet = LineChartDataSet(values: dataEntries, label: "Visit Time")
-        
-        // Set line appearance
-        lineChartDataSet.circleRadius = 1
-        lineChartDataSet.circleColors = [UIColor.purple]
-        lineChartDataSet.drawCircleHoleEnabled = false
-        
-        // Add to data sets to display
-        var lineCharDataSets = [lineChartDataSet]
-        
-        // Create a new trendline if we have enough data for it
-        if xValues.count > 2 {
+        // Prevent there from being a chart with a dot on it
+        if xValues.count > 1 {
+            // Setup appearance: Remove all labels, gridlines, annotations, etc...
+            chartView.chartDescription!.text = ""
+            chartView.maxVisibleCount = 0
+            let legend = chartView.legend
+            legend.enabled = false
+            let leftAxis = chartView.leftAxis
+            leftAxis.drawGridLinesEnabled = false
+            leftAxis.drawAxisLineEnabled = false
+            leftAxis.drawLabelsEnabled = false
+            leftAxis.drawTopYLabelEntryEnabled = false
+            leftAxis.drawBottomYLabelEntryEnabled = false
+            let rightAxis = chartView.rightAxis
+            rightAxis.drawGridLinesEnabled = false
+            rightAxis.drawAxisLineEnabled = false
+            rightAxis.drawLabelsEnabled = false
+            rightAxis.drawTopYLabelEntryEnabled = false
+            rightAxis.drawBottomYLabelEntryEnabled = false
+            let xAxis = chartView.xAxis
+            xAxis.drawGridLinesEnabled = false
+            xAxis.drawAxisLineEnabled = false
+            xAxis.drawLabelsEnabled = false
             
-            let (slope,yintercept) = calculateTrendLine(xValues,yValues)
-            // Get y values for first and last dates on the chart
-            let trendy1 = (slope*xValues.first!)+yintercept
-            let trendy2 = (slope*xValues.last!)+yintercept
-            
-            // Create beginning and endpoints of trend line
-            let trendStartPoint = ChartDataEntry(x: xValues.first!, y: trendy1)
-            let trendEndPoint = ChartDataEntry(x: xValues.last!, y: trendy2)
-            let trendLineDataSet = LineChartDataSet(values: [trendStartPoint,trendEndPoint], label: "Trend Line")
+            // Create line from data
+            var dataEntries = [ChartDataEntry]()
+            for i in 0..<yValues.count {
+                let dataEntry = ChartDataEntry(x: xValues[i], y: yValues[i])
+                dataEntries.append(dataEntry)
+            }
+            let lineChartDataSet = LineChartDataSet(values: dataEntries, label: "Visit Time")
             
             // Set line appearance
-            trendLineDataSet.drawCirclesEnabled = false
-            trendLineDataSet.drawCircleHoleEnabled = false
-            trendLineDataSet.colors = [UIColor.red]
+            lineChartDataSet.circleRadius = 1
+            lineChartDataSet.circleColors = [UIColor.purple]
+            lineChartDataSet.drawCircleHoleEnabled = false
             
             // Add to data sets to display
-            lineCharDataSets.append(trendLineDataSet)
+            var lineCharDataSets = [lineChartDataSet]
+            
+            // Create a new trendline if we have enough data for it
+            if xValues.count > 2 {
+                
+                let (slope,yintercept) = calculateTrendLine(xValues,yValues)
+                // Get y values for first and last dates on the chart
+                let trendy1 = (slope*xValues.first!)+yintercept
+                let trendy2 = (slope*xValues.last!)+yintercept
+                
+                // Create beginning and endpoints of trend line
+                let trendStartPoint = ChartDataEntry(x: xValues.first!, y: trendy1)
+                let trendEndPoint = ChartDataEntry(x: xValues.last!, y: trendy2)
+                let trendLineDataSet = LineChartDataSet(values: [trendStartPoint,trendEndPoint], label: "Trend Line")
+                
+                // Set line appearance
+                trendLineDataSet.drawCirclesEnabled = false
+                trendLineDataSet.drawCircleHoleEnabled = false
+                trendLineDataSet.colors = [UIColor.red]
+                
+                // Add to data sets to display
+                lineCharDataSets.append(trendLineDataSet)
+            }
+            
+            // Add lines to chart
+            let lineChartData = LineChartData(dataSets: lineCharDataSets)
+            chartView.data = lineChartData
         }
-
-        // Add lines to chart
-        let lineChartData = LineChartData(dataSets: lineCharDataSets)
-        chartView.data = lineChartData
     }
     
     func calculateTrendLine(_ xValues:[Double],_ yValues:[Double]) -> (Double,Double) {
@@ -195,12 +197,13 @@ class TADetailViewController: UIViewController, UITableViewDataSource {
         }
     }
     
-    func showDetailLineChartViewController() {
-        if lineChartXVals.count > 0 {
+    func showDetailLineChartViewController(_ dataName:String) {
+        if lineChartXVals.count > 1 {
             let detailController = self.storyboard!.instantiateViewController(withIdentifier: "TADetailLineChartViewController") as! TADetailLineChartViewController
             
             detailController.xValues = lineChartXVals
             detailController.yValues = lineChartYVals
+            detailController.dataName = dataName
             
             navigationController!.pushViewController(detailController, animated: true)
         }
