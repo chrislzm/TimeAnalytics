@@ -216,7 +216,7 @@ class TAActivityDetailViewController: TADetailViewController, UITableViewDelegat
     // MARK: View Methods
     
     func setTitle() {
-        title = "\(name!)"
+        title = "\(type!): \(name!)"
     }
     
     func setActivityHistoryTableHeaderLabelText(_ totalActivities:Int) {
