@@ -34,9 +34,11 @@ class TASettingsViewController:TADataUpdateViewController {
         setAutoUpdateLabelText()
     }
     
-    override func didCompleteProcessing(_ notification:Notification) {
-        super.didCompleteProcessing(notification)
-        setLastUpdatedText()
+    override func didCompleteUpdate(_ notification:Notification) {
+        DispatchQueue.main.async {
+            self.removeProgressView(completionHandler: nil)
+            self.setLastUpdatedText()
+        }
     }
     
     func confirmLogout(alert:UIAlertAction!) {
