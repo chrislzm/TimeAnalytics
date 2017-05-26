@@ -16,22 +16,25 @@ class TAModel {
     
     // MARK: Moves Login Methods
     
+    func isLoggedIn() -> Bool {
+        if let _ = TANetClient.sharedInstance().movesLatestUpdate {
+            return true
+        }
+        return false
+    }
+    
     func loadMovesSessionData() {
-        // Check first if we even have an access token expiration date
-        if let accessTokenExpiration = UserDefaults.standard.value(forKey: "movesAccessTokenExpiration") as? Date {
-            
-            // If the access token is still valid
-            if Date() < accessTokenExpiration {
-                // Save the session information into our Net Client
-                TANetClient.sharedInstance().movesAccessTokenExpiration = accessTokenExpiration
-                TANetClient.sharedInstance().movesAccessToken = UserDefaults.standard.value(forKey: "movesAccessToken") as? String
-                TANetClient.sharedInstance().movesAuthCode = UserDefaults.standard.value(forKey: "movesAuthCode") as? String
-                TANetClient.sharedInstance().movesRefreshToken = UserDefaults.standard.value(forKey: "movesRefreshToken") as? String
-                TANetClient.sharedInstance().movesUserId = UserDefaults.standard.value(forKey: "movesUserId") as? UInt64
-                TANetClient.sharedInstance().movesUserFirstDate = UserDefaults.standard.value(forKey: "movesUserFirstDate") as? String
-                TANetClient.sharedInstance().movesLatestUpdate = UserDefaults.standard.value(forKey: "movesLatestUpdate") as? Date
-                TANetClient.sharedInstance().movesLastChecked = UserDefaults.standard.value(forKey: "movesLastChecked") as? Date
-            }
+        // See first if we have ever successfully checked for data
+        if let lastCheck = UserDefaults.standard.value(forKey: "movesLastChecked") as? Date {
+            // Load the remaining session information into our Net Client
+            TANetClient.sharedInstance().movesAccessTokenExpiration = UserDefaults.standard.value(forKey: "movesAccessTokenExpiration") as? Date
+            TANetClient.sharedInstance().movesAccessToken = UserDefaults.standard.value(forKey: "movesAccessToken") as? String
+            TANetClient.sharedInstance().movesAuthCode = UserDefaults.standard.value(forKey: "movesAuthCode") as? String
+            TANetClient.sharedInstance().movesRefreshToken = UserDefaults.standard.value(forKey: "movesRefreshToken") as? String
+            TANetClient.sharedInstance().movesUserId = UserDefaults.standard.value(forKey: "movesUserId") as? UInt64
+            TANetClient.sharedInstance().movesUserFirstDate = UserDefaults.standard.value(forKey: "movesUserFirstDate") as? String
+            TANetClient.sharedInstance().movesLatestUpdate = UserDefaults.standard.value(forKey: "movesLatestUpdate") as? Date
+            TANetClient.sharedInstance().movesLastChecked = lastCheck
         }
     }
     
@@ -63,7 +66,6 @@ class TAModel {
         TANetClient.sharedInstance().movesUserFirstDate = nil
         TANetClient.sharedInstance().movesLatestUpdate = nil
         TANetClient.sharedInstance().movesLastChecked = nil
-        
     }
     
     // MARK: Moves Data Methods
@@ -127,7 +129,24 @@ class TAModel {
     
     // MARK: Moves Data Processing Methods
     
-    func downloadAndProcessNewMovesData(_ completionHandler: @escaping (_ dataChunks:Int, _ error: String?) -> Void) {
+    func autoUpdateMovesData(_ delayInMinutes : Int) {
+        
+        if delayInMinutes > 0 {
+            
+            if isLoggedIn() {
+                self.downloadAndProcessNewMovesData()
+            }
+            
+            let delayInNanoSeconds = UInt64(delayInMinutes * 60) * NSEC_PER_SEC
+            let time = DispatchTime.now() + Double(Int64(delayInNanoSeconds)) / Double(NSEC_PER_SEC)
+            
+            DispatchQueue.global(qos: .background).asyncAfter(deadline: time) {
+                self.autoUpdateMovesData(delayInMinutes)
+            }
+        }
+    }
+    
+    func downloadAndProcessNewMovesData() {
         
         let stack = getCoreDataStack()
         
@@ -169,7 +188,7 @@ class TAModel {
             TANetClient.sharedInstance().getMovesDataFrom(beginDate, endDate, updatedSince){ (dataChunk, error) in
                 
                 guard error == nil else {
-                    completionHandler(0,error!)
+                    // TODO: Send notification there was a problem downloading
                     return
                 }
                 
@@ -180,8 +199,10 @@ class TAModel {
             }
             beginDate = endDate
         }
-
-        completionHandler(dataChunks,nil)
+        
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(name: Notification.Name("willDownloadData"), object: dataChunks)
+        }
     }
     
     func parseAndSaveMovesData(_ stories:[AnyObject], _ context:NSManagedObjectContext) {
@@ -260,7 +281,6 @@ class TAModel {
         if (savedLatestUpdate != nil && latestUpdate > savedLatestUpdate!) || savedLatestUpdate == nil {
             UserDefaults.standard.set(latestUpdate, forKey: "movesLatestUpdate")
             TANetClient.sharedInstance().movesLatestUpdate = latestUpdate
-            print("Saved new latestUpdate value: \(latestUpdate). Old: \(savedLatestUpdate!)")
         }
     }
     
@@ -369,7 +389,7 @@ class TAModel {
     
     // MARK: Time Analytics Data Processing Methods
     
-    func generateTADataFromMovesData(_ completionHandler: @escaping (_ totalRecordsToProcess:Int, _ error: String?) -> Void) {
+    func generateTADataFromMovesData(_ completionHandler: ((_ totalRecordsToProcess:Int, _ error: String?) -> Void)?) {
         let stack = getCoreDataStack()
         let context = stack.context
         var dataChunks = 0
@@ -388,12 +408,15 @@ class TAModel {
                 stack.save()
                 self.saveNewMovesLastUpdateDate(context)
                 self.deleteAllDataFor(["MovesMoveSegment","MovesPlaceSegment"]) // We no longer need old moves data, clear it out
-                self.notifyCompletedProcessing()
+                self.notifyWillCompleteUpdate()
             }
         } else {
-            notifyCompletedProcessing()
+            notifyWillCompleteUpdate()
         }
-        completionHandler(dataChunks,nil)
+        if let closure = completionHandler {
+            closure(dataChunks,nil)
+        }
+        NotificationCenter.default.post(name: Notification.Name("willGenerateTAData"), object: dataChunks)
     }
     
     func generateTACommuteObject(_ context:NSManagedObjectContext) {
@@ -578,9 +601,9 @@ class TAModel {
         return UIApplication.shared.delegate as! AppDelegate
     }
     
-    func notifyCompletedProcessing() {
+    func notifyWillCompleteUpdate() {
         DispatchQueue.main.async {
-            NotificationCenter.default.post(name: Notification.Name("didCompleteProcessing"), object: nil)
+            NotificationCenter.default.post(name: Notification.Name("willCompleteUpdate"), object: nil)
         }
     }
 
