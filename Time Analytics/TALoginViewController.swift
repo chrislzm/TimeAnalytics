@@ -8,9 +8,10 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: TAViewController {
 
     @IBOutlet weak var launchScreenImageView: UIImageView!
+    @IBOutlet weak var launchScreenActivityView: UIActivityIndicatorView!
     @IBOutlet weak var activityView: UIActivityIndicatorView!
     
     @IBAction func loginButtonPressed(_ sender: Any) {
@@ -32,6 +33,11 @@ class ViewController: UIViewController {
             // Show the login screen if there was an error (e.g. we are not logged in)
             DispatchQueue.main.async {
                 guard error == nil else {
+                    // Clear all old moves session data
+                    TAModel.sharedInstance().deleteMovesSessionInfo()
+                    self.launchScreenActivityView.fadeOut() { (finished) in
+                        self.launchScreenActivityView.isHidden = true
+                    }
                     self.launchScreenImageView.fadeOut() { (finished) in
                         self.launchScreenImageView.isHidden = true
                     }
