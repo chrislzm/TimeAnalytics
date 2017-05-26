@@ -12,7 +12,7 @@ import CoreData
 class TATableViewController: TAViewController, UITableViewDelegate, UITableViewDataSource {
     
     var tableView:UITableView! = nil
-    
+    var activityIndicatorView:UIActivityIndicatorView!
     // MARK: Properties
     
     var fetchedResultsController : NSFetchedResultsController<NSFetchRequestResult>? {
@@ -38,6 +38,16 @@ class TATableViewController: TAViewController, UITableViewDelegate, UITableViewD
             tabBarItem.title = ""
             tabBarItem.imageInsets = UIEdgeInsetsMake(6, 0, -6, 0)
         }
+        
+        // Setup activity view in barbuttonitem
+        activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+        activityIndicatorView.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
+        let activityIndicatorBarButtonItem = UIBarButtonItem(customView: activityIndicatorView)
+        navigationItem.setLeftBarButton(activityIndicatorBarButtonItem, animated: false)
+        
+        // Observe notifications so we can animate when downloading/processing
+        NotificationCenter.default.addObserver(self, selector: #selector(TATableViewController.willDownloadData(_:)), name: Notification.Name("willDownloadData"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(TATableViewController.didCompleteUpdate(_:)), name: Notification.Name("didCompleteUpdate"), object: nil)
     }
     
     func showSettingsMenu() {
@@ -45,6 +55,17 @@ class TATableViewController: TAViewController, UITableViewDelegate, UITableViewD
         navigationController?.pushViewController(controller, animated: true)
     }
     
+    func willDownloadData(_ notification:Notification) {
+        DispatchQueue.main.async {
+            self.activityIndicatorView.startAnimating()
+        }
+    }
+    
+    func didCompleteUpdate(_ notification:Notification) {
+        DispatchQueue.main.async {
+            self.activityIndicatorView.stopAnimating()
+        }
+    }
 }
 
 // MARK: - CoreDataTableViewController (Subclass Must Implement)
