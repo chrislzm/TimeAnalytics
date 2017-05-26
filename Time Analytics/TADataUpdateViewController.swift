@@ -45,15 +45,10 @@ class TADataUpdateViewController:UIViewController {
             // Setup notifications so we know when to start processing data
             NotificationCenter.default.addObserver(self, selector: #selector(TADataUpdateViewController.didCompleteProcessing(_:)), name: Notification.Name("didCompleteProcessing"), object: nil)
             
+            // Update our last checked time here
+            TAModel.sharedInstance().updateMovesLastChecked()
+            
             // Start generating our data
-            dataChunksDownloaded = 0
-            dataChunksToDownload = 0
-            
-            let progressView = TAProgressView.instanceFromNib()
-            setupOverlayView(progressView,view)
-            progressView.fadeIn(nil)
-            progressView.defaultText = "Processing Data"
-            
             TAModel.sharedInstance().generateTADataFromMovesData() { (dataChunks, error) in
                 guard error == nil else {
                     print(error!)
@@ -61,15 +56,24 @@ class TADataUpdateViewController:UIViewController {
                 }
                 
                 DispatchQueue.main.async {
-                    progressView.totalProgress = Float(dataChunks)
+                    NotificationCenter.default.removeObserver(self)
+                    if dataChunks > 0 {
+                        let progressView = TAProgressView.instanceFromNib()
+                        self.setupOverlayView(progressView,self.view)
+                        progressView.fadeIn(nil)
+                        progressView.defaultText = "Processing Data"
+                        progressView.totalProgress = Float(dataChunks)
+                    }
                 }
             }
         }
     }
     
+    // Subclasses can override this method to provide a completion handler to removeProgressView
+    // However, they should be sure to remove the observer and save to persistent store
     func didCompleteProcessing(_ notification:Notification) {
-        removeProgressView() { () in
-            fatalError("This method needs to be overridden by subclasses -- We should notify the user here of success")
-        }
+        NotificationCenter.default.removeObserver(self)
+        removeProgressView(completionHandler: nil)
+        saveAllDataToPersistentStore()
     }
 }
