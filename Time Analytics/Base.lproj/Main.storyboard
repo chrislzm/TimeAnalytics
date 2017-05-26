@@ -340,10 +340,10 @@
             </objects>
             <point key="canvasLocation" x="3414" y="-1007"/>
         </scene>
-        <!--Settings View Controller-->
+        <!--Settings-->
         <scene sceneID="jXC-Ta-pW8">
             <objects>
-                <viewController storyboardIdentifier="TASettingsView" hidesBottomBarWhenPushed="YES" id="5Uy-fx-J0M" customClass="TASettingsViewController" customModule="Time_Analytics" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TASettingsView" title="Settings" hidesBottomBarWhenPushed="YES" id="5Uy-fx-J0M" customClass="TASettingsViewController" customModule="Time_Analytics" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="3HP-Ct-Sis"/>
                         <viewControllerLayoutGuide type="bottom" id="ygQ-fm-84m"/>
