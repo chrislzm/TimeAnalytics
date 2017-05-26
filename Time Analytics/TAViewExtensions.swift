@@ -32,3 +32,11 @@ extension UIViewController {
         }
     }
 }
+
+extension UITabBar {
+    override open func sizeThatFits(_ size: CGSize) -> CGSize {
+        var sizeThatFits = super.sizeThatFits(size)
+        sizeThatFits.height = 40 // adjust your size here
+        return sizeThatFits
+    }
+}
