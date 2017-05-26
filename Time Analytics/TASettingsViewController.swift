@@ -9,7 +9,7 @@
 import UIKit
 
 class TASettingsViewController:TADataUpdateViewController {
-
+    
     @IBOutlet weak var lastUpdatedLabel: UILabel!
     @IBOutlet weak var autoUpdateLabel: UILabel!
     
@@ -26,7 +26,7 @@ class TASettingsViewController:TADataUpdateViewController {
     
     override func viewDidLoad() {
         super .viewDidLoad()
-
+        
         navigationController?.setToolbarHidden(true, animated: true)
         
         setLastUpdatedText()
@@ -42,14 +42,22 @@ class TASettingsViewController:TADataUpdateViewController {
     }
     
     func confirmLogout(alert:UIAlertAction!) {
-        // Clear persistent data
-        TAModel.sharedInstance().deleteAllDataFor(["MovesMoveSegment","MovesPlaceSegment","TAPlaceSegment","TACommuteSegment","TAActivitySegment"])
-        
-        // Clear session variables
-        TAModel.sharedInstance().deleteMovesSessionInfo()
-        
-        // Logout, unwind and display login screen
-        performSegue(withIdentifier: "LogOut", sender: self)
+        DispatchQueue.main.async {
+            // Clear persistent data
+            let stack = self.getCoreDataStack()
+            let context = stack.context
+
+            TAModel.sharedInstance().deleteAllDataFor(["MovesMoveSegment","MovesPlaceSegment","TAPlaceSegment","TACommuteSegment","TAActivitySegment"],context)
+            
+            // Clear session variables
+            TAModel.sharedInstance().deleteMovesSessionInfo()
+            
+            // Save all changes
+            stack.save()
+            
+            // Logout, unwind and display login screen
+            self.performSegue(withIdentifier: "LogOut", sender: self)
+        }
     }
     
     // MARK: View Update Methods
