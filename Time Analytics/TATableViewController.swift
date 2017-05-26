@@ -32,10 +32,6 @@ class TATableViewController: TAViewController, UITableViewDelegate, UITableViewD
         // Setup table style
         tableView.separatorStyle = .none
 
-        // Setup and add the Edit button
-        let settingsButton = UIBarButtonItem(title: "Settings", style: UIBarButtonItemStyle.plain, target:self, action: #selector(TATableViewController.showSettingsMenu))
-        navigationItem.rightBarButtonItem = settingsButton
-        
         // Remove titles from Tabbar
         for tabBarItem in (tabBarController?.tabBar.items)!
         {

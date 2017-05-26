@@ -924,7 +924,14 @@
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" tag="1" title="" image="car-side" id="eLq-gl-xEO"/>
-                    <navigationItem key="navigationItem" id="RjH-eY-kcI"/>
+                    <navigationItem key="navigationItem" id="RjH-eY-kcI">
+                        <barButtonItem key="rightBarButtonItem" image="gear" id="K1Z-aV-IuG">
+                            <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            <connections>
+                                <segue destination="5Uy-fx-J0M" kind="show" id="KsV-YU-rwq"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="commuteTableView" destination="OGs-rh-Oqy" id="WDm-Gn-lll"/>
                         <segue destination="Un9-wR-MFr" kind="show" identifier="ShowCommuteDetailView" id="Bzu-JR-wd0"/>
@@ -1029,7 +1036,14 @@
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="" image="man-figure" id="Szp-2u-zJC"/>
-                    <navigationItem key="navigationItem" id="BGx-rl-9AQ"/>
+                    <navigationItem key="navigationItem" id="BGx-rl-9AQ">
+                        <barButtonItem key="rightBarButtonItem" image="gear" id="vxs-47-g7l">
+                            <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            <connections>
+                                <segue destination="5Uy-fx-J0M" kind="show" id="G2h-sa-WeA"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="activityTableView" destination="Zi9-JZ-bFM" id="MFC-Ym-5Uc"/>
                         <segue destination="Am9-mG-H76" kind="show" identifier="ShowActivityDetail" id="lOt-wh-iKn"/>
@@ -1135,7 +1149,14 @@
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" tag="2" title="" image="map-pin" id="14t-VZ-iBi"/>
-                    <navigationItem key="navigationItem" id="ngf-6R-izt"/>
+                    <navigationItem key="navigationItem" id="ngf-6R-izt">
+                        <barButtonItem key="rightBarButtonItem" image="gear" id="wh8-4H-Dt4">
+                            <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            <connections>
+                                <segue destination="5Uy-fx-J0M" kind="show" id="TnL-Uc-lcG"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="placeTableView" destination="M6a-WE-AXI" id="Zl9-fA-P03"/>
                         <segue destination="PIb-cT-0y2" kind="show" identifier="ShowPlaceDetailView" id="07A-UV-v7K"/>
@@ -2194,10 +2215,12 @@
         <image name="LaunchScreen" width="1242" height="2208"/>
         <image name="Time Analytics Logo" width="3840" height="2532"/>
         <image name="car-side" width="30" height="30"/>
+        <image name="gear" width="30" height="30"/>
         <image name="man-figure" width="29" height="30"/>
         <image name="map-pin" width="30" height="30"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="80a-1b-jZQ"/>
+        <segue reference="TnL-Uc-lcG"/>
     </inferredMetricsTieBreakers>
 </document>
