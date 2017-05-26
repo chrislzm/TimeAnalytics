@@ -11,12 +11,18 @@ import UIKit
 
 extension TAModel {
     
-    func importHealthKitData(_ fromDate:Date?, completionHandler: @escaping (_ dataChunks:Int) -> Void) {
+    func importHealthKitData(completionHandler: @escaping (_ dataChunks:Int) -> Void) {
         let stack = getCoreDataStack()
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         dateFormatter.dateFormat = "yyyyMMdd"
         let firstMovesDataDate = dateFormatter.date(from: TANetClient.sharedInstance().movesUserFirstDate!)! as Date
+        
+        // Search for activities beginning after the end of the last one on record
+        var fromDate:Date? = nil
+        if let latestActivity = getLastTAActivityBefore(Date() as NSDate,stack.context) {
+            fromDate = latestActivity.endTime! as Date
+        }
         
         // Import Sleep Data
         let sleepType = HKObjectType.categoryType(forIdentifier: .sleepAnalysis)!
