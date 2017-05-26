@@ -2,6 +2,8 @@
 //  TADataUpdateController.swift
 //  Time Analytics
 //
+//  Responsible for managing the progress indicator views that appear in the UI and syncing them with background data updates.
+//
 //  Created by Chris Leung on 5/25/17.
 //  Copyright © 2017 Chris Leung. All rights reserved.
 //
@@ -23,7 +25,7 @@ class TADataUpdateViewController:TAViewController {
     func startUpdatingWithProgressView() {
         
         // Setup notifications so we know when to update the progress view
-        NotificationCenter.default.addObserver(self, selector: #selector(TADataUpdateViewController.willUpdateData(_:)), name: Notification.Name("willUpdateData"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(TADataUpdateViewController.willDownloadData(_:)), name: Notification.Name("willDownloadData"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(TADataUpdateViewController.willGenerateTAData(_:)), name: Notification.Name("willGenerateTAData"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(TADataUpdateViewController.didCompleteUpdate(_:)), name: Notification.Name("didCompleteUpdate"), object: nil)
         
@@ -32,7 +34,7 @@ class TADataUpdateViewController:TAViewController {
         TAModel.sharedInstance().downloadAndProcessNewMovesData()
     }
     
-    func willUpdateData(_ notification:Notification) {
+    func willDownloadData(_ notification:Notification) {
         let dataChunks = notification.object as! Int
         progressView = TAProgressView.instanceFromNib()
         progressView.totalProgress = Float(dataChunks)
@@ -42,7 +44,6 @@ class TADataUpdateViewController:TAViewController {
     
     func willGenerateTAData(_ notification:Notification) {
         let dataChunks = notification.object as! Int
-        print("TADataUpdateViewController: Received willGenerateTAData - \(dataChunks) Chunks")
         DispatchQueue.main.async {
             if dataChunks > 0 {
                 // Create a new progress view that we will have to dismiss manually, since the number of data chunks isn't exact
@@ -57,7 +58,6 @@ class TADataUpdateViewController:TAViewController {
     
     func didCompleteUpdate(_ notification:Notification) {
         DispatchQueue.main.async {
-            print("TADataUpdateViewController: Received the didCompleteUpdate notification")
             self.removeProgressView() { () in
                 fatalError("Thus method should be overridden by subclasses--remove the progress view and notify the user here that processing is complete")
             }
