@@ -18,9 +18,10 @@ class TAProgressView: UIView {
     var currentProgress:Float = 0
     
     func addProgress(_ amountProgressed:Float) {
-        currentProgress += amountProgressed
-        let percentComplete = currentProgress/totalProgress
         DispatchQueue.main.async {
+            self.currentProgress += amountProgressed
+            var percentComplete = self.currentProgress/self.totalProgress
+            percentComplete = percentComplete > 1 ? 1 : percentComplete
             self.progressView.setProgress(percentComplete, animated: true)
             self.titleLabel.text = "\(self.defaultText) (\(Int(percentComplete*100))%)"
         }
