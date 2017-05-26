@@ -18,18 +18,22 @@ class TAHealthKitAccessController: TAViewController {
         super.viewDidLoad()
         
         if !HKHealthStore.isHealthDataAvailable() {
-            self.performSegue(withIdentifier: "NoHealthKit", sender: nil)
+            DispatchQueue.main.async {
+                self.performSegue(withIdentifier: "NoHealthKit", sender: nil)
+            }
         }
     }
     
     func getHealthKitPermission() {
         
         authorizeHealthKit { (authorized,  error) -> Void in
-            if !authorized {
-                self.displayErrorAlert("There was a problem with Health Kit authorization. Please try again by going to the Settings panel.")
-                self.performSegue(withIdentifier: "NoHealthKit", sender: nil)
-            } else {
-                self.performSegue(withIdentifier: "ProcessHealthKitData", sender: nil)
+            DispatchQueue.main.async {
+                if !authorized {
+                    self.displayErrorAlert("There was a problem with Health Kit authorization. Please try again by going to the Settings panel.")
+                    self.performSegue(withIdentifier: "NoHealthKit", sender: nil)
+                } else {
+                    self.performSegue(withIdentifier: "ProcessHealthKitData", sender: nil)
+                }
             }
         }
     }
