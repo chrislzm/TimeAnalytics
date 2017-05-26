@@ -151,7 +151,6 @@ extension TANetClient {
                                               TANetClient.MovesApi.ParameterKeys.TrackPoints:TANetClient.MovesApi.ParameterValues.False]
             if let lastUpdate = lastUpdate {
                 parameters[TANetClient.MovesApi.ParameterKeys.UpdatedSince] = self.getFormattedDateISO8601Date(lastUpdate)
-                print("Requesting new moves data from \(lastUpdate)")
             }
             
             let _ = self.taskForHTTPMethod(TANetClient.Constants.ApiScheme, TANetClient.Constants.HttpGet, TANetClient.MovesApi.Constants.Host, TANetClient.MovesApi.Methods.StoryLine, apiParameters: parameters, valuesForHTTPHeader: nil, httpBody: nil) { (results,error) in
