@@ -43,9 +43,12 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </activityIndicatorView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchScreen" translatesAutoresizingMaskIntoConstraints="NO" id="5EA-SM-b6h">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchScreen" translatesAutoresizingMaskIntoConstraints="NO" id="5EA-SM-b6h">
                                 <rect key="frame" x="-0.5" y="-0.5" width="375" height="667"/>
                             </imageView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="jTU-Eq-0FK">
+                                <rect key="frame" x="169" y="515" width="37" height="37"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -55,6 +58,7 @@
                             <constraint firstItem="9ha-cQ-xq6" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="4yg-lF-Wuj"/>
                             <constraint firstItem="eKj-xb-K22" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="8q7-h3-mlC"/>
                             <constraint firstItem="5EA-SM-b6h" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" id="Ddx-wC-Ir5"/>
+                            <constraint firstItem="jTU-Eq-0FK" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="NVe-VX-SPc"/>
                             <constraint firstItem="uWh-rm-z5d" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="NiE-E7-7Oh"/>
                             <constraint firstItem="9Yv-SL-pHJ" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" id="NrR-jD-xjs"/>
                             <constraint firstItem="5EA-SM-b6h" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="OXS-yr-8Kn"/>
@@ -67,10 +71,12 @@
                             <constraint firstItem="uWh-rm-z5d" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" multiplier="0.7" id="mku-yf-2kJ"/>
                             <constraint firstAttribute="trailing" secondItem="9Yv-SL-pHJ" secondAttribute="trailing" id="pzo-NG-FpF"/>
                             <constraint firstItem="eKj-xb-K22" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" multiplier="1.3" id="rbS-kI-T7e"/>
+                            <constraint firstItem="jTU-Eq-0FK" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" multiplier="1.6" id="yKk-d0-TnE"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="activityView" destination="9Yv-SL-pHJ" id="VMJ-ob-dQB"/>
+                        <outlet property="launchScreenActivityView" destination="jTU-Eq-0FK" id="f7F-F5-yWp"/>
                         <outlet property="launchScreenImageView" destination="5EA-SM-b6h" id="DY5-mZ-8ez"/>
                         <segue destination="dmf-Sc-aow" kind="show" identifier="FirstLogin" id="24D-Zy-7Dt"/>
                         <segue destination="cCK-cW-tTG" kind="show" identifier="AlreadyLoggedIn" id="zQK-Fs-xZM"/>
@@ -2132,6 +2138,6 @@
         <image name="Time Analytics Logo" width="3840" height="2532"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="2f9-9V-5NI"/>
+        <segue reference="zQK-Fs-xZM"/>
     </inferredMetricsTieBreakers>
 </document>
