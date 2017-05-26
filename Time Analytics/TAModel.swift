@@ -172,7 +172,7 @@ class TAModel {
         let today = Date()
         
         let calendar = NSCalendar.current
-        // TODO: This calculation may or may not be accurate
+
         let totalDays = (calendar.dateComponents([.day], from: calendar.startOfDay(for: beginDate), to: calendar.startOfDay(for: today))).day! + 1
         
         var dataChunks:Int = totalDays / TANetClient.MovesApi.Constants.MaxDaysPerRequest
@@ -354,16 +354,19 @@ class TAModel {
         save(context)
     }
     
-    func getTAPlace(_ startTime:Date?, _ lat:Double, _ lon:Double) -> TAPlaceSegment? {
-        let stack = getCoreDataStack()
+    func getTAPlace(_ startTime:Date?, _ lat:Double, _ lon:Double,_ context:NSManagedObjectContext) -> TAPlaceSegment? {
         var query = "lat == %@ AND lon == %@"
         var args = [lat,lon] as [Any]
         if let startTime = startTime {
             query = "\(query) AND startTime == %@"
             args.append(startTime)
         }
-        let result = getCoreDataManagedObject("TAPlaceSegment", "startTime", true,  "startTime == %@ AND lat == %@ AND lon == %@", args, 1, stack.context) as! [TAPlaceSegment]
-        return result.first
+        let result = getCoreDataManagedObject("TAPlaceSegment", "startTime", true, query, args, 1,context) as! [TAPlaceSegment]
+        if result.count == 0 {
+            return nil
+        } else {
+            return result.first
+        }
     }
     
     func getAllTAPlaceSegments(_ context:NSManagedObjectContext) -> [TAPlaceSegment] {
@@ -485,7 +488,7 @@ class TAModel {
             var name = movesPlaceSegment.name
             
             // If we already have a TAPlace recorded at this location, then use the existing name
-            if let existingTAPlace = getTAPlace(nil, lat, lon) {
+            if let existingTAPlace = getTAPlace(nil, lat, lon, context) {
                 name = existingTAPlace.name!
             }
             

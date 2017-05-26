@@ -15,9 +15,9 @@ class TASettingsViewController:TADataUpdateViewController {
     @IBOutlet weak var activityView: UIActivityIndicatorView!
     
     @IBAction func refreshDataButtonPressed(_ sender: Any) {
-        startUpdatingWithProgressView()
+        TAModel.sharedInstance().downloadAndProcessNewMovesData()
     }
-    
+
     @IBAction func logOutButtonPressed(_ sender: Any) {
         let alert = UIAlertController(title: "Confirm Log Out", message: "All Time Analytics data will cleared. You can download your Moves data again by logging back in.", preferredStyle: UIAlertControllerStyle.alert)
         alert.addAction(UIAlertAction(title: "Log Out", style: UIAlertActionStyle.default, handler: confirmLogout))
