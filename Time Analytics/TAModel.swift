@@ -354,10 +354,16 @@ class TAModel {
         save(context)
     }
     
-    func getTAPlace(_ startTime:Date, _ lat:Double, _ lon:Double) -> TAPlaceSegment {
+    func getTAPlace(_ startTime:Date?, _ lat:Double, _ lon:Double) -> TAPlaceSegment? {
         let stack = getCoreDataStack()
-        let result = getCoreDataManagedObject("TAPlaceSegment", "startTime", true,  "startTime == %@ AND lat == %@ AND lon == %@", [startTime,lat,lon], 1, stack.context) as! [TAPlaceSegment]
-        return result.first!
+        var query = "lat == %@ AND lon == %@"
+        var args = [lat,lon] as [Any]
+        if let startTime = startTime {
+            query = "\(query) AND startTime == %@"
+            args.append(startTime)
+        }
+        let result = getCoreDataManagedObject("TAPlaceSegment", "startTime", true,  "startTime == %@ AND lat == %@ AND lon == %@", args, 1, stack.context) as! [TAPlaceSegment]
+        return result.first
     }
     
     func getAllTAPlaceSegments(_ context:NSManagedObjectContext) -> [TAPlaceSegment] {
@@ -476,7 +482,12 @@ class TAModel {
             let movesEndTime = movesPlaceSegment.endTime!
             let lat = movesPlaceSegment.lat
             let lon = movesPlaceSegment.lon
-            let name = movesPlaceSegment.name
+            var name = movesPlaceSegment.name
+            
+            // If we already have a TAPlace recorded at this location, then use the existing name
+            if let existingTAPlace = getTAPlace(nil, lat, lon) {
+                name = existingTAPlace.name!
+            }
             
             // Now, find the actual start and end times of this place segment
             var actualStartTime = getLastMoveEndTimeBefore(movesStartTime,context)
