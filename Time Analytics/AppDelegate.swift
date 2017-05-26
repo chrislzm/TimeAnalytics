@@ -54,11 +54,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: Data [auto]update methods
     
     func willDownloadData(_ notification:Notification) {
+        print("willDownloadData")
         chunksUpdated = 0
         totalUpdateChunks = notification.object as! Int
     }
     
     func didProcessData(_ notification:Notification) {
+        print("didProcessData")
         chunksUpdated += 1
         if totalUpdateChunks == chunksUpdated {
             TAModel.sharedInstance().generateTADataFromMovesData(nil)
@@ -66,6 +68,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func willCompleteUpdate(_ notification:Notification) {
+        print("willCompleteUpdate")
         // Update HealthKit if we are logged in
         if TAModel.sharedInstance().isLoggedIn() {
             TAModel.sharedInstance().updateHealthKitData()
@@ -77,6 +80,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         TAModel.sharedInstance().save()
 
         NotificationCenter.default.post(name: Notification.Name("didCompleteUpdate"), object: nil)
+        print("didCompleteUpdate")
     }
 }
 
