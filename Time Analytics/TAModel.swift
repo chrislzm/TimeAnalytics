@@ -58,11 +58,11 @@ class TAModel {
         UserDefaults.standard.removeObject(forKey: "movesLatestUpdate")
         UserDefaults.standard.removeObject(forKey: "movesLastChecked")
         UserDefaults.standard.synchronize()
-        TANetClient.sharedInstance().movesUserId = nil
-        TANetClient.sharedInstance().movesAccessToken = nil
         TANetClient.sharedInstance().movesAccessTokenExpiration = nil
+        TANetClient.sharedInstance().movesAccessToken = nil
         TANetClient.sharedInstance().movesAuthCode = nil
         TANetClient.sharedInstance().movesRefreshToken = nil
+        TANetClient.sharedInstance().movesUserId = nil
         TANetClient.sharedInstance().movesUserFirstDate = nil
         TANetClient.sharedInstance().movesLatestUpdate = nil
         TANetClient.sharedInstance().movesLastChecked = nil
@@ -415,7 +415,7 @@ class TAModel {
                 self.generateTACommuteObject(context)
                 stack.save()
                 self.saveNewMovesLastUpdateDate(context)
-                self.deleteAllDataFor(["MovesMoveSegment","MovesPlaceSegment"]) // We no longer need old moves data, clear it out
+                self.deleteAllDataFor(["MovesMoveSegment","MovesPlaceSegment"], context) // We no longer need old moves data, clear it out
                 self.notifyWillCompleteUpdate()
             }
         } else {
@@ -549,10 +549,7 @@ class TAModel {
         save(context)
     }
 
-    func deleteAllDataFor(_ entities:[String]) {
-        let stack = getCoreDataStack()
-        let context = stack.context
-
+    func deleteAllDataFor(_ entities:[String], _ context:NSManagedObjectContext) {
         for entity in entities {
             let fr = NSFetchRequest<NSFetchRequestResult>(entityName: entity)
 
@@ -564,7 +561,7 @@ class TAModel {
             } catch {
                 fatalError("Unable to delete saved data")
             }
-            stack.save()
+            save(context)
         }
     }
     
