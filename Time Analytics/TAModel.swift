@@ -374,6 +374,14 @@ class TAModel {
         return lastTAPlace
     }
     
+    func getLastTAActivityBefore(_ time:NSDate,_ context:NSManagedObjectContext) -> TAActivitySegment? {
+        let result = getCoreDataManagedObject("TAActivitySegment", "startTime", false, "startTime <= %@", [time], context) as! [TAActivitySegment]
+        var lastTAActivity:TAActivitySegment? = nil
+        if result.count > 0 {
+            lastTAActivity = result[0] as TAActivitySegment
+        }
+        return lastTAActivity
+    }
     
     func getTAPlaceThatContains(_ startTime:Date,_ endTime:Date,_ context:NSManagedObjectContext) -> TAPlaceSegment? {
         var result:TAPlaceSegment? = nil
