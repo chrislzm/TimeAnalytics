@@ -100,17 +100,17 @@ class TAModel {
     }
     
     func getAllMovesPlaceSegments(_ context:NSManagedObjectContext) -> [MovesPlaceSegment] {
-        let result = getCoreDataManagedObject("MovesPlaceSegment", "startTime", true, nil, nil, context) as! [MovesPlaceSegment]
+        let result = getCoreDataManagedObject("MovesPlaceSegment", "startTime", true, nil, nil, nil, context) as! [MovesPlaceSegment]
         return result
     }
     
     func getMovesPlaceSegmentsBetween(_ startDate:NSDate,_ endDate:NSDate,_ context:NSManagedObjectContext) -> [MovesPlaceSegment] {
-        let result = getCoreDataManagedObject("MovesPlaceSegment", "startTime", true, "(date >= %@) AND (date <= %@)", [startDate,endDate], context) as! [MovesPlaceSegment]
+        let result = getCoreDataManagedObject("MovesPlaceSegment", "startTime", true, "(date >= %@) AND (date <= %@)", [startDate,endDate], nil, context) as! [MovesPlaceSegment]
         return result
     }
     
     func getLastMoveEndTimeBefore(_ time:NSDate,_ context:NSManagedObjectContext) -> NSDate {
-        let result = getCoreDataManagedObject("MovesMoveSegment", "endTime", false, "endTime <= %@", [time], context) as! [MovesMoveSegment]
+        let result = getCoreDataManagedObject("MovesMoveSegment", "endTime", false, "endTime <= %@", [time], 1, context) as! [MovesMoveSegment]
         if result.count > 0 {
             return result[0].endTime!
         } else {
@@ -119,7 +119,7 @@ class TAModel {
     }
     
     func getFirstMoveStartTimeAfter(_ time:NSDate, _ context:NSManagedObjectContext) -> NSDate {
-        let result = getCoreDataManagedObject("MovesMoveSegment", "startTime", true, "startTime >= %@", [time], context) as! [MovesMoveSegment]
+        let result = getCoreDataManagedObject("MovesMoveSegment", "startTime", true, "startTime >= %@", [time], 1, context) as! [MovesMoveSegment]
         if result.count > 0 {
             return result[0].startTime!
         } else {
@@ -265,12 +265,12 @@ class TAModel {
     
     // Retrieves the "latestUpdate" value from moves data, compares it to our stored value, updates our stored value if it's newer
     func saveNewMovesLastUpdateDate(_ context:NSManagedObjectContext) {
-        let moveResults = getCoreDataManagedObject("MovesMoveSegment", "lastUpdate", false, nil, nil, context) as! [MovesMoveSegment]
+        let moveResults = getCoreDataManagedObject("MovesMoveSegment", "lastUpdate", false, nil, nil, 1, context) as! [MovesMoveSegment]
         var movesMoveLastUpdate:Date = Date(timeIntervalSince1970: 0)
         if moveResults.count > 0 {
             movesMoveLastUpdate = moveResults.first!.lastUpdate! as Date
         }
-        let placeResults = getCoreDataManagedObject("MovesPlaceSegment", "lastUpdate", false, nil, nil, context) as! [MovesPlaceSegment]
+        let placeResults = getCoreDataManagedObject("MovesPlaceSegment", "lastUpdate", false, nil, nil, 1, context) as! [MovesPlaceSegment]
         var movesPlaceLastUpdate:Date = Date(timeIntervalSince1970: 0)
         if placeResults.count > 0 {
             movesPlaceLastUpdate = placeResults.first!.lastUpdate! as Date
@@ -356,17 +356,17 @@ class TAModel {
     
     func getTAPlace(_ startTime:Date, _ lat:Double, _ lon:Double) -> TAPlaceSegment {
         let stack = getCoreDataStack()
-        let result = getCoreDataManagedObject("TAPlaceSegment", "startTime", true,  "startTime == %@ AND lat == %@ AND lon == %@", [startTime,lat,lon], stack.context) as! [TAPlaceSegment]
+        let result = getCoreDataManagedObject("TAPlaceSegment", "startTime", true,  "startTime == %@ AND lat == %@ AND lon == %@", [startTime,lat,lon], 1, stack.context) as! [TAPlaceSegment]
         return result.first!
     }
     
     func getAllTAPlaceSegments(_ context:NSManagedObjectContext) -> [TAPlaceSegment] {
-        let result = getCoreDataManagedObject("TAPlaceSegment", "startTime", true, nil, nil, context) as! [TAPlaceSegment]
+        let result = getCoreDataManagedObject("TAPlaceSegment", "startTime", true, nil, nil, nil, context) as! [TAPlaceSegment]
         return result
     }
     
     func getLastTAPlaceBefore(_ time:NSDate,_ context:NSManagedObjectContext) -> TAPlaceSegment? {
-        let result = getCoreDataManagedObject("TAPlaceSegment", "startTime", false, "startTime <= %@", [time], context) as! [TAPlaceSegment]
+        let result = getCoreDataManagedObject("TAPlaceSegment", "startTime", false, "startTime <= %@", [time], 1, context) as! [TAPlaceSegment]
         var lastTAPlace:TAPlaceSegment? = nil
         if result.count > 0 {
             lastTAPlace = result[0] as TAPlaceSegment
@@ -375,10 +375,9 @@ class TAModel {
     }
     
     func getLastTAActivityBefore(_ time:NSDate,_ context:NSManagedObjectContext) -> TAActivitySegment? {
-        let result = getCoreDataManagedObject("TAActivitySegment", "startTime", false, "startTime <= %@", [time], context) as! [TAActivitySegment]
+        let result = getCoreDataManagedObject("TAActivitySegment", "startTime", false, "startTime <= %@", [time], 1, context) as! [TAActivitySegment]
         var lastTAActivity:TAActivitySegment? = nil
         if result.count > 0 {
-            print("Results: \(result.count)")
             lastTAActivity = result[0] as TAActivitySegment
         }
         return lastTAActivity
@@ -507,28 +506,28 @@ class TAModel {
         let context = stack.context
         
         // Update place segments
-        let places = getCoreDataManagedObject("TAPlaceSegment", nil, nil, "lat == %@ AND lon == %@", [lat,lon], context) as! [TAPlaceSegment]
+        let places = getCoreDataManagedObject("TAPlaceSegment", nil, nil, "lat == %@ AND lon == %@", [lat,lon], nil, context) as! [TAPlaceSegment]
         for place in places {
             place.setValue(newName, forKey: "name")
             stack.save()
         }
         
         // Update commute segments starting from this place
-        let departure = getCoreDataManagedObject("TACommuteSegment", nil, nil, "(startLat == %@ AND startLon == %@)", [lat,lon], context) as! [TACommuteSegment]
+        let departure = getCoreDataManagedObject("TACommuteSegment", nil, nil, "(startLat == %@ AND startLon == %@)", [lat,lon], nil, context) as! [TACommuteSegment]
         for commute in departure {
             commute.setValue(newName, forKey: "startName")
             stack.save()
         }
         
         // Update commute segments ending at this place
-        let destination = getCoreDataManagedObject("TACommuteSegment", nil, nil, "(endLat == %@ AND endLon == %@)", [lat,lon], context) as! [TACommuteSegment]
+        let destination = getCoreDataManagedObject("TACommuteSegment", nil, nil, "(endLat == %@ AND endLon == %@)", [lat,lon], nil, context) as! [TACommuteSegment]
         for commute in destination {
             commute.setValue(newName, forKey: "endName")
             stack.save()
         }
         
         // Update activity segments
-        let activities = getCoreDataManagedObject("TAActivitySegment", nil, nil, "(placeLat == %@ AND placeLon == %@)", [lat,lon], context) as! [TAActivitySegment]
+        let activities = getCoreDataManagedObject("TAActivitySegment", nil, nil, "(placeLat == %@ AND placeLon == %@)", [lat,lon], nil, context) as! [TAActivitySegment]
         for activity in activities {
             activity.setValue(newName, forKey: "placeName")
             stack.save()
@@ -538,12 +537,12 @@ class TAModel {
     // MARK: Core Data Methods
     
     func containsObject(_ entityName:String,_ attributeName:String, _ value:Any, _ context:NSManagedObjectContext) -> Bool {
-        let result = getCoreDataManagedObject(entityName, nil, nil, "\(attributeName) == %@", [value], context)
+        let result = getCoreDataManagedObject(entityName, nil, nil, "\(attributeName) == %@", [value], 1, context)
         return result.count > 0
     }
     
     func deleteObject(_ entityName:String,_ attributeName:String, _ value:Any, _ context:NSManagedObjectContext) {
-        let result = getCoreDataManagedObject(entityName, nil, nil, "\(attributeName) == %@", [value], context)
+        let result = getCoreDataManagedObject(entityName, nil, nil, "\(attributeName) == %@", [value], nil, context)
         for object in result {
             context.delete(object as! NSManagedObject)
         }
@@ -569,8 +568,11 @@ class TAModel {
         }
     }
     
-    func getCoreDataManagedObject(_ entityName:String,_ sortDescriptorKey:String?,_ sortAscending:Bool?,_ predFormat:String?,_ argumentArray:[Any]?,  _ context:NSManagedObjectContext) -> [Any]{
+    func getCoreDataManagedObject(_ entityName:String,_ sortDescriptorKey:String?,_ sortAscending:Bool?,_ predFormat:String?,_ argumentArray:[Any]?, _ fetchLimit:Int?,  _ context:NSManagedObjectContext) -> [Any]{
         let fr = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
+        if let fetchLimit = fetchLimit {
+            fr.fetchLimit = fetchLimit
+        }
         if let sortKey = sortDescriptorKey, let ascending = sortAscending {
             let sort = NSSortDescriptor(key: sortKey, ascending: ascending)
             fr.sortDescriptors = [sort]
