@@ -15,11 +15,11 @@ class TADownloadViewController:TADataUpdateViewController {
         startUpdatingWithProgressView()
     }
     
-    override func didCompleteProcessing(_ notification:Notification) {
-        NotificationCenter.default.removeObserver(self)
-        saveAllDataToPersistentStore()
-        removeProgressView() { () in
-            self.performSegue(withIdentifier: "HealthKit", sender: nil)
+    override func didCompleteUpdate(_ notification:Notification) {
+        DispatchQueue.main.async {
+            self.removeProgressView() { () in
+                self.performSegue(withIdentifier: "HealthKit", sender: nil)
+            }
         }
     }
 }
