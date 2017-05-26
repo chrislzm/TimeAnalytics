@@ -170,7 +170,8 @@ class TAActivityDetailViewController: TADetailViewController, UITableViewDelegat
 
         if tableView == placeHistoryTableView {
             let placeData = placeHistoryTableData[indexPath.row]
-            let place = TAModel.sharedInstance().getTAPlace(placeData.startTime, placeData.lat, placeData.lon)
+            let stack = getCoreDataStack()
+            let place = TAModel.sharedInstance().getTAPlace(placeData.startTime, placeData.lat, placeData.lon, stack.context)
             showPlaceDetailViewController(place!)
         }
     }
