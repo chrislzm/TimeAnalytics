@@ -16,6 +16,8 @@ class TADownloadViewController:TADataUpdateViewController {
     }
     
     override func didCompleteProcessing(_ notification:Notification) {
+        NotificationCenter.default.removeObserver(self)
+        saveAllDataToPersistentStore()
         removeProgressView() { () in
             self.performSegue(withIdentifier: "HealthKit", sender: nil)
         }

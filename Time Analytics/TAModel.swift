@@ -140,8 +140,8 @@ class TAModel {
         
         // If we have previously received data
         if let lastUpdate = TANetClient.sharedInstance().movesLatestUpdate {
-            // Request data beginning 1 day before the last update
-            beginDate = lastUpdate.addingTimeInterval(-86400) // There are this many seconds in one day
+            // Add buffer to request data before the last update (in case it has been updated)
+            beginDate = lastUpdate.addingTimeInterval(TANetClient.MovesApi.Constants.UpdateWindowBuffer)
             // Include last recorded update as parameter in the API request
             updatedSince = lastUpdate
         } else {
@@ -180,6 +180,7 @@ class TAModel {
             }
             beginDate = endDate
         }
+
         completionHandler(dataChunks,nil)
     }
     
@@ -259,16 +260,17 @@ class TAModel {
         if (savedLatestUpdate != nil && latestUpdate > savedLatestUpdate!) || savedLatestUpdate == nil {
             UserDefaults.standard.set(latestUpdate, forKey: "movesLatestUpdate")
             TANetClient.sharedInstance().movesLatestUpdate = latestUpdate
-            print("Saved new latestUpdate value: \(latestUpdate). Old: \(savedLatestUpdate)")
+            print("Saved new latestUpdate value: \(latestUpdate). Old: \(savedLatestUpdate!)")
         }
-        
+    }
+    
+    func updateMovesLastChecked() {
         let lastChecked = Date()
-        
         UserDefaults.standard.set(lastChecked, forKey: "movesLastChecked")
         UserDefaults.standard.synchronize()
         TANetClient.sharedInstance().movesLastChecked = lastChecked
     }
-    
+
     // MARK: Time Analytics Data Methods
     
     func createNewTAActivityObject(_ startTime:Date,_ endTime:Date,_ type:String, _ name:String,_ movesFirstTime:Date, _ context:NSManagedObjectContext) {
@@ -377,20 +379,20 @@ class TAModel {
         // Get total moves place segments we need to process
         let fr = NSFetchRequest<NSFetchRequestResult>(entityName: "MovesPlaceSegment")
         dataChunks += try! context.count(for: fr)
-        dataChunks += dataChunks - 1 // We are going to take about two passes through
+        dataChunks *= 2 // We are going to take about two passes through
         
-        stack.performBackgroundBatchOperation() { (context) in
-            self.generateTAPlaceObjects(context)
-            self.generateTACommuteObject(context)
-            stack.save()
-            self.saveNewMovesLastUpdateDate(context)
-            self.deleteAllDataFor(["MovesMoveSegment","MovesPlaceSegment"]) // We no longer need old moves data, clear it out
-            DispatchQueue.main.async {
-                // Send notification that we completed processing
-                NotificationCenter.default.post(name: Notification.Name("didCompleteProcessing"), object: nil)
+        if dataChunks > 0 {
+            stack.performBackgroundBatchOperation() { (context) in
+                self.generateTAPlaceObjects(context)
+                self.generateTACommuteObject(context)
+                stack.save()
+                self.saveNewMovesLastUpdateDate(context)
+                self.deleteAllDataFor(["MovesMoveSegment","MovesPlaceSegment"]) // We no longer need old moves data, clear it out
+                self.notifyCompletedProcessing()
             }
+        } else {
+            notifyCompletedProcessing()
         }
-        
         completionHandler(dataChunks,nil)
     }
     
@@ -574,6 +576,12 @@ class TAModel {
     
     func getAppDelegate() -> AppDelegate {
         return UIApplication.shared.delegate as! AppDelegate
+    }
+    
+    func notifyCompletedProcessing() {
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(name: Notification.Name("didCompleteProcessing"), object: nil)
+        }
     }
 
     // MARK: Shared Instance

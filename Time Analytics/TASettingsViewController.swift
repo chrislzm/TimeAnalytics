@@ -11,6 +11,7 @@ import UIKit
 class TASettingsViewController:TADataUpdateViewController {
 
     @IBOutlet weak var lastUpdatedLabel: UILabel!
+    @IBOutlet weak var autoUpdateLabel: UILabel!
     
     @IBAction func refreshDataButtonPressed(_ sender: Any) {
         startUpdatingWithProgressView()
@@ -28,13 +29,14 @@ class TASettingsViewController:TADataUpdateViewController {
 
         navigationController?.setToolbarHidden(true, animated: true)
         
-        updateLastCheckedDate()
+        setLastUpdatedText()
+        
+        setAutoUpdateLabelText()
     }
     
     override func didCompleteProcessing(_ notification:Notification) {
-        removeProgressView() { () in
-            self.updateLastCheckedDate()
-        }
+        super.didCompleteProcessing(notification)
+        setLastUpdatedText()
     }
     
     func confirmLogout(alert:UIAlertAction!) {
@@ -45,11 +47,11 @@ class TASettingsViewController:TADataUpdateViewController {
         TAModel.sharedInstance().deleteMovesSessionInfo()
         
         // Logout, unwind and display login screen
-        self.performSegue(withIdentifier: "LogOut", sender: self)
+        performSegue(withIdentifier: "LogOut", sender: self)
     }
     
     // MARK: View Update Methods
-    func updateLastCheckedDate() {
+    func setLastUpdatedText() {
         let lastChecked = TANetClient.sharedInstance().movesLastChecked!
         
         let dateFormatter = DateFormatter()
@@ -62,6 +64,10 @@ class TASettingsViewController:TADataUpdateViewController {
         let lastUpdatedString = "\(dateFormatter.string(from: lastChecked)) at \(timeFormatter.string(from: lastChecked))"
         
         lastUpdatedLabel.text = lastUpdatedString
+    }
+    
+    func setAutoUpdateLabelText() {
+        autoUpdateLabel.text = "Automatically Updates Every \(TANetClient.MovesApi.Constants.AutoUpdateMinutes) Minutes"
     }
 }
 

@@ -32,6 +32,8 @@ extension TANetClient {
             static let ClientSecret = "fqKgM1ICYa47DYZfw0PLOtsu473Kyy9E6PHUI5cQzZx5VkgbivTlJE4WlvQn2jZ1"
             static let MaxDaysPerRequest = 30
             static let AccessTokenExpirationBuffer = 60
+            static let UpdateWindowBuffer:Double = -86400 // 86400 seconds in one day
+            static let AutoUpdateMinutes = 10
         }
         
         struct Methods {
