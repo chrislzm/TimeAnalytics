@@ -59,6 +59,8 @@ class TASettingsViewController:TADataUpdateViewController {
             // Save all changes
             stack.save()
 
+            self.activityView.isHidden = true
+            
             // Logout, unwind and display login screen
             self.performSegue(withIdentifier: "LogOut", sender: self)
         }
