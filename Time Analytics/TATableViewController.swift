@@ -35,6 +35,13 @@ class TATableViewController: TAViewController, UITableViewDelegate, UITableViewD
         // Setup and add the Edit button
         let settingsButton = UIBarButtonItem(title: "Settings", style: UIBarButtonItemStyle.plain, target:self, action: #selector(TATableViewController.showSettingsMenu))
         navigationItem.rightBarButtonItem = settingsButton
+        
+        // Remove titles from Tabbar
+        for tabBarItem in (tabBarController?.tabBar.items)!
+        {
+            tabBarItem.title = ""
+            tabBarItem.imageInsets = UIEdgeInsetsMake(6, 0, -6, 0)
+        }
     }
     
     func showSettingsMenu() {
