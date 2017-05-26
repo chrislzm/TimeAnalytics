@@ -17,7 +17,7 @@ class TAModel {
     // MARK: Moves Login Methods
     
     func isLoggedIn() -> Bool {
-        if let _ = TANetClient.sharedInstance().movesLatestUpdate {
+        if let _ = TANetClient.sharedInstance().movesLastChecked {
             return true
         }
         return false
@@ -378,6 +378,7 @@ class TAModel {
         let result = getCoreDataManagedObject("TAActivitySegment", "startTime", false, "startTime <= %@", [time], context) as! [TAActivitySegment]
         var lastTAActivity:TAActivitySegment? = nil
         if result.count > 0 {
+            print("Results: \(result.count)")
             lastTAActivity = result[0] as TAActivitySegment
         }
         return lastTAActivity
@@ -552,17 +553,19 @@ class TAModel {
     func deleteAllDataFor(_ entities:[String]) {
         let stack = getCoreDataStack()
         let context = stack.context
-        let persistentStoreCoordinator = stack.coordinator
-        
+
         for entity in entities {
             let fr = NSFetchRequest<NSFetchRequestResult>(entityName: entity)
-            let deleteRequest = NSBatchDeleteRequest(fetchRequest: fr)
-            
+
             do {
-                try persistentStoreCoordinator.execute(deleteRequest, with: context)
+                let items = try context.fetch(fr) as! [NSManagedObject]
+                for item in items {
+                    context.delete(item)
+                }
             } catch {
                 fatalError("Unable to delete saved data")
             }
+            stack.save()
         }
     }
     
