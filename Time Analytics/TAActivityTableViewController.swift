@@ -16,20 +16,13 @@ class TAActivityTableViewController: TATableViewController {
     
     let viewTitle = "Activities"
     
-    // MARK: Actions
-    func showPlacesButtonPressed() {
-        let placesController = self.storyboard!.instantiateViewController(withIdentifier: "TAPlaceTableViewController") as! TAPlaceTableViewController
-        let navigationController = self.navigationController!
-        navigationController.setViewControllers([placesController], animated: false)
-    }
-    
     // MARK: Lifecycle
     override func viewDidLoad() {
         // First set tableview for superclass before calling super method
         tableView = activityTableView
         super.viewDidLoad()
         
-        title = viewTitle
+        navigationItem.title = viewTitle
         
         // Get the context
         let delegate = UIApplication.shared.delegate as! AppDelegate
@@ -41,11 +34,6 @@ class TAActivityTableViewController: TATableViewController {
         
         // Create the FetchedResultsController
         fetchedResultsController = NSFetchedResultsController(fetchRequest: fr, managedObjectContext: context, sectionNameKeyPath: "daySectionIdentifier", cacheName: nil)
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        setupBottomNavigationBar()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -79,13 +67,4 @@ class TAActivityTableViewController: TATableViewController {
         let activity = fetchedResultsController!.object(at: indexPath) as! TAActivitySegment
         showActivityDetailViewController(activity)
     }
-    
-    // MARK: Helper functions
-    func setupBottomNavigationBar() {
-        let showCommutesButton = UIBarButtonItem(title: "Activities", style: UIBarButtonItemStyle.plain, target: self, action: #selector(TACommuteTableViewController.showPlacesButtonPressed))
-        self.navigationController?.setToolbarHidden(false, animated: true)
-        self.setToolbarItems([showCommutesButton], animated: true)
-    }
-    
-
 }

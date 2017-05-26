@@ -16,23 +16,13 @@ class TAPlaceTableViewController: TATableViewController {
     
     let viewTitle = "Places"
     
-    // MARK: Actions
-    
-    func showCommutesButtonPressed() {
-        // Grab the DetailVC from Storyboard
-        let commutesController = self.storyboard!.instantiateViewController(withIdentifier: "TACommuteTableViewController") as! TACommuteTableViewController
-        
-        let navigationController = self.navigationController!
-        navigationController.setViewControllers([commutesController], animated: false)
-    }
-    
     // MARK: Life Cycle
     
     override func viewDidLoad() {
         // First set tableview for superclass before calling super method
         tableView = placeTableView
         super.viewDidLoad()
-        title = viewTitle
+        navigationItem.title = viewTitle
 
         // Get the context
         let delegate = UIApplication.shared.delegate as! AppDelegate
@@ -44,11 +34,6 @@ class TAPlaceTableViewController: TATableViewController {
         
         // Create the FetchedResultsController
         fetchedResultsController = NSFetchedResultsController(fetchRequest: fr, managedObjectContext: context, sectionNameKeyPath: "daySectionIdentifier", cacheName: nil)
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        setupBottomNavigationBar()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -93,13 +78,5 @@ class TAPlaceTableViewController: TATableViewController {
         let place = fetchedResultsController?.object(at: indexPath) as! TAPlaceSegment
 
         showPlaceDetailViewController(place)
-    }
-
-    func setupBottomNavigationBar() {
-        let showCommutesButton = UIBarButtonItem(title: "Places", style: UIBarButtonItemStyle.plain, target: self, action: #selector(TAPlaceTableViewController.showCommutesButtonPressed))
-        
-        self.navigationController?.setToolbarHidden(false, animated: true)
-        
-        self.setToolbarItems([showCommutesButton], animated: true)
     }
 }

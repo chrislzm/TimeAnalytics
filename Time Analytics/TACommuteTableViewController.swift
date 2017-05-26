@@ -14,15 +14,6 @@ class TACommuteTableViewController: TATableViewController {
     @IBOutlet weak var commuteTableView: UITableView!
     
     let viewTitle = "Commutes"
-    
-    // MARK: Actions
-    
-    // TODO: Rename this method
-    func showPlacesButtonPressed() {
-        let activitiesController = self.storyboard!.instantiateViewController(withIdentifier: "TAActivityTableViewController") as! TAActivityTableViewController
-        let navigationController = self.navigationController!
-        navigationController.setViewControllers([activitiesController], animated: false)
-    }
 
     // MARK: Lifecycle
     override func viewDidLoad() {        
@@ -30,7 +21,7 @@ class TACommuteTableViewController: TATableViewController {
         tableView = commuteTableView
         super.viewDidLoad()
 
-        title = viewTitle
+        navigationItem.title = viewTitle
         
         // Get the context
         let delegate = UIApplication.shared.delegate as! AppDelegate
@@ -42,11 +33,6 @@ class TACommuteTableViewController: TATableViewController {
         
         // Create the FetchedResultsController
         fetchedResultsController = NSFetchedResultsController(fetchRequest: fr, managedObjectContext: context, sectionNameKeyPath: "daySectionIdentifier", cacheName: nil)
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        setupBottomNavigationBar()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -82,13 +68,4 @@ class TACommuteTableViewController: TATableViewController {
         let commute = fetchedResultsController!.object(at: indexPath) as! TACommuteSegment
         showCommuteDetailViewController(commute)
     }
-    
-    // MARK: Helper functions
-    func setupBottomNavigationBar() {
-        let showActivitiesButton = UIBarButtonItem(title: "Commutes", style: UIBarButtonItemStyle.plain, target: self, action: #selector(TACommuteTableViewController.showPlacesButtonPressed))
-        self.navigationController?.setToolbarHidden(false, animated: true)
-        self.setToolbarItems([showActivitiesButton], animated: true)
-    }
-    
-    
 }

@@ -26,7 +26,6 @@ class TADetailViewController: TAViewController, UITableViewDataSource {
     // MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationController?.setToolbarHidden(true, animated: true)
         
         // Set current year to accelerate string generation
         let formatter = DateFormatter()
