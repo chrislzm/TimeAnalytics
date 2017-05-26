@@ -9,7 +9,7 @@ import CoreData
 
 // MARK: - CoreDataTableViewController: UITableViewController
 
-class TATableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class TATableViewController: TAViewController, UITableViewDelegate, UITableViewDataSource {
     
     var tableView:UITableView! = nil
     

@@ -9,7 +9,7 @@
 import HealthKit
 import UIKit
 
-class TAHealthKitAccessController: UIViewController {
+class TAHealthKitAccessController: TAViewController {
 
     @IBAction func didPressContinue(_ sender: Any) {
         getHealthKitPermission()

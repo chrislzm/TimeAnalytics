@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TAProcessHealthKitDataController: UIViewController {
+class TAProcessHealthKitDataController: TAViewController {
     
     var dataChunksToImport = 0
     var dataChunksImported = 0

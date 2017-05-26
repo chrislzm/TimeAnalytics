@@ -11,7 +11,7 @@ import Charts
 import UIKit
 import MapKit
 
-class TADetailViewController: UIViewController, UITableViewDataSource {
+class TADetailViewController: TAViewController, UITableViewDataSource {
     
     var currentYear:String?
     

@@ -9,7 +9,7 @@
 import MapKit
 import UIKit
 
-class TADetailMapViewController:UIViewController {
+class TADetailMapViewController:TAViewController {
     
     // MARK: Properties
     var annotations:[MKAnnotation]!
