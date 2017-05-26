@@ -24,6 +24,7 @@ extension TAModel {
         
         // Search for activities beginning after the end of the last one on record
         var fromDate:Date? = nil
+        
         if let latestActivity = getLastTAActivityBefore(Date() as NSDate,stack.context) {
             fromDate = latestActivity.endTime! as Date
         }
