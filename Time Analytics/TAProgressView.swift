@@ -20,32 +20,39 @@ class TAProgressView: UIView {
     func addProgress(_ amountProgressed:Float) {
         currentProgress += amountProgressed
         let percentComplete = currentProgress/totalProgress
-        progressView.setProgress(percentComplete, animated: true)
-        titleLabel.text = "\(defaultText) (\(Int(percentComplete*100))%)"
+        DispatchQueue.main.async {
+            self.progressView.setProgress(percentComplete, animated: true)
+            self.titleLabel.text = "\(self.defaultText) (\(Int(percentComplete*100))%)"
+        }
     }
     
     func didCompleteDataChunk(_ notification:Notification) {
         
         addProgress(1)
         if currentProgress == totalProgress {
-            fadeOut() { (finished) in
-                if finished {
-                    self.removeFromObservers()
-                    self.removeFromSuperview()
+            DispatchQueue.main.async {
+                self.fadeOut() { (finished) in
+                    if finished {
+                        self.removeFromObservers()
+                        self.removeFromSuperview()
+                    }
                 }
             }
         }
     }
     
     func setupDefaultProperties() {
-        progressView.setProgress(0, animated: false)
-        titleLabel.text = "\(defaultText) (0%)"
-        NotificationCenter.default.addObserver(self, selector: #selector(TAProgressView.didCompleteDataChunk(_:)), name: Notification.Name("didProcessDataChunk"), object: nil)
+        DispatchQueue.main.async {
+            self.progressView.setProgress(0, animated: false)
+            self.titleLabel.text = "\(self.defaultText) (0%)"
+            NotificationCenter.default.addObserver(self, selector: #selector(TAProgressView.didCompleteDataChunk(_:)), name: Notification.Name("didProcessDataChunk"), object: nil)
+        }
     }
     
     func removeFromObservers() {
         NotificationCenter.default.removeObserver(self)
     }
+    
     class func instanceFromNib() -> TAProgressView {
         return UINib(nibName: "TAProgressView", bundle: nil).instantiate(withOwner: nil, options: nil)[0] as! TAProgressView
     }
