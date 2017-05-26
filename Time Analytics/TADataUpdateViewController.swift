@@ -14,24 +14,14 @@ class TADataUpdateViewController:TAViewController {
     
     var progressView:TAProgressView!
     
-    // MARK: Lifecycle
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        NotificationCenter.default.removeObserver(self)
-    }
-    
     // MARK: Methods for updating data
-    
-    func startUpdatingWithProgressView() {
+    override func viewDidLoad() {
+        super.viewDidLoad()
         
-        // Setup notifications so we know when to update the progress view
+        // Setup notifications so we know when to display and update the progress view
         NotificationCenter.default.addObserver(self, selector: #selector(TADataUpdateViewController.willDownloadData(_:)), name: Notification.Name("willDownloadData"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(TADataUpdateViewController.willGenerateTAData(_:)), name: Notification.Name("willGenerateTAData"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(TADataUpdateViewController.didCompleteUpdate(_:)), name: Notification.Name("didCompleteUpdate"), object: nil)
-        
-        // Create progress view that will dismiss itself since it will know exactly how much data will be processed
-
-        TAModel.sharedInstance().downloadAndProcessNewMovesData()
     }
     
     func willDownloadData(_ notification:Notification) {
