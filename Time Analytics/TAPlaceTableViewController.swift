@@ -60,9 +60,11 @@ class TAPlaceTableViewController: TATableViewController {
         // Generate descriptions and assign to cell
         
         // Get descriptions and assign to cell labels
-        let (timeInOutString,lengthString,_) = generatePlaceStringDescriptions(place,nil)
-        cell.timeInOutLabel.text = timeInOutString
-        cell.lengthLabel.text = lengthString
+        let start = place.startTime! as Date
+        let end = place.endTime! as Date
+        
+        cell.timeInOutLabel.text = generateTimeInOutStringWithDate(start, end)
+        cell.lengthLabel.text = generateLengthString(start, end)
         cell.locationLabel.text = place.name!
                  
         // Save data in cell for detail view

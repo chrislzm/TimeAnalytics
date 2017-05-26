@@ -53,12 +53,13 @@ class TAActivityTableViewController: TATableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TAActivityTableViewCell", for: indexPath) as! TAActivityTableViewCell
         
         // Get label values
-        let (timeInOutString,activityLengthString,_) = generateActivityStringDescriptions(activity,nil)
+        let start = activity.startTime! as Date
+        let end = activity.endTime! as Date
         
         // Set label values
-        cell.timeLabel.text = timeInOutString
-        cell.lengthLabel.text = activityLengthString
-        cell.nameLabel.text = activity.name!
+        cell.timeLabel.text = generateTimeInOutStringWithDate(start, end)
+        cell.lengthLabel.text = generateLengthString(start, end)
+        cell.nameLabel.text = "\(activity.type!): \(activity.name!)"
         
         return cell
     }
