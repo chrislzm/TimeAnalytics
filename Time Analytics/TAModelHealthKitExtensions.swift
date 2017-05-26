@@ -11,7 +11,7 @@ import UIKit
 
 extension TAModel {
     
-    func importHealthKitData(completionHandler: @escaping (_ dataChunks:Int) -> Void) {
+    func importHealthKitData(_ fromDate:Date?, completionHandler: @escaping (_ dataChunks:Int) -> Void) {
         let stack = getCoreDataStack()
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
@@ -20,7 +20,7 @@ extension TAModel {
         
         // Import Sleep Data
         let sleepType = HKObjectType.categoryType(forIdentifier: .sleepAnalysis)!
-        retrieveHealthStoreData(sleepType) { (query,result,error) in
+        retrieveHealthStoreData(sleepType,fromDate) { (query,result,error) in
             guard error == nil else {
                 return
             }
@@ -40,7 +40,7 @@ extension TAModel {
         
         // Import Workout Data
         let workoutType = HKWorkoutType.workoutType()
-        retrieveHealthStoreData(workoutType) { (query,result,error) in
+        retrieveHealthStoreData(workoutType,fromDate) { (query,result,error) in
             guard error == nil else {
                 return
             }
@@ -66,11 +66,15 @@ extension TAModel {
         return delegate.healthStore
     }
     
-    func retrieveHealthStoreData(_ type:HKSampleType, completionHandler: @escaping (HKSampleQuery, [HKSample]?, Error?) -> Void) {
+    func retrieveHealthStoreData(_ type:HKSampleType,_ fromDate:Date?, completionHandler: @escaping (HKSampleQuery, [HKSample]?, Error?) -> Void) {
         let healthStore = getHealthStore()
         // Use a sortDescriptor to get the recent data first
+        var predicate:NSPredicate! = nil
+        if let fromDate = fromDate {
+            predicate = HKQuery.predicateForSamples(withStart: fromDate, end: Date(), options: [])
+        }
         let sortDescriptor = NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: true)
-        let query = HKSampleQuery(sampleType: type, predicate: nil, limit: HKObjectQueryNoLimit, sortDescriptors: [sortDescriptor], resultsHandler: completionHandler)
+        let query = HKSampleQuery(sampleType: type, predicate: predicate, limit: HKObjectQueryNoLimit, sortDescriptors: [sortDescriptor], resultsHandler: completionHandler)
         healthStore.execute(query)
     }
     
