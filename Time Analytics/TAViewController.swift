@@ -157,7 +157,6 @@ class TAViewController: UIViewController {
             progressView.fadeOut() { (finished) in
                 progressView.removeFromObservers()
                 progressView.removeFromSuperview()
-                NotificationCenter.default.removeObserver(self)
                 if let closure = completionHandler {
                     closure()
                 }
