@@ -12,6 +12,7 @@ class TASettingsViewController:TADataUpdateViewController {
     
     @IBOutlet weak var lastUpdatedLabel: UILabel!
     @IBOutlet weak var autoUpdateLabel: UILabel!
+    @IBOutlet weak var activityView: UIActivityIndicatorView!
     
     @IBAction func refreshDataButtonPressed(_ sender: Any) {
         startUpdatingWithProgressView()
@@ -43,10 +44,13 @@ class TASettingsViewController:TADataUpdateViewController {
     
     func confirmLogout(alert:UIAlertAction!) {
         DispatchQueue.main.async {
+
+            self.activityView.isHidden = false
+            
             // Clear persistent data
             let stack = self.getCoreDataStack()
             let context = stack.context
-
+            
             TAModel.sharedInstance().deleteAllDataFor(["MovesMoveSegment","MovesPlaceSegment","TAPlaceSegment","TACommuteSegment","TAActivitySegment"],context)
             
             // Clear session variables
@@ -54,7 +58,7 @@ class TASettingsViewController:TADataUpdateViewController {
             
             // Save all changes
             stack.save()
-            
+
             // Logout, unwind and display login screen
             self.performSegue(withIdentifier: "LogOut", sender: self)
         }

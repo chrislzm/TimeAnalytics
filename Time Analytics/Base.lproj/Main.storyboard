@@ -387,28 +387,37 @@
                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <activityIndicatorView hidden="YES" opaque="NO" alpha="0.5" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="w83-pA-Lni">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="sT7-Dy-enQ" firstAttribute="centerX" secondItem="lZi-Qi-CjN" secondAttribute="centerX" id="0LO-du-ddt"/>
                             <constraint firstItem="17q-L0-hpj" firstAttribute="height" secondItem="lZi-Qi-CjN" secondAttribute="height" multiplier="0.3" id="2nv-Zp-13P"/>
                             <constraint firstItem="ExN-yV-8gG" firstAttribute="top" secondItem="65E-KJ-qsz" secondAttribute="bottom" constant="8" id="7H3-s8-XKk"/>
+                            <constraint firstAttribute="trailing" secondItem="w83-pA-Lni" secondAttribute="trailing" id="BG1-L2-aUM"/>
                             <constraint firstItem="17q-L0-hpj" firstAttribute="width" secondItem="lZi-Qi-CjN" secondAttribute="width" multiplier="0.5" id="CsS-ek-m1s"/>
                             <constraint firstItem="NZi-m3-ZD6" firstAttribute="width" secondItem="lZi-Qi-CjN" secondAttribute="width" multiplier="0.6" id="DaB-nE-773"/>
+                            <constraint firstItem="w83-pA-Lni" firstAttribute="leading" secondItem="lZi-Qi-CjN" secondAttribute="leading" id="Hwb-pc-w61"/>
                             <constraint firstItem="ExN-yV-8gG" firstAttribute="centerX" secondItem="lZi-Qi-CjN" secondAttribute="centerX" id="LgO-7f-Mix"/>
                             <constraint firstItem="17q-L0-hpj" firstAttribute="centerX" secondItem="lZi-Qi-CjN" secondAttribute="centerX" id="OWf-SF-XSl"/>
                             <constraint firstItem="NZi-m3-ZD6" firstAttribute="centerY" secondItem="lZi-Qi-CjN" secondAttribute="centerY" multiplier="1.5" id="UBi-9k-r5c"/>
                             <constraint firstItem="NZi-m3-ZD6" firstAttribute="centerX" secondItem="lZi-Qi-CjN" secondAttribute="centerX" id="ZX6-Wi-e2p"/>
                             <constraint firstItem="sT7-Dy-enQ" firstAttribute="centerY" secondItem="lZi-Qi-CjN" secondAttribute="centerY" multiplier="1.25" id="add-5W-BvZ"/>
                             <constraint firstItem="65E-KJ-qsz" firstAttribute="centerY" secondItem="lZi-Qi-CjN" secondAttribute="centerY" id="apT-3a-3ot"/>
+                            <constraint firstItem="w83-pA-Lni" firstAttribute="top" secondItem="lZi-Qi-CjN" secondAttribute="top" id="dHZ-1y-FeA"/>
                             <constraint firstItem="65E-KJ-qsz" firstAttribute="centerX" secondItem="lZi-Qi-CjN" secondAttribute="centerX" id="gri-AW-6oi"/>
                             <constraint firstItem="65E-KJ-qsz" firstAttribute="top" secondItem="nLY-y3-2cT" secondAttribute="bottom" constant="8" id="gul-dR-7j8"/>
                             <constraint firstItem="sT7-Dy-enQ" firstAttribute="width" secondItem="lZi-Qi-CjN" secondAttribute="width" multiplier="0.6" id="i0d-g6-w0w"/>
                             <constraint firstItem="nLY-y3-2cT" firstAttribute="centerX" secondItem="lZi-Qi-CjN" secondAttribute="centerX" id="iex-bc-gOP"/>
+                            <constraint firstAttribute="bottom" secondItem="w83-pA-Lni" secondAttribute="bottom" id="jja-xy-dx4"/>
                             <constraint firstItem="17q-L0-hpj" firstAttribute="centerY" secondItem="lZi-Qi-CjN" secondAttribute="centerY" multiplier="0.5" id="rIJ-pA-Y8D"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="activityView" destination="w83-pA-Lni" id="Klm-Yj-PGm"/>
                         <outlet property="autoUpdateLabel" destination="ExN-yV-8gG" id="hrt-9V-PnG"/>
                         <outlet property="lastUpdatedLabel" destination="65E-KJ-qsz" id="eHD-93-v1n"/>
                         <segue destination="jgb-gS-4dK" kind="unwind" identifier="LogOut" unwindAction="prepareForUnwindWithSegue:" id="TxY-GV-QQK"/>
