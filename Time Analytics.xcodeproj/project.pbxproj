@@ -226,6 +226,15 @@
 			name = Model;
 			sourceTree = "<group>";
 		};
+		A58B0B391ED7B464008345F3 /* Map and LineChart Views */ = {
+			isa = PBXGroup;
+			children = (
+				A5B319171ED6570600401BF8 /* TADetailMapViewController.swift */,
+				A5B319191ED6571700401BF8 /* TADetailLineChartViewController.swift */,
+			);
+			name = "Map and LineChart Views";
+			sourceTree = "<group>";
+		};
 		A59D8FC21ED3913200E119F2 /* Place */ = {
 			isa = PBXGroup;
 			children = (
@@ -258,8 +267,6 @@
 				A58B0B371ED78181008345F3 /* TADataUpdateViewController.swift */,
 				A5FFFD8C1ECAB38C00B55020 /* TATableViewController.swift */,
 				A59D8FC01ED3911D00E119F2 /* TADetailViewController.swift */,
-				A5B319171ED6570600401BF8 /* TADetailMapViewController.swift */,
-				A5B319191ED6571700401BF8 /* TADetailLineChartViewController.swift */,
 				A599677A1ED3378900B77D2F /* TAControllerExtensions.swift */,
 			);
 			name = "Superclasses and Extensions";
@@ -286,6 +293,7 @@
 				A59D8FC21ED3913200E119F2 /* Place */,
 				A59D8FC31ED3913D00E119F2 /* Commute */,
 				A556EB7F1ED42497003F8E2B /* Activity */,
+				A58B0B391ED7B464008345F3 /* Map and LineChart Views */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
