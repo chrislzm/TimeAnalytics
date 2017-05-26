@@ -41,7 +41,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Restore moves session data
         TAModel.sharedInstance().loadMovesSessionData()
-        //TAModel.sharedInstance().autoUpdateMovesData(TANetClient.MovesApi.Constants.AutoUpdateMinutes)
+        TAModel.sharedInstance().autoUpdateMovesData(TANetClient.MovesApi.Constants.AutoUpdateMinutes)
         
         // Listen for data updates, so we can coordinate data download completion with processing
         NotificationCenter.default.addObserver(self, selector: #selector(AppDelegate.willDownloadData(_:)), name: Notification.Name("willDownloadData"), object: nil)
