@@ -12,7 +12,7 @@ class TADownloadViewController:TADataUpdateViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        startUpdatingWithProgressView()
+        TAModel.sharedInstance().downloadAndProcessNewMovesData()
     }
     
     override func didCompleteUpdate(_ notification:Notification) {
