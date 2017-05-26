@@ -54,6 +54,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: Data [auto]update methods
     
     func willDownloadData(_ notification:Notification) {
+        chunksUpdated = 0
         totalUpdateChunks = notification.object as! Int
     }
     
@@ -65,14 +66,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func willCompleteUpdate(_ notification:Notification) {
-        // Reset properties
-        totalUpdateChunks = 0
-        chunksUpdated = 0
-
+        // Update HealthKit if we are logged in
+        if TAModel.sharedInstance().isLoggedIn() {
+            TAModel.sharedInstance().updateHealthKitData()
+        }
+        
         TAModel.sharedInstance().updateMovesLastChecked()
         
         // Save data to persistent store
         TAModel.sharedInstance().save()
+
         NotificationCenter.default.post(name: Notification.Name("didCompleteUpdate"), object: nil)
     }
 }
