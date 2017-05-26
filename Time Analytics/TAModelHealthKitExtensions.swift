@@ -11,7 +11,11 @@ import UIKit
 
 extension TAModel {
     
-    func importHealthKitData(completionHandler: @escaping (_ dataChunks:Int) -> Void) {
+    struct Constants {
+        static let HealthKitDataChunks = 4
+    }
+    
+    func updateHealthKitData() {
         let stack = getCoreDataStack()
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
@@ -30,8 +34,8 @@ extension TAModel {
             guard error == nil else {
                 return
             }
-            NotificationCenter.default.post(name: Notification.Name("didProcessDataChunk"), object: nil)
             stack.performBackgroundBatchOperation() { (context) in
+                NotificationCenter.default.post(name: Notification.Name("didProcessDataChunk"), object: nil)
                 for item in result! {
                     let sample = item as! HKCategorySample
                     if sample.value == HKCategoryValueSleepAnalysis.inBed.rawValue {
@@ -50,8 +54,8 @@ extension TAModel {
             guard error == nil else {
                 return
             }
-            NotificationCenter.default.post(name: Notification.Name("didProcessDataChunk"), object: nil)
             stack.performBackgroundBatchOperation() { (context) in
+                NotificationCenter.default.post(name: Notification.Name("didProcessDataChunk"), object: nil)
                 for item in result! {
                     let workout = item as! HKWorkout
                     let workoutType = self.getHealthKitWorkoutTypeString(workout.workoutActivityType.rawValue)
@@ -62,9 +66,6 @@ extension TAModel {
                 NotificationCenter.default.post(name: Notification.Name("didProcessDataChunk"), object: nil)
             }
         }
-
-        // Tell the completion handler we have 4 total data chunks to complete
-        completionHandler(4)
     }
  
     func getHealthStore() -> HKHealthStore {
