@@ -250,6 +250,8 @@ class TAViewController: UIViewController {
         detailController.lat = place.lat
         detailController.lon = place.lon
         detailController.name = place.name!
+        detailController.startTime = place.startTime!
+        detailController.endTime = place.endTime!
 
         navigationController!.pushViewController(detailController, animated: true)
     }
@@ -263,10 +265,10 @@ class TAViewController: UIViewController {
         
         detailController.startLat = commute.startLat
         detailController.startLon = commute.startLon
-        detailController.startTime = commute.startTime! as Date
+        detailController.startTime = commute.startTime
         detailController.endLat = commute.endLat
         detailController.endLon = commute.endLon
-        detailController.endTime = commute.endTime! as Date
+        detailController.endTime = commute.endTime
 
         navigationController!.pushViewController(detailController, animated: true)
     }
@@ -276,6 +278,8 @@ class TAViewController: UIViewController {
         
         detailController.name = activity.name
         detailController.type = activity.type
+        detailController.startTime = activity.startTime
+        detailController.endTime = activity.endTime
         
         navigationController!.pushViewController(detailController, animated: true)
     }
