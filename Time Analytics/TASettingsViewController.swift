@@ -38,16 +38,13 @@ class TASettingsViewController:TADataUpdateViewController {
             
             self.activityView.isHidden = false
             
-            // Clear persistent data
+            // Clear persistent data. We do this on the background context since objects are loaded in there. On save, deletions will bubble their through all contexts and to the persistent store.
             let stack = self.getCoreDataStack()
-            let context = stack.context
-            TAModel.sharedInstance().deleteAllDataFor(["MovesMoveSegment","MovesPlaceSegment","TAPlaceSegment","TACommuteSegment","TAActivitySegment"],context)
+            stack.performBackgroundBatchOperation() { (context) in                TAModel.sharedInstance().deleteAllDataFor(["MovesMoveSegment","MovesPlaceSegment","TAPlaceSegment","TACommuteSegment","TAActivitySegment"],context)
+            }
             
             // Clear session variables
             TAModel.sharedInstance().deleteMovesSessionInfo()
-            
-            // Save all changes
-            stack.save()
             
             self.activityView.isHidden = true
             
