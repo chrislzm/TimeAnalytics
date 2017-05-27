@@ -151,16 +151,16 @@ class TAPlaceDetailViewController: TADetailViewController, UITableViewDelegate {
         commuteTableView.separatorStyle = .none
         activityTableView.separatorStyle = .none
 
-        // Data Source
+        // Data Sources
         placeHistoryTableData = getEntityObjectsWithQuery("TAPlaceSegment", "(lat == %@) AND (lon == %@)", [lat,lon], "startTime", false) as! [TAPlaceSegment]
 
-        setSelectedIndexPathForPlace()
+        setSelectedIndexPathForPlace() // Find and set the table indexpath for the row whose detail view this belongs to
         
         commuteHistoryTableData = getEntityObjectsWithQuery("TACommuteSegment", "(startLat == %@ AND startLon == %@) OR (endLat == %@ AND endLon == %@)", [lat,lon,lat,lon], "startTime", false) as! [TACommuteSegment]
         
         activityHistoryTableData = getEntityObjectsWithQuery("TAActivitySegment", "placeLat == %@ AND placeLon == %@",[lat,lon], "startTime", false) as! [TAActivitySegment]
         
-        // If no results, make sure we have an empty array
+        // If no results, let the user know
         if commuteHistoryTableData.isEmpty {
             createTableEmptyMessageIn(commuteTableView,"No commutes recorded")
         }
@@ -179,6 +179,7 @@ class TAPlaceDetailViewController: TADetailViewController, UITableViewDelegate {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
+        // Select and scroll to the item whose detail view this belongs to
         placeTableView.selectRow(at: selectedIndexPath, animated: true, scrollPosition: .middle)
         
         // Deselect row if we selected one that caused a segue
@@ -248,7 +249,6 @@ class TAPlaceDetailViewController: TADetailViewController, UITableViewDelegate {
         } else if tableView == activityTableView {
             let activity = activityHistoryTableData![indexPath.row]
             
-            // Create the cell
             let activityCell = tableView.dequeueReusableCell(withIdentifier: "TAPlaceDetailActivityTableViewCell", for: indexPath) as! TAPlaceDetailActivityTableViewCell
             
             // Get descriptions and assign to cell label
@@ -268,6 +268,7 @@ class TAPlaceDetailViewController: TADetailViewController, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if tableView == placeTableView, indexPath != selectedIndexPath {
+            // Don't allow the user to unhighlight the row whose detail view this belongs to
             tableView.deselectRow(at: indexPath, animated: false)
         } else if tableView == commuteTableView {
             let commute = commuteHistoryTableData[indexPath.row]
@@ -278,6 +279,7 @@ class TAPlaceDetailViewController: TADetailViewController, UITableViewDelegate {
         }
     }
     
+    // Don't allow the user to unhighlight the row whose detail view this belongs to
     func tableView(_ tableView: UITableView, willDeselectRowAt indexPath: IndexPath) -> IndexPath? {
         if tableView == placeTableView {
             return nil
@@ -288,6 +290,7 @@ class TAPlaceDetailViewController: TADetailViewController, UITableViewDelegate {
     
     // MARK: Data Methods
     
+    // Find the row in the table whose detail view this belongs to
     func setSelectedIndexPathForPlace() {
         
         var dataIndex = 0
@@ -302,10 +305,13 @@ class TAPlaceDetailViewController: TADetailViewController, UITableViewDelegate {
         selectedIndexPath = IndexPath(row: dataIndex, section: 0)
     }
     
+    // Convenience method for assembling data needed to setup the view
     func getVisitDataForThisPlace() -> ([Double],[Double],Int,Double) {
         let places = getEntityObjectsWithQuery("TAPlaceSegment", "(lat == %@) AND (lon == %@)", [lat,lon], "startTime", true) as! [TAPlaceSegment]
         let totalVisits = places.count
         var totalVisitTime:Double = 0
+        
+        // These two arrays are used in the Line Chart
         var visitLengths = [Double]()
         var visitDates = [Double]()
         for place in places {
@@ -319,6 +325,7 @@ class TAPlaceDetailViewController: TADetailViewController, UITableViewDelegate {
         return (visitDates,visitLengths,totalVisits,totalVisitTime)
     }
     
+    // Get total number of visits to this place in the last month
     func getNumLastMonthVisits() -> Int {
         let oneMonthAgo = Date() - 2678400 // There are this many seconds in a month
         let lastMonthVisits = getEntityObjectsWithQuery("TAPlaceSegment", "(lat == %@) AND (lon == %@) AND (startTime >= %@)", [lat,lon,oneMonthAgo], nil, nil)
