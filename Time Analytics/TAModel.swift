@@ -22,7 +22,7 @@ class TAModel {
     // MARK: Moves Login Methods
     
     func isLoggedIn() -> Bool {
-        if let _ = TANetClient.sharedInstance().movesLastChecked {
+        if let _ = TANetClient.sharedInstance().lastCheckedForNewData {
             return true
         }
         return false
@@ -30,7 +30,7 @@ class TAModel {
     
     func loadMovesSessionData() {
         // See first if we have ever successfully logged and received data (we could have crashed in the middle of previous login)
-        if let lastCheck = UserDefaults.standard.value(forKey: "movesLastChecked") as? Date {
+        if let lastCheck = UserDefaults.standard.value(forKey: "lastCheckedForNewData") as? Date {
             // Load the remaining session information into our Net Client
             TANetClient.sharedInstance().movesAccessTokenExpiration = UserDefaults.standard.value(forKey: "movesAccessTokenExpiration") as? Date
             TANetClient.sharedInstance().movesAccessToken = UserDefaults.standard.value(forKey: "movesAccessToken") as? String
@@ -39,7 +39,7 @@ class TAModel {
             TANetClient.sharedInstance().movesUserId = UserDefaults.standard.value(forKey: "movesUserId") as? UInt64
             TANetClient.sharedInstance().movesUserFirstDate = UserDefaults.standard.value(forKey: "movesUserFirstDate") as? String
             TANetClient.sharedInstance().movesLatestUpdate = UserDefaults.standard.value(forKey: "movesLatestUpdate") as? Date
-            TANetClient.sharedInstance().movesLastChecked = lastCheck
+            TANetClient.sharedInstance().lastCheckedForNewData = lastCheck
         }
     }
     
@@ -61,7 +61,7 @@ class TAModel {
         UserDefaults.standard.removeObject(forKey: "movesRefreshToken")
         UserDefaults.standard.removeObject(forKey: "movesUserFirstDate")
         UserDefaults.standard.removeObject(forKey: "movesLatestUpdate")
-        UserDefaults.standard.removeObject(forKey: "movesLastChecked")
+        UserDefaults.standard.removeObject(forKey: "lastCheckedForNewData")
         UserDefaults.standard.synchronize()
         TANetClient.sharedInstance().movesAccessTokenExpiration = nil
         TANetClient.sharedInstance().movesAccessToken = nil
@@ -70,7 +70,7 @@ class TAModel {
         TANetClient.sharedInstance().movesUserId = nil
         TANetClient.sharedInstance().movesUserFirstDate = nil
         TANetClient.sharedInstance().movesLatestUpdate = nil
-        TANetClient.sharedInstance().movesLastChecked = nil
+        TANetClient.sharedInstance().lastCheckedForNewData = nil
     }
     
     // MARK: Moves Data Methods
@@ -311,11 +311,11 @@ class TAModel {
     
     // Updates our local variable that stores the last time we checked Moves for new data
     
-    func updateMovesLastChecked() {
+    func updateLastCheckedForNewData() {
         let lastChecked = Date()
-        UserDefaults.standard.set(lastChecked, forKey: "movesLastChecked")
+        UserDefaults.standard.set(lastChecked, forKey: "lastCheckedForNewData")
         UserDefaults.standard.synchronize()
-        TANetClient.sharedInstance().movesLastChecked = lastChecked
+        TANetClient.sharedInstance().lastCheckedForNewData = lastChecked
     }
 
     // MARK: Time Analytics Data Creation and Editing Methods

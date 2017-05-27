@@ -24,7 +24,7 @@ class TANetClient {
     var movesUserId:UInt64?
     var movesUserFirstDate:String?
     var movesLatestUpdate:Date?
-    var movesLastChecked:Date?
+    var lastCheckedForNewData:Date?
     
     // MARK: Methods
     
