@@ -158,20 +158,23 @@ class TAModel {
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         
-        // Set begin date
-        var beginDate:Date!
-        var updatedSince:Date?
+        // Get move user's first date so we don't request data before that (which would result in error)
+        dateFormatter.dateFormat = "yyyyMMdd"
+        let firstDate = dateFormatter.date(from: TANetClient.sharedInstance().movesUserFirstDate!)!
+
+        var beginDate:Date! // Parameter for the begin date of our data request. The end date will be today.
+        var updatedSince:Date? // Optional parameter for our data request. Will be used if we have it stored.
         
-        // If we have previously received data
-        if let lastUpdate = TANetClient.sharedInstance().movesLatestUpdate {
-            // Add a time buffer window to data request (in case that data has been updated by Moves)
+        // If we have previously received data and it's not on the same day we signed up
+        if let lastUpdate = TANetClient.sharedInstance().movesLatestUpdate, Calendar.current.component(.day, from: lastUpdate) != Calendar.current.component(.day, from: firstDate) {
+            // Add a negative time buffer window to data request (in case that previous data has been updated by Moves)
             beginDate = lastUpdate.addingTimeInterval(TANetClient.MovesApi.Constants.UpdateWindowBuffer)
+            
             // Parameter in the API request
             updatedSince = lastUpdate
         } else {
-            // Otherwise this is our first login, get all data from the beginning of user's account
-            dateFormatter.dateFormat = "yyyyMMdd"
-            beginDate = dateFormatter.date(from: TANetClient.sharedInstance().movesUserFirstDate!)!
+            // Otherwise this is our first login or first day on our Moves account; get all data from the beginning
+            beginDate = firstDate
         }
         
         let today = Date()
@@ -455,25 +458,25 @@ class TAModel {
     // Manages generation of TAPlaceSegment and TACommuteSegment objects. Automatically called by AppDelegate after it has detected we have successfully downloaded and processed all Moves data chunks into MovesMoveSegment and MovesPlaceSegments objects. Now we need to generate Time Analytics data from those objects.
     
     func generateTADataFromMovesData() {
-        let stack = getCoreDataStack()
-        let context = stack.context
-        var dataChunks = 0
         
         // Calculate approxmimate chunks of data that we need to process here, for notification purposes
         // Because Moves data is dirty we will be discarding a lot of it, so the actual number will be less than or equal to this number
+        let stack = getCoreDataStack()
+        let context = stack.context
         let fr = NSFetchRequest<NSFetchRequestResult>(entityName: "MovesPlaceSegment")
+        var dataChunks = 0
         dataChunks += try! context.count(for: fr)
         dataChunks *= 2 // We are going to take maximum two passes
         
         if dataChunks > 0 {
             notifyWillGenerateTAData(dataChunks: dataChunks)
+            
             stack.performBackgroundBatchOperation() { (context) in
                 self.generateTAPlaceSegments(context)
                 self.generateTACommuteSegments(context)
                 stack.save()
                 self.saveNewMovesLastUpdateDate(context)
                 self.deleteAllDataFor(["MovesMoveSegment","MovesPlaceSegment"], context) // We no longer need old moves data, clear it out
-                stack.save()
                 self.notifyWillCompleteUpdate()
             }
         } else {
@@ -588,6 +591,7 @@ class TAModel {
             }
             save(context)
         }
+        save()
     }
     
     func getCoreDataManagedObject(_ entityName:String,_ sortDescriptorKey:String?,_ sortAscending:Bool?,_ predFormat:String?,_ argumentArray:[Any]?, _ fetchLimit:Int?,  _ context:NSManagedObjectContext) -> [Any]{
