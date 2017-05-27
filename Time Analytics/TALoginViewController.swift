@@ -1,6 +1,8 @@
 //
-//  ViewController.swift
+//  TALoginViewController.swift
 //  Time Analytics
+//
+//  Handles user login. Will enter the app directly if we are already logged in.
 //
 //  Created by Chris Leung on 5/14/17.
 //  Copyright © 2017 Chris Leung. All rights reserved.
@@ -25,16 +27,24 @@ class ViewController: TAViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // The app delegate will notify us here if it has received a moves auth code
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.didGetMovesAuthCode(_:)), name: Notification.Name("didGetMovesAuthCode"), object: nil)
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        
+        // Check if we are already logged in
         TANetClient.sharedInstance().verifyLoggedIntoMoves() { (error) in
-            // Show the login screen if there was an error (e.g. we are not logged in)
+            
             DispatchQueue.main.async {
+                
+                // Show the login screen if there was any error
                 guard error == nil else {
-                    // Clear all old moves session data
+                    
+                    // Ensure we've cleared all invalid moves session data
                     TAModel.sharedInstance().deleteMovesSessionInfo()
+
+                    // Hide the overlays to reveal the login screen
                     self.launchScreenActivityView.fadeOut() { (finished) in
                         self.launchScreenActivityView.isHidden = true
                     }
@@ -43,20 +53,25 @@ class ViewController: TAViewController {
                     }
                     return
                 }
+                
+                // We are already logged in -- go to the app
                 self.performSegue(withIdentifier: "AlreadyLoggedIn", sender: nil)
             }
         }
     }
 
+
     func didGetMovesAuthCode(_ notification:Notification) {
         let authCode = notification.userInfo![AnyHashable("code")] as! String
-        
+
+        // Initiate step 2/2 of the login auth flow
         TANetClient.sharedInstance().loginWithMovesAuthCode(authCode: authCode) { (error) in
             guard error == nil else {
                 self.displayErrorAlert(error!)
                 return
             }
 
+            // Segue to data import screen if we are logged in
             TANetClient.sharedInstance().verifyLoggedIntoMoves() { (error) in
                 guard error == nil else {
                     self.displayErrorAlert(error!)
