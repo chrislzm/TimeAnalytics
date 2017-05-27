@@ -2,6 +2,8 @@
 //  TACommuteTableViewController.swift
 //  Time Analytics
 //
+//  Displays all Time Analytics Commute data (TACommuteSegment managed objects) and allows user to tap into a detail view for each one.
+//
 //  Created by Chris Leung on 5/21/17.
 //  Copyright © 2017 Chris Leung. All rights reserved.
 //
@@ -17,7 +19,7 @@ class TACommuteTableViewController: TATableViewController {
 
     // MARK: Lifecycle
     override func viewDidLoad() {        
-        // First set tableview for superclass before calling super method
+        // Set tableview for superclass before calling super method
         tableView = commuteTableView
         super.viewDidLoad()
 
@@ -45,10 +47,9 @@ class TACommuteTableViewController: TATableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        // Find the right notebook for this indexpath
+
         let commute = fetchedResultsController!.object(at: indexPath) as! TACommuteSegment
         
-        // Create the cell
         let cell = tableView.dequeueReusableCell(withIdentifier: "TACommuteTableViewCell", for: indexPath) as! TACommuteTableViewCell
 
         // Get label values
@@ -63,7 +64,6 @@ class TACommuteTableViewController: TATableViewController {
         
         return cell
     }
-    
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let commute = fetchedResultsController!.object(at: indexPath) as! TACommuteSegment

@@ -2,6 +2,8 @@
 //  TAActivityTableViewController.swift
 //  Time Analytics
 //
+//  Displays all Time Analytics Activity data (TAActivitySegment managed objects) and allows user to tap into a detail view for each one.
+//
 //  Created by Chris Leung on 5/23/17.
 //  Copyright © 2017 Chris Leung. All rights reserved.
 //
@@ -18,7 +20,7 @@ class TAActivityTableViewController: TATableViewController {
     
     // MARK: Lifecycle
     override func viewDidLoad() {
-        // First set tableview for superclass before calling super method
+        // Set tableview for superclass before calling super method
         tableView = activityTableView
         super.viewDidLoad()
         
@@ -46,10 +48,9 @@ class TAActivityTableViewController: TATableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        // Find the right notebook for this indexpath
+
         let activity = fetchedResultsController!.object(at: indexPath) as! TAActivitySegment
         
-        // Create the cell
         let cell = tableView.dequeueReusableCell(withIdentifier: "TAActivityTableViewCell", for: indexPath) as! TAActivityTableViewCell
         
         // Get label values
