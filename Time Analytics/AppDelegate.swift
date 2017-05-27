@@ -95,7 +95,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         TAModel.sharedInstance().save()
 
         // Notify anyone who's listening that we're completely done with updating our data
-        NotificationCenter.default.post(name: Notification.Name("didCompleteUpdate"), object: nil)
+        TAModel.sharedInstance().notifyDidCompleteUpdate()
     }
 }
 
