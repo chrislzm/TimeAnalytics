@@ -2,7 +2,7 @@
 //  TAHealthKitAccess.swift
 //  Time Analytics
 //
-//
+//  Attempts to gain access authorization to user's HealthKit Health Store. Decides where to segue depending on the result. (Either into the app, or onto processing HealthKit data.)
 //
 //  Created by Chris Leung on 5/22/17.
 //  Copyright © 2017 Chris Leung. All rights reserved.
