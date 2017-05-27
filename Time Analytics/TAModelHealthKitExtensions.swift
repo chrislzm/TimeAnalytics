@@ -2,18 +2,54 @@
 //  TAModelHealthKitExtensions.swift
 //  Time Analytics
 //
+//  Extensions to the Time Analytics Model (TAModel) class for supporting Apple HealthKit data import
+//
 //  Created by Chris Leung on 5/23/17.
 //  Copyright © 2017 Chris Leung. All rights reserved.
 //
 
+import CoreData
 import HealthKit
 import UIKit
 
 extension TAModel {
+
+    // MARK: Constants
     
     struct Constants {
-        static let HealthKitDataChunks = 4
+        static let HealthKitDataChunks = 4  // We process HealthKit data in 4 stages
     }
+
+    // MARK: Time Analytics Data Creation Methods
+    
+    // Creates a "TAActivitySegment" managed object -- the Time Analytics representation of a HealthKit activity
+    
+    func createNewTAActivitySegment(_ startTime:Date,_ endTime:Date,_ type:String, _ name:String,_ movesFirstTime:Date, _ context:NSManagedObjectContext) {
+        
+        // Delete existing object if one exists, so we can update/don't have duplicates
+        if(containsObjectWhere("TAActivitySegment","startTime",equals: startTime,context)) {
+            deleteObjectWhere("TAActivitySegment","startTime",equals: startTime,context)
+        }
+        let taActivitySegmentEntity = NSEntityDescription.entity(forEntityName: "TAActivitySegment", in: context)!
+        let taActivitySegment = NSManagedObject(entity: taActivitySegmentEntity, insertInto: context)
+        taActivitySegment.setValue(startTime, forKey:"startTime")
+        taActivitySegment.setValue(endTime, forKey: "endTime")
+        taActivitySegment.setValue(type, forKey:"type")
+        taActivitySegment.setValue(name, forKey:"name")
+        
+        // If this activity occurs during an existing Place Segment
+        if startTime >= movesFirstTime, let place = TAModel.sharedInstance().getTAPlaceThatContains(startTime,endTime, context) {
+            // Save this place information into the activity data (since this activity occurs at this place)
+            taActivitySegment.setValue(place.startTime,forKey:"placeStartTime")
+            taActivitySegment.setValue(place.endTime,forKey:"placeEndTime")
+            taActivitySegment.setValue(place.lat,forKey:"placeLat")
+            taActivitySegment.setValue(place.lon,forKey:"placeLon")
+            taActivitySegment.setValue(place.name,forKey:"placeName")
+        }
+        save(context)
+    }
+    
+    // Manages the import of HealthKit data to Time Analytics: Reads HealthKit data and creates TAActivity objects for them
     
     func updateHealthKitData() {
         let stack = getCoreDataStack()
@@ -22,49 +58,49 @@ extension TAModel {
         dateFormatter.dateFormat = "yyyyMMdd"
         let firstMovesDataDate = dateFormatter.date(from: TANetClient.sharedInstance().movesUserFirstDate!)! as Date
         
-        // Search for activities beginning after the end of the last one on record
+        // The date from which we should begin importing
         var fromDate:Date? = nil
         
+        // If we have imported data before, then use the startTime of the newest activity as our fromDate
         if let latestActivity = getLastTAActivityBefore(Date() as NSDate,stack.context) {
             fromDate = latestActivity.endTime! as Date
         }
         
-        // Import Sleep Data
+        // Retrieve Sleep Data
         let sleepType = HKObjectType.categoryType(forIdentifier: .sleepAnalysis)!
         retrieveHealthStoreData(sleepType,fromDate) { (query,result,error) in
             guard error == nil else {
                 return
             }
+            // Generate TAActivitySegment objects for the data
             stack.performBackgroundBatchOperation() { (context) in
-                NotificationCenter.default.post(name: Notification.Name("didProcessDataChunk"), object: nil)
+                self.notifyDidProcessDataChunk()
                 for item in result! {
                     let sample = item as! HKCategorySample
                     if sample.value == HKCategoryValueSleepAnalysis.inBed.rawValue {
-                        // Create the TAActivity object
-                        TAModel.sharedInstance().createNewTAActivityObject(sample.startDate, sample.endDate, "Sleep", "In Bed",firstMovesDataDate, context)
+                        TAModel.sharedInstance().createNewTAActivitySegment(sample.startDate, sample.endDate, "Sleep", "In Bed",firstMovesDataDate, context)
                     }
                 }
                 stack.save()
-                NotificationCenter.default.post(name: Notification.Name("didProcessDataChunk"), object: nil)
+                self.notifyDidProcessDataChunk()
             }
         }
         
-        // Import Workout Data
+        // Retrieve Workout Data
         let workoutType = HKWorkoutType.workoutType()
         retrieveHealthStoreData(workoutType,fromDate) { (query,result,error) in
             guard error == nil else {
                 return
             }
             stack.performBackgroundBatchOperation() { (context) in
-                NotificationCenter.default.post(name: Notification.Name("didProcessDataChunk"), object: nil)
+                self.notifyDidProcessDataChunk()
                 for item in result! {
                     let workout = item as! HKWorkout
                     let workoutType = self.getHealthKitWorkoutTypeString(workout.workoutActivityType.rawValue)
-                    // Create the TAActivity object
-                    TAModel.sharedInstance().createNewTAActivityObject(item.startDate, item.endDate, "Workout", workoutType, firstMovesDataDate, context)
+                    TAModel.sharedInstance().createNewTAActivitySegment(item.startDate, item.endDate, "Workout", workoutType, firstMovesDataDate, context)
                 }
                 stack.save()
-                NotificationCenter.default.post(name: Notification.Name("didProcessDataChunk"), object: nil)
+                self.notifyDidProcessDataChunk()
             }
         }
     }
@@ -74,9 +110,10 @@ extension TAModel {
         return delegate.healthStore
     }
     
+    // General purpose function for retrieving data from the HealthKit "Health Store"
+    
     func retrieveHealthStoreData(_ type:HKSampleType,_ fromDate:Date?, completionHandler: @escaping (HKSampleQuery, [HKSample]?, Error?) -> Void) {
         let healthStore = getHealthStore()
-        // Use a sortDescriptor to get the recent data first
         var predicate:NSPredicate! = nil
         if let fromDate = fromDate {
             predicate = HKQuery.predicateForSamples(withStart: fromDate, end: Date(), options: [])
@@ -85,6 +122,8 @@ extension TAModel {
         let query = HKSampleQuery(sampleType: type, predicate: predicate, limit: HKObjectQueryNoLimit, sortDescriptors: [sortDescriptor], resultsHandler: completionHandler)
         healthStore.execute(query)
     }
+    
+    // Translate HealthKit enum values for workout types into strings
     
     func getHealthKitWorkoutTypeString(_ activityType:UInt) -> String {
         switch activityType {
