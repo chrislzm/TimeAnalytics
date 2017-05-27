@@ -63,7 +63,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print("didProcessData")
         chunksUpdated += 1
         if totalUpdateChunks == chunksUpdated {
-            TAModel.sharedInstance().generateTADataFromMovesData(nil)
+            TAModel.sharedInstance().generateTADataFromMovesData()
         }
     }
     
