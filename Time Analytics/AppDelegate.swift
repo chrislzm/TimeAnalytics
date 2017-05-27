@@ -2,6 +2,12 @@
 //  AppDelegate.swift
 //  Time Analytics
 //
+//  Has two important responsibilities:
+//
+//    1. Checks whether the Moves app gave us an authorization code. This is part of the Moves login auth flow.
+//
+//    2. Manages data download and processing.
+//
 //  Created by Chris Leung on 5/14/17.
 //  Copyright © 2017 Chris Leung. All rights reserved.
 //
@@ -41,9 +47,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Restore moves session data
         TAModel.sharedInstance().loadMovesSessionData()
+        
+        // Start regular autoupdates in the background
         TAModel.sharedInstance().autoUpdateMovesData(TANetClient.MovesApi.Constants.AutoUpdateMinutes)
         
-        // Listen for data updates, so we can coordinate data download completion with processing
+        // Listen for data updates, so we can coordinate data download completion and data processing
         NotificationCenter.default.addObserver(self, selector: #selector(AppDelegate.willDownloadData(_:)), name: Notification.Name("willDownloadData"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(AppDelegate.didProcessData(_:)), name: Notification.Name("didProcessDataChunk"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(AppDelegate.willCompleteUpdate(_:)), name: Notification.Name("willCompleteUpdate"), object: nil)
@@ -51,36 +59,43 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 
-    // MARK: Data [auto]update methods
+    // MARK: Data update methods
+    
+    // Receives and stores the number of data chunks we need to download
     
     func willDownloadData(_ notification:Notification) {
-        print("willDownloadData")
         chunksUpdated = 0
         totalUpdateChunks = notification.object as! Int
     }
     
+    // Increments number of data chunks successfully downloaded from Moves and parsed
+    
     func didProcessData(_ notification:Notification) {
-        print("didProcessData")
         chunksUpdated += 1
+        
+        // When all data chunks are complete, we launch Time Analytics data generation
         if totalUpdateChunks == chunksUpdated {
             TAModel.sharedInstance().generateTADataFromMovesData()
         }
     }
+
+    // The model notifies us it is finished processing Moves data.
     
     func willCompleteUpdate(_ notification:Notification) {
-        print("willCompleteUpdate")
-        // Update HealthKit if we are logged in
+        
+        // Now import HealthKit data, if we are logged in. If the user is logging in for the first time, we do this instead in the login flow.
         if TAModel.sharedInstance().isLoggedIn() {
             TAModel.sharedInstance().updateHealthKitData()
         }
-        
-        TAModel.sharedInstance().updateMovesLastChecked()
+
+        // Update our internal lastCheckedForNewData variable that stores when we last checked for new data
+        TAModel.sharedInstance().updateLastCheckedForNewData()
         
         // Save data to persistent store
         TAModel.sharedInstance().save()
 
+        // Notify anyone who's listening that we're completely done with updating our data
         NotificationCenter.default.post(name: Notification.Name("didCompleteUpdate"), object: nil)
-        print("didCompleteUpdate")
     }
 }
 
