@@ -68,7 +68,7 @@ class TASettingsViewController:TADataUpdateViewController {
     
     // MARK: View Update Methods
     func setLastUpdatedText() {
-        let lastChecked = TANetClient.sharedInstance().movesLastChecked!
+        let lastChecked = TANetClient.sharedInstance().lastCheckedForNewData!
         
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .full
