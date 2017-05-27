@@ -105,9 +105,25 @@ extension TAModel {
         }
     }
  
+    // MARK: HealthKit Store Methods
+    
     func getHealthStore() -> HKHealthStore {
         let delegate =  UIApplication.shared.delegate as! AppDelegate
         return delegate.healthStore
+    }
+    
+    // Used to get authorization to the user's Health Store
+    
+    func authorizeHealthKit(completion: ((_ success: Bool, _ error: Error?) -> Void)!) {
+        let healthKitStore = getHealthStore()
+        // State the health data type(s) we want to read from HealthKit.
+        let readableTypes: Set<HKSampleType> = [HKWorkoutType.workoutType(), HKObjectType.categoryType(forIdentifier: .sleepAnalysis)!]
+        
+        healthKitStore.requestAuthorization(toShare: nil, read: readableTypes) { (success, error) -> Void in
+            if( completion != nil ) {
+                completion(success,error)
+            }
+        }
     }
     
     // General purpose function for retrieving data from the HealthKit "Health Store"
