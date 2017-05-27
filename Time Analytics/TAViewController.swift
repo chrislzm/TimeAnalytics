@@ -2,6 +2,8 @@
 //  TAControllerExtensions.swift
 //  Time Analytics
 //
+//  Implements core methods used in all Time Analytics views controllers.
+//
 //  Created by Chris Leung on 5/22/17.
 //  Copyright © 2017 Chris Leung. All rights reserved.
 //
@@ -11,7 +13,7 @@ import UIKit
 
 class TAViewController: UIViewController {
     
-    // MARK: Managed Object Description Strings
+    // MARK: Generate Description Strings for Managed Objects
 
     func generatePlaceStringDescriptions(_ place:TAPlaceSegment,_ currentYear:String?) -> (String,String,String) {
         let startTime = place.startTime! as Date
@@ -140,6 +142,7 @@ class TAViewController: UIViewController {
         return dateString
     }
     
+    // Removes the year component of a date string if it's the same as the current year
     func removeYearIfSame(_ dateString:String,_ year:String,_ offset:Int) -> String {
         var dateDigits = dateString.characters
         let yearDigit2 = dateDigits.popLast()!
@@ -188,7 +191,7 @@ class TAViewController: UIViewController {
         }
     }
     
-    // MARK - Data and App Methods
+    // MARK - Data Methods
     
     // Returns the core data stack
     func getCoreDataStack() -> CoreDataStack {
@@ -208,7 +211,7 @@ class TAViewController: UIViewController {
     
     // MARK - View Methods
     
-    // Creates sets up overlay attributes, hides it, and adds it to the view hierarchy
+    // Creates sets up overlay attributes, hides it, and adds it to the view hierarchy. Currently only used for Progress Views (TAProgressView)
     func setupOverlayView(_ view:UIView, _ parent:UIView) {
         
         if view is TAProgressView {
@@ -242,6 +245,8 @@ class TAViewController: UIViewController {
             }
         }
     }
+    
+    // MARK: Segue Methods
     
     func showPlaceDetailViewController(_ place:TAPlaceSegment) {
 
