@@ -17,6 +17,7 @@ public class TACommuteSegment: NSManagedObject {
     // to sort by date, but also display the day as the section title.
     //   - Constructs a string of format "YYYYMMDD", where YYYY is the year,
     //     MM is the month, and DD is the day (all integers).
+    // Credit: https://stackoverflow.com/a/42080729/7602403
     
     public var daySectionIdentifier: String? {
         let currentCalendar = Calendar.current
