@@ -5,7 +5,7 @@
 //  Heavily modified version of CoreDataViewControler originally created by Fernando Rodríguez Romero on 2/22/16
 //  Implements a tableView linked with a Core Data fetched results controller.
 //
-//  Never used directly. Has three subclasses: TAPlaceTableViewController, TACommuteTableViewController, TAActivityTableViewController
+//  Superclass. Never used directly. Has three subclasses: TAPlaceTableViewController, TACommuteTableViewController, TAActivityTableViewController
 //
 //  Copyright © 2017 Chris Leung. All rights reserved.
 //

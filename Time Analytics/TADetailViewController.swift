@@ -2,6 +2,10 @@
 //  TADetailViewController.swift
 //  Time Analytics
 //
+//  Implements core methods used in all Time Analytics detail views controllers.
+//
+//  Superclass. Never used directly. Has three subclasses: TAPlaceDetailViewController, TACommuteDetailViewController, TAActivityDetailViewController
+//
 //  Created by Chris Leung on 5/22/17.
 //  Copyright © 2017 Chris Leung. All rights reserved.
 //
@@ -13,21 +17,21 @@ import MapKit
 
 class TADetailViewController: TAViewController, UITableViewDataSource {
     
-    var currentYear:String?
+    // MARK Properties
     
-    let DefaultMapViewRegionSize = CLLocationDistance(1000)
+    var currentYear:String? // Stores current year to accelerate string generation and comparison
+    let DefaultMapViewRegionSize = CLLocationDistance(1000) // Default length and width of map region = 1KM
     var mapViewRegionSize:CLLocationDistance!
     var mapViewAnnotations = [MKAnnotation]()
     var mapViewCenter:CLLocationCoordinate2D!
-    
     var lineChartXVals = [Double]()
     var lineChartYVals = [Double]()
     
     // MARK: Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Set current year to accelerate string generation
+
         let formatter = DateFormatter()
         formatter.dateFormat = "yy"
         currentYear = formatter.string(from: Date())
@@ -35,12 +39,10 @@ class TADetailViewController: TAViewController, UITableViewDataSource {
     
     // MARK: Table Data Source Delegate Methods
     
-    // Must be implemented by subclass
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 0
     }
 
-    // Must be implemented by subclass
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         return UITableViewCell()
     }
@@ -53,10 +55,11 @@ class TADetailViewController: TAViewController, UITableViewDataSource {
         return nil
     }
     
-    // MARK: Data Methods
+    // MARK: Core Data Helper Methods
     
-    // TODO: These should probably be moved to the model
     func getTAPlaceSegment(_ lat:Double,_ lon:Double,_ time:Date,_ startTime:Bool) -> TAPlaceSegment {
+        let stack = getCoreDataStack()
+        
         let queryTimeKey:String
         if startTime {
             queryTimeKey = "startTime"
@@ -64,19 +67,13 @@ class TADetailViewController: TAViewController, UITableViewDataSource {
             queryTimeKey = "endTime"
         }
         
-        let place = getEntityObjectsWithQuery("TAPlaceSegment", "lat == %@ AND lon == %@ AND \(queryTimeKey) == %@", [lat,lon,time], nil, nil) as! [TAPlaceSegment]
-        return place[0]
+        let places = TAModel.sharedInstance().getCoreDataManagedObject("TAPlaceSegment", nil, nil, "lat == %@ AND lon == %@ AND \(queryTimeKey) == %@", [lat,lon,time], 1, stack.context) as! [TAPlaceSegment]
+        return places.first!
     }
     
     func getEntityObjectsWithQuery(_ entityName:String, _ query:String,_ argumentArray:[Any], _ sortKey:String?, _ isAscending:Bool?) -> [AnyObject] {
         let stack = getCoreDataStack()
-        let fr = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
-        let pred = NSPredicate(format: query, argumentArray: argumentArray)
-        fr.predicate = pred
-        if let sort = sortKey, let ascending = isAscending {
-            fr.sortDescriptors = [NSSortDescriptor(key: sort, ascending: ascending)]
-        }
-        return try! stack.context.fetch(fr)
+        return TAModel.sharedInstance().getCoreDataManagedObject(entityName, sortKey, isAscending, query, argumentArray, nil, stack.context) as [AnyObject]
     }
 
     // MARK: View Methods
@@ -86,12 +83,12 @@ class TADetailViewController: TAViewController, UITableViewDataSource {
         mapView.isScrollEnabled = false
     }
     
-    
     func setupLineChartView(_ chartView:LineChartView, _ xValues:[Double],_ yValues:[Double]) {
         
-        // Prevent there from being a chart with a dot on it
+        // Prevent there from being a chart with a single dot on it
         if xValues.count > 1 {
-            // Setup appearance: Remove all labels, gridlines, annotations, etc...
+            
+            // Setup appearance
             chartView.chartDescription!.text = ""
             chartView.maxVisibleCount = 0
             let legend = chartView.legend
@@ -182,7 +179,7 @@ class TADetailViewController: TAViewController, UITableViewDataSource {
         return (slope_m,y_intercept)
     }
 
-    // MARK: Segue methods
+    // MARK: Segue methods for MapView and LineChartView
     
     func showDetailMapViewController() {
         if mapViewAnnotations.count > 0 {
