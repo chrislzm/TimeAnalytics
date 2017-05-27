@@ -6,8 +6,8 @@
 //    -Abstracts the Network Client (TANetClient) from the controllers
 //    -Manages Moves data download and processing
 //    -Manages Time Analytics data generation and TAPlace and Commute Segment entities
+//    -Manages all notifications for updates and errors on data download/processing
 //    -Provides general use core data methods
-//    -Send updates on data processing via notifications
 //
 //  Created by Chris Leung on 5/15/17.
 //  Copyright © 2017 Chris Leung. All rights reserved.
@@ -636,38 +636,51 @@ class TAModel {
         return UIApplication.shared.delegate as! AppDelegate
     }
     
-    func notifyWillCompleteUpdate() {
-        DispatchQueue.main.async {
-            NotificationCenter.default.post(name: Notification.Name("willCompleteUpdate"), object: nil)
-        }
-    }
-
-    func notifyDataParsingError() {
-        DispatchQueue.main.async {
-            NotificationCenter.default.post(name: Notification.Name("dataParsingError"), object: nil)
-        }
-    }
-    
-    func notifyDownloadDataError() {
-        DispatchQueue.main.async {
-            NotificationCenter.default.post(name: Notification.Name("downloadDataError"), object: nil)
-        }
-    }
-    
+    // Called by TAModel when downloading Moves data has commenced. Object will contain the number of requests that need to complete.
     func notifyWillDownloadData(dataChunks:Int) {
         DispatchQueue.main.async {
             NotificationCenter.default.post(name: Notification.Name("willDownloadData"), object: dataChunks)
         }
     }
     
+    // Called by TAModel whenever a "chunk" has completed. For data downloads, this will be requests. For generating data from moves data, this will be the approximate number of records. The number is approximate, since Moves data is messy, and much of it gets consolidated.
     func notifyDidProcessDataChunk() {
         DispatchQueue.main.async {
             NotificationCenter.default.post(name: Notification.Name("didProcessDataChunk"), object: nil)
         }
     }
     
+    // Called by TAModel when we have completed parsing all downloaded data, and will begin using it to generate TA data
     func notifyWillGenerateTAData(dataChunks:Int) {
         NotificationCenter.default.post(name: Notification.Name("willGenerateTAData"), object: dataChunks)
+    }
+    
+    // Called by TAModel when all Time Analytics data has finished generating from Moves data.
+    func notifyWillCompleteUpdate() {
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(name: Notification.Name("willCompleteUpdate"), object: nil)
+        }
+    }
+    
+    // Called by AppDelegate when *all* data has been saved and cleanup has been done.
+    func notifyDidCompleteUpdate() {
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(name: Notification.Name("didCompleteUpdate"), object: nil)
+        }
+    }
+    
+    // Called by TAModel when there was an error parsing JSON data from a 3rd party API
+    func notifyDataParsingError() {
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(name: Notification.Name("dataParsingError"), object: nil)
+        }
+    }
+    
+    // Called by TAModel when TANetClient has informed us there was a network error
+    func notifyDownloadDataError() {
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(name: Notification.Name("downloadDataError"), object: nil)
+        }
     }
 
     class func sharedInstance() -> TAModel {
