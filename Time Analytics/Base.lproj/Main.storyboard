@@ -2013,7 +2013,7 @@
                                         </prototypes>
                                         <connections>
                                             <outlet property="dataSource" destination="Un9-wR-MFr" id="9OA-fs-FbV"/>
-                                            <outletCollection property="gestureRecognizers" destination="cbX-eg-OBk" appends="YES" id="IPs-h1-uAz"/>
+                                            <outlet property="delegate" destination="Un9-wR-MFr" id="PK2-7c-w2K"/>
                                         </connections>
                                     </tableView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="  Time at Place After Arrival" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ikm-Kp-mx0" userLabel="TimeAtDestinationLabel">
@@ -2097,7 +2097,7 @@
                                         </prototypes>
                                         <connections>
                                             <outlet property="dataSource" destination="Un9-wR-MFr" id="jVC-y9-OuK"/>
-                                            <outletCollection property="gestureRecognizers" destination="7sh-bI-vL6" appends="YES" id="ndm-Ca-R7W"/>
+                                            <outlet property="delegate" destination="Un9-wR-MFr" id="PMx-tt-Sym"/>
                                         </connections>
                                     </tableView>
                                 </subviews>
@@ -2165,16 +2165,6 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nfq-CP-biL" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer id="cbX-eg-OBk" userLabel="Tap Gesture Recognizer for TimeAtDepartureTableView">
-                    <connections>
-                        <action selector="didTapOnDepartureTable:" destination="Un9-wR-MFr" id="r2Z-jg-YFl"/>
-                    </connections>
-                </tapGestureRecognizer>
-                <tapGestureRecognizer id="7sh-bI-vL6" userLabel="Tap Gesture Recognizer for TimeAtArrival">
-                    <connections>
-                        <action selector="didTapOnArrivalTable:" destination="Un9-wR-MFr" id="dEl-Fd-0wm"/>
-                    </connections>
-                </tapGestureRecognizer>
                 <tapGestureRecognizer id="QGK-2a-xub" userLabel="Tap Gesture Recognizer for MapView">
                     <connections>
                         <action selector="didTapOnMapView:" destination="Un9-wR-MFr" id="IaK-Br-3Pa"/>
