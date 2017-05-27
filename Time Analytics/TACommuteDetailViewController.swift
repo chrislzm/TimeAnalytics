@@ -11,18 +11,18 @@ import CoreLocation
 import MapKit
 import UIKit
 
-class TACommuteDetailViewController: TADetailViewController {
+class TACommuteDetailViewController: TADetailViewController, UITableViewDelegate {
     
     // MARK: Properties
     
     var startName:String?
     var startLat:Double!
     var startLon:Double!
-    var startTime:Date!
+    var startTime:NSDate!
     var endName:String?
     var endLat:Double!
     var endLon:Double!
-    var endTime:Date!
+    var endTime:NSDate!
     
     var commuteHistoryTableData = [TACommuteSegment]()
     var timeBeforeDepartingTableData = [TAPlaceSegment]()
@@ -30,6 +30,8 @@ class TACommuteDetailViewController: TADetailViewController {
     
     var didTapOnDepartureTable:Bool = false
     var didTapOnArrivalTable:Bool = false
+    
+    var selectedIndexPath:IndexPath!
     
     // MARK: Outlets
     
@@ -111,7 +113,6 @@ class TACommuteDetailViewController: TADetailViewController {
         
         // Styles
         commuteHistoryTableView.separatorStyle = .none
-        commuteHistoryTableView.allowsSelection = false
         timeBeforeDepartingTableView.separatorStyle = .none
         timeBeforeDepartingTableView.allowsSelection = false
         timeAfterArrivingTableView.separatorStyle = .none
@@ -119,6 +120,8 @@ class TACommuteDetailViewController: TADetailViewController {
         
         // Data Source
         commuteHistoryTableData = getEntityObjectsWithQuery("TACommuteSegment", "startLat == %@ AND startLon == %@ AND endLat == %@ AND endLon == %@", [startLat,startLon,endLat,endLon], "startTime", false) as! [TACommuteSegment]
+        
+        setSelectedIndexPathForCommute()
         
         timeBeforeDepartingTableData = getDeparturePlaceHistory(commuteHistoryTableData)
         timeAfterArrivingTableData = getDestinationPlaceHistory(commuteHistoryTableData)
@@ -132,6 +135,8 @@ class TACommuteDetailViewController: TADetailViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
+        commuteHistoryTableView.selectRow(at: selectedIndexPath, animated: true, scrollPosition: .middle)
         
         // Check if place names were updated, and update if necessary
         if didTapOnDepartureTable {
@@ -175,6 +180,15 @@ class TACommuteDetailViewController: TADetailViewController {
             commuteCell.timeLabel.text = timeInOutString
             commuteCell.lengthLabel.text = lengthString
             commuteCell.dateLabel.text = dateString
+
+            // Select (highlight) the cell contains the commute that this detail view was launched for
+            if commute.startTime == startTime, commute.endTime == endTime {
+                selectedIndexPath = indexPath
+                let backgroundView = UIView()
+                backgroundView.backgroundColor = UIColor.yellow
+                commuteCell.selectedBackgroundView = backgroundView
+            }
+
             cell = commuteCell
             
         } else if tableView == timeBeforeDepartingTableView {
@@ -210,7 +224,37 @@ class TACommuteDetailViewController: TADetailViewController {
         return cell
     }
 
+    // MARK: Delegate Methods
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if tableView == commuteHistoryTableView, indexPath != selectedIndexPath {
+            tableView.deselectRow(at: indexPath, animated: false)
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, willDeselectRowAt indexPath: IndexPath) -> IndexPath? {
+        if tableView == commuteHistoryTableView {
+            return nil
+        } else {
+            return indexPath
+        }
+    }
+    
     // MARK: Data Methods
+    
+    func setSelectedIndexPathForCommute() {
+        
+        var dataIndex = 0
+        
+        for i in 0..<commuteHistoryTableData.count {
+            if commuteHistoryTableData[i].startTime == startTime, commuteHistoryTableData[i].endTime == endTime {
+                dataIndex = i
+                break
+            }
+        }
+        
+        selectedIndexPath = IndexPath(row: dataIndex, section: 0)
+    }
     
     func getDataForThisCommute() -> ([Double],[Double],Int,Double) {
         let commutes = getEntityObjectsWithQuery("TACommuteSegment", "startLat == %@ AND startLon == %@ AND endLat == %@ AND endLon == %@", [startLat,startLon,endLat,endLon], "startTime", true) as! [TACommuteSegment]
@@ -257,14 +301,14 @@ class TACommuteDetailViewController: TADetailViewController {
     
     func updatePlaceNames(_ isDeparturePlace:Bool) {
         if isDeparturePlace {
-            let startPlace = getTAPlaceSegment(startLat, startLon, startTime, false)
+            let startPlace = getTAPlaceSegment(startLat, startLon, startTime as Date, false)
             if startName != startPlace.name  {
                 startName = startPlace.name
                 setTitle()
                 setTimeBeforeDepartingTableHeaderLabel()
             }
         } else {
-            let endPlace = getTAPlaceSegment(endLat, endLon, endTime, true)
+            let endPlace = getTAPlaceSegment(endLat, endLon, endTime as Date, true)
             if endName != endPlace.name {
                 endName = endPlace.name
                 setTitle()

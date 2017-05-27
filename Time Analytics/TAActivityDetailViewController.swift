@@ -17,9 +17,13 @@ class TAActivityDetailViewController: TADetailViewController, UITableViewDelegat
     
     var type:String?
     var name:String?
+    var startTime:NSDate?
+    var endTime:NSDate?
     
     var activityHistoryTableData = [TAActivitySegment]()
     var placeHistoryTableData = [(name:String,lat:Double,lon:Double,startTime:Date,endTime:Date)]()
+    
+    var selectedIndexPath:IndexPath!
     
     // MARK: Outlets
     
@@ -58,6 +62,8 @@ class TAActivityDetailViewController: TADetailViewController, UITableViewDelegat
         // Setup Data Sources
         activityHistoryTableData = getEntityObjectsWithQuery("TAActivitySegment", "name == %@ AND type == %@", [name!,type!], "startTime", false) as! [TAActivitySegment]
         
+        setSelectedIndexPathForActivity()
+        
         placeHistoryTableData = getActivityPlaceHistory(activityHistoryTableData)
 
         // Get data for this place, to be used below
@@ -87,7 +93,6 @@ class TAActivityDetailViewController: TADetailViewController, UITableViewDelegat
         
         // Styles
         activityHistoryTableView.separatorStyle = .none
-        activityHistoryTableView.allowsSelection = false
         placeHistoryTableView.separatorStyle = .none
         
         // SETUP TABLE HEADER LABELS
@@ -98,6 +103,8 @@ class TAActivityDetailViewController: TADetailViewController, UITableViewDelegat
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
+        activityHistoryTableView.selectRow(at: selectedIndexPath, animated: true, scrollPosition: .middle)
         
         // Deselect row if we selected one that caused a segue
         if let selectedRowIndexPath = placeHistoryTableView.indexPathForSelectedRow {
@@ -147,6 +154,15 @@ class TAActivityDetailViewController: TADetailViewController, UITableViewDelegat
             activityCell.timeLabel.text = timeInOutString
             activityCell.lengthLabel.text = lengthString
             activityCell.dateLabel.text = dateString
+            
+            // Select (highlight) the cell contains the activity that this detail view was launched for
+            if activity.startTime == startTime, activity.endTime == endTime, activity.name == name {
+                selectedIndexPath = indexPath
+                let backgroundView = UIView()
+                backgroundView.backgroundColor = UIColor.yellow
+                activityCell.selectedBackgroundView = backgroundView
+            }
+            
             cell = activityCell
         } else if tableView == placeHistoryTableView {
             let place = placeHistoryTableData[indexPath.row]
@@ -168,7 +184,9 @@ class TAActivityDetailViewController: TADetailViewController, UITableViewDelegat
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
-        if tableView == placeHistoryTableView {
+        if tableView == activityHistoryTableView, indexPath != selectedIndexPath {
+            tableView.deselectRow(at: indexPath, animated: false)
+        } else if tableView == placeHistoryTableView {
             let placeData = placeHistoryTableData[indexPath.row]
             let stack = getCoreDataStack()
             let place = TAModel.sharedInstance().getTAPlace(placeData.startTime, placeData.lat, placeData.lon, stack.context)
@@ -176,7 +194,29 @@ class TAActivityDetailViewController: TADetailViewController, UITableViewDelegat
         }
     }
     
+    func tableView(_ tableView: UITableView, willDeselectRowAt indexPath: IndexPath) -> IndexPath? {
+        if tableView == activityHistoryTableView {
+            return nil
+        } else {
+            return indexPath
+        }
+    }
+    
     // MARK: Data Methods
+    
+    func setSelectedIndexPathForActivity() {
+        
+        var dataIndex = 0
+        
+        for i in 0..<activityHistoryTableData.count {
+            if activityHistoryTableData[i].name == name, activityHistoryTableData[i].startTime! == startTime, activityHistoryTableData[i].endTime ==  endTime {
+                dataIndex = i
+                break
+            }
+        }
+        
+        selectedIndexPath = IndexPath(row: dataIndex, section: 0)
+    }
     
     func getNumLastMonthActivities() -> Int {
         let oneMonthAgo = Date() - 2678400 // There are this many seconds in a month

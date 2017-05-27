@@ -19,6 +19,11 @@ class TAPlaceDetailViewController: TADetailViewController, UITableViewDelegate {
     var lat:Double!
     var lon:Double!
     var name:String?
+    var startTime:NSDate!
+    var endTime:NSDate!
+    
+    var selectedIndexPath:IndexPath!
+    
     var placeHistoryTableData:[TAPlaceSegment]!
     var commuteHistoryTableData:[TACommuteSegment]!
     var activityHistoryTableData:[TAActivitySegment]!    
@@ -127,13 +132,14 @@ class TAPlaceDetailViewController: TADetailViewController, UITableViewDelegate {
 
         // Styles
         placeTableView.separatorStyle = .none
-        placeTableView.allowsSelection = false
         commuteTableView.separatorStyle = .none
         activityTableView.separatorStyle = .none
 
         // Data Source
         placeHistoryTableData = getEntityObjectsWithQuery("TAPlaceSegment", "(lat == %@) AND (lon == %@)", [lat,lon], "startTime", false) as! [TAPlaceSegment]
 
+        setSelectedIndexPathForPlace()
+        
         commuteHistoryTableData = getEntityObjectsWithQuery("TACommuteSegment", "(startLat == %@ AND startLon == %@) OR (endLat == %@ AND endLon == %@)", [lat,lon,lat,lon], "startTime", false) as! [TACommuteSegment]
         
         activityHistoryTableData = getEntityObjectsWithQuery("TAActivitySegment", "placeLat == %@ AND placeLon == %@",[lat,lon], "startTime", false) as! [TAActivitySegment]
@@ -156,7 +162,9 @@ class TAPlaceDetailViewController: TADetailViewController, UITableViewDelegate {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
+        
+        placeTableView.selectRow(at: selectedIndexPath, animated: true, scrollPosition: .middle)
+        
         // Deselect row if we selected one that caused a segue
         if let selectedRowIndexPath = commuteTableView.indexPathForSelectedRow {
             commuteTableView.deselectRow(at: selectedRowIndexPath, animated: true)
@@ -196,8 +204,16 @@ class TAPlaceDetailViewController: TADetailViewController, UITableViewDelegate {
             placeCell.timeInOutLabel.text = timeInOutString
             placeCell.lengthLabel.text = lengthString
             placeCell.dateLabel.text = dateString
-            cell = placeCell
+
+            // Select (highlight) the cell contains the place that this detail view was launched for
+            if place.startTime == startTime, place.endTime == endTime {
+                selectedIndexPath = indexPath
+                let backgroundView = UIView()
+                backgroundView.backgroundColor = UIColor.yellow
+                placeCell.selectedBackgroundView = backgroundView
+            }
             
+            cell = placeCell
         } else if tableView == commuteTableView {
             let commute = commuteHistoryTableData![indexPath.row]
             
@@ -235,7 +251,9 @@ class TAPlaceDetailViewController: TADetailViewController, UITableViewDelegate {
     // MARK: Table Delegate methods
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if tableView == commuteTableView {
+        if tableView == placeTableView, indexPath != selectedIndexPath {
+            tableView.deselectRow(at: indexPath, animated: false)
+        } else if tableView == commuteTableView {
             let commute = commuteHistoryTableData[indexPath.row]
             showCommuteDetailViewController(commute)
         } else if tableView == activityTableView {
@@ -244,7 +262,29 @@ class TAPlaceDetailViewController: TADetailViewController, UITableViewDelegate {
         }
     }
     
+    func tableView(_ tableView: UITableView, willDeselectRowAt indexPath: IndexPath) -> IndexPath? {
+        if tableView == placeTableView {
+            return nil
+        } else {
+            return indexPath
+        }
+    }
+    
     // MARK: Data Methods
+    
+    func setSelectedIndexPathForPlace() {
+        
+        var dataIndex = 0
+        
+        for i in 0..<placeHistoryTableData.count {
+            if placeHistoryTableData[i].lat == lat, placeHistoryTableData[i].lon == lon, placeHistoryTableData[i].startTime == startTime {
+                dataIndex = i
+                break
+            }
+        }
+        
+        selectedIndexPath = IndexPath(row: dataIndex, section: 0)
+    }
     
     func getVisitDataForThisPlace() -> ([Double],[Double],Int,Double) {
         let places = getEntityObjectsWithQuery("TAPlaceSegment", "(lat == %@) AND (lon == %@)", [lat,lon], "startTime", true) as! [TAPlaceSegment]
