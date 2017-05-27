@@ -2,6 +2,8 @@
 //  TADetailLineChartViewController.swift
 //  Time Analytics
 //
+//  Displays a full screen line chart with data. Used by TADetailViewControllers.
+//
 //  Created by Chris Leung on 5/24/17.
 //  Copyright © 2017 Chris Leung. All rights reserved.
 //
@@ -41,7 +43,7 @@ class TADetailLineChartViewController:TADetailViewController, IAxisValueFormatte
             }
         }
         
-        // Setup appearance: Remove all labels, gridlines, annotations, etc...
+        // Setup appearance -- Here we do want to display some labels, gridlines, etc.
         lineChartView.chartDescription!.text = "\(dataName!) (In \(scaleName[scale])) Over Time"
 
         let legend = lineChartView.legend
@@ -105,11 +107,11 @@ class TADetailLineChartViewController:TADetailViewController, IAxisValueFormatte
         // Add lines to chart
         let lineChartData = LineChartData(dataSets: lineCharDataSets)
         lineChartView.data = lineChartData
-
-
     }
     
-    // IAxisValueFormatter Delegate Method
+    // MARK: Delegate Methods
+    
+    // IAxisValueFormatter Delegate Method -- For displaying readable date strings on the chart
     func stringForValue(_ value: Double, axis: AxisBase?) -> String {
 
         let formatter = DateFormatter()

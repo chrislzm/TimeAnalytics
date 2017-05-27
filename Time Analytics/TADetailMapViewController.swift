@@ -2,6 +2,8 @@
 //  TADetailMapViewController.swift
 //  Time Analytics
 //
+//  Displays a full screen map with annotations. Used by TADetailViewControllers.
+//
 //  Created by Chris Leung on 5/24/17.
 //  Copyright © 2017 Chris Leung. All rights reserved.
 //
