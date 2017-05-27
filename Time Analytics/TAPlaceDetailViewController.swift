@@ -2,6 +2,14 @@
 //  TAPlaceDetailViewController.swift
 //  Time Analytics
 //
+//  Shows details about a TAPlaceSegment:
+//   - Summary statistics
+//   - Line chart with data points and trend line if there are at least 2 or 3 data points respectively (LineChartView)
+//   - Map location (MapView)
+//   - Visit history with place highlighted (TableView)
+//   - Commute history to/from this place (TableView)
+//   - Activity history at this place (TableView)
+//
 //  Created by Chris Leung on 5/17/17.
 //  Copyright © 2017 Chris Leung. All rights reserved.
 //
@@ -22,7 +30,7 @@ class TAPlaceDetailViewController: TADetailViewController, UITableViewDelegate {
     var startTime:NSDate!
     var endTime:NSDate!
     
-    var selectedIndexPath:IndexPath!
+    var selectedIndexPath:IndexPath! // Stores the index of the item whose detail view this belongs to
     
     var placeHistoryTableData:[TAPlaceSegment]!
     var commuteHistoryTableData:[TACommuteSegment]!
@@ -43,7 +51,7 @@ class TAPlaceDetailViewController: TADetailViewController, UITableViewDelegate {
     @IBOutlet weak var totalVisitsLabel: UILabel!
     @IBOutlet weak var chartView: LineChartView!
 
-    // MARK: Actions + Alerts
+    // MARK: Actions
 
     @IBAction func didTapOnMapView(_ sender: Any) {
         showDetailMapViewController()
@@ -53,7 +61,7 @@ class TAPlaceDetailViewController: TADetailViewController, UITableViewDelegate {
         showDetailLineChartViewController("Length of Visit to \(name!)")
     }
     
-    // Rename place methods
+    // MARK: Place Renaming Methods
     
     func editButtonPressed() {
         let editDialog = UIAlertController(title: "Edit Place Name", message: nil, preferredStyle: UIAlertControllerStyle.alert)
@@ -66,7 +74,9 @@ class TAPlaceDetailViewController: TADetailViewController, UITableViewDelegate {
             self.confirmRenamePlace(textField.text!)
         }))
         editDialog.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default, handler: nil))
-        self.present(editDialog, animated: true, completion: nil)
+        DispatchQueue.main.async {
+            self.present(editDialog, animated: true, completion: nil)
+        }
     }
     
     func confirmRenamePlace(_ newName:String) {
@@ -76,23 +86,29 @@ class TAPlaceDetailViewController: TADetailViewController, UITableViewDelegate {
             self.renamePlace(newName)
         }))
         confirmDialog.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default, handler: nil))
-        self.present(confirmDialog, animated: true, completion: nil)
+        DispatchQueue.main.async {
+            self.present(confirmDialog, animated: true, completion: nil)
+        }
     }
     
     func renamePlace(_ newName:String) {
         // Start activity indicator and display message that we are updating
         let updatingDialog = UIAlertController(title: "Updating", message: " \n", preferredStyle: UIAlertControllerStyle.alert)
         let spinner = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
-        spinner.startAnimating()
         spinner.center = CGPoint(x: 135.0, y: 65.5)
         spinner.color = UIColor.black
         updatingDialog.view.addSubview(spinner)
-        self.present(updatingDialog, animated: true) { () in
-            TAModel.sharedInstance().renamePlaceInAllTAData(self.lat, self.lon, newName)
-            self.name = newName
-            self.title = newName
-            self.updateMapViewAnnotationName()
-            updatingDialog.dismiss(animated: true, completion: nil)
+        DispatchQueue.main.async {
+            spinner.startAnimating()
+            self.present(updatingDialog, animated: true) { () in
+                DispatchQueue.main.async {
+                    TAModel.sharedInstance().renamePlaceInAllTAData(self.lat, self.lon, newName)
+                    self.name = newName
+                    self.title = newName
+                    self.updateMapViewAnnotationName()
+                    updatingDialog.dismiss(animated: true, completion: nil)
+                }
+            }
         }
     }
     
