@@ -2,7 +2,9 @@
 //  TADataUpdateController.swift
 //  Time Analytics
 //
-//  Responsible for managing the progress indicator views that appear in the UI and syncing them with background data updates.
+//  Responsible for managing multiple progress indicator views for the different steps in the data processing flow.
+//
+//  Never used directly. Has two subclasses: TADownloadViewController, TASettingsViewController
 //
 //  Created by Chris Leung on 5/25/17.
 //  Copyright © 2017 Chris Leung. All rights reserved.
@@ -12,9 +14,10 @@ import UIKit
 
 class TADataUpdateViewController:TAViewController {
     
-    var progressView:TAProgressView!
+    var progressView:TAProgressView! // Stores reference to the currently displayed progressView
     
-    // MARK: Methods for updating data
+    // MARK: LifeCycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -23,7 +26,11 @@ class TADataUpdateViewController:TAViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(TADataUpdateViewController.willGenerateTAData(_:)), name: Notification.Name("willGenerateTAData"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(TADataUpdateViewController.didCompleteUpdate(_:)), name: Notification.Name("didCompleteUpdate"), object: nil)
     }
+
+    // MARK: Notification Observers
     
+    // Display progressView for data download with the correct number of data chunks
+    // The progressView will dismiss itself when download complete since it knows when all data chunks have been received
     func willDownloadData(_ notification:Notification) {
         DispatchQueue.main.async {
             let dataChunks = notification.object as! Int
@@ -34,6 +41,7 @@ class TADataUpdateViewController:TAViewController {
         }
     }
     
+    // Display a new progressView for TA data generation
     func willGenerateTAData(_ notification:Notification) {
         DispatchQueue.main.async {
             let dataChunks = notification.object as! Int
@@ -48,6 +56,7 @@ class TADataUpdateViewController:TAViewController {
         }
     }
     
+    // Remove the TA data generation progressView since, since it doesn't know when data generation is complete
     func didCompleteUpdate(_ notification:Notification) {
         DispatchQueue.main.async {
             self.removeProgressView() { () in
