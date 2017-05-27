@@ -2,6 +2,11 @@
 //  TAProgressView.swift
 //  Time Analytics
 //
+//  A view that contains a progress view and title with % complete.
+//    -Increments its progress every time it observes a "didProcessDataChunk" notification
+//    -Dismisses itself once it reaches 100%
+//    -It can also be dismissed by calling the removeProgressView method in TAViewController
+//
 //  Created by Chris Leung on 5/20/17.
 //  Copyright © 2017 Chris Leung. All rights reserved.
 //
@@ -21,15 +26,15 @@ class TAProgressView: UIView {
         DispatchQueue.main.async {
             self.currentProgress += amountProgressed
             var percentComplete = self.currentProgress/self.totalProgress
-            percentComplete = percentComplete > 1 ? 1 : percentComplete
+            percentComplete = percentComplete > 1 ? 1 : percentComplete // Don't go over 100%
             self.progressView.setProgress(percentComplete, animated: true)
             self.titleLabel.text = "\(self.defaultText) (\(Int(percentComplete*100))%)"
         }
     }
     
     func didCompleteDataChunk(_ notification:Notification) {
-        
         addProgress(1)
+        // If we're at 100%, dismiss ourself
         if currentProgress == totalProgress {
             DispatchQueue.main.async {
                 self.fadeOut() { (finished) in
