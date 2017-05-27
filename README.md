@@ -48,12 +48,6 @@ Developer Notes
 ---------------
 * Under active development
 * Data refresh uses Moves API "lastUpdate" (optional) value as the "updatedSince" parameter in requests for new data in order to optimize the request and only retrieve new data that's been updated by Moves. So far I have not seen any Moves Storyline data that does not contain this value. If this value disappears in the future, the refresh process will take longer than needed and we should use a different value for "updatedSince".
-* Several notifications are worth mentioning when data updates are taking place. There are four classes listening for these updates: AppDelegate, TADataUpdateViewController, TADownloadViewController, and TASettingsViewController
-  * _willDownloadData_: Sent when downloading Moves data has commenced. Object will contain the number of requests that need to complete.
-  * _didProcessDataChunk_: Sent whenever a "chunk" has completed. For data downloads, this will be requests. For generating data from moves data, this will be the approximate number of records. The number is approximate, since Moves data is messy, and much of it gets consolidated.
-  * _willGenerateTAData_: Sent when all Moves data has been saved from the network.
-  * _willCompleteUpdate_: Sent when all TA data has been generated from Moves data.
-  * _didCompleteUpdate_: Sent when all data has been saved, cleanup has been done.
 
 Issues
 ------
