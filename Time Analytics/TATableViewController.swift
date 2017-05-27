@@ -19,6 +19,12 @@ class TATableViewController: TAViewController, UITableViewDelegate, UITableViewD
     
     // MARK: Properties
 
+    let tableSectionHeaderHeight = CGFloat(30)
+    let tableSectionFontSize = CGFloat(13)
+    let tableSectionFontWeight = UIFontWeightBold
+    let tableSectionFontColor = UIColor.black
+    let tableSectionBackgroundColor = UIColor.groupTableViewBackground
+    
     var tableView:UITableView! = nil
     var activityIndicatorView:UIActivityIndicatorView! // Shown in navbar when updating data in the background
     var fetchedResultsController : NSFetchedResultsController<NSFetchRequestResult>? {
@@ -160,6 +166,17 @@ extension TATableViewController {
 
     func sectionIndexTitles(for tableView: UITableView) -> [String]? {
         return nil
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        view.tintColor = tableSectionBackgroundColor
+        let header = view as! UITableViewHeaderFooterView
+        header.textLabel?.textColor = tableSectionFontColor
+        header.textLabel?.font = UIFont.systemFont(ofSize: tableSectionFontSize, weight: tableSectionFontWeight)
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return tableSectionHeaderHeight
     }
 }
 
