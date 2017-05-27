@@ -40,9 +40,15 @@ class TACommuteTableViewController: TATableViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        // Deselect row if we selected one that caused a segue
-        if let selectedRowIndexPath = commuteTableView.indexPathForSelectedRow {
-            commuteTableView.deselectRow(at: selectedRowIndexPath, animated: true)
+        // If no data, let the user know
+        if fetchedResultsController?.sections?.count == 0 {
+            createTableEmptyMessageIn(tableView, "No commutes recorded yet.\n\nIf Moves is tracking information\nit will be displayed here soon.")
+        } else {
+            // Deselect row if we selected one that caused a segue
+            removeTableEmptyMessageFrom(tableView)
+            if let selectedRowIndexPath = commuteTableView.indexPathForSelectedRow {
+                commuteTableView.deselectRow(at: selectedRowIndexPath, animated: true)
+            }
         }
     }
     

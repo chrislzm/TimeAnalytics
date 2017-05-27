@@ -41,9 +41,15 @@ class TAActivityTableViewController: TATableViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        // Deselect row if we selected one that caused a segue
-        if let selectedRowIndexPath = activityTableView.indexPathForSelectedRow {
-            activityTableView.deselectRow(at: selectedRowIndexPath, animated: true)
+        // If no data, let the user know
+        if fetchedResultsController?.sections?.count == 0 {
+            createTableEmptyMessageIn(tableView, "No activities recorded yet.\n\nPlease ensure that your sleep and\nworkout activities are being written\nto Apple Health data and that\nTime Analytics is authorized to\nread your Health data.")
+        } else {
+            removeTableEmptyMessageFrom(tableView)
+            // Deselect row if we selected one that caused a segue
+            if let selectedRowIndexPath = activityTableView.indexPathForSelectedRow {
+                activityTableView.deselectRow(at: selectedRowIndexPath, animated: true)
+            }
         }
     }
     

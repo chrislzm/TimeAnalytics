@@ -42,9 +42,15 @@ class TAPlaceTableViewController: TATableViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        // Deselect row if we selected one that caused a segue
-        if let selectedRowIndexPath = placeTableView.indexPathForSelectedRow {
-            placeTableView.deselectRow(at: selectedRowIndexPath, animated: true)
+        // If no data, let the user know
+        if fetchedResultsController?.sections?.count == 0 {
+            createTableEmptyMessageIn(tableView, "No places recorded yet.\n\nIf Moves is tracking information\nit will be displayed here soon.")
+        } else {
+            removeTableEmptyMessageFrom(tableView)
+            // Deselect row if we selected one that caused a segue
+            if let selectedRowIndexPath = placeTableView.indexPathForSelectedRow {
+                placeTableView.deselectRow(at: selectedRowIndexPath, animated: true)
+            }
         }
     }
     
