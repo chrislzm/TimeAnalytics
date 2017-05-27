@@ -2,6 +2,8 @@
 //  TATableViewCell.swift
 //  Time Analytics
 //
+//  UITableViewCell used in the TAPlaceTableViewController
+//
 //  Created by Chris Leung on 5/17/17.
 //  Copyright © 2017 Chris Leung. All rights reserved.
 //
