@@ -246,6 +246,21 @@ class TAViewController: UIViewController {
         }
     }
     
+    // Creates a message that appears in the middle of a tableview, used to notify the user when no data is found
+    func createTableEmptyMessageIn(_ table:UITableView, _ message:String) {
+        let tableEmptyMessage = UILabel(frame: table.frame)
+        tableEmptyMessage.text = message
+        tableEmptyMessage.numberOfLines = 10
+        tableEmptyMessage.font = UIFont.systemFont(ofSize: 13)
+        tableEmptyMessage.textAlignment = .center
+        tableEmptyMessage.backgroundColor = UIColor.white
+        table.backgroundView = tableEmptyMessage
+    }
+    
+    func removeTableEmptyMessageFrom(_ table: UITableView) {
+        table.backgroundView = nil
+    }
+    
     // MARK: Segue Methods
     
     func showPlaceDetailViewController(_ place:TAPlaceSegment) {
