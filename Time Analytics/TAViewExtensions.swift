@@ -2,6 +2,8 @@
 //  TAViewExtensions.swift
 //  Time Analytics
 //
+//  Miscellaneous extensions for the Time Analytics View
+//
 //  Created by Chris Leung on 5/20/17.
 //  Copyright © 2017 Chris Leung. All rights reserved.
 //
@@ -34,9 +36,11 @@ extension UIViewController {
 }
 
 extension UITabBar {
+    
+    // Adjust the default size of the tabbar to be shorter
     override open func sizeThatFits(_ size: CGSize) -> CGSize {
         var sizeThatFits = super.sizeThatFits(size)
-        sizeThatFits.height = 40 // adjust your size here
+        sizeThatFits.height = 40
         return sizeThatFits
     }
 }
