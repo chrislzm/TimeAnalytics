@@ -26,10 +26,10 @@ extension UIView {
 extension UIViewController {
     
     // Displays a generic alert with a single OK button, takes a title and message as arguments
-    func displayErrorAlert(_ error:String?) {
+    func displayErrorAlert(_ error:String?,_ completionHandler: ((UIAlertAction) -> Void)?) {
         DispatchQueue.main.async {
             let alert = UIAlertController(title: error, message: nil, preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: completionHandler))
             self.present(alert, animated: true, completion: nil)
         }
     }
