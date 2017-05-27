@@ -4,7 +4,7 @@
 //
 //  Responsible for managing multiple progress indicator views for the different steps in the data processing flow.
 //
-//  Never used directly. Has two subclasses: TADownloadViewController, TASettingsViewController
+//  Superclass. Never used directly. Has two subclasses: TADownloadViewController, TASettingsViewController
 //
 //  Created by Chris Leung on 5/25/17.
 //  Copyright © 2017 Chris Leung. All rights reserved.
