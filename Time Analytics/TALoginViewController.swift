@@ -67,14 +67,14 @@ class ViewController: TAViewController {
         // Initiate step 2/2 of the login auth flow
         TANetClient.sharedInstance().loginWithMovesAuthCode(authCode: authCode) { (error) in
             guard error == nil else {
-                self.displayErrorAlert(error!)
+                self.displayErrorAlert(error!, nil)
                 return
             }
 
             // Segue to data import screen if we are logged in
             TANetClient.sharedInstance().verifyLoggedIntoMoves() { (error) in
                 guard error == nil else {
-                    self.displayErrorAlert(error!)
+                    self.displayErrorAlert(error!, nil)
                     return
                 }
                 DispatchQueue.main.async {
