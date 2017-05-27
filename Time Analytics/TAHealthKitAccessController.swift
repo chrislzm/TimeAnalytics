@@ -2,6 +2,8 @@
 //  TAHealthKitAccess.swift
 //  Time Analytics
 //
+//
+//
 //  Created by Chris Leung on 5/22/17.
 //  Copyright © 2017 Chris Leung. All rights reserved.
 //
@@ -11,12 +13,16 @@ import UIKit
 
 class TAHealthKitAccessController: TAViewController {
 
+    // MARK: Outlets
     @IBAction func didPressContinue(_ sender: Any) {
         getHealthKitPermission()
     }
+    
+    // MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // If no Health Store available, skip this step and go directly into the app
         if !HKHealthStore.isHealthDataAvailable() {
             DispatchQueue.main.async {
                 self.performSegue(withIdentifier: "NoHealthKit", sender: nil)
@@ -24,29 +30,29 @@ class TAHealthKitAccessController: TAViewController {
         }
     }
     
+    // MARK: HealthKit Authorization
+    
+    // Gets authorization to read HealthKit data from the Health Store. Segues either into the app upon failure or denial of authorization, or 
+    
     func getHealthKitPermission() {
-        
-        authorizeHealthKit { (authorized,  error) -> Void in
+        TAModel.sharedInstance().authorizeHealthKit { (authorized,  error) -> Void in
             DispatchQueue.main.async {
+                
+                // If error, display message and segue when the user taps "OK"
+                guard error == nil else {
+                    self.displayErrorAlert("There was a problem with Health Kit authorization. We are unable to import your HealthKit data.") { (uiAlertAction) in
+                        DispatchQueue.main.async {
+                            self.performSegue(withIdentifier: "NoHealthKit", sender: nil)
+                        }
+                    }
+                    return
+                }
                 if !authorized {
-                    self.displayErrorAlert("There was a problem with Health Kit authorization. Please try again by going to the Settings panel.")
                     self.performSegue(withIdentifier: "NoHealthKit", sender: nil)
                 } else {
+                    // We're authorized
                     self.performSegue(withIdentifier: "ProcessHealthKitData", sender: nil)
                 }
-            }
-        }
-    }
-    
-    func authorizeHealthKit(completion: ((_ success: Bool, _ error: Error?) -> Void)!) {
-        
-        let healthKitStore = getHealthStore()
-        // State the health data type(s) we want to read from HealthKit.
-        let readableTypes: Set<HKSampleType> = [HKWorkoutType.workoutType(), HKObjectType.categoryType(forIdentifier: .sleepAnalysis)!]
-
-        healthKitStore.requestAuthorization(toShare: nil, read: readableTypes) { (success, error) -> Void in
-            if( completion != nil ) {
-                completion(success,error)
             }
         }
     }
