@@ -60,22 +60,6 @@ class TACommuteDetailViewController: TADetailViewController, UITableViewDelegate
     @IBAction func didTapOnLineChartView(_ sender: Any) {
         showDetailLineChartViewController("Length of Commute from \(startName!) to \(endName!)")
     }
-    
-    @IBAction func didTapOnDepartureTable(_ sender: Any) {
-        if !timeBeforeDepartingTableData.isEmpty {
-            didTapOnDepartureTable = true
-            let place = timeBeforeDepartingTableData[0]
-            showPlaceDetailViewController(place)
-        }
-    }
-    
-    @IBAction func didTapOnArrivalTable(_ sender: Any) {
-        if !timeBeforeDepartingTableData.isEmpty {
-            didTapOnArrivalTable = true
-            let place = timeAfterArrivingTableData[0]
-            showPlaceDetailViewController(place)
-        }
-    }
 
     //MARK: Lifecycle
     
@@ -114,9 +98,7 @@ class TACommuteDetailViewController: TADetailViewController, UITableViewDelegate
         // Styles
         commuteHistoryTableView.separatorStyle = .none
         timeBeforeDepartingTableView.separatorStyle = .none
-        timeBeforeDepartingTableView.allowsSelection = false
         timeAfterArrivingTableView.separatorStyle = .none
-        timeAfterArrivingTableView.allowsSelection = false
         
         // Data Source
         commuteHistoryTableData = getEntityObjectsWithQuery("TACommuteSegment", "startLat == %@ AND startLon == %@ AND endLat == %@ AND endLon == %@", [startLat,startLon,endLat,endLon], "startTime", false) as! [TACommuteSegment]
@@ -146,8 +128,16 @@ class TACommuteDetailViewController: TADetailViewController, UITableViewDelegate
             updatePlaceNames(false)
             didTapOnArrivalTable = false
         }
+        
+        // Deselect row if we selected one that caused a segue
+        if let selectedRowIndexPath = timeBeforeDepartingTableView.indexPathForSelectedRow {
+            timeBeforeDepartingTableView.deselectRow(at: selectedRowIndexPath, animated: true)
+        }
+        else if let selectedRowIndexPath = timeAfterArrivingTableView.indexPathForSelectedRow {
+            timeAfterArrivingTableView.deselectRow(at: selectedRowIndexPath, animated: true)
+        }
     }
-    
+
     // MARK: UITableView Data Source Methods
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -229,6 +219,14 @@ class TACommuteDetailViewController: TADetailViewController, UITableViewDelegate
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if tableView == commuteHistoryTableView, indexPath != selectedIndexPath {
             tableView.deselectRow(at: indexPath, animated: false)
+        } else if tableView == timeBeforeDepartingTableView {
+            didTapOnDepartureTable = true
+            let place = timeBeforeDepartingTableData[indexPath.row]
+            showPlaceDetailViewController(place)
+        } else if tableView == timeAfterArrivingTableView {
+            didTapOnArrivalTable = true
+            let place = timeAfterArrivingTableData[indexPath.row]
+            showPlaceDetailViewController(place)
         }
     }
     
