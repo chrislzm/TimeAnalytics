@@ -2,6 +2,8 @@
 //  TADetailCommuteTableViewCell.swift
 //  Time Analytics
 //
+//  UITableViewCell used in the TAPlaceDetailViewController's commute history table.
+//
 //  Created by Chris Leung on 5/22/17.
 //  Copyright © 2017 Chris Leung. All rights reserved.
 //

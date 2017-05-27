@@ -2,6 +2,8 @@
 //  TAPlaceDetailActivityTableViewCell.swift
 //  Time Analytics
 //
+//  UITableViewCell used in the TAPlaceDetailViewController's activity history table.
+//
 //  Created by Chris Leung on 5/24/17.
 //  Copyright © 2017 Chris Leung. All rights reserved.
 //
