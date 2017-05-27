@@ -6,7 +6,7 @@
 //   - Summary statistics
 //   - Line chart with data points and trend line if there are at least 2 or 3 data points respectively (LineChartView)
 //   - Map location (MapView)
-//   - Visit history with place highlighted (TableView)
+//   - Visit history with place highlighted whose detail view this belongs to (TableView)
 //   - Commute history to/from this place (TableView)
 //   - Activity history at this place (TableView)
 //
@@ -213,7 +213,6 @@ class TAPlaceDetailViewController: TADetailViewController, UITableViewDelegate {
         
         if tableView == placeTableView {
             let place = placeHistoryTableData[indexPath.row]
-            
             let placeCell = tableView.dequeueReusableCell(withIdentifier: "TAPlaceTableViewCell", for: indexPath) as! TAPlaceDetailTableViewCell
             
             // Get descriptions and assign to cell label
@@ -222,7 +221,7 @@ class TAPlaceDetailViewController: TADetailViewController, UITableViewDelegate {
             placeCell.lengthLabel.text = lengthString
             placeCell.dateLabel.text = dateString
 
-            // Select (highlight) the cell contains the place that this detail view was launched for
+            // Select (highlight) the cell that contains the place that this detail view belongs to
             if place.startTime == startTime, place.endTime == endTime {
                 selectedIndexPath = indexPath
                 let backgroundView = UIView()
@@ -233,7 +232,6 @@ class TAPlaceDetailViewController: TADetailViewController, UITableViewDelegate {
             cell = placeCell
         } else if tableView == commuteTableView {
             let commute = commuteHistoryTableData![indexPath.row]
-            
             let commuteCell = tableView.dequeueReusableCell(withIdentifier: "TAPlaceDetailCommuteTableViewCell", for: indexPath) as! TAPlaceDetailCommuteTableViewCell
             
             // Get descriptions and assign to cell label
@@ -248,7 +246,6 @@ class TAPlaceDetailViewController: TADetailViewController, UITableViewDelegate {
             cell = commuteCell
         } else if tableView == activityTableView {
             let activity = activityHistoryTableData![indexPath.row]
-            
             let activityCell = tableView.dequeueReusableCell(withIdentifier: "TAPlaceDetailActivityTableViewCell", for: indexPath) as! TAPlaceDetailActivityTableViewCell
             
             // Get descriptions and assign to cell label
@@ -258,7 +255,6 @@ class TAPlaceDetailViewController: TADetailViewController, UITableViewDelegate {
             activityCell.dateLabel.text = dateString
             activityCell.nameLabel.text = activity.name!
             
-            //commuteCell.locationLabel.text = dateString
             cell = activityCell
         }
         return cell
@@ -268,7 +264,7 @@ class TAPlaceDetailViewController: TADetailViewController, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if tableView == placeTableView, indexPath != selectedIndexPath {
-            // Don't allow the user to unhighlight the row whose detail view this belongs to
+            // Don't allow the user to highlight another row whose detail view this doesn't belong to
             tableView.deselectRow(at: indexPath, animated: false)
         } else if tableView == commuteTableView {
             let commute = commuteHistoryTableData[indexPath.row]
