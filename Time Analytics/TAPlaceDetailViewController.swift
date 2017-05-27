@@ -329,15 +329,6 @@ class TAPlaceDetailViewController: TADetailViewController, UITableViewDelegate {
     }
     
     // MARK: View Helper Methods
-    
-    func createTableEmptyMessageIn(_ table:UITableView, _ message:String) {
-        let tableEmptyMessage = UILabel(frame: table.frame)
-        tableEmptyMessage.text = message
-        tableEmptyMessage.font = UIFont.systemFont(ofSize: 13)
-        tableEmptyMessage.textAlignment = .center
-        tableEmptyMessage.backgroundColor = UIColor.white
-        table.backgroundView = tableEmptyMessage
-    }
 
     func addEditButton() {
         let settingsButton = UIBarButtonItem(title: "Edit", style: UIBarButtonItemStyle.plain, target:self, action: #selector(TAPlaceDetailViewController.editButtonPressed))
