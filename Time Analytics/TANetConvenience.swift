@@ -2,7 +2,7 @@
 //  NetConvenience.swift
 //  Time Analytics
 //
-//  Time Analytics Network Client convenience methods - Utilizes core network client methods to exchange information with REST APIs.
+//  Time Analytics Network Client convenience methods - Utilizes core network client methods to exchange information with the Moves REST API.
 //
 //  Created by Chris Leung on 5/14/17.
 //  Copyright © 2017 Chris Leung. All rights reserved.
@@ -32,7 +32,7 @@ extension TANetClient {
         }
     }
     
-    // Handles Part 2 of Moves Auth Flow. (Part 1 is getting an auth code from the Moves app, which is handled by Login ViewController)
+    // Handles Part 2 of Moves Auth Flow: Use the auth code to get OAuth access and refresh tokens
     func loginWithMovesAuthCode(authCode:String, completionHandler: @escaping (_ error: String?) -> Void) {
         
         // 1. Save the auth code to our client
@@ -53,11 +53,13 @@ extension TANetClient {
         }
     }
     
+    // Part 2 of Moves Auth Flow continued
+    
     func movesAuthResponseHandler(_ results:AnyObject?, _ error:NSError?,_ completionHandler: @escaping (_ error: String?) -> Void) {
         
         /* 1. Check for error response from Moves */
-        if let error = error {
-            let errorString = self.getNiceMessageFromHttpNSError(error)
+        guard error == nil else {
+            let errorString = self.getNiceMessageFromHttpNSError(error!)
             completionHandler(errorString)
             return
         }
@@ -100,8 +102,8 @@ extension TANetClient {
         
     }
 
+    // Ensures our session is authorized before we make any calls to the Moves API, otherwise send an error
 
-    // Attemps to ensure our session is authorized before we make any calls to the Moves API
     func verifyLoggedIntoMoves(completionHandler: @escaping (_ error: String?) -> Void) {
         
         // Check: Are we logged in?
@@ -131,7 +133,7 @@ extension TANetClient {
         completionHandler(nil)
     }
     
-    // Retrieves all data from Moves for a given time period (note: for this type of request the Moves API limits to 7 days max per request)
+    // Retrieves Moves StoryLne data for a given time period
     
     func getMovesDataFrom(_ startDate:Date, _ endDate:Date,_ lastUpdate:Date?, _ completionHandler: @escaping (_ response:[AnyObject]?, _ error: String?) -> Void) {
         
@@ -156,8 +158,8 @@ extension TANetClient {
             let _ = self.taskForHTTPMethod(TANetClient.Constants.ApiScheme, TANetClient.Constants.HttpGet, TANetClient.MovesApi.Constants.Host, TANetClient.MovesApi.Methods.StoryLine, apiParameters: parameters, valuesForHTTPHeader: nil, httpBody: nil) { (results,error) in
                 
                 /* 2. Check for error response from Moves */
-                if let error = error {
-                    let errorString = self.getNiceMessageFromHttpNSError(error)
+                guard error == nil else {
+                    let errorString = self.getNiceMessageFromHttpNSError(error!)
                     completionHandler(nil, errorString)
                     return
                 }
@@ -174,7 +176,8 @@ extension TANetClient {
         }
     }
 
-    // Retrieves the user's first date from his profile
+    // Retrieves the Moves user's first data date from his profile
+    
     func getMovesUserFirstDate(completionHandler: @escaping (_ date:String?, _ error: String?) -> Void) {
         getMovesUserProfile() { (response,error) in
             guard error == nil else {
@@ -204,8 +207,8 @@ extension TANetClient {
             let _ = self.taskForHTTPMethod(TANetClient.Constants.ApiScheme, TANetClient.Constants.HttpGet, TANetClient.MovesApi.Constants.Host, TANetClient.MovesApi.Methods.UserProfile, apiParameters: parameters, valuesForHTTPHeader: nil, httpBody: nil) { (results,error) in
                 
                 /* 2. Check for error response from Moves */
-                if let error = error {
-                    let errorString = self.getNiceMessageFromHttpNSError(error)
+                guard error == nil else {
+                    let errorString = self.getNiceMessageFromHttpNSError(error!)
                     completionHandler(nil,errorString)
                     return
                 }
@@ -223,7 +226,6 @@ extension TANetClient {
 
         }
     }
-    
     
     // MARK: Private helper methods
 
@@ -258,13 +260,5 @@ extension TANetClient {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyyMMdd'T'HHmmssZ"
         return formatter.string(from: date)
-    }
-    // Substitute a key for the value that is contained within the string
-    private func substituteKey(_ string: String, key: String, value: String) -> String? {
-        if string.range(of: key) != nil {
-            return string.replacingOccurrences(of: key, with: value)
-        } else {
-            return nil
-        }
     }
 }
