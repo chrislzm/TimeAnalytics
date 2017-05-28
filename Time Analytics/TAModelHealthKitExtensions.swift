@@ -73,6 +73,7 @@ extension TAModel {
         let sleepType = HKObjectType.categoryType(forIdentifier: .sleepAnalysis)!
         retrieveHealthStoreData(sleepType,fromDate) { (query,result,error) in
             guard error == nil else {
+                self.notifyHealthDataReadError()
                 return
             }
             // Generate TAActivitySegment objects for the data
@@ -93,6 +94,7 @@ extension TAModel {
         let workoutType = HKWorkoutType.workoutType()
         retrieveHealthStoreData(workoutType,fromDate) { (query,result,error) in
             guard error == nil else {
+                self.notifyHealthDataReadError()
                 return
             }
             stack.performBackgroundBatchOperation() { (context) in
