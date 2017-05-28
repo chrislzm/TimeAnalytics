@@ -15,7 +15,7 @@ Developed and tested with XCode 8+ and iOS 10+.
 
 How to Use
 ----------
-Basic requirements: Internet connection, Moves application and account
+Basic requirements: Internet connection, [Moves iOS application](https://moves-app.com/)
 
 1. Open the app and follow prompts to login with moves.
 2. Data import will begin automatically. You will be prompted to allow access to your Health Data, which you can always turn on or off in the Health app.
