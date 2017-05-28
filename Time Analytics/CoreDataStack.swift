@@ -32,14 +32,14 @@ struct CoreDataStack {
         
         // Assumes the model is in the main bundle
         guard let modelURL = Bundle.main.url(forResource: modelName, withExtension: "momd") else {
-            print("Unable to find \(modelName)in the main bundle")
+            fatalError("Unable to find \(modelName)in the main bundle")
             return nil
         }
         self.modelURL = modelURL
         
         // Try to create the model from the URL
         guard let model = NSManagedObjectModel(contentsOf: modelURL) else {
-            print("unable to create a model from \(modelURL)")
+            fatalError("unable to create a model from \(modelURL)")
             return nil
         }
         self.model = model
@@ -63,7 +63,7 @@ struct CoreDataStack {
         let fm = FileManager.default
         
         guard let docUrl = fm.urls(for: .documentDirectory, in: .userDomainMask).first else {
-            print("Unable to reach the documents folder")
+            fatalError("Unable to reach the documents folder")
             return nil
         }
         
@@ -75,7 +75,7 @@ struct CoreDataStack {
         do {
             try addStoreCoordinator(NSSQLiteStoreType, configuration: nil, storeURL: dbURL, options: options as [NSObject : AnyObject]?)
         } catch {
-            print("unable to add store at \(dbURL)")
+            fatalError("unable to add store at \(dbURL)")
         }
     }
     
@@ -150,25 +150,6 @@ extension CoreDataStack {
                         fatalError("Error while saving persisting context: \(error)")
                     }
                 }
-            }
-        }
-    }
-    
-    func autoSave(_ delayInSeconds : Int) {
-        
-        if delayInSeconds > 0 {
-            do {
-                try self.context.save()
-                print("Autosaving")
-            } catch {
-                print("Error while autosaving")
-            }
-            
-            let delayInNanoSeconds = UInt64(delayInSeconds) * NSEC_PER_SEC
-            let time = DispatchTime.now() + Double(Int64(delayInNanoSeconds)) / Double(NSEC_PER_SEC)
-            
-            DispatchQueue.main.asyncAfter(deadline: time) {
-                self.autoSave(delayInSeconds)
             }
         }
     }
