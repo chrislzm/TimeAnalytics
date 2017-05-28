@@ -15,6 +15,7 @@
 		A52564B01EC929D900DD843F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A52564AF1EC929D900DD843F /* Assets.xcassets */; };
 		A52564B31EC929D900DD843F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A52564B11EC929D900DD843F /* LaunchScreen.storyboard */; };
 		A52564BC1EC93E4000DD843F /* BorderedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52564BB1EC93E4000DD843F /* BorderedButton.swift */; };
+		A52D9F371EDA6EED00DDC8C1 /* TAModelNotificationExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52D9F361EDA6EED00DDC8C1 /* TAModelNotificationExtensions.swift */; };
 		A54502F61ED3FCC5003523CB /* TAHealthKitAccessController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54502F51ED3FCC5003523CB /* TAHealthKitAccessController.swift */; };
 		A556EB7C1ED3FFAB003F8E2B /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A556EB7B1ED3FFAB003F8E2B /* HealthKit.framework */; };
 		A556EB7E1ED40B1C003F8E2B /* TAProcessHealthKitDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A556EB7D1ED40B1C003F8E2B /* TAProcessHealthKitDataController.swift */; };
@@ -71,6 +72,7 @@
 		A52564B21EC929D900DD843F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A52564B41EC929D900DD843F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A52564BB1EC93E4000DD843F /* BorderedButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BorderedButton.swift; sourceTree = "<group>"; };
+		A52D9F361EDA6EED00DDC8C1 /* TAModelNotificationExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TAModelNotificationExtensions.swift; sourceTree = "<group>"; };
 		A54502F51ED3FCC5003523CB /* TAHealthKitAccessController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TAHealthKitAccessController.swift; sourceTree = "<group>"; };
 		A556EB7A1ED3FFAB003F8E2B /* Time Analytics.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Time Analytics.entitlements"; sourceTree = "<group>"; };
 		A556EB7B1ED3FFAB003F8E2B /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
@@ -212,6 +214,7 @@
 				A5CE10221ED210B600AE5BDB /* CoreDataStack.swift */,
 				A5AB93FC1ECA68A40055301C /* TAModel.swift */,
 				A57CED121ED5232D008BD6B9 /* TAModelHealthKitExtensions.swift */,
+				A52D9F361EDA6EED00DDC8C1 /* TAModelNotificationExtensions.swift */,
 				A5866A1B1EC964440025D38F /* TANetClient.swift */,
 				A5866A1D1EC9649C0025D38F /* TANetConstants.swift */,
 				A5866A1F1EC966870025D38F /* TANetConvenience.swift */,
@@ -433,6 +436,7 @@
 				A5866A1C1EC964450025D38F /* TANetClient.swift in Sources */,
 				A5B09F5F1ECD47230019CA4A /* TAPlaceDetailViewController.swift in Sources */,
 				A5866A201EC966870025D38F /* TANetConvenience.swift in Sources */,
+				A52D9F371EDA6EED00DDC8C1 /* TAModelNotificationExtensions.swift in Sources */,
 				A5B319181ED6570600401BF8 /* TADetailMapViewController.swift in Sources */,
 				A59D8FC11ED3911D00E119F2 /* TADetailViewController.swift in Sources */,
 				A5CE10231ED210B600AE5BDB /* CoreDataStack.swift in Sources */,
