@@ -3,10 +3,8 @@
 //  Time Analytics
 //
 //  Convenience interface to the Time Analytics model. Used by Controllers and the App Delegate.
-//    -Abstracts the Network Client (TANetClient) from the controllers
-//    -Manages Moves data download and processing
-//    -Manages Time Analytics data generation and TAPlace and Commute Segment entities
-//    -Manages all notifications for updates and errors on data download/processing
+//    -Implements Moves data download (using TANetClient) and processing
+//    -Implements Time Analytics data generation for TAPlaceSegment and TACommuteSegment entities
 //    -Provides general use core data methods
 //
 //  Created by Chris Leung on 5/15/17.
@@ -19,16 +17,38 @@ import UIKit
 
 class TAModel {
     
-    // MARK: Moves Login Methods
+    // MARK: AutoUpdate
+    
+    static let AutoUpdateInterval = 10 // Auto-update interval for background updates of Moves and HealthKit data
+    
+    func startAutoUpdate() {
+        
+        if TAModel.AutoUpdateInterval > 0 {
+            
+            if isLoggedIn() {
+                self.downloadAndProcessNewMovesData()
+            }
+            
+            let delayInNanoSeconds = UInt64(TAModel.AutoUpdateInterval * 60) * NSEC_PER_SEC
+            let time = DispatchTime.now() + Double(Int64(delayInNanoSeconds)) / Double(NSEC_PER_SEC)
+            
+            DispatchQueue.global(qos: .background).asyncAfter(deadline: time) {
+                self.startAutoUpdate()
+            }
+        }
+    }
+    
+    // MARK: Login Methods
     
     func isLoggedIn() -> Bool {
+         // "lastCheckedForNewData" stores the last time we successfully read and processed new data from Moves and HealthKit. It will always have a value if we have fully logged in. Will be nil otherwise.
         if let _ = TANetClient.sharedInstance().lastCheckedForNewData {
             return true
         }
         return false
     }
     
-    func loadMovesSessionData() {
+    func loadAllSessionData() {
         // See first if we have ever successfully logged and received data (we could have crashed in the middle of previous login)
         if let lastCheck = UserDefaults.standard.value(forKey: "lastCheckedForNewData") as? Date {
             // Load the remaining session information into our Net Client
@@ -42,18 +62,8 @@ class TAModel {
             TANetClient.sharedInstance().lastCheckedForNewData = lastCheck
         }
     }
-    
-    func saveMovesLoginInfo(_ authCode:String, _ userId:UInt64, _ accessToken:String,_ accessTokenExpiration:Date,_ refreshToken:String, _ userFirstDate:String) {
-        UserDefaults.standard.set(authCode, forKey: "movesAuthCode")
-        UserDefaults.standard.set(userId, forKey: "movesUserId")
-        UserDefaults.standard.set(accessToken, forKey: "movesAccessToken")
-        UserDefaults.standard.set(accessTokenExpiration, forKey: "movesAccessTokenExpiration")
-        UserDefaults.standard.set(refreshToken, forKey: "movesRefreshToken")
-        UserDefaults.standard.set(userFirstDate, forKey: "movesUserFirstDate")
-        UserDefaults.standard.synchronize()
-    }
-    
-    func deleteMovesSessionInfo() {
+
+    func deleteAllSessionData() {
         UserDefaults.standard.removeObject(forKey: "movesAuthCode")
         UserDefaults.standard.removeObject(forKey: "movesUserId")
         UserDefaults.standard.removeObject(forKey: "movesAccessToken")
@@ -71,6 +81,16 @@ class TAModel {
         TANetClient.sharedInstance().movesUserFirstDate = nil
         TANetClient.sharedInstance().movesLatestUpdate = nil
         TANetClient.sharedInstance().lastCheckedForNewData = nil
+    }
+    
+    func saveMovesSessionData(_ authCode:String, _ userId:UInt64, _ accessToken:String,_ accessTokenExpiration:Date,_ refreshToken:String, _ userFirstDate:String) {
+        UserDefaults.standard.set(authCode, forKey: "movesAuthCode")
+        UserDefaults.standard.set(userId, forKey: "movesUserId")
+        UserDefaults.standard.set(accessToken, forKey: "movesAccessToken")
+        UserDefaults.standard.set(accessTokenExpiration, forKey: "movesAccessTokenExpiration")
+        UserDefaults.standard.set(refreshToken, forKey: "movesRefreshToken")
+        UserDefaults.standard.set(userFirstDate, forKey: "movesUserFirstDate")
+        UserDefaults.standard.synchronize()
     }
     
     // MARK: Moves Data Methods
@@ -133,23 +153,6 @@ class TAModel {
     }
     
     // MARK: Moves Data Processing Methods
-    
-    func autoUpdateMovesData(_ delayInMinutes : Int) {
-        
-        if delayInMinutes > 0 {
-            
-            if isLoggedIn() {
-                self.downloadAndProcessNewMovesData()
-            }
-            
-            let delayInNanoSeconds = UInt64(delayInMinutes * 60) * NSEC_PER_SEC
-            let time = DispatchTime.now() + Double(Int64(delayInNanoSeconds)) / Double(NSEC_PER_SEC)
-            
-            DispatchQueue.global(qos: .background).asyncAfter(deadline: time) {
-                self.autoUpdateMovesData(delayInMinutes)
-            }
-        }
-    }
     
     func downloadAndProcessNewMovesData() {
         
@@ -634,81 +637,10 @@ class TAModel {
         }
     }
     
-    // MARK: App Delegate, Notification and Singleton Methods
+    // MARK: App Delegate and Singleton Methods
     
     func getAppDelegate() -> AppDelegate {
         return UIApplication.shared.delegate as! AppDelegate
-    }
-    
-    // Called by TAModel when downloading Moves data has commenced. Object will contain the number of requests that need to complete.
-    func notifyWillDownloadMovesData(dataChunks:Int) {
-        DispatchQueue.main.async {
-            NotificationCenter.default.post(name: Notification.Name("willDownloadMovesData"), object: dataChunks)
-        }
-    }
-    
-    // Called by TAModel whenever a Moves "chunk" has completed. For data downloads, this will be # of requests. For generating data from moves data, this will be the approximate number of records. The number is approximate, since Moves data is messy, and much of it gets consolidated.
-    func notifyDidProcessMovesDataChunk() {
-        DispatchQueue.main.async {
-            NotificationCenter.default.post(name: Notification.Name("didProcessMovesDataChunk"), object: nil)
-        }
-    }
-    
-    // Called by TAModel when we have completed parsing all downloaded data, and will begin using it to generate TA data
-    func notifyWillGenerateTAData(dataChunks:Int) {
-        DispatchQueue.main.async {
-            NotificationCenter.default.post(name: Notification.Name("willGenerateTAData"), object: dataChunks)
-        }
-        
-    }
-    
-    // Called by TAModel when all Time Analytics data has finished generating from Moves data.
-    func notifyDidCompleteMovesUpdate() {
-        DispatchQueue.main.async {
-            NotificationCenter.default.post(name: Notification.Name("didCompleteMovesUpdate"), object: nil)
-        }
-    }
-    
-    // Called by TAModel HealthKit Extension when we begin importing HealthKit data
-    func notifyWillGenerateHKData() {
-        DispatchQueue.main.async {
-            NotificationCenter.default.post(name: Notification.Name("willGenerateHKData"), object: nil)
-        }
-    }
-    
-    // Called by TAModel HealthKit Extension when it has completed a chunk of HealthKit data
-    func notifyDidProcessHealthKitDataChunk() {
-        DispatchQueue.main.async {
-            NotificationCenter.default.post(name: Notification.Name("didProcessHealthKitDataChunk"), object: nil)
-        }
-    }
-
-    // Called by AppDelegate when *all* data has been saved and cleanup has been done.
-    func notifyDidCompleteAllUpdates() {
-        DispatchQueue.main.async {
-            NotificationCenter.default.post(name: Notification.Name("didCompleteAllUpdates"), object: nil)
-        }
-    }
-    
-    // Called by TAModel when there was an error parsing JSON data from a 3rd party API
-    func notifyMovesDataParsingError() {
-        DispatchQueue.main.async {
-            NotificationCenter.default.post(name: Notification.Name("movesDataParsingError"), object: nil)
-        }
-    }
-    
-    // Called by TAModel when TANetClient has informed us there was a network error
-    func notifyDownloadMovesDataError() {
-        DispatchQueue.main.async {
-            NotificationCenter.default.post(name: Notification.Name("downloadMovesDataError"), object: nil)
-        }
-    }
-
-    // Called by TAModel when there was an error parsing JSON data from a 3rd party API
-    func notifyHealthDataReadError() {
-        DispatchQueue.main.async {
-            NotificationCenter.default.post(name: Notification.Name("healthDataReadError"), object: nil)
-        }
     }
     
     class func sharedInstance() -> TAModel {
