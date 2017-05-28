@@ -17,6 +17,7 @@ class TADataUpdateViewController:TAViewController {
     // MARK: Properties
     var progressView:TAProgressView! // Stores reference to the currently displayed progressView
     var displayingErrorAlert = false // Prevents multiple alerts from displaying at once
+    var errorCompletionHandler: ()->Void = { () in } // Called after "OK" button is hit on error alert dialogs
     
     // MARK: LifeCycle
     
@@ -91,25 +92,23 @@ class TADataUpdateViewController:TAViewController {
         }
     }
     
-    // Ensures all progress views are removed from the display
+    // Display alert to inform user of error
     func downloadDataError(_ notification:Notification) {
-        DispatchQueue.main.async {
-            if !self.displayingErrorAlert {
-             self.displayingErrorAlert = true
-                self.displayErrorAlert("Error downloading data. Please try again later.") { (alertAction) in
-                    self.displayingErrorAlert = false
-                }
-            }
-        }
+        displayDataError("Error downloading data. Please try again later.")
+    }
+ 
+    func dataParsingError(_ notification:Notification) {
+        displayDataError("Error processing data. Please try again later.")
     }
     
-    // Ensures all progress views are removed from the display
-    func dataParsingError(_ notification:Notification) {
+    func displayDataError(_ errorString:String) {
         DispatchQueue.main.async {
             if !self.displayingErrorAlert {
                 self.displayingErrorAlert = true
-                self.displayErrorAlert("Error processing data. Please try again later.") { (alertAction) in
+                self.removeProgressView(completionHandler: nil)
+                self.displayErrorAlert(errorString) { (alertAction) in
                     self.displayingErrorAlert = false
+                    self.errorCompletionHandler()
                 }
             }
         }
