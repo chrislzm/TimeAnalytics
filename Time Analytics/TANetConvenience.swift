@@ -238,6 +238,8 @@ extension TANetClient {
         
         if errorString.contains("timed out") {
             userFriendlyErrorString = "Couldn't reach server (timed out)"
+        } else if errorString.contains("400") || errorString.contains("500"){
+            userFriendlyErrorString = "Error receiving authorization from Moves. Please close Time Analytics and try again."
         } else if errorString.contains("401"){
             userFriendlyErrorString = "Unauthorized"
         } else if errorString.contains("404"){
