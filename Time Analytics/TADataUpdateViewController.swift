@@ -22,9 +22,11 @@ class TADataUpdateViewController:TAViewController {
         super.viewDidLoad()
         
         // Setup notifications so we know when to display and update the progress view
-        NotificationCenter.default.addObserver(self, selector: #selector(TADataUpdateViewController.willDownloadData(_:)), name: Notification.Name("willDownloadData"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(TADataUpdateViewController.willDownloadData(_:)), name: Notification.Name("willDownloadMovesData"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(TADataUpdateViewController.willGenerateTAData(_:)), name: Notification.Name("willGenerateTAData"), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(TADataUpdateViewController.didCompleteUpdate(_:)), name: Notification.Name("didCompleteUpdate"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(TADataUpdateViewController.didCompleteMovesUpdate(_:)), name: Notification.Name("didCompleteMovesUpdate"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(TADataUpdateViewController.willGenerateHKData(_:)), name: Notification.Name("willGenerateHKData"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(TADataUpdateViewController.didCompleteAllUpdates(_:)), name: Notification.Name("didCompleteAllUpdates"), object: nil)
     }
 
     // MARK: Notification Observers
@@ -50,18 +52,36 @@ class TADataUpdateViewController:TAViewController {
                 self.progressView = TAProgressView.instanceFromNib()
                 self.setupOverlayView(self.progressView,self.view)
                 self.progressView.fadeIn(nil)
-                self.progressView.defaultText = "Processing Data"
+                self.progressView.defaultText = "Processing Moves Data"
                 self.progressView.totalProgress = Float(dataChunks)
             }
         }
     }
     
     // Remove the TA data generation progressView since, since it doesn't know when data generation is complete
-    func didCompleteUpdate(_ notification:Notification) {
+    // This method generally should be overwritten by subclasses, but should make sure to remove the progressview.
+    func didCompleteMovesUpdate(_ notification:Notification) {
         DispatchQueue.main.async {
-            self.removeProgressView() { () in
-                fatalError("Thus method should be overridden by subclasses--remove the progress view and notify the user here that processing is complete")
-            }
+            self.removeProgressView(completionHandler: nil)
+        }
+    }
+    
+    // Display a new progressView for HealthKit data generation
+    // The progressView will dismiss itself when download complete since HK data is processed in known# of stages
+    func willGenerateHKData(_ notification:Notification) {
+        DispatchQueue.main.async {
+            self.progressView = TAProgressView.instanceFromNib()
+            self.setupOverlayView(self.progressView,self.view)
+            self.progressView.fadeIn(nil)
+            self.progressView.defaultText = "Processing Health Data"
+            self.progressView.totalProgress = Float(TAModel.Constants.HealthKitDataChunks)
+        }
+    }
+    
+    // Ensures all progress views are removed from the display
+    func didCompleteAllUpdates(_ notification:Notification) {
+        DispatchQueue.main.async {
+            self.removeProgressView(completionHandler: nil)
         }
     }
 }
