@@ -233,6 +233,7 @@ extension TANetClient {
     // Handles NSErrors -- Turns them into user-friendly messages before sending them to the controller's completion handler
     private func getNiceMessageFromHttpNSError(_ error:NSError) -> String {
 
+        // TODO: Write the actual error to a log file
         let errorString = error.userInfo[NSLocalizedDescriptionKey].debugDescription
         var userFriendlyErrorString = "Please try again."
         
