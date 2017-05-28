@@ -268,6 +268,14 @@ class TAViewController: UIViewController {
         table.backgroundView = nil
     }
     
+    func displayErrorAlert(_ error:String?,_ completionHandler: ((UIAlertAction) -> Void)?) {
+        DispatchQueue.main.async {
+            let alert = UIAlertController(title: error, message: nil, preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: completionHandler))
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
+    
     // MARK: Segue Methods
     
     func showPlaceDetailViewController(_ place:TAPlaceSegment) {
