@@ -1,12 +1,12 @@
 //
 //  CoreDataStack.swift
 //
+//  Implements multithreaded core data stack with background, main, and persisting contexts with child/parent relationships.
 //
-//  Created by Fernando Rodríguez Romero on 02/21/16.
-//  Copyright © 2016 udacity.com. All rights reserved.
+//  Originally created by Fernando Rodríguez Romero on 02/21/16
 //
-//  Modified by Chris Leung on 05/14/17
-//      - Check for changes in background context before saving it in batch operation
+//  Updated by Chris Leung on 05/14/17
+//      - Optimize background context saves by first checking for changes
 //      - Fixed migration bug when adding store coordinator (parameters weren't being passed)
 //
 
