@@ -59,8 +59,8 @@ class TATableViewController: TAViewController, UITableViewDelegate, UITableViewD
         navigationItem.setLeftBarButton(activityIndicatorBarButtonItem, animated: false)
         
         // Observe notifications so we can animate activityView when downloading/processing
-        NotificationCenter.default.addObserver(self, selector: #selector(TATableViewController.willDownloadData(_:)), name: Notification.Name("willDownloadData"), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(TATableViewController.didCompleteUpdate(_:)), name: Notification.Name("didCompleteUpdate"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(TATableViewController.willDownloadData(_:)), name: Notification.Name("willDownloadMovesData"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(TATableViewController.didCompleteUpdate(_:)), name: Notification.Name("didCompleteAllUpdates"), object: nil)
     }
     
     // MARK: View Methods

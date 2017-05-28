@@ -17,7 +17,7 @@ class TADownloadViewController:TADataUpdateViewController {
         TAModel.sharedInstance().downloadAndProcessNewMovesData()
     }
     
-    override func didCompleteUpdate(_ notification:Notification) {
+    override func didCompleteMovesUpdate(_ notification:Notification) {
         DispatchQueue.main.async {
             self.removeProgressView() { () in
                 self.performSegue(withIdentifier: "HealthKit", sender: nil)
