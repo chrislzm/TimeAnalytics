@@ -16,11 +16,14 @@ class TASettingsViewController:TADataUpdateViewController {
     
     @IBOutlet weak var lastUpdatedLabel: UILabel!
     @IBOutlet weak var autoUpdateLabel: UILabel!
-    @IBOutlet weak var activityView: UIActivityIndicatorView!
+    @IBOutlet weak var refreshActivityView: UIActivityIndicatorView!
+    @IBOutlet weak var refreshDataButton: BorderedButton!
     
     // MARK: Actions
     
     @IBAction func refreshDataButtonPressed(_ sender: Any) {
+        refreshActivityView.startAnimating()
+        refreshDataButton.isEnabled = false
         // After this begins, AppDelegate will handle the rest of the data processing flow, including importing HealthKit data
         TAModel.sharedInstance().downloadAndProcessNewMovesData()
     }
@@ -36,17 +39,11 @@ class TASettingsViewController:TADataUpdateViewController {
     func logoutConfirmed(alert:UIAlertAction!) {
         DispatchQueue.main.async {
             
-            self.activityView.isHidden = false
-            
-            // Clear persistent data. We do this on the background context since objects are loaded in there. On save, deletions will bubble their through all contexts and to the persistent store.
-            let stack = self.getCoreDataStack()
-            stack.performBackgroundBatchOperation() { (context) in                TAModel.sharedInstance().deleteAllDataFor(["MovesMoveSegment","MovesPlaceSegment","TAPlaceSegment","TACommuteSegment","TAActivitySegment"],context)
-            }
+            // Clear context and persistent data
+            self.clearAllData()
             
             // Clear session variables
             TAModel.sharedInstance().deleteMovesSessionInfo()
-            
-            self.activityView.isHidden = true
             
             // Unwind and display login screen
             self.performSegue(withIdentifier: "LogOut", sender: self)
@@ -63,10 +60,12 @@ class TASettingsViewController:TADataUpdateViewController {
         setAutoUpdateLabelText()
     }
     
-    override func didCompleteUpdate(_ notification:Notification) {
+    override func didCompleteAllUpdates(_ notification: Notification) {
         DispatchQueue.main.async {
-            self.removeProgressView(completionHandler: nil)
+            super.didCompleteAllUpdates(notification)
             self.setLastUpdatedText()
+            self.refreshActivityView.stopAnimating()
+            self.refreshDataButton.isEnabled = true
         }
     }
     
