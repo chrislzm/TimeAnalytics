@@ -209,6 +209,13 @@ class TAViewController: UIViewController {
         stack.save()
     }
     
+    // We delete all data on the background context since objects are loaded in there. On save, deletions will bubble their through all contexts and to the persistent store.
+    func clearAllData() {
+        let stack = self.getCoreDataStack()
+        stack.performBackgroundBatchOperation() { (context) in                TAModel.sharedInstance().deleteAllDataFor(["MovesMoveSegment","MovesPlaceSegment","TAPlaceSegment","TACommuteSegment","TAActivitySegment"],context)
+        }
+    }
+    
     // MARK - View Methods
     
     // Creates sets up overlay attributes, hides it, and adds it to the view hierarchy. Currently only used for Progress Views (TAProgressView)
