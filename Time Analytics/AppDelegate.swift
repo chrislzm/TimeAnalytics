@@ -21,8 +21,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     // MARK: Properties
     var window: UIWindow?
-    var totalUpdateChunks = 0
-    var chunksUpdated = 0
+    var totalMovesChunks = 0
+    var movesChunksProcessed = 0
+    var totalHealthKitChunks = 0
+    var healthKitChunksProcessed = 0
     var query:String?
     let stack = CoreDataStack(modelName: "Managed Objects")!
     var healthStore = HKHealthStore()
@@ -52,50 +54,60 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         TAModel.sharedInstance().autoUpdateMovesData(TANetClient.MovesApi.Constants.AutoUpdateMinutes)
         
         // Listen for data updates, so we can coordinate data download completion and data processing
-        NotificationCenter.default.addObserver(self, selector: #selector(AppDelegate.willDownloadData(_:)), name: Notification.Name("willDownloadData"), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(AppDelegate.didProcessData(_:)), name: Notification.Name("didProcessDataChunk"), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(AppDelegate.willCompleteUpdate(_:)), name: Notification.Name("willCompleteUpdate"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(AppDelegate.willDownloadMovesData(_:)), name: Notification.Name("willDownloadMovesData"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(AppDelegate.didProcessMovesData(_:)), name: Notification.Name("didProcessMovesDataChunk"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(AppDelegate.didProcessHealthKitData(_:)), name: Notification.Name("didProcessHealthKitDataChunk"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(AppDelegate.didCompleteMovesUpdate(_:)), name: Notification.Name("didCompleteMovesUpdate"), object: nil)
 
         return true
     }
 
     // MARK: Data update methods
     
-    // Receives and stores the number of data chunks we need to download
-    
-    func willDownloadData(_ notification:Notification) {
-        chunksUpdated = 0
-        totalUpdateChunks = notification.object as! Int
+    // Receives and stores the number of data chunks we need to download from Moves
+    func willDownloadMovesData(_ notification:Notification) {
+        // Reset variables before processing Moves data
+        movesChunksProcessed = 0
+        totalMovesChunks = notification.object as! Int
     }
     
     // Increments number of data chunks successfully downloaded from Moves and parsed
-    
-    func didProcessData(_ notification:Notification) {
-        chunksUpdated += 1
-        
-        // When all data chunks are complete, we launch Time Analytics data generation
-        if totalUpdateChunks == chunksUpdated {
+    func didProcessMovesData(_ notification:Notification) {
+        movesChunksProcessed += 1
+        if movesChunksProcessed == totalMovesChunks {
+            // Done downloading Moves data, start generating TA Data
             TAModel.sharedInstance().generateTADataFromMovesData()
         }
     }
-
-    // The model notifies us it is finished processing Moves data.
     
-    func willCompleteUpdate(_ notification:Notification) {
+    // The model notifies us it is finished processing Moves data.
+    func didCompleteMovesUpdate(_ notification:Notification) {
+        // Reset variables before processing HealthKit data
+        healthKitChunksProcessed = 0
+        totalHealthKitChunks = TAModel.Constants.HealthKitDataChunks
         
-        // Now import HealthKit data, if we are logged in. If the user is logging in for the first time, we do this instead in the login flow.
+        // If we are logged in, now import HealthKit data.
+        // (During the first login, the user is still not fully logged in at this point. They need to first authorize our access to HealthKit on a separate screen. We begin the HealthKit import there manually.
         if TAModel.sharedInstance().isLoggedIn() {
             TAModel.sharedInstance().updateHealthKitData()
         }
-
+    }
+    
+    // Increments number of HealthKit data chunks successfully processed
+    func didProcessHealthKitData(_ notification:Notification) {
+        healthKitChunksProcessed += 1
+        if healthKitChunksProcessed == totalHealthKitChunks {
+            didCompleteAllUpdates()
+        }
+    }
+    
+    // Final step in updating data
+    func didCompleteAllUpdates() {
         // Update our internal lastCheckedForNewData variable that stores when we last checked for new data
         TAModel.sharedInstance().updateLastCheckedForNewData()
         
-        // Save data to persistent store
-        TAModel.sharedInstance().save()
-
         // Notify anyone who's listening that we're completely done with updating our data
-        TAModel.sharedInstance().notifyDidCompleteUpdate()
+        TAModel.sharedInstance().notifyDidCompleteAllUpdates()
     }
 }
 
