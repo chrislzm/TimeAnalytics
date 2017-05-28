@@ -17,17 +17,17 @@ How to Use
 ----------
 Basic requirements: Internet connection, Moves application and account
 
-1. Open the app and follow prompts to login with moves
-2. Optionally allow access to Health Data
-3. Once Health Data import is complete, tap "Continue" to enter the app
-4. Tap on the tabs to access the three main views: Places, Commutes, Activities
-5. Tap on any item to view detailed information about it
-6. Tapping on the chart, map, or tables rows in detail views will open another detail view about that item
-7. Tap on the gear icon in main views to access the settings menu, where you may manually refresh the data or log out
+1. Open the app and follow prompts to login with moves.
+2. Data import will begin automatically. You will be prompted to allow access to your Health Data, which you can always turn on or off in the Health app.
+3. Once Health Data import is complete, tap "Continue" to enter the app.
+4. Tap on the tabs to access each of the three main views: Places, Commutes, Activities.
+5. Tap on any item in a table to open a detail view for that item.
+6. Within detail views tapping on charts, maps or tables rows will open another detail view for that item. In chart view, you may pinch inwards or outwards along the x and y axis to magnify or shrink that axis.
+7. Tap on the gear icon in main views to access the settings menu, where you may manually refresh your data or log out.
 
 Data Assumptions
 ----------------
-Because Moves data can contain gaps and incomplete information, Time Analytics interpolates the data using these assumptions:
+Because Moves data can contain gaps and incomplete information, Time Analytics interpolates your data using these assumptions:
 
 * The startTime for the first place segment that begins after a move segment M is equal to the endTime of M
 * The endTime for the last place segment that end before a move segment M is equal to the startTime of M
