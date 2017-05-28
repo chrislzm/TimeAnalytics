@@ -1,5 +1,5 @@
 //
-//  Model.swift
+//  TAModel.swift
 //  Time Analytics
 //
 //  Convenience interface to the Time Analytics model. Used by Controllers and the App Delegate.

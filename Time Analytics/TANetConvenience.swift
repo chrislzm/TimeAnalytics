@@ -1,8 +1,8 @@
 //
-//  NetConvenience.swift
+//  TANetConvenience.swift
 //  Time Analytics
 //
-//  Time Analytics Network Client convenience methods - Utilizes core network client methods to exchange information with the Moves REST API. This class is used by TAModel for Moves data and by TALoginViewController for auth flow.
+//  Time Analytics Network Client convenience methods. Utilizes core network client methods to exchange information with the Moves REST API. This class is used by TAModel for accessing Moves data and by TALoginViewController for login auth flow.
 //
 //
 //  Created by Chris Leung on 5/14/17.

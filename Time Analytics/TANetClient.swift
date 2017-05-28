@@ -1,8 +1,8 @@
 //
-//  NetClient.swift
+//  TANetClient.swift
 //  Time Analytics
 //
-//  Core client methods for Time Analytics. Used by TANetClientConvenience methods to make requests of the Moves REST API.
+//  Core network client methods for Time Analytics. Used by TANetClientConvenience methods to make requests of the Moves REST API.
 //
 //  Created by Chris Leung on 5/14/17.
 //  Copyright © 2017 Chris Leung. All rights reserved.

@@ -2,7 +2,11 @@
 //  TAModelNotificationExtensions.swift
 //  Time Analytics
 //
-//  Contains all send notification methods used in Time Analytics.
+//  Contains all send notification methods used in Time Analytics. These notifications are used in the following ways:
+//
+//  1. By AppDelegate to synchronize and coordinate different steps of data processing flow.
+//
+//  2. By ViewControllers to display progress indicator views or activity views to the user, signifying background/network activity.
 //
 //  Only used by TAModel and AppDelegate classes.
 //

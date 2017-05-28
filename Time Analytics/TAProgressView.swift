@@ -3,7 +3,7 @@
 //  Time Analytics
 //
 //  A view that contains a progress view and title with % complete.
-//    -Increments its progress every time it observes a "didProcessDataChunk" notification
+//    -Increments its progress every time it observes a "didProcessMovesDataChunk" notification or "didProcessHealthKitDataChunk" notification
 //    -Dismisses itself once it reaches 100%
 //    -It can also be dismissed by calling the removeProgressView method in TAViewController
 //

@@ -2,7 +2,7 @@
 //  TAViewExtensions.swift
 //  Time Analytics
 //
-//  Miscellaneous extensions for the Time Analytics View
+//  Miscellaneous extensions for UIView objects
 //
 //  Created by Chris Leung on 5/20/17.
 //  Copyright © 2017 Chris Leung. All rights reserved.
@@ -20,7 +20,6 @@ extension UIView {
     func fadeOut(duration: TimeInterval = 0.25, delay: TimeInterval = 0.0, _ completionHandler: ((_ finished:Bool) -> Void)?) {
         UIView.animate(withDuration: duration, animations: { self.alpha = 0.0 }, completion: completionHandler)
     }
-    
 }
 
 extension UITabBar {

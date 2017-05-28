@@ -1,5 +1,5 @@
 //
-//  NetConstants.swift
+//  TANetConstants.swift
 //  Time Analytics
 //
 //  Constants used in the TANetClient class
