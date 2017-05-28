@@ -11,7 +11,7 @@
 import UIKit
 
 class TASettingsViewController:TADataUpdateViewController {
-    
+
     // MARK: Outlets
     
     @IBOutlet weak var lastUpdatedLabel: UILabel!
@@ -23,6 +23,7 @@ class TASettingsViewController:TADataUpdateViewController {
     
     @IBAction func refreshDataButtonPressed(_ sender: Any) {
         refreshActivityView.startAnimating()
+        refreshDataButton.setTitle("", for: .disabled)
         refreshDataButton.isEnabled = false
         // After this begins, AppDelegate will handle the rest of the data processing flow, including importing HealthKit data
         TAModel.sharedInstance().downloadAndProcessNewMovesData()
