@@ -17,7 +17,7 @@ class TADataUpdateViewController:TAViewController {
     // MARK: Properties
     var progressView:TAProgressView! // Stores reference to the currently displayed progressView
     var displayingErrorAlert = false // Prevents multiple alerts from displaying at once
-    var errorCompletionHandler: ()->Void = { () in } // Called after "OK" button is hit on error alert dialogs
+    var errorCompletionHandler: ()->Void = { () in } // Called after "OK" button is tapped on error alert dialogs
     
     // MARK: LifeCycle
     
@@ -32,8 +32,9 @@ class TADataUpdateViewController:TAViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(TADataUpdateViewController.didCompleteAllUpdates(_:)), name: Notification.Name("didCompleteAllUpdates"), object: nil)
         
         // For displaying errors
-        NotificationCenter.default.addObserver(self, selector: #selector(TADataUpdateViewController.downloadDataError(_:)), name: Notification.Name("downloadDataError"), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(TADataUpdateViewController.dataParsingError(_:)), name: Notification.Name("dataParsingError"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(TADataUpdateViewController.downloadMovesDataError(_:)), name: Notification.Name("downloadMovesDataError"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(TADataUpdateViewController.movesDataParsingError(_:)), name: Notification.Name("movesDataParsingError"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(TADataUpdateViewController.healthDataReadError(_:)), name: Notification.Name("healthDataReadError"), object: nil)
     }
 
     // MARK: Notification Observers
@@ -93,15 +94,21 @@ class TADataUpdateViewController:TAViewController {
     }
     
     // Display alert to inform user of error
-    func downloadDataError(_ notification:Notification) {
-        displayDataError("Error downloading data. Please try again later.")
+    func downloadMovesDataError(_ notification:Notification) {
+        displayError("Error downloading Moves data. Please try again later.")
     }
  
-    func dataParsingError(_ notification:Notification) {
-        displayDataError("Error processing data. Please try again later.")
+    func movesDataParsingError(_ notification:Notification) {
+        displayError("Error processing Moves data. Please try again later.")
     }
+
+    func healthDataReadError(_ notification:Notification) {
+        displayError("Error reading Health data. Please try again later.")
+    }
+
+    // MARK: View Methods 
     
-    func displayDataError(_ errorString:String) {
+    func displayError(_ errorString:String) {
         DispatchQueue.main.async {
             if !self.displayingErrorAlert {
                 self.displayingErrorAlert = true
