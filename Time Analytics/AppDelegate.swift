@@ -4,9 +4,27 @@
 //
 //  Has two important responsibilities:
 //
-//    1. Checks whether the Moves app gave us an authorization code. This is part of the Moves login auth flow.
+//  * Checks whether the Moves app gave us an authorization code. This is part of the Moves login auth flow.
 //
-//    2. Manages data download and processing.
+//  * Helps manages data updates. Because this process involves many steps that involve waiting (for network or for background processes to complete) we need to use notifications to synchronize everything. App Delegate is the one that observes these notificatons and does the synchronizing. Here's how the process flows:
+//
+//  1. A call to TAModel.downloadAndProcessNewMovesData() (by auto-update or by the user) starts the entire data update process
+//
+//  2. "willDownloadMovesData" notification is sent by TAModel along with the # of "chunks" of data that will need to be downloaded and processed
+//
+//  3. "didProcessMovesDataChunk" notification is sent by TAModel every time every time a chunk of data has been successfully downloaded and processed
+//
+//  4. When AppDelegate sees we have completed processing all data chunks, it calls TAModel.generateTADataFromMovesData() which begins generating our internal "TA" data from the Moves data
+//
+//  5. If there is data to generate, TAModel sends "notifyWillGenerateTAData" notification before it starts
+//
+//  6. If there is no data to generate, or data generation is complete, TAModel sends "notifyDidCompleteMovesUpdate" notification
+//
+//  7. AppDelegate then starts importing HealthKit data using TAModel.updateHealthKitData(), unless we're not logged in (see didCompleteMovesUpdate method below).
+//
+//  8. TAModel (Health Kit Extension) sends a "didProcessHealthKitDataChunk" notification every time it processes a chunk of HealthKit data. There are a finite number of stages to this process that we know in advanced.
+//
+//  9. When AppDelegate sees we have processed all chunks of HealthKit data, it updates the internal session variable of the last time we checked for data, and then sends a final "didCompleteAllUpdates" notification
 //
 //  Created by Chris Leung on 5/14/17.
 //  Copyright © 2017 Chris Leung. All rights reserved.
@@ -29,8 +47,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let stack = CoreDataStack(modelName: "Managed Objects")!
     var healthStore = HKHealthStore()
     
-    // MARK: Lifecycle
+    // MARK: Handle Moves Auth Code
     
+    // If we received an authorization code from the Moves app, package it in a notification and send it. TALoginViewController will be listening for this notification.
     func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
         if let query = url.query {
             let keyValues = query.components(separatedBy: "&")
@@ -43,6 +62,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         return true
     }
+    
+    // MARK: Lifecycle
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Restore all session data
@@ -59,8 +80,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         return true
     }
-
-    // MARK: Data update methods
+    
+    // MARK: Notification Handlers for Coordinating Data Processing
     
     // Receives and stores the number of data chunks we need to download from Moves
     func willDownloadMovesData(_ notification:Notification) {
