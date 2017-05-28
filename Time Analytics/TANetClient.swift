@@ -56,7 +56,6 @@ class TANetClient {
         let task = session.dataTask(with: request as URLRequest) { (data, response, error) in
             
             func sendError(_ error: String) {
-                print(error)
                 let userInfo = [NSLocalizedDescriptionKey : error]
                 completionHandler(nil, NSError(domain: "taskForGETMethod", code: 1, userInfo: userInfo))
             }
