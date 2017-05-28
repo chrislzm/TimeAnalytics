@@ -52,6 +52,9 @@ extension TAModel {
     // Manages the import of HealthKit data to Time Analytics: Reads HealthKit data and creates TAActivity objects for them
     
     func updateHealthKitData() {
+        
+        notifyWillGenerateHKData()
+        
         let stack = getCoreDataStack()
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
@@ -74,7 +77,7 @@ extension TAModel {
             }
             // Generate TAActivitySegment objects for the data
             stack.performBackgroundBatchOperation() { (context) in
-                self.notifyDidProcessDataChunk()
+                self.notifyDidProcessHealthKitDataChunk()
                 for item in result! {
                     let sample = item as! HKCategorySample
                     if sample.value == HKCategoryValueSleepAnalysis.inBed.rawValue {
@@ -82,7 +85,7 @@ extension TAModel {
                     }
                 }
                 stack.save()
-                self.notifyDidProcessDataChunk()
+                self.notifyDidProcessHealthKitDataChunk()
             }
         }
         
@@ -93,14 +96,14 @@ extension TAModel {
                 return
             }
             stack.performBackgroundBatchOperation() { (context) in
-                self.notifyDidProcessDataChunk()
+                self.notifyDidProcessHealthKitDataChunk()
                 for item in result! {
                     let workout = item as! HKWorkout
                     let workoutType = self.getHealthKitWorkoutTypeString(workout.workoutActivityType.rawValue)
                     TAModel.sharedInstance().createNewTAActivitySegment(item.startDate, item.endDate, "Workout", workoutType, firstMovesDataDate, context)
                 }
                 stack.save()
-                self.notifyDidProcessDataChunk()
+                self.notifyDidProcessHealthKitDataChunk()
             }
         }
     }
