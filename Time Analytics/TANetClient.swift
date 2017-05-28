@@ -15,6 +15,10 @@ class TANetClient {
     // MARK: Properties
     
     var session = URLSession.shared
+
+    // MARK: Session Variables
+    
+    // A copy of all these session variables are stored in UserDefaults, and loaded by the AppDelegate when the app is opened
     
     // Moves session variables
     var movesAuthCode:String?
@@ -24,6 +28,8 @@ class TANetClient {
     var movesUserId:UInt64?
     var movesUserFirstDate:String?
     var movesLatestUpdate:Date?
+    
+    // Internal session variables
     var lastCheckedForNewData:Date?
     
     // MARK: Methods
