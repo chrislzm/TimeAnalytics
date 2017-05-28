@@ -207,13 +207,13 @@ class TAViewController: UIViewController {
     }
     
     func saveAllDataToPersistentStore() {
-        let stack = self.getCoreDataStack()
+        let stack = getCoreDataStack()
         stack.save()
     }
     
     // We delete all data on the background context since objects are loaded in there. On save, deletions will bubble their through all contexts and to the persistent store.
     func clearAllData() {
-        let stack = self.getCoreDataStack()
+        let stack = getCoreDataStack()
         stack.performBackgroundBatchOperation() { (context) in                TAModel.sharedInstance().deleteAllDataFor(["MovesMoveSegment","MovesPlaceSegment","TAPlaceSegment","TACommuteSegment","TAActivitySegment"],context)
         }
     }
@@ -282,7 +282,7 @@ class TAViewController: UIViewController {
     
     func showPlaceDetailViewController(_ place:TAPlaceSegment) {
 
-        let detailController = self.storyboard!.instantiateViewController(withIdentifier: "TAPlaceDetailViewController") as! TAPlaceDetailViewController
+        let detailController = storyboard!.instantiateViewController(withIdentifier: "TAPlaceDetailViewController") as! TAPlaceDetailViewController
         
         detailController.lat = place.lat
         detailController.lon = place.lon
@@ -295,7 +295,7 @@ class TAViewController: UIViewController {
     
     func showCommuteDetailViewController(_ commute:TACommuteSegment) {
 
-        let detailController = self.storyboard!.instantiateViewController(withIdentifier: "TACommuteDetailViewController") as! TACommuteDetailViewController
+        let detailController = storyboard!.instantiateViewController(withIdentifier: "TACommuteDetailViewController") as! TACommuteDetailViewController
         
         detailController.startName = commute.startName!
         detailController.endName = commute.endName!
@@ -311,7 +311,7 @@ class TAViewController: UIViewController {
     }
     
     func showActivityDetailViewController(_ activity:TAActivitySegment) {
-        let detailController = self.storyboard!.instantiateViewController(withIdentifier: "TAActivityDetailViewController") as! TAActivityDetailViewController
+        let detailController = storyboard!.instantiateViewController(withIdentifier: "TAActivityDetailViewController") as! TAActivityDetailViewController
         
         detailController.name = activity.name
         detailController.type = activity.type

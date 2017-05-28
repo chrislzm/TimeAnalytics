@@ -72,7 +72,7 @@ class TATableViewController: TAViewController, UITableViewDelegate, UITableViewD
     // MARK: View Methods
     
     func showSettingsMenu() {
-        let controller = self.storyboard?.instantiateViewController(withIdentifier: "TASettingsView") as! TASettingsViewController
+        let controller = storyboard?.instantiateViewController(withIdentifier: "TASettingsView") as! TASettingsViewController
         navigationController?.pushViewController(controller, animated: true)
     }
     

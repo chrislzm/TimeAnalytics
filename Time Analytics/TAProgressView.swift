@@ -23,15 +23,15 @@ class TAProgressView: UIView {
     var currentProgress:Float = 0
     
     func addProgress(_ amountProgressed:Float) {
-        self.currentProgress += amountProgressed
-        var percentComplete = self.currentProgress/self.totalProgress
+        currentProgress += amountProgressed
+        var percentComplete = currentProgress/totalProgress
         // If somehow we got over 100%, adjust the % and dismiss ourselves
         if percentComplete > 1 {
             percentComplete = 1
             currentProgress = totalProgress
         }
-        self.progressView.setProgress(percentComplete, animated: true)
-        self.titleLabel.text = "\(self.defaultText) (\(Int(percentComplete*100))%)"
+        progressView.setProgress(percentComplete, animated: true)
+        titleLabel.text = "\(defaultText) (\(Int(percentComplete*100))%)"
     }
     
     func didCompleteDataChunk(_ notification:Notification) {

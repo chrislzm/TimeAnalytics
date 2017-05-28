@@ -37,7 +37,7 @@ extension TANetClient {
     func loginWithMovesAuthCode(authCode:String, completionHandler: @escaping (_ error: String?) -> Void) {
         
         // 1. Save the auth code to our client
-        self.movesAuthCode = authCode
+        movesAuthCode = authCode
 
         /* 2. Create and run HTTP request to authenticate the userId and password with Udacity */
         
@@ -78,10 +78,10 @@ extension TANetClient {
         var accessTokenExpiration = Date()
         accessTokenExpiration.addTimeInterval(TimeInterval(expiresIn - TANetClient.MovesApi.Constants.AccessTokenExpirationBuffer))
         
-        self.movesUserId = userId
-        self.movesAccessTokenExpiration = accessTokenExpiration
-        self.movesAccessToken = accessToken
-        self.movesRefreshToken = refreshToken
+        movesUserId = userId
+        movesAccessTokenExpiration = accessTokenExpiration
+        movesAccessToken = accessToken
+        movesRefreshToken = refreshToken
 
         /* 5. Now retrieve user's first date so we'll know how to download all his/her data later */
         getMovesUserFirstDate() { (userFirstDate,error) in

@@ -26,7 +26,7 @@ class TAModel {
         if TAModel.AutoUpdateInterval > 0 {
             
             if isLoggedIn() {
-                self.downloadAndProcessNewMovesData()
+                downloadAndProcessNewMovesData()
             }
             
             let delayInNanoSeconds = UInt64(TAModel.AutoUpdateInterval * 60) * NSEC_PER_SEC
