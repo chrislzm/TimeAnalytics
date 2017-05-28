@@ -213,7 +213,7 @@ class TAModel {
         }
         
         // The above will return quickly -- let AppDelegate know we've made all the download requests
-        notifyWillDownloadData(dataChunks: dataChunks)
+        notifyWillDownloadMovesData(dataChunks: dataChunks)
     }
     
     // Converts JSON data received from Moves API into MovesPlaceSegment and MovesMoveSegment managed objects
@@ -284,7 +284,7 @@ class TAModel {
                 }
             }
         }
-       notifyDidProcessDataChunk()
+       notifyDidProcessMovesDataChunk()
     }
     
     // After all data has been received, we call this method to find the newest "latestUpdate" value from Moves data, and update our stored value with a newer value if necessary
@@ -477,10 +477,10 @@ class TAModel {
                 stack.save()
                 self.saveNewMovesLastUpdateDate(context)
                 self.deleteAllDataFor(["MovesMoveSegment","MovesPlaceSegment"], context) // We no longer need old moves data, clear it out
-                self.notifyWillCompleteUpdate()
+                self.notifyDidCompleteMovesUpdate()
             }
         } else {
-            notifyWillCompleteUpdate()
+            notifyDidCompleteMovesUpdate()
         }
     }
     
@@ -519,7 +519,7 @@ class TAModel {
             }
             createNewTAPlaceSegment(movesStartTime, actualStartTime, actualEndTime, lat, lon, name, context)
             
-            notifyDidProcessDataChunk()
+            notifyDidProcessMovesDataChunk()
         }
     }
 
@@ -557,7 +557,7 @@ class TAModel {
                 // Set last object to current
                 lastPlace = thisPlace
                 
-                notifyDidProcessDataChunk()
+                notifyDidProcessMovesDataChunk()
             }
         }
     }
@@ -641,35 +641,52 @@ class TAModel {
     }
     
     // Called by TAModel when downloading Moves data has commenced. Object will contain the number of requests that need to complete.
-    func notifyWillDownloadData(dataChunks:Int) {
+    func notifyWillDownloadMovesData(dataChunks:Int) {
         DispatchQueue.main.async {
-            NotificationCenter.default.post(name: Notification.Name("willDownloadData"), object: dataChunks)
+            NotificationCenter.default.post(name: Notification.Name("willDownloadMovesData"), object: dataChunks)
         }
     }
     
-    // Called by TAModel whenever a "chunk" has completed. For data downloads, this will be requests. For generating data from moves data, this will be the approximate number of records. The number is approximate, since Moves data is messy, and much of it gets consolidated.
-    func notifyDidProcessDataChunk() {
+    // Called by TAModel whenever a Moves "chunk" has completed. For data downloads, this will be # of requests. For generating data from moves data, this will be the approximate number of records. The number is approximate, since Moves data is messy, and much of it gets consolidated.
+    func notifyDidProcessMovesDataChunk() {
         DispatchQueue.main.async {
-            NotificationCenter.default.post(name: Notification.Name("didProcessDataChunk"), object: nil)
+            NotificationCenter.default.post(name: Notification.Name("didProcessMovesDataChunk"), object: nil)
         }
     }
     
     // Called by TAModel when we have completed parsing all downloaded data, and will begin using it to generate TA data
     func notifyWillGenerateTAData(dataChunks:Int) {
-        NotificationCenter.default.post(name: Notification.Name("willGenerateTAData"), object: dataChunks)
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(name: Notification.Name("willGenerateTAData"), object: dataChunks)
+        }
+        
     }
     
     // Called by TAModel when all Time Analytics data has finished generating from Moves data.
-    func notifyWillCompleteUpdate() {
+    func notifyDidCompleteMovesUpdate() {
         DispatchQueue.main.async {
-            NotificationCenter.default.post(name: Notification.Name("willCompleteUpdate"), object: nil)
+            NotificationCenter.default.post(name: Notification.Name("didCompleteMovesUpdate"), object: nil)
         }
     }
     
-    // Called by AppDelegate when *all* data has been saved and cleanup has been done.
-    func notifyDidCompleteUpdate() {
+    // Called by TAModel HealthKit Extension when we begin importing HealthKit data
+    func notifyWillGenerateHKData() {
         DispatchQueue.main.async {
-            NotificationCenter.default.post(name: Notification.Name("didCompleteUpdate"), object: nil)
+            NotificationCenter.default.post(name: Notification.Name("willGenerateHKData"), object: nil)
+        }
+    }
+    
+    // Called by TAModel HealthKit Extension when it has completed a chunk of HealthKit data
+    func notifyDidProcessHealthKitDataChunk() {
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(name: Notification.Name("didProcessHealthKitDataChunk"), object: nil)
+        }
+    }
+
+    // Called by AppDelegate when *all* data has been saved and cleanup has been done.
+    func notifyDidCompleteAllUpdates() {
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(name: Notification.Name("didCompleteAllUpdates"), object: nil)
         }
     }
     
