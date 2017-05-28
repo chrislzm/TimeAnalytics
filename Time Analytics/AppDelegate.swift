@@ -45,11 +45,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Restore moves session data
-        TAModel.sharedInstance().loadMovesSessionData()
+        // Restore all session data
+        TAModel.sharedInstance().loadAllSessionData()
         
         // Start regular autoupdates in the background
-        TAModel.sharedInstance().autoUpdateMovesData(TANetClient.MovesApi.Constants.AutoUpdateMinutes)
+        TAModel.sharedInstance().startAutoUpdate()
         
         // Listen for data updates, so we can coordinate data download completion and data processing
         NotificationCenter.default.addObserver(self, selector: #selector(AppDelegate.willDownloadMovesData(_:)), name: Notification.Name("willDownloadMovesData"), object: nil)
@@ -82,7 +82,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func didCompleteMovesUpdate(_ notification:Notification) {
         // Reset variables before processing HealthKit data
         healthKitChunksProcessed = 0
-        totalHealthKitChunks = TAModel.Constants.HealthKitDataChunks
+        totalHealthKitChunks = TAModel.HealthKitDataChunks
         
         // If we are logged in, now import HealthKit data.
         // (During the first login, the user is still not fully logged in at this point. They need to first authorize our access to HealthKit on a separate screen. We begin the HealthKit import there manually.
