@@ -34,36 +34,24 @@ class ViewController: TAViewController {
     override func viewDidAppear(_ animated: Bool) {
         
         // Check if we are already logged in
-        TANetClient.sharedInstance().verifyLoggedIntoMoves() { (error) in
+        if TAModel.sharedInstance().isLoggedIn() {
+            performSegue(withIdentifier: "AlreadyLoggedIn", sender: nil)
+        } else {
+            // Ensure we've cleared all invalid moves session data
+            TAModel.sharedInstance().deleteMovesSessionInfo()
             
-            DispatchQueue.main.async {
-                
-                // Show the login screen if there was any error
-                guard error == nil else {
-                    
-                    // Ensure we've cleared all invalid moves session data
-                    TAModel.sharedInstance().deleteMovesSessionInfo()
-
-                    // Clear all data that might have been partially processed in a previously failed login
-                    self.clearAllData()
-
-                    // Hide the overlays to reveal the login screen
-                    self.launchScreenActivityView.fadeOut() { (finished) in
-                        self.launchScreenActivityView.isHidden = true
-                    }
-                    self.launchScreenImageView.fadeOut() { (finished) in
-                        self.launchScreenImageView.isHidden = true
-                    }
-                    
-                    return
-                }
-                
-                // We are already logged in -- go to the app
-                self.performSegue(withIdentifier: "AlreadyLoggedIn", sender: nil)
+            // Clear all data that might have been partially processed in a previously failed login
+            clearAllData()
+            
+            // Hide the overlays to reveal the login screen
+            launchScreenActivityView.fadeOut() { (finished) in
+                self.launchScreenActivityView.isHidden = true
+            }
+            launchScreenImageView.fadeOut() { (finished) in
+                self.launchScreenImageView.isHidden = true
             }
         }
     }
-
 
     func didGetMovesAuthCode(_ notification:Notification) {
         let authCode = notification.userInfo![AnyHashable("code")] as! String
