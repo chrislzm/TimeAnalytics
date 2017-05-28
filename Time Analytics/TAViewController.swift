@@ -13,6 +13,8 @@ import UIKit
 
 class TAViewController: UIViewController {
     
+    let ProgressViewDefaultTag = 100 // For identifying and removing progress views
+    
     // MARK: Generate Description Strings for Managed Objects
 
     func generatePlaceStringDescriptions(_ place:TAPlaceSegment,_ currentYear:String?) -> (String,String,String) {
@@ -83,7 +85,7 @@ class TAViewController: UIViewController {
         let dayTimeIn = Calendar.current.component(.day, from: startTime)
         let dayTimeOut = Calendar.current.component(.day, from: endTime)
         let today = Calendar.current.component(.day, from: Date())
-        let yesterday = Calendar.current.component(.day, from: Date(timeInterval: -86400, since: Date()))
+        let yesterday = Calendar.current.component(.day, from: Date(timeInterval: -86400, since: Date())) // 86400 seconds in one day
         var timeOut:String
         
         if dayTimeIn == dayTimeOut {
@@ -228,7 +230,7 @@ class TAViewController: UIViewController {
         view.alpha = 0
         view.clipsToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.tag = 100
+        view.tag = ProgressViewDefaultTag
         
         parent.addSubview(view)
         
@@ -241,7 +243,7 @@ class TAViewController: UIViewController {
     
     // Remove a progress view and its observers
     func removeProgressView(completionHandler: (()-> Void)?) {
-        if let progressView = view.viewWithTag(100) as? TAProgressView {
+        if let progressView = view.viewWithTag(ProgressViewDefaultTag) as? TAProgressView {
             progressView.progressView.setProgress(1.0, animated: true)
             progressView.fadeOut() { (finished) in
                 progressView.removeFromObservers()

@@ -18,12 +18,18 @@ import CoreData
 class TATableViewController: TAViewController, UITableViewDelegate, UITableViewDataSource {
     
     // MARK: Properties
-
+    
+    let activityIndicatoryXY = 0
+    let activityIndicatorPixelSize = 20
+    let activityIndicatorStyle = UIActivityIndicatorViewStyle.gray
+    
     let tableSectionHeaderHeight = CGFloat(30)
     let tableSectionFontSize = CGFloat(13)
     let tableSectionFontWeight = UIFontWeightBold
     let tableSectionFontColor = UIColor.black
     let tableSectionBackgroundColor = UIColor.groupTableViewBackground
+    
+    let tabBarImageInsets = UIEdgeInsetsMake(6, 0, -6, 0)
     
     var tableView:UITableView! = nil
     var activityIndicatorView:UIActivityIndicatorView! // Shown in navbar when updating data in the background
@@ -49,12 +55,12 @@ class TATableViewController: TAViewController, UITableViewDelegate, UITableViewD
         for tabBarItem in (tabBarController?.tabBar.items)!
         {
             tabBarItem.title = ""
-            tabBarItem.imageInsets = UIEdgeInsetsMake(6, 0, -6, 0)
+            tabBarItem.imageInsets = tabBarImageInsets
         }
         
         // Setup activity view in navigation bar
-        activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
-        activityIndicatorView.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
+        activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: activityIndicatorStyle)
+        activityIndicatorView.frame = CGRect(x: activityIndicatoryXY, y: activityIndicatoryXY, width: activityIndicatorPixelSize, height: activityIndicatorPixelSize)
         let activityIndicatorBarButtonItem = UIBarButtonItem(customView: activityIndicatorView)
         navigationItem.setLeftBarButton(activityIndicatorBarButtonItem, animated: false)
         
