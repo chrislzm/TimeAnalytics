@@ -15,7 +15,7 @@ Developed and tested with XCode 8+ and iOS 10+.
 
 How to Use
 ----------
-Basic requirements: Internet connection, Moves App
+Basic requirements: Internet connection, Moves application and account
 
 1. Open the app and follow prompts to login with moves
 2. Optionally allow access to Health Data
