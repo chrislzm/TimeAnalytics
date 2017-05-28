@@ -126,11 +126,12 @@
                     </view>
                     <connections>
                         <segue destination="vu4-gK-h2O" kind="show" identifier="HealthKit" id="G0L-Ss-wC8"/>
+                        <segue destination="BYZ-38-t0r" kind="show" identifier="BackToLogin" id="EYd-72-eGo"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pNG-OA-DhU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="889" y="-1007"/>
+            <point key="canvasLocation" x="846" y="-1007"/>
         </scene>
         <!--Health Kit Access Controller-->
         <scene sceneID="ha7-Yu-Ydh">
