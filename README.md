@@ -7,8 +7,9 @@ By Chris Leung
 
 Installation
 ------------
-1. First install the [Moves app](https://moves-app.com/) and create an account
+1. Install [Moves](https://moves-app.com/) and create an account
 2. Compile and run Time Analytics
+3. Login with Moves
 
 Developed and tested with XCode 8+ and iOS 10+.
 
@@ -45,14 +46,13 @@ Additional Settings
 
 TAModel.swift
 
-* AutoUpdateInterval: Interval in minutes between background auto-updates of Moves and HealthKit data. Default is
+* AutoUpdateInterval: Interval in minutes between background auto-updates of Moves and HealthKit data. Default is 10 minutes.
 
 TANetConstants.swift
 
 * TANetClient.MovesApi.AccessTokenExpirationBuffer: OAuth access token expiration time buffer. Default is 60 seconds. If the user makes a network request within this time buffer of the expiration time, we will first attempt to get a new token before making our network request.
 
 * TANetClient.MovesApi.UpdateWindowBuffer: Time from before the Moves "lastUpdate" to request data from. Default is 1 day before. (Moves doesn't guarentee that it will not update old data, though it seems highly unlikely it will.)
- 10 minutes.
 
 Issues
 ------
