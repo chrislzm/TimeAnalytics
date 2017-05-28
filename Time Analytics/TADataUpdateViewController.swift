@@ -4,7 +4,7 @@
 //
 //  Responsible for managing multiple progress indicator views for the different steps in the data processing flow.
 //
-//  Superclass. Never used directly. Has two subclasses: TADownloadViewController, TASettingsViewController
+//  Superclass. Never used directly. Has three subclasses: TADownloadViewController, TASettingsViewController, TAProcessHealthKitDataController
 //
 //  Created by Chris Leung on 5/25/17.
 //  Copyright © 2017 Chris Leung. All rights reserved.
@@ -14,7 +14,9 @@ import UIKit
 
 class TADataUpdateViewController:TAViewController {
     
+    // MARK: Properties
     var progressView:TAProgressView! // Stores reference to the currently displayed progressView
+    var displayingErrorAlert = false // Prevents multiple alerts from displaying at once
     
     // MARK: LifeCycle
     
@@ -27,6 +29,10 @@ class TADataUpdateViewController:TAViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(TADataUpdateViewController.didCompleteMovesUpdate(_:)), name: Notification.Name("didCompleteMovesUpdate"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(TADataUpdateViewController.willGenerateHKData(_:)), name: Notification.Name("willGenerateHKData"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(TADataUpdateViewController.didCompleteAllUpdates(_:)), name: Notification.Name("didCompleteAllUpdates"), object: nil)
+        
+        // For displaying errors
+        NotificationCenter.default.addObserver(self, selector: #selector(TADataUpdateViewController.downloadDataError(_:)), name: Notification.Name("downloadDataError"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(TADataUpdateViewController.dataParsingError(_:)), name: Notification.Name("dataParsingError"), object: nil)
     }
 
     // MARK: Notification Observers
@@ -82,6 +88,30 @@ class TADataUpdateViewController:TAViewController {
     func didCompleteAllUpdates(_ notification:Notification) {
         DispatchQueue.main.async {
             self.removeProgressView(completionHandler: nil)
+        }
+    }
+    
+    // Ensures all progress views are removed from the display
+    func downloadDataError(_ notification:Notification) {
+        DispatchQueue.main.async {
+            if !self.displayingErrorAlert {
+             self.displayingErrorAlert = true
+                self.displayErrorAlert("Error downloading data. Please try again later.") { (alertAction) in
+                    self.displayingErrorAlert = false
+                }
+            }
+        }
+    }
+    
+    // Ensures all progress views are removed from the display
+    func dataParsingError(_ notification:Notification) {
+        DispatchQueue.main.async {
+            if !self.displayingErrorAlert {
+                self.displayingErrorAlert = true
+                self.displayErrorAlert("Error processing data. Please try again later.") { (alertAction) in
+                    self.displayingErrorAlert = false
+                }
+            }
         }
     }
 }
