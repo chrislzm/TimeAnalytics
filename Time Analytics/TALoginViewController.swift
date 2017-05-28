@@ -44,6 +44,9 @@ class ViewController: TAViewController {
                     // Ensure we've cleared all invalid moves session data
                     TAModel.sharedInstance().deleteMovesSessionInfo()
 
+                    // Clear all data that might have been partially processed in a previously failed login
+                    self.clearAllData()
+
                     // Hide the overlays to reveal the login screen
                     self.launchScreenActivityView.fadeOut() { (finished) in
                         self.launchScreenActivityView.isHidden = true
@@ -51,6 +54,7 @@ class ViewController: TAViewController {
                     self.launchScreenImageView.fadeOut() { (finished) in
                         self.launchScreenImageView.isHidden = true
                     }
+                    
                     return
                 }
                 
