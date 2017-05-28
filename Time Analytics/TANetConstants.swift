@@ -33,7 +33,6 @@ extension TANetClient {
             static let MaxDaysPerRequest = 30 // Moves API maximum date range for data requests is 30 days
             static let AccessTokenExpirationBuffer = 60 // We will refresh OAuth Token for any requests within 60 seconds of its expiration
             static let UpdateWindowBuffer:Double = -86400 // 86400 = One day. We request data begining from one day before the last update.
-            static let AutoUpdateMinutes = 10 // Auto-update interval for background updates of Moves and HealthKit data
         }
         
         struct Methods {
