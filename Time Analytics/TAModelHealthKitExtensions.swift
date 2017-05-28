@@ -16,7 +16,8 @@ import UIKit
 extension TAModel {
 
     // MARK: Constants
-    static let HealthKitDataChunks = 4  // We process HealthKit data in 4 stages
+    
+    static let HealthKitDataChunks = 4  // DO NOT CHANGE THIS VALUE. We process HealthKit data in 4 stages
 
     // MARK: Time Analytics Data Creation Methods
     
