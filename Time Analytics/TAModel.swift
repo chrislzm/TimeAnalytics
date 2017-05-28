@@ -199,7 +199,7 @@ class TAModel {
             TANetClient.sharedInstance().getMovesDataFrom(beginDate, endDate, updatedSince){ (dataChunk, error) in
                 
                 guard error == nil else {
-                    self.notifyDownloadDataError()
+                    self.notifyDownloadMovesDataError()
                     return
                 }
 
@@ -229,7 +229,7 @@ class TAModel {
             dateFormatter.dateFormat = "yyyyMMdd"
             
             guard let storyDate = story[TANetClient.MovesApi.JSONResponseKeys.Date] as? String, let date = dateFormatter.date(from: storyDate) else {
-                notifyDataParsingError()
+                notifyMovesDataParsingError()
                 return
             }
             
@@ -239,7 +239,7 @@ class TAModel {
                 for segment in segments {
                     
                     guard let type = segment[TANetClient.MovesApi.JSONResponseKeys.Segment.SegmentType] as? String, let startTimeString = segment[TANetClient.MovesApi.JSONResponseKeys.Segment.StartTime] as? String, let endTimeString = segment[TANetClient.MovesApi.JSONResponseKeys.Segment.EndTime] as? String  else {
-                        notifyDataParsingError()
+                        notifyMovesDataParsingError()
                         return
                     }
                     
@@ -260,7 +260,7 @@ class TAModel {
                     case TANetClient.MovesApi.JSONResponseValues.Segment.Place:
                         
                         guard let place = segment[TANetClient.MovesApi.JSONResponseKeys.Segment.Place] as? [String:AnyObject], let coordinates = place[TANetClient.MovesApi.JSONResponseKeys.Place.Location] as? [String:Double], let lat = coordinates[TANetClient.MovesApi.JSONResponseKeys.Place.Latitude], let lon = coordinates[TANetClient.MovesApi.JSONResponseKeys.Place.Longitude]  else {
-                            notifyDataParsingError()
+                            notifyMovesDataParsingError()
                             return
                         }
                         
@@ -691,19 +691,26 @@ class TAModel {
     }
     
     // Called by TAModel when there was an error parsing JSON data from a 3rd party API
-    func notifyDataParsingError() {
+    func notifyMovesDataParsingError() {
         DispatchQueue.main.async {
-            NotificationCenter.default.post(name: Notification.Name("dataParsingError"), object: nil)
+            NotificationCenter.default.post(name: Notification.Name("movesDataParsingError"), object: nil)
         }
     }
     
     // Called by TAModel when TANetClient has informed us there was a network error
-    func notifyDownloadDataError() {
+    func notifyDownloadMovesDataError() {
         DispatchQueue.main.async {
-            NotificationCenter.default.post(name: Notification.Name("downloadDataError"), object: nil)
+            NotificationCenter.default.post(name: Notification.Name("downloadMovesDataError"), object: nil)
         }
     }
 
+    // Called by TAModel when there was an error parsing JSON data from a 3rd party API
+    func notifyHealthDataReadError() {
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(name: Notification.Name("healthDataReadError"), object: nil)
+        }
+    }
+    
     class func sharedInstance() -> TAModel {
         struct Singleton {
             static var sharedInstance = TAModel()
