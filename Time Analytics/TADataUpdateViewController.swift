@@ -82,7 +82,7 @@ class TADataUpdateViewController:TAViewController {
             self.setupOverlayView(self.progressView,self.view)
             self.progressView.fadeIn(nil)
             self.progressView.defaultText = "Processing Health Data"
-            self.progressView.totalProgress = Float(TAModel.Constants.HealthKitDataChunks)
+            self.progressView.totalProgress = Float(TAModel.HealthKitDataChunks)
         }
     }
     
