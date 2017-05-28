@@ -44,7 +44,7 @@ class TASettingsViewController:TADataUpdateViewController {
             self.clearAllData()
             
             // Clear session variables
-            TAModel.sharedInstance().deleteMovesSessionInfo()
+            TAModel.sharedInstance().deleteAllSessionData()
             
             // Unwind and display login screen
             self.performSegue(withIdentifier: "LogOut", sender: self)
@@ -90,7 +90,7 @@ class TASettingsViewController:TADataUpdateViewController {
     
     // Tells the user how often we automatically update
     func setAutoUpdateLabelText() {
-        autoUpdateLabel.text = "Automatically Updates Every \(TANetClient.MovesApi.Constants.AutoUpdateMinutes) Minutes"
+        autoUpdateLabel.text = "Automatically Updates Every \(TAModel.AutoUpdateInterval) Minutes"
     }
 }
 

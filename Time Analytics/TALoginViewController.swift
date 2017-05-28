@@ -38,7 +38,7 @@ class ViewController: TAViewController {
             performSegue(withIdentifier: "AlreadyLoggedIn", sender: nil)
         } else {
             // Ensure we've cleared all invalid moves session data
-            TAModel.sharedInstance().deleteMovesSessionInfo()
+            TAModel.sharedInstance().deleteAllSessionData()
             
             // Clear all data that might have been partially processed in a previously failed login
             clearAllData()
