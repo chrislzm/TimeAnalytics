@@ -174,6 +174,9 @@ class TAPlaceDetailViewController: TADetailViewController, UITableViewDelegate {
         
         let totalCommutes = commuteHistoryTableData!.count
         commuteHistoryLabel.text = "  Commute History - \(totalCommutes) Total"
+        
+        let totalActivities = activityHistoryTableData!.count
+        activityHistoryLabel.text = "  Activity History - \(totalActivities) Total"
     }
     
     override func viewDidAppear(_ animated: Bool) {
