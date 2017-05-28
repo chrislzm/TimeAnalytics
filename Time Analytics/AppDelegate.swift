@@ -38,8 +38,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 let keyValuePair = keyValue.components(separatedBy: "=")
                 if keyValuePair[0] == "code" {
                     NotificationCenter.default.post(name: Notification.Name("didGetMovesAuthCode"), object: nil, userInfo: [AnyHashable("code"):keyValuePair[1]])
-                } else if keyValuePair[0] == "error" {
-                    //TODO: Implement -- see error codes on https://dev.moves-app.com/docs/authentication
                 }
             }
         }
