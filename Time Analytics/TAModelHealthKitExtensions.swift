@@ -3,6 +3,7 @@
 //  Time Analytics
 //
 //  Extensions to the Time Analytics Model (TAModel) class for supporting Apple HealthKit data import
+//    -Implements Time Analytics data generation of TAActivitySegment entities from HealthKit data
 //
 //  Created by Chris Leung on 5/23/17.
 //  Copyright © 2017 Chris Leung. All rights reserved.
@@ -15,10 +16,7 @@ import UIKit
 extension TAModel {
 
     // MARK: Constants
-    
-    struct Constants {
-        static let HealthKitDataChunks = 4  // We process HealthKit data in 4 stages
-    }
+    static let HealthKitDataChunks = 4  // We process HealthKit data in 4 stages
 
     // MARK: Time Analytics Data Creation Methods
     
