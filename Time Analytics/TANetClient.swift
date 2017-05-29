@@ -2,7 +2,7 @@
 //  TANetClient.swift
 //  Time Analytics
 //
-//  Core network client methods for Time Analytics. Used by TANetClientConvenience methods to make requests of the Moves REST API.
+//  Singleton network client interface for Time Analytics. Used by TANetClientConvenience methods to make requests of the Moves REST API.
 //
 //  Created by Chris Leung on 5/14/17.
 //  Copyright © 2017 Chris Leung. All rights reserved.
@@ -11,6 +11,10 @@
 import Foundation
 
 class TANetClient {
+    
+    // MARK: Shared Instance
+    
+    static let sharedInstance = TANetClient()
     
     // MARK: Properties
     
@@ -148,14 +152,5 @@ class TANetClient {
         }
         
         return(parsedResult,nil)
-    }
-    
-    // MARK: Shared Instance
-    
-    class func sharedInstance() -> TANetClient {
-        struct Singleton {
-            static var sharedInstance = TANetClient()
-        }
-        return Singleton.sharedInstance
     }
 }

@@ -2,7 +2,7 @@
 //  TAModel.swift
 //  Time Analytics
 //
-//  Convenience interface to the Time Analytics model. Used by Controllers and the App Delegate.
+//  Singleton convenience interface to the Time Analytics model. Used by ViewControllers and the App Delegate.
 //    -Implements Moves data download (using TANetClient) and processing
 //    -Implements Time Analytics data generation for TAPlaceSegment and TACommuteSegment entities
 //    -Provides general use core data methods
@@ -16,6 +16,10 @@ import Foundation
 import UIKit
 
 class TAModel {
+    
+    // MARK: Shared Instance
+    
+    static let sharedInstance = TAModel()
     
     // MARK: AutoUpdate
     
@@ -637,16 +641,9 @@ class TAModel {
         }
     }
     
-    // MARK: App Delegate and Singleton Methods
+    // MARK: App Delegate
     
     func getAppDelegate() -> AppDelegate {
         return UIApplication.shared.delegate as! AppDelegate
-    }
-    
-    class func sharedInstance() -> TAModel {
-        struct Singleton {
-            static var sharedInstance = TAModel()
-        }
-        return Singleton.sharedInstance
     }
 }
