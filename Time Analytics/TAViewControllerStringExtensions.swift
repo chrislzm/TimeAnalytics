@@ -10,7 +10,7 @@ import Foundation
 
 extension TAViewController {
     
-    // MARK: Generate Description Strings for Managed Objects
+    // MARK: String Description Generators
     
     func generatePlaceStringDescriptions(_ place:TAPlaceSegment,_ currentYear:String?) -> (String,String,String) {
         let startTime = place.startTime! as Date
