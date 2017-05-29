@@ -55,7 +55,8 @@ class TAViewController: UIViewController {
     // We delete all data on the background context since objects are loaded in there. On save, deletions will bubble their through all contexts and to the persistent store.
     func clearAllData() {
         let stack = getCoreDataStack()
-        stack.performBackgroundBatchOperation() { (context) in                TAModel.sharedInstance().deleteAllDataFor(["MovesMoveSegment","MovesPlaceSegment","TAPlaceSegment","TACommuteSegment","TAActivitySegment"],context)
+        stack.performBackgroundBatchOperation() { (context) in
+           TAModel.sharedInstance().deleteAllDataFor(["MovesMoveSegment","MovesPlaceSegment","TAPlaceSegment","TACommuteSegment","TAActivitySegment"],context)
         }
     }
     
