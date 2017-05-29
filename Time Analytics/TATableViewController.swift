@@ -76,18 +76,46 @@ class TATableViewController: TAViewController, UITableViewDelegate, UITableViewD
         navigationController?.pushViewController(controller, animated: true)
     }
     
-    // MARK: Notification Observers
-    
-    func willDownloadData(_ notification:Notification) {
+    func startActivityIndicator() {
         DispatchQueue.main.async {
             self.activityIndicatorView.startAnimating()
         }
     }
     
-    func didCompleteUpdate(_ notification:Notification) {
+    func stopActivityIndicator() {
         DispatchQueue.main.async {
             self.activityIndicatorView.stopAnimating()
         }
+    }
+    
+    // MARK: Notification Observers
+    
+    func willDownloadData(_ notification:Notification) {
+        startActivityIndicator()
+    }
+    
+    func didCompleteUpdate(_ notification:Notification) {
+        stopActivityIndicator()
+    }
+    
+    // Error handling -- Fail gracefully by stopping the activity indicator. We don't need to let the user know here, since this error is most likely from a background auto-update that will attempt again after a short time. If the user initiates a refresh manually in the settings panel, it will display an alert to notify the user of any errors.
+    override func downloadMovesDataError(_ notification:Notification) {
+        super.downloadMovesDataError(notification)
+        handleError()
+    }
+    
+    override func movesDataParsingError(_ notification:Notification) {
+        super.movesDataParsingError(notification)
+        handleError()
+    }
+    
+    override func healthDataReadError(_ notification:Notification) {
+        super.healthDataReadError(notification)
+        handleError()
+    }
+    
+    func handleError() {
+        stopActivityIndicator()
     }
 }
 
