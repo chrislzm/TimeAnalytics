@@ -56,6 +56,7 @@
 		A5B3191A1ED6571700401BF8 /* TADetailLineChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B319191ED6571700401BF8 /* TADetailLineChartViewController.swift */; };
 		A5B6D1AA1ED16ECE00890BC4 /* TAViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B6D1A91ED16ECE00890BC4 /* TAViewExtensions.swift */; };
 		A5CE10231ED210B600AE5BDB /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5CE10221ED210B600AE5BDB /* CoreDataStack.swift */; };
+		A5D27BF41EDBA71D000C3B43 /* TAViewControllerStringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D27BF31EDBA71D000C3B43 /* TAViewControllerStringExtensions.swift */; };
 		A5FFFD8D1ECAB38C00B55020 /* TATableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5FFFD8C1ECAB38C00B55020 /* TATableViewController.swift */; };
 		A5FFFD8F1ECAB4A700B55020 /* TAPlaceTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5FFFD8E1ECAB4A700B55020 /* TAPlaceTableViewController.swift */; };
 		A5FFFD931ECAC6F200B55020 /* TASettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5FFFD921ECAC6F200B55020 /* TASettingsViewController.swift */; };
@@ -114,6 +115,7 @@
 		A5B319191ED6571700401BF8 /* TADetailLineChartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TADetailLineChartViewController.swift; sourceTree = "<group>"; };
 		A5B6D1A91ED16ECE00890BC4 /* TAViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TAViewExtensions.swift; sourceTree = "<group>"; };
 		A5CE10221ED210B600AE5BDB /* CoreDataStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
+		A5D27BF31EDBA71D000C3B43 /* TAViewControllerStringExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TAViewControllerStringExtensions.swift; sourceTree = "<group>"; };
 		A5FFFD8C1ECAB38C00B55020 /* TATableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TATableViewController.swift; sourceTree = "<group>"; };
 		A5FFFD8E1ECAB4A700B55020 /* TAPlaceTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TAPlaceTableViewController.swift; sourceTree = "<group>"; };
 		A5FFFD921ECAC6F200B55020 /* TASettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TASettingsViewController.swift; sourceTree = "<group>"; };
@@ -271,6 +273,7 @@
 				A5FFFD8C1ECAB38C00B55020 /* TATableViewController.swift */,
 				A59D8FC01ED3911D00E119F2 /* TADetailViewController.swift */,
 				A599677A1ED3378900B77D2F /* TAViewController.swift */,
+				A5D27BF31EDBA71D000C3B43 /* TAViewControllerStringExtensions.swift */,
 			);
 			name = "Superclasses and Extensions";
 			sourceTree = "<group>";
@@ -456,6 +459,7 @@
 				A59D8FBF1ED3903500E119F2 /* TACommuteDetailViewController.swift in Sources */,
 				A599677D1ED3384B00B77D2F /* TADownloadViewController.swift in Sources */,
 				A5668BE91ED2888000CB688D /* TACommuteSegment+CoreDataClass.swift in Sources */,
+				A5D27BF41EDBA71D000C3B43 /* TAViewControllerStringExtensions.swift in Sources */,
 				A59967811ED36D6C00B77D2F /* TAPlaceDetailCommuteTableViewCell.swift in Sources */,
 				A5668BEA1ED2888000CB688D /* TACommuteSegment+CoreDataProperties.swift in Sources */,
 				A57CED131ED5232D008BD6B9 /* TAModelHealthKitExtensions.swift in Sources */,
