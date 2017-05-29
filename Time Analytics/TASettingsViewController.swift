@@ -22,9 +22,8 @@ class TASettingsViewController:TADataUpdateViewController {
     // MARK: Actions
     
     @IBAction func refreshDataButtonPressed(_ sender: Any) {
-        refreshActivityView.startAnimating()
-        refreshDataButton.setTitle("", for: .disabled)
-        refreshDataButton.isEnabled = false
+        startActivityView()
+        
         // After this begins, AppDelegate will handle the rest of the data processing flow, including importing HealthKit data
         TAModel.sharedInstance().downloadAndProcessNewMovesData()
     }
@@ -59,38 +58,72 @@ class TASettingsViewController:TADataUpdateViewController {
         setLastUpdatedText()
         
         setAutoUpdateLabelText()
+        
+        refreshDataButton.setTitle("", for: .disabled) // Hide title when disabled so we can show the activity indicator in its place
     }
     
     override func didCompleteAllUpdates(_ notification: Notification) {
+        super.didCompleteAllUpdates(notification)
+        self.stopActivityView()
+        self.setLastUpdatedText()
+    }
+    
+    // MARK: View Update Methods
+    
+    func startActivityView() {
+        refreshActivityView.startAnimating()
+        refreshDataButton.isEnabled = false
+    }
+    
+    func stopActivityView() {
         DispatchQueue.main.async {
-            super.didCompleteAllUpdates(notification)
-            self.setLastUpdatedText()
             self.refreshActivityView.stopAnimating()
             self.refreshDataButton.isEnabled = true
         }
     }
     
-    // MARK: View Update Methods
-    
     // Tells the user the last time we updated our data
     func setLastUpdatedText() {
-        let lastChecked = TANetClient.sharedInstance().lastCheckedForNewData!
-        
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .full
-        dateFormatter.doesRelativeDateFormatting = true
-        
-        let timeFormatter = DateFormatter()
-        timeFormatter.dateFormat = "h:mm a"
-        
-        let lastUpdatedString = "\(dateFormatter.string(from: lastChecked)) at \(timeFormatter.string(from: lastChecked))"
-        
-        lastUpdatedLabel.text = lastUpdatedString
+        DispatchQueue.main.async {
+            let lastChecked = TANetClient.sharedInstance().lastCheckedForNewData!
+            
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateStyle = .full
+            dateFormatter.doesRelativeDateFormatting = true
+            
+            let timeFormatter = DateFormatter()
+            timeFormatter.dateFormat = "h:mm a"
+            
+            let lastUpdatedString = "\(dateFormatter.string(from: lastChecked)) at \(timeFormatter.string(from: lastChecked))"
+            
+            self.lastUpdatedLabel.text = lastUpdatedString
+        }
     }
     
     // Tells the user how often we automatically update
     func setAutoUpdateLabelText() {
         autoUpdateLabel.text = "Automatically Updates Every \(TAModel.AutoUpdateInterval) Minutes"
+    }
+    
+    // MARK: Error Handling
+    
+    override func downloadMovesDataError(_ notification:Notification) {
+        super.downloadMovesDataError(notification)
+        handleError()
+    }
+    
+    override func movesDataParsingError(_ notification:Notification) {
+        super.movesDataParsingError(notification)
+        handleError()
+    }
+    
+    override func healthDataReadError(_ notification:Notification) {
+        super.movesDataParsingError(notification)
+        handleError()
+    }
+    
+    func handleError() {
+        stopActivityView()
     }
 }
 
