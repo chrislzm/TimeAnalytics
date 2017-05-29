@@ -67,13 +67,13 @@ class TADetailViewController: TAViewController, UITableViewDataSource {
             queryTimeKey = "endTime"
         }
         
-        let places = TAModel.sharedInstance().getCoreDataManagedObject("TAPlaceSegment", nil, nil, "lat == %@ AND lon == %@ AND \(queryTimeKey) == %@", [lat,lon,time], 1, stack.context) as! [TAPlaceSegment]
+        let places = TAModel.sharedInstance.getCoreDataManagedObject("TAPlaceSegment", nil, nil, "lat == %@ AND lon == %@ AND \(queryTimeKey) == %@", [lat,lon,time], 1, stack.context) as! [TAPlaceSegment]
         return places.first!
     }
     
     func getEntityObjectsWithQuery(_ entityName:String, _ query:String,_ argumentArray:[Any], _ sortKey:String?, _ isAscending:Bool?) -> [AnyObject] {
         let stack = getCoreDataStack()
-        return TAModel.sharedInstance().getCoreDataManagedObject(entityName, sortKey, isAscending, query, argumentArray, nil, stack.context) as [AnyObject]
+        return TAModel.sharedInstance.getCoreDataManagedObject(entityName, sortKey, isAscending, query, argumentArray, nil, stack.context) as [AnyObject]
     }
 
     // MARK: View Methods

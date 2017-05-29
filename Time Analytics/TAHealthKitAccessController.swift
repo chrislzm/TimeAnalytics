@@ -35,7 +35,7 @@ class TAHealthKitAccessController: TAViewController {
     // Gets authorization to read HealthKit data from the Health Store. Segues either into the app upon failure or denial of authorization, or 
     
     func getHealthKitPermission() {
-        TAModel.sharedInstance().authorizeHealthKit { (authorized,  error) -> Void in
+        TAModel.sharedInstance.authorizeHealthKit { (authorized,  error) -> Void in
             DispatchQueue.main.async {
                 
                 // If error, display message and segue when the user taps "OK"

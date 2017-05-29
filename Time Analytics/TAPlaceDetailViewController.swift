@@ -102,7 +102,7 @@ class TAPlaceDetailViewController: TADetailViewController, UITableViewDelegate {
             spinner.startAnimating()
             self.present(updatingDialog, animated: true) { () in
                 DispatchQueue.main.async {
-                    TAModel.sharedInstance().renamePlaceInAllTAData(self.lat, self.lon, newName)
+                    TAModel.sharedInstance.renamePlaceInAllTAData(self.lat, self.lon, newName)
                     self.name = newName
                     self.title = newName
                     self.updateMapViewAnnotationName()

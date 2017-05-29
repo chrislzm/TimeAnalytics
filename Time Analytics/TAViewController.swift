@@ -56,7 +56,7 @@ class TAViewController: UIViewController {
     func clearAllData() {
         let stack = getCoreDataStack()
         stack.performBackgroundBatchOperation() { (context) in
-           TAModel.sharedInstance().deleteAllDataFor(["MovesMoveSegment","MovesPlaceSegment","TAPlaceSegment","TACommuteSegment","TAActivitySegment"],context)
+           TAModel.sharedInstance.deleteAllDataFor(["MovesMoveSegment","MovesPlaceSegment","TAPlaceSegment","TACommuteSegment","TAActivitySegment"],context)
         }
     }
     

@@ -46,7 +46,7 @@ class TAModel {
     
     func isLoggedIn() -> Bool {
          // "lastCheckedForNewData" stores the last time we successfully read and processed new data from Moves and HealthKit. It will always have a value if we have fully logged in. Will be nil otherwise.
-        if let _ = TANetClient.sharedInstance().lastCheckedForNewData {
+        if let _ = TANetClient.sharedInstance.lastCheckedForNewData {
             return true
         }
         return false
@@ -56,14 +56,14 @@ class TAModel {
         // See first if we have ever successfully logged and received data (we could have crashed in the middle of previous login)
         if let lastCheck = UserDefaults.standard.value(forKey: "lastCheckedForNewData") as? Date {
             // Load the remaining session information into our Net Client
-            TANetClient.sharedInstance().movesAccessTokenExpiration = UserDefaults.standard.value(forKey: "movesAccessTokenExpiration") as? Date
-            TANetClient.sharedInstance().movesAccessToken = UserDefaults.standard.value(forKey: "movesAccessToken") as? String
-            TANetClient.sharedInstance().movesAuthCode = UserDefaults.standard.value(forKey: "movesAuthCode") as? String
-            TANetClient.sharedInstance().movesRefreshToken = UserDefaults.standard.value(forKey: "movesRefreshToken") as? String
-            TANetClient.sharedInstance().movesUserId = UserDefaults.standard.value(forKey: "movesUserId") as? UInt64
-            TANetClient.sharedInstance().movesUserFirstDate = UserDefaults.standard.value(forKey: "movesUserFirstDate") as? String
-            TANetClient.sharedInstance().movesLatestUpdate = UserDefaults.standard.value(forKey: "movesLatestUpdate") as? Date
-            TANetClient.sharedInstance().lastCheckedForNewData = lastCheck
+            TANetClient.sharedInstance.movesAccessTokenExpiration = UserDefaults.standard.value(forKey: "movesAccessTokenExpiration") as? Date
+            TANetClient.sharedInstance.movesAccessToken = UserDefaults.standard.value(forKey: "movesAccessToken") as? String
+            TANetClient.sharedInstance.movesAuthCode = UserDefaults.standard.value(forKey: "movesAuthCode") as? String
+            TANetClient.sharedInstance.movesRefreshToken = UserDefaults.standard.value(forKey: "movesRefreshToken") as? String
+            TANetClient.sharedInstance.movesUserId = UserDefaults.standard.value(forKey: "movesUserId") as? UInt64
+            TANetClient.sharedInstance.movesUserFirstDate = UserDefaults.standard.value(forKey: "movesUserFirstDate") as? String
+            TANetClient.sharedInstance.movesLatestUpdate = UserDefaults.standard.value(forKey: "movesLatestUpdate") as? Date
+            TANetClient.sharedInstance.lastCheckedForNewData = lastCheck
         }
     }
 
@@ -77,14 +77,14 @@ class TAModel {
         UserDefaults.standard.removeObject(forKey: "movesLatestUpdate")
         UserDefaults.standard.removeObject(forKey: "lastCheckedForNewData")
         UserDefaults.standard.synchronize()
-        TANetClient.sharedInstance().movesAccessTokenExpiration = nil
-        TANetClient.sharedInstance().movesAccessToken = nil
-        TANetClient.sharedInstance().movesAuthCode = nil
-        TANetClient.sharedInstance().movesRefreshToken = nil
-        TANetClient.sharedInstance().movesUserId = nil
-        TANetClient.sharedInstance().movesUserFirstDate = nil
-        TANetClient.sharedInstance().movesLatestUpdate = nil
-        TANetClient.sharedInstance().lastCheckedForNewData = nil
+        TANetClient.sharedInstance.movesAccessTokenExpiration = nil
+        TANetClient.sharedInstance.movesAccessToken = nil
+        TANetClient.sharedInstance.movesAuthCode = nil
+        TANetClient.sharedInstance.movesRefreshToken = nil
+        TANetClient.sharedInstance.movesUserId = nil
+        TANetClient.sharedInstance.movesUserFirstDate = nil
+        TANetClient.sharedInstance.movesLatestUpdate = nil
+        TANetClient.sharedInstance.lastCheckedForNewData = nil
     }
     
     func saveMovesSessionData(_ authCode:String, _ userId:UInt64, _ accessToken:String,_ accessTokenExpiration:Date,_ refreshToken:String, _ userFirstDate:String) {
@@ -167,13 +167,13 @@ class TAModel {
         
         // Get move user's first date so we don't request data before that (which would result in error)
         dateFormatter.dateFormat = "yyyyMMdd"
-        let firstDate = dateFormatter.date(from: TANetClient.sharedInstance().movesUserFirstDate!)!
+        let firstDate = dateFormatter.date(from: TANetClient.sharedInstance.movesUserFirstDate!)!
 
         var beginDate:Date! // Parameter for the begin date of our data request. The end date will be today.
         var updatedSince:Date? // Optional parameter for our data request. Will be used if we have it stored.
         
         // If we have previously received data and it's not on the same day we signed up
-        if let lastUpdate = TANetClient.sharedInstance().movesLatestUpdate, Calendar.current.component(.day, from: lastUpdate) != Calendar.current.component(.day, from: firstDate) {
+        if let lastUpdate = TANetClient.sharedInstance.movesLatestUpdate, Calendar.current.component(.day, from: lastUpdate) != Calendar.current.component(.day, from: firstDate) {
             // Add a negative time buffer window to data request (in case that previous data has been updated by Moves)
             beginDate = lastUpdate.addingTimeInterval(TANetClient.MovesApi.Constants.UpdateWindowBuffer)
             
@@ -203,7 +203,7 @@ class TAModel {
             }
             
             // Tell the TA Network Client to get the data
-            TANetClient.sharedInstance().getMovesDataFrom(beginDate, endDate, updatedSince){ (dataChunk, error) in
+            TANetClient.sharedInstance.getMovesDataFrom(beginDate, endDate, updatedSince){ (dataChunk, error) in
                 
                 guard error == nil else {
                     self.notifyDownloadMovesDataError()
@@ -315,7 +315,7 @@ class TAModel {
         let savedLatestUpdate = UserDefaults.standard.value(forKey: "movesLatestUpdate") as? Date
         if (savedLatestUpdate != nil && latestUpdate > savedLatestUpdate!) || savedLatestUpdate == nil {
             UserDefaults.standard.set(latestUpdate, forKey: "movesLatestUpdate")
-            TANetClient.sharedInstance().movesLatestUpdate = latestUpdate
+            TANetClient.sharedInstance.movesLatestUpdate = latestUpdate
         }
     }
     
@@ -325,7 +325,7 @@ class TAModel {
         let lastChecked = Date()
         UserDefaults.standard.set(lastChecked, forKey: "lastCheckedForNewData")
         UserDefaults.standard.synchronize()
-        TANetClient.sharedInstance().lastCheckedForNewData = lastChecked
+        TANetClient.sharedInstance.lastCheckedForNewData = lastChecked
     }
 
     // MARK: Time Analytics Data Creation and Editing Methods

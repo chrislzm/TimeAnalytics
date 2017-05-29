@@ -14,7 +14,7 @@ class TADownloadViewController:TADataUpdateViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        TAModel.sharedInstance().downloadAndProcessNewMovesData()
+        TAModel.sharedInstance.downloadAndProcessNewMovesData()
         
         errorCompletionHandler = { () in
             self.performSegue(withIdentifier: "BackToLogin", sender: nil)

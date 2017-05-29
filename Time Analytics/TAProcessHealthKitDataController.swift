@@ -16,7 +16,7 @@ class TAProcessHealthKitDataController: TADataUpdateViewController {
         super.viewDidLoad()
         
         // Start HealthKit data import
-        TAModel.sharedInstance().updateHealthKitData()
+        TAModel.sharedInstance.updateHealthKitData()
     }
     
     override func didCompleteAllUpdates(_ notification: Notification) {

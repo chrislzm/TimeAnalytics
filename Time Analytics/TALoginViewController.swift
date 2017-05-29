@@ -17,7 +17,7 @@ class ViewController: TAViewController {
     @IBOutlet weak var activityView: UIActivityIndicatorView!
     
     @IBAction func loginButtonPressed(_ sender: Any) {
-        TANetClient.sharedInstance().obtainMovesAuthCode()
+        TANetClient.sharedInstance.obtainMovesAuthCode()
     }
     
     @IBAction func prepareForUnwind(segue: UIStoryboardSegue){
@@ -34,11 +34,11 @@ class ViewController: TAViewController {
     override func viewDidAppear(_ animated: Bool) {
         
         // Check if we are already logged in
-        if TAModel.sharedInstance().isLoggedIn() {
+        if TAModel.sharedInstance.isLoggedIn() {
             performSegue(withIdentifier: "AlreadyLoggedIn", sender: nil)
         } else {
             // Ensure we've cleared all invalid moves session data
-            TAModel.sharedInstance().deleteAllSessionData()
+            TAModel.sharedInstance.deleteAllSessionData()
             
             // Clear all data that might have been partially processed in a previously failed login
             clearAllData()
@@ -57,14 +57,14 @@ class ViewController: TAViewController {
         let authCode = notification.userInfo![AnyHashable("code")] as! String
 
         // Initiate step 2/2 of the login auth flow
-        TANetClient.sharedInstance().loginWithMovesAuthCode(authCode: authCode) { (error) in
+        TANetClient.sharedInstance.loginWithMovesAuthCode(authCode: authCode) { (error) in
             guard error == nil else {
                 self.displayErrorAlert(error!, nil)
                 return
             }
 
             // Segue to data import screen if we are logged in
-            TANetClient.sharedInstance().verifyLoggedIntoMoves() { (error) in
+            TANetClient.sharedInstance.verifyLoggedIntoMoves() { (error) in
                 guard error == nil else {
                     self.displayErrorAlert(error!, nil)
                     return

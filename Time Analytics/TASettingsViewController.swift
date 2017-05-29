@@ -25,7 +25,7 @@ class TASettingsViewController:TADataUpdateViewController {
         startActivityView()
         
         // After this begins, AppDelegate will handle the rest of the data processing flow, including importing HealthKit data
-        TAModel.sharedInstance().downloadAndProcessNewMovesData()
+        TAModel.sharedInstance.downloadAndProcessNewMovesData()
     }
 
     @IBAction func logOutButtonPressed(_ sender: Any) {
@@ -43,7 +43,7 @@ class TASettingsViewController:TADataUpdateViewController {
             self.clearAllData()
             
             // Clear session variables
-            TAModel.sharedInstance().deleteAllSessionData()
+            TAModel.sharedInstance.deleteAllSessionData()
             
             // Unwind and display login screen
             self.performSegue(withIdentifier: "LogOut", sender: self)
@@ -93,7 +93,7 @@ class TASettingsViewController:TADataUpdateViewController {
     // Tells the user the last time we updated our data
     func setLastUpdatedText() {
         DispatchQueue.main.async {
-            let lastChecked = TANetClient.sharedInstance().lastCheckedForNewData!
+            let lastChecked = TANetClient.sharedInstance.lastCheckedForNewData!
             
             let dateFormatter = DateFormatter()
             dateFormatter.dateStyle = .full

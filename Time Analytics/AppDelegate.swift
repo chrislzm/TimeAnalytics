@@ -67,10 +67,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Restore all session data
-        TAModel.sharedInstance().loadAllSessionData()
+        TAModel.sharedInstance.loadAllSessionData()
         
         // Start regular autoupdates in the background
-        TAModel.sharedInstance().startAutoUpdate()
+        TAModel.sharedInstance.startAutoUpdate()
         
         // Listen for data updates, so we can coordinate data download completion and data processing
         NotificationCenter.default.addObserver(self, selector: #selector(AppDelegate.willDownloadMovesData(_:)), name: Notification.Name("willDownloadMovesData"), object: nil)
@@ -95,7 +95,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         movesChunksProcessed += 1
         if movesChunksProcessed == totalMovesChunks {
             // Done downloading Moves data, start generating TA Data
-            TAModel.sharedInstance().generateTADataFromMovesData()
+            TAModel.sharedInstance.generateTADataFromMovesData()
         }
     }
     
@@ -107,8 +107,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // If we are logged in, now import HealthKit data.
         // (During the first login, the user is still not fully logged in at this point. They need to first authorize our access to HealthKit on a separate screen. We begin the HealthKit import there manually.
-        if TAModel.sharedInstance().isLoggedIn() {
-            TAModel.sharedInstance().updateHealthKitData()
+        if TAModel.sharedInstance.isLoggedIn() {
+            TAModel.sharedInstance.updateHealthKitData()
         }
     }
     
@@ -123,10 +123,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // Final step in updating data
     func didCompleteAllUpdates() {
         // Update our internal lastCheckedForNewData variable that stores when we last checked for new data
-        TAModel.sharedInstance().updateLastCheckedForNewData()
+        TAModel.sharedInstance.updateLastCheckedForNewData()
         
         // Notify anyone who's listening that we're completely done with updating our data
-        TAModel.sharedInstance().notifyDidCompleteAllUpdates()
+        TAModel.sharedInstance.notifyDidCompleteAllUpdates()
     }
 }
 
