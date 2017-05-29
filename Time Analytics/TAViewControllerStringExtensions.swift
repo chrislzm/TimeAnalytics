@@ -2,7 +2,7 @@
 //  TAViewControllerStringExtensions.swift
 //  Time Analytics
 //
-//  String description generators for TA managed object data.
+//  Extension to the TAViewController class. Implements string description generators for TA managed object data.
 //
 //  Created by Chris Leung on 5/28/17.
 //  Copyright © 2017 Chris Leung. All rights reserved.

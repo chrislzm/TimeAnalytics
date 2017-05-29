@@ -2,7 +2,7 @@
 //  TAControllerExtensions.swift
 //  Time Analytics
 //
-//  Implements core methods used in all Time Analytics views controllers.
+//  This is the foundational "UIViewController" for all Time Analytics View Controllers, implementing core methods that are used throughout the application.
 //
 //  Created by Chris Leung on 5/22/17.
 //  Copyright © 2017 Chris Leung. All rights reserved.

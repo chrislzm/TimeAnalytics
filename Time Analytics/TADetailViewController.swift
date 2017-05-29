@@ -4,7 +4,7 @@
 //
 //  Implements core methods used in all Time Analytics detail views controllers.
 //
-//  Superclass. Never used directly. Has three subclasses: TAPlaceDetailViewController, TACommuteDetailViewController, TAActivityDetailViewController
+//  Abstract class. Has three concrete subclasses: TAPlaceDetailViewController, TACommuteDetailViewController, TAActivityDetailViewController
 //
 //  Created by Chris Leung on 5/22/17.
 //  Copyright © 2017 Chris Leung. All rights reserved.
