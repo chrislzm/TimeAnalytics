@@ -14,7 +14,26 @@ import UIKit
 class TAViewController: UIViewController {
     
     let ProgressViewDefaultTag = 100 // For identifying and removing progress views
+    
+    // MARK - Lifecycle
+    override func viewDidLoad() {
+        super.viewDidLoad()
         
+        // For handling errors
+        NotificationCenter.default.addObserver(self, selector: #selector(TAViewController.downloadMovesDataError(_:)), name: Notification.Name("downloadMovesDataError"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(TAViewController.movesDataParsingError(_:)), name: Notification.Name("movesDataParsingError"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(TAViewController.healthDataReadError(_:)), name: Notification.Name("healthDataReadError"), object: nil)
+    }
+
+    // MARK - Error Handling Methods
+    
+    // Implementation of these methods is optional
+    func downloadMovesDataError(_ notification:Notification) {}
+    
+    func movesDataParsingError(_ notification:Notification) {}
+    
+    func healthDataReadError(_ notification:Notification) {}
+    
     // MARK - Data Methods
     
     // Returns the core data stack
