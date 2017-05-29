@@ -107,6 +107,24 @@ extension TAModel {
                 self.notifyDidProcessHealthKitDataChunk()
             }
         }
+        
+        // Retrieve Mindfulness Data
+        let mindfulType = HKObjectType.categoryType(forIdentifier: .mindfulSession)!
+        retrieveHealthStoreData(mindfulType, fromDate) { (query,result,error) in
+            guard error == nil else {
+                self.notifyHealthDataReadError()
+                return
+            }
+            stack.performBackgroundBatchOperation() { (context) in
+                self.notifyDidProcessHealthKitDataChunk()
+                for item in result! {
+                    TAModel.sharedInstance().createNewTAActivitySegment(item.startDate, item.endDate, "Mindfulness", "Practice",firstMovesDataDate, context)
+                }
+                stack.save()
+                self.notifyDidProcessHealthKitDataChunk()
+            }
+        }
+
     }
  
     // MARK: HealthKit Store Methods
