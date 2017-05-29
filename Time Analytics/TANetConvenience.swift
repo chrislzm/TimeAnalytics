@@ -2,7 +2,12 @@
 //  TANetConvenience.swift
 //  Time Analytics
 //
-//  Time Analytics Network Client convenience methods. Utilizes core network client methods to exchange information with the Moves REST API. This class is used by TAModel for accessing Moves data and by TALoginViewController for login auth flow.
+//  Time Analytics Network Client convenience methods. Utilizes core network client methods to exchange information with the Moves REST API.
+//
+//  This class is used by:
+//    -TAModel for accessing Moves data
+//    -TALoginViewController for login auth flow
+//    -TASettingsViewController for allowing the user see the last time we checked for udpates
 //
 //
 //  Created by Chris Leung on 5/14/17.
@@ -94,7 +99,7 @@ extension TANetClient {
             self.movesUserFirstDate = userFirstDate!
 
             /* 6. Save all session info to user defaults for persistence */
-            TAModel.sharedInstance().saveMovesSessionData(self.movesAuthCode!, userId, accessToken, accessTokenExpiration, refreshToken, userFirstDate!)
+            TAModel.sharedInstance.saveMovesSessionData(self.movesAuthCode!, userId, accessToken, accessTokenExpiration, refreshToken, userFirstDate!)
             
             /* 7. Complete login with no errors */
             
