@@ -37,7 +37,7 @@ extension TAModel {
         taActivitySegment.setValue(name, forKey:"name")
         
         // If this activity occurs during an existing Place Segment
-        if startTime >= movesFirstTime, let place = TAModel.sharedInstance().getTAPlaceThatContains(startTime,endTime, context) {
+        if startTime >= movesFirstTime, let place = getTAPlaceThatContains(startTime,endTime, context) {
             // Save this place information into the activity data (since this activity occurs at this place)
             taActivitySegment.setValue(place.startTime,forKey:"placeStartTime")
             taActivitySegment.setValue(place.endTime,forKey:"placeEndTime")
@@ -58,7 +58,7 @@ extension TAModel {
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         dateFormatter.dateFormat = "yyyyMMdd"
-        let firstMovesDataDate = dateFormatter.date(from: TANetClient.sharedInstance().movesUserFirstDate!)! as Date
+        let firstMovesDataDate = dateFormatter.date(from: TANetClient.sharedInstance.movesUserFirstDate!)! as Date
         
         // The date from which we should begin importing
         var fromDate:Date? = nil
@@ -81,7 +81,7 @@ extension TAModel {
                 for item in result! {
                     let sample = item as! HKCategorySample
                     if sample.value == HKCategoryValueSleepAnalysis.inBed.rawValue {
-                        TAModel.sharedInstance().createNewTAActivitySegment(sample.startDate, sample.endDate, "Sleep", "In Bed",firstMovesDataDate, context)
+                        self.createNewTAActivitySegment(sample.startDate, sample.endDate, "Sleep", "In Bed",firstMovesDataDate, context)
                     }
                 }
                 stack.save()
@@ -101,7 +101,7 @@ extension TAModel {
                 for item in result! {
                     let workout = item as! HKWorkout
                     let workoutType = self.getHealthKitWorkoutTypeString(workout.workoutActivityType.rawValue)
-                    TAModel.sharedInstance().createNewTAActivitySegment(item.startDate, item.endDate, "Workout", workoutType, firstMovesDataDate, context)
+                    self.createNewTAActivitySegment(item.startDate, item.endDate, "Workout", workoutType, firstMovesDataDate, context)
                 }
                 stack.save()
                 self.notifyDidProcessHealthKitDataChunk()
@@ -118,7 +118,7 @@ extension TAModel {
             stack.performBackgroundBatchOperation() { (context) in
                 self.notifyDidProcessHealthKitDataChunk()
                 for item in result! {
-                    TAModel.sharedInstance().createNewTAActivitySegment(item.startDate, item.endDate, "Mindfulness", "Session",firstMovesDataDate, context)
+                    self.createNewTAActivitySegment(item.startDate, item.endDate, "Mindfulness", "Session",firstMovesDataDate, context)
                 }
                 stack.save()
                 self.notifyDidProcessHealthKitDataChunk()
