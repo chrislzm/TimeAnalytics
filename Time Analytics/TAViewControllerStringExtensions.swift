@@ -2,6 +2,8 @@
 //  TAViewControllerStringExtensions.swift
 //  Time Analytics
 //
+//  String description generators for TA managed object data.
+//
 //  Created by Chris Leung on 5/28/17.
 //  Copyright © 2017 Chris Leung. All rights reserved.
 //
@@ -9,8 +11,6 @@
 import Foundation
 
 extension TAViewController {
-    
-    // MARK: String Description Generators
     
     func generatePlaceStringDescriptions(_ place:TAPlaceSegment,_ currentYear:String?) -> (String,String,String) {
         let startTime = place.startTime! as Date
