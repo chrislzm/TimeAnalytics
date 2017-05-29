@@ -7,7 +7,7 @@ By Chris Leung
 
 Overview
 --------
-Learn how you spend your time with Time Analytics. Analyze your data from [Moves](https://moves-app.com/) and [Apple Health](https://www.apple.com/ios/health/) and generate detailed information about the places, commutes and activities you spend the most time on. Learn how how they relate to each other through summaries, graphs and history views.
+Learn how you spend your time with Time Analytics. Analyze your data from [Moves](https://moves-app.com/) and [Apple Health](https://www.apple.com/ios/health/) and generate detailed information about the places, commutes and activities you spend the most time on. Learn how they relate to each other through summaries, graphs and history views.
 
 Installation
 ------------
