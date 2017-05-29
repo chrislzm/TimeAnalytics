@@ -139,7 +139,7 @@ extension TAModel {
     func authorizeHealthKit(completion: ((_ success: Bool, _ error: Error?) -> Void)!) {
         let healthKitStore = getHealthStore()
         // State the health data type(s) we want to read from HealthKit.
-        let readableTypes: Set<HKSampleType> = [HKWorkoutType.workoutType(), HKObjectType.categoryType(forIdentifier: .sleepAnalysis)!]
+        let readableTypes: Set<HKSampleType> = [HKWorkoutType.workoutType(), HKObjectType.categoryType(forIdentifier: .sleepAnalysis)!, HKObjectType.categoryType(forIdentifier: .mindfulSession)!]
         
         healthKitStore.requestAuthorization(toShare: nil, read: readableTypes) { (success, error) -> Void in
             if( completion != nil ) {
