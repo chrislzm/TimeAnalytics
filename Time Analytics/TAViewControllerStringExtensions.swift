@@ -22,7 +22,7 @@ extension TAViewController {
     func generatePlaceStringDescriptionsFromTuple(_ startTime:Date,_ endTime:Date,_ currentYear:String?) -> (String,String,String) {
         let timeInOutString = generateTimeInOutString(startTime,endTime)
         let lengthString = generateLengthString(startTime,endTime)
-        let dateString = generateLongDateString(startTime,endTime,currentYear)
+        let dateString = generateLongDateRangeString(startTime,endTime,currentYear)
         return (timeInOutString,lengthString,dateString)
     }
     
@@ -39,7 +39,7 @@ extension TAViewController {
         
         let timeInOutString = generateTimeInOutString(startTime,endTime)
         let commuteLengthString = generateLengthString(startTime,endTime)
-        let dateString = generateLongDateString(startTime,endTime,currentYear)
+        let dateString = generateLongDateRangeString(startTime,endTime,currentYear)
         
         return (timeInOutString,commuteLengthString,dateString)
     }
@@ -50,7 +50,7 @@ extension TAViewController {
         
         let timeInOutString = generateTimeInOutString(startTime,endTime)
         let activityLengthString = generateLengthString(startTime,endTime)
-        let dateString = generateLongDateString(startTime,endTime,currentYear)
+        let dateString = generateLongDateRangeString(startTime,endTime,currentYear)
         
         return (timeInOutString,activityLengthString,dateString)
     }
@@ -76,17 +76,17 @@ extension TAViewController {
     func generateTimeInOutStringWithDate(_ startTime:Date,_ endTime:Date) -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "h:mm a"
-        let timeIn = formatter.string(from: startTime)
-        let (dayStart,dayEnd,dayToday,dayYesterday) = getDayNums(startTime, endTime)
-        var timeOut:String
-        
-        if dayStart == dayEnd {
-            timeOut = formatter.string(from: endTime)
+        let startTimeString = formatter.string(from: startTime)
+        var endTimeString:String
+        // If endTime is on same day, just generate the time string again
+        if Calendar.current.isDate(startTime, inSameDayAs: endTime) {
+            endTimeString = formatter.string(from: endTime)
         } else {
-            timeOut = generateMonthAndDayBasedOn(endTime, dayEnd, dayToday, dayYesterday)
+            // They are on different days, so we want to output either the month+day, or a string like "Yesterday", "Today"
+            endTimeString = friendlyDate(endTime)
         }
-        
-        let timeInOutString = timeIn + " - " + timeOut
+
+        let timeInOutString = "\(startTimeString) - \(endTimeString)"
         return timeInOutString
     }
     
@@ -97,62 +97,69 @@ extension TAViewController {
         return lengthString
     }
     
-    func generateLongDateString(_ startTime:Date,_ endTime:Date,_ currentYear:String?) -> String {
-
-        // Compute day-of-month values for startTime, endTime, today and yesterday to determine the text we generate
-        let (dayStart, dayEnd, dayToday, dayYesterday) = getDayNums(startTime,endTime)
-
-        // Start day string
-        var dateString = generateMonthAndDayBasedOn(startTime,dayStart,dayToday,dayYesterday)
-        
-        // End day string
-        if dayEnd != dayStart {
-            let dayEndString = generateMonthAndDayBasedOn(endTime,dayEnd,dayToday,dayYesterday)
-            dateString = "\(dateString)-\(dayEndString)"
-        }
-
-        // Add year string if it's not this year
-        if let thisYear = currentYear, let yearString = returnYearIfDifferent(endTime,thisYear) {
-            dateString = "\(dateString) ''\(yearString)"
-        }
-
-        return dateString
-    }
-    
-    // Compares a date's year with a given two digit year, returns nil if they're the same, returns the date's year if they're different
-    func returnYearIfDifferent(_ date:Date,_ thisYear:String) -> String? {
-        var yearString:String?
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yy"
-        let dateYearString = formatter.string(from: date)
-        if dateYearString != thisYear {
-            yearString = dateYearString
-        }
-        return yearString
-    }
-    
-    func generateMonthAndDayBasedOn(_ date:Date,_ dayDate:Int,_ dayToday:Int,_ dayYesterday:Int) -> String {
-        
+    func generateLongDateRangeString(_ startTime:Date,_ endTime:Date,_ currentYear:String?) -> String {
+        let currentTime = Date()
         var dateString:String
         
-        if dayDate == dayToday {
-            dateString = "Today"
-        } else if dayDate == dayYesterday {
-            dateString = "Yesterday"
-        } else {
-            let formatter = DateFormatter()
-            formatter.dateFormat = "MMM d"
-            dateString = formatter.string(from: date)
+        // If the two dates are from the same year
+        if (Calendar.current.isDate(startTime, equalTo: endTime, toGranularity: .year)) {
+            
+            // If the dates are from this year
+            if Calendar.current.isDate(startTime, equalTo: currentTime, toGranularity: .year) {
+                
+                // If they're on the same day, just generate one string
+                if Calendar.current.isDate(startTime, equalTo: endTime, toGranularity: .day) {
+                    dateString = friendlyDate(startTime)
+                } else {
+                    // Otherwise generate both strings
+                    dateString = "\(friendlyDate(startTime))-\(friendlyDate(endTime))"
+                }
+ 
+            } else { // Else they're from a year before
+                
+                // If they're on the same day, just generate one string
+                if Calendar.current.isDate(startTime, equalTo: endTime, toGranularity: .day) {
+                    dateString = dateWithYear(startTime)
+                } else {
+                    // Otherwise generate both strings, with year on the second string
+                    dateString = "\(dateWithNoYear(startTime))-\(dateWithYear(endTime))"
+                }
+                
+            }
+        } else { // The dates are from different years
+            dateString = dateWithYear(startTime)
+
+            if (Calendar.current.isDate(endTime, equalTo: currentTime, toGranularity: .year)) {
+                dateString = "\(dateString)-\(friendlyDate(endTime))"
+            } else {
+                dateString = "\(dateString)-\(dateWithYear(endTime))"
+            }
         }
+        
         return dateString
     }
     
-    func getDayNums(_ startTime:Date,_ endTime:Date) -> (Int,Int,Int,Int) {
-        let dayStart = Calendar.current.component(.day, from: startTime)
-        let dayEnd = Calendar.current.component(.day, from: endTime)
-        let dayToday = Calendar.current.component(.day, from: Date())
-        let dayYesterday = Calendar.current.component(.day, from: Date(timeInterval: -86400, since: Date())) // 86400 seconds in one day
-        return (dayStart,dayEnd,dayToday,dayYesterday)
+    func dateWithYear(_ date:Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMM d ''yy"
+        return formatter.string(from: date)
+    }
+    
+    func dateWithNoYear(_ date:Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMM d"
+        return formatter.string(from: date)
+    }
+    
+    // Outputs "Today", "Yesterday" or if it isn't either, outputs the month and day
+    func friendlyDate(_ date:Date) -> String {
+        if Calendar.current.isDateInToday(date) {
+            return "Today"
+        } else if Calendar.current.isDateInYesterday(date) {
+            return "Yesterday"
+        } else {
+            return dateWithNoYear(date)
+        }
     }
     
     func generateShortDateString(_ time:Date,_ currentYear:String?) -> String {
