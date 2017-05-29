@@ -59,10 +59,14 @@ class TASettingsViewController:TADataUpdateViewController {
         
         setAutoUpdateLabelText()
         
-        refreshDataButton.setTitle("", for: .disabled) // Hide title when disabled so we can show the activity indicator in its place
+        // Hide button title when disabled so we can show the activity indicator on top of it
+        refreshDataButton.setTitle("", for: .disabled)
         
+        // Stop the activity view if we have an error
         errorCompletionHandler = { () in
-            self.stopActivityView() // Stop the activity view if we have an error
+            DispatchQueue.main.async {
+                self.stopActivityView()
+            }
         }
     }
     
