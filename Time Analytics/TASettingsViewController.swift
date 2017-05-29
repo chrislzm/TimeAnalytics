@@ -60,6 +60,10 @@ class TASettingsViewController:TADataUpdateViewController {
         setAutoUpdateLabelText()
         
         refreshDataButton.setTitle("", for: .disabled) // Hide title when disabled so we can show the activity indicator in its place
+        
+        errorCompletionHandler = { () in
+            self.stopActivityView() // Stop the activity view if we have an error
+        }
     }
     
     override func didCompleteAllUpdates(_ notification: Notification) {
@@ -103,27 +107,6 @@ class TASettingsViewController:TADataUpdateViewController {
     // Tells the user how often we automatically update
     func setAutoUpdateLabelText() {
         autoUpdateLabel.text = "Automatically Updates Every \(TAModel.AutoUpdateInterval) Minutes"
-    }
-    
-    // MARK: Error Handling
-    
-    override func downloadMovesDataError(_ notification:Notification) {
-        super.downloadMovesDataError(notification)
-        handleError()
-    }
-    
-    override func movesDataParsingError(_ notification:Notification) {
-        super.movesDataParsingError(notification)
-        handleError()
-    }
-    
-    override func healthDataReadError(_ notification:Notification) {
-        super.movesDataParsingError(notification)
-        handleError()
-    }
-    
-    func handleError() {
-        stopActivityView()
     }
 }
 
