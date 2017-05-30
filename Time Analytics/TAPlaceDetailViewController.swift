@@ -280,11 +280,10 @@ class TAPlaceDetailViewController: TADetailViewController, UITableViewDelegate {
     
     // Don't allow the user to unhighlight the row whose detail view this belongs to
     func tableView(_ tableView: UITableView, willDeselectRowAt indexPath: IndexPath) -> IndexPath? {
-        if tableView == placeTableView {
-            return nil
-        } else {
+        guard tableView == placeTableView else {
             return indexPath
         }
+        return nil
     }
     
     // MARK: Data Methods
