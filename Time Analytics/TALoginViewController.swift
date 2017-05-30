@@ -24,7 +24,7 @@ class ViewController: TAViewController {
         TANetClient.sharedInstance.obtainMovesAuthCode()
     }
     
-    @IBAction func prepareForUnwind(segue: UIStoryboardSegue){}
+    @IBAction func prepareForUnwind(segue: UIStoryboardSegue){} // For logging out from TASettingsViewController
     
     // MARK: Lifecycle
     
