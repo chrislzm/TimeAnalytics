@@ -325,7 +325,7 @@ class TAPlaceDetailViewController: TADetailViewController, UITableViewDelegate {
     
     // Get total number of visits to this place in the last month
     func getNumLastMonthVisits() -> Int {
-        let oneMonthAgo = Date() - 2678400 // There are this many seconds in a month
+        let oneMonthAgo = Calendar.current.date(byAdding: .day, value: -31, to: Date())!
         let lastMonthVisits = getEntityObjectsWithQuery("TAPlaceSegment", "(lat == %@) AND (lon == %@) AND (startTime >= %@)", [lat,lon,oneMonthAgo], nil, nil)
         return lastMonthVisits.count
     }
