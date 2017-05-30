@@ -6,7 +6,7 @@
 //
 //  1. By AppDelegate to synchronize and coordinate different steps of data processing flow.
 //
-//  2. By ViewControllers to display progress indicator views or activity views to the user, signifying background/network activity.
+//  2. By ViewControllers to display and update progress indicator views or activity views (signifying network/background processing activity to the user).
 //
 //  Only used by TAModel and AppDelegate classes.
 //
