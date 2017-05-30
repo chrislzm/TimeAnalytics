@@ -118,7 +118,7 @@ extension TAModel {
             stack.performBackgroundBatchOperation() { (context) in
                 self.notifyDidProcessHealthKitDataChunk()
                 for item in result! {
-                    self.createNewTAActivitySegment(item.startDate, item.endDate, "Mindfulness", "Session",firstMovesDataDate, context)
+                    self.createNewTAActivitySegment(item.startDate, item.endDate, "Mindfulness",item.sourceRevision.source.name,firstMovesDataDate, context)
                 }
                 stack.save()
                 self.notifyDidProcessHealthKitDataChunk()
