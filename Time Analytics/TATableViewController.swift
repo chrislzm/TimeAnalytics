@@ -135,17 +135,15 @@ extension TATableViewController {
     func numberOfSections(in tableView: UITableView) -> Int {
         if let fc = fetchedResultsController {
             return (fc.sections?.count)!
-        } else {
-            return 0
         }
+        return 0
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let fc = fetchedResultsController {
             return fc.sections![section].numberOfObjects
-        } else {
-            return 0
         }
+        return 0
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -180,21 +178,18 @@ extension TATableViewController {
                 
                 // Set the section title with this date
                 if let date = components.date {
-                    
                     sectionTitle = DateFormatter.localizedString(from: date, dateStyle: .full, timeStyle: .none)
                 }
             }
         }
-        
         return sectionTitle
     }
     
     func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
         if let fc = fetchedResultsController {
             return fc.section(forSectionIndexTitle: title, at: index)
-        } else {
-            return 0
         }
+        return 0
     }
 
     func sectionIndexTitles(for tableView: UITableView) -> [String]? {
