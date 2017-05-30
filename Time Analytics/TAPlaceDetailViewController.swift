@@ -256,7 +256,7 @@ class TAPlaceDetailViewController: TADetailViewController, UITableViewDelegate {
             activityCell.timeLabel.text = timeInOutString
             activityCell.lengthLabel.text = lengthString
             activityCell.dateLabel.text = dateString
-            activityCell.nameLabel.text = activity.name!
+            activityCell.nameLabel.text = activity.type!
             
             cell = activityCell
         }
