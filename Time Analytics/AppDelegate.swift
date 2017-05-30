@@ -4,9 +4,9 @@
 //
 //  Has two important responsibilities:
 //
-//  * Checks whether the Moves app gave us an authorization code. This is part of the Moves login auth flow.
+//  * Moves login auth flow: Sends a notification if the Moves app gave us an authorization code.
 //
-//  * Helps manages data updates. Because this process involves many steps that involve waiting (for network or for background processes to complete) we need to use notifications to synchronize everything. App Delegate is the one that observes these notificatons and does the synchronizing. Here's how the process flows:
+//  * Synchronizes the data update process via notifications. Because this process involves many steps that involve waiting (for network or for background processes to complete) we need to use notifications to synchronize everything. App Delegate is the one that observes these notificatons and does the synchronizing. Here's how the process flows:
 //
 //  1. A call to TAModel.downloadAndProcessNewMovesData() (by auto-update or by the user) starts the entire data update process
 //
@@ -24,7 +24,7 @@
 //
 //  8. TAModel (Health Kit Extension) sends a "didProcessHealthKitDataChunk" notification every time it processes a chunk of HealthKit data. There are a finite number of stages to this process that we know in advanced.
 //
-//  9. When AppDelegate sees we have processed all chunks of HealthKit data, it updates the internal session variable of the last time we checked for data, and then sends a final "didCompleteAllUpdates" notification
+//  9. When AppDelegate sees we have processed all chunks of HealthKit data, it updates the internal session variable of the last time we checked for data, and then sends a final "didCompleteAllUpdates" notification.
 //
 //  Created by Chris Leung on 5/14/17.
 //  Copyright © 2017 Chris Leung. All rights reserved.
