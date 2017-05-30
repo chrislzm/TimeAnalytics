@@ -22,7 +22,7 @@ extension TAModel {
     // MARK: Time Analytics Data Creation Methods
     
     // Creates a "TAActivitySegment" managed object -- the Time Analytics representation of a HealthKit activity
-    
+    // Since this method gets called repeatedly, we pass the movesFirstTime in as a parameter so that we don't have to keep fetching it from TANetConstants and unwrapping it.
     func createNewTAActivitySegment(_ startTime:Date,_ endTime:Date,_ type:String, _ name:String,_ movesFirstTime:Date, _ context:NSManagedObjectContext) {
         
         // Delete existing object if one exists, so we can update/don't have duplicates
