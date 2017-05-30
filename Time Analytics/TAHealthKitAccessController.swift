@@ -13,8 +13,8 @@ import UIKit
 
 class TAHealthKitAccessController: TAViewController {
 
-    // MARK: Outlets
-    @IBAction func didPressContinue(_ sender: Any) {
+    // MARK: Actions
+    @IBAction func didPressContinue() {
         getHealthKitPermission()
     }
     

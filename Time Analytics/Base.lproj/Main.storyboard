@@ -27,7 +27,7 @@
                                 <rect key="frame" x="16" y="419" width="343" height="30"/>
                                 <state key="normal" title="Login with Moves"/>
                                 <connections>
-                                    <action selector="loginButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="fW9-ez-nHA"/>
+                                    <action selector="loginButtonPressed" destination="BYZ-38-t0r" eventType="touchUpInside" id="R1i-PN-BYW"/>
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Time Analytics Logo" translatesAutoresizingMaskIntoConstraints="NO" id="uWh-rm-z5d">
@@ -39,15 +39,15 @@
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <activityIndicatorView hidden="YES" opaque="NO" alpha="0.29999999999999999" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="9Yv-SL-pHJ">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            </activityIndicatorView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="TAStartScreen" translatesAutoresizingMaskIntoConstraints="NO" id="5EA-SM-b6h">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </imageView>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="jTU-Eq-0FK">
                                 <rect key="frame" x="178" y="607" width="20" height="20"/>
+                            </activityIndicatorView>
+                            <activityIndicatorView hidden="YES" opaque="NO" alpha="0.29999999999999999" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="9Yv-SL-pHJ">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -170,7 +170,7 @@
                                         <rect key="frame" x="38" y="472" width="300" height="30"/>
                                         <state key="normal" title="Continue"/>
                                         <connections>
-                                            <action selector="didPressContinue:" destination="vu4-gK-h2O" eventType="touchUpInside" id="naT-uT-PYf"/>
+                                            <action selector="didPressContinue" destination="vu4-gK-h2O" eventType="touchUpInside" id="XFq-VD-VqE"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -357,7 +357,7 @@
                                 <rect key="frame" x="75" y="585" width="225" height="30"/>
                                 <state key="normal" title="Log Out"/>
                                 <connections>
-                                    <action selector="logOutButtonPressed:" destination="5Uy-fx-J0M" eventType="touchUpInside" id="WTt-OU-E9b"/>
+                                    <action selector="logOutButtonPressed" destination="5Uy-fx-J0M" eventType="touchUpInside" id="hbF-Rw-mj6"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="65E-KJ-qsz">
@@ -379,7 +379,7 @@
                                 <rect key="frame" x="75" y="502" width="225" height="30"/>
                                 <state key="normal" title="Refresh Data"/>
                                 <connections>
-                                    <action selector="refreshDataButtonPressed:" destination="5Uy-fx-J0M" eventType="touchUpInside" id="PZ6-f7-H2D"/>
+                                    <action selector="refreshDataButtonPressed" destination="5Uy-fx-J0M" eventType="touchUpInside" id="u7h-iI-zhG"/>
                                 </connections>
                             </button>
                             <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="Ihj-Vm-YAr">
@@ -794,7 +794,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="y6w-Yt-fVZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tapGestureRecognizer id="cxc-VD-ooo" userLabel="Tap Gesture Recognizer for MapView">
                     <connections>
-                        <action selector="didTapOnMapView:" destination="Am9-mG-H76" id="EtP-my-m38"/>
+                        <action selector="didTapOnMapView:" destination="Am9-mG-H76" id="YdZ-UZ-Y29"/>
                     </connections>
                 </tapGestureRecognizer>
                 <tapGestureRecognizer id="Id6-kt-cIB" userLabel="Tap Gesture Recognizer for LineChartView">
@@ -2222,6 +2222,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="PkY-nw-lfI"/>
-        <segue reference="KsV-YU-rwq"/>
+        <segue reference="G2h-sa-WeA"/>
     </inferredMetricsTieBreakers>
 </document>

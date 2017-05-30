@@ -21,14 +21,14 @@ class TASettingsViewController:TADataUpdateViewController {
     
     // MARK: Actions
     
-    @IBAction func refreshDataButtonPressed(_ sender: Any) {
+    @IBAction func refreshDataButtonPressed() {
         startActivityView()
         
         // After this begins, AppDelegate will handle the rest of the data processing flow, including importing HealthKit data
         TAModel.sharedInstance.downloadAndProcessNewMovesData()
     }
 
-    @IBAction func logOutButtonPressed(_ sender: Any) {
+    @IBAction func logOutButtonPressed() {
         // Confirmation dialog for logout
         let alert = UIAlertController(title: "Confirm Log Out", message: "All Time Analytics data will cleared. You can analyze your data again by logging back in.", preferredStyle: UIAlertControllerStyle.alert)
         alert.addAction(UIAlertAction(title: "Log Out", style: UIAlertActionStyle.default, handler: logoutConfirmed))

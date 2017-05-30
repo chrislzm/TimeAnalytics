@@ -12,17 +12,21 @@ import UIKit
 
 class ViewController: TAViewController {
 
+    // MARK: Outlets
+    
     @IBOutlet weak var launchScreenImageView: UIImageView!
     @IBOutlet weak var launchScreenActivityView: UIActivityIndicatorView!
     @IBOutlet weak var activityView: UIActivityIndicatorView!
+
+    // MARK: Actions
     
-    @IBAction func loginButtonPressed(_ sender: Any) {
+    @IBAction func loginButtonPressed() {
         TANetClient.sharedInstance.obtainMovesAuthCode()
     }
     
-    @IBAction func prepareForUnwind(segue: UIStoryboardSegue){
-        
-    }
+    @IBAction func prepareForUnwind(segue: UIStoryboardSegue){}
+    
+    // MARK: Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
