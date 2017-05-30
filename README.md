@@ -45,6 +45,12 @@ Please obtain your own [Moves API ClientId and ClientSecret](https://dev.moves-a
 
 I highly recommend first reading documentation and code in "AppDelegate.swift" and "TAModelNotificationExtensions.swift" to understand the different steps of the data processing flow and their associated notifications.
 
+3rd Party API documentation:
+
+* [Charts Framework](https://github.com/danielgindi/Charts)
+* [HealthKit API](https://developer.apple.com/reference/healthkit)
+* [Moves API](https://dev.moves-app.com/docs/api)
+
 Additional Settings
 -------------------
 
@@ -65,7 +71,7 @@ Issues
 
 Credits
 ------
-* [Moves](http://moves-app.com)
+* [Moves](https://moves-app.com/)
 * [Charts 3.0.2](https://github.com/danielgindi/Charts)
 
 Questions
