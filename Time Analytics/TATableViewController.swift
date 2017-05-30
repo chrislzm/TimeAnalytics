@@ -52,8 +52,7 @@ class TATableViewController: TAViewController, UITableViewDelegate, UITableViewD
         tableView.separatorStyle = .none
 
         // Remove titles from Tabbar
-        for tabBarItem in (tabBarController?.tabBar.items)!
-        {
+        for tabBarItem in (tabBarController?.tabBar.items)! {
             tabBarItem.title = ""
             tabBarItem.imageInsets = tabBarImageInsets
         }
