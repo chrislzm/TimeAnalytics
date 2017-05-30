@@ -19,8 +19,8 @@ class TACommuteTableViewController: TATableViewController {
 
     // MARK: Lifecycle
     override func viewDidLoad() {        
-        // Set tableview for superclass before calling super method
-        tableView = commuteTableView
+        // Set tableview for superclass before calling super method so that it can setup the table's properties (style, etc.)
+        super.tableView = commuteTableView
         super.viewDidLoad()
 
         navigationItem.title = viewTitle

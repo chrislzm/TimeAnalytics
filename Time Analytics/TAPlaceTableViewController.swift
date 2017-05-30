@@ -21,8 +21,8 @@ class TAPlaceTableViewController: TATableViewController {
     // MARK: Life Cycle
     
     override func viewDidLoad() {
-        // Set tableview for superclass before calling super method
-        tableView = placeTableView
+        // Set tableview for superclass before calling super method so that it can setup the table's properties (style, etc.)
+        super.tableView = placeTableView
         super.viewDidLoad()
         
         navigationItem.title = viewTitle

@@ -20,8 +20,8 @@ class TAActivityTableViewController: TATableViewController {
     
     // MARK: Lifecycle
     override func viewDidLoad() {
-        // Set tableview for superclass before calling super method
-        tableView = activityTableView
+        // Set tableview for superclass before calling super method so that it can setup the table's properties (style, etc.)
+        super.tableView = activityTableView
         super.viewDidLoad()
         
         navigationItem.title = viewTitle
