@@ -67,7 +67,7 @@ TANetConstants.swift
 Issues
 ------
 * Xcode "No such module 'Charts'": This is a known issue with Charts. To resolve, compile the project, and the error message should disappear. (May require Xcode restart.)
-* For us to pay attention to in the future: Data refresh uses Moves API "lastUpdate" (optional) value as the "updatedSince" parameter in requests for new data in order to optimize the request and only retrieve new data that's been updated by Moves. So far I have not seen any Moves Storyline data that does not contain this value. If this value disappears in the future, the refresh process will take longer than needed and we should use a different value for "updatedSince".
+* For us to pay attention to in the future: Data refresh uses Moves API "lastUpdate" (optional) value as the "updatedSince" parameter in requests for new data in order to optimize the request and only retrieve new data that's been updated by Moves (a.k.a. delta sync). So far I have not seen any Moves Storyline data that does not contain this value. If this value disappears in the future, the refresh process will take longer than needed and we should use a different value for "updatedSince".
 
 Credits
 ------
