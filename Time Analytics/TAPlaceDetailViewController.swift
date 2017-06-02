@@ -227,9 +227,7 @@ class TAPlaceDetailViewController: TADetailViewController, UITableViewDelegate {
             // Select (highlight) the cell that contains the place that this detail view belongs to
             if place.startTime == startTime, place.endTime == endTime {
                 selectedIndexPath = indexPath
-                let backgroundView = UIView()
-                backgroundView.backgroundColor = UIColor.yellow
-                placeCell.selectedBackgroundView = backgroundView
+                highlightTableCell(placeCell)
             }
             
             cell = placeCell
@@ -246,6 +244,7 @@ class TAPlaceDetailViewController: TADetailViewController, UITableViewDelegate {
             } else {
                 commuteCell.locationLabel.text = "From \(commute.startName!)"
             }
+            
             cell = commuteCell
         } else if tableView == activityTableView {
             let activity = activityHistoryTableData![indexPath.row]

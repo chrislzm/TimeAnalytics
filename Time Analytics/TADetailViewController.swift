@@ -78,6 +78,12 @@ class TADetailViewController: TAViewController, UITableViewDataSource {
 
     // MARK: View Methods
     
+    func highlightTableCell(_ cell:UITableViewCell) {
+        let backgroundView = UIView()
+        backgroundView.backgroundColor = UIColor.yellow
+        cell.selectedBackgroundView = backgroundView
+    }
+    
     func setupMapView(_ mapView:MKMapView) {
         mapView.isZoomEnabled = false
         mapView.isScrollEnabled = false

@@ -163,9 +163,7 @@ class TAActivityDetailViewController: TADetailViewController, UITableViewDelegat
             // Select (highlight) the cell that contains the activity that this detail view was launched for
             if activity.startTime == startTime, activity.endTime == endTime, activity.name == name {
                 selectedIndexPath = indexPath
-                let backgroundView = UIView()
-                backgroundView.backgroundColor = UIColor.yellow
-                activityCell.selectedBackgroundView = backgroundView
+                highlightTableCell(activityCell)
             }
             
             cell = activityCell

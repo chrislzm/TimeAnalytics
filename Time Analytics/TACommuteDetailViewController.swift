@@ -181,9 +181,7 @@ class TACommuteDetailViewController: TADetailViewController, UITableViewDelegate
             // Select (highlight) the cell that contains the commute that this detail view belongs to
             if commute.startTime == startTime, commute.endTime == endTime {
                 selectedIndexPath = indexPath
-                let backgroundView = UIView()
-                backgroundView.backgroundColor = UIColor.yellow
-                commuteCell.selectedBackgroundView = backgroundView
+                highlightTableCell(commuteCell)
             }
 
             cell = commuteCell
