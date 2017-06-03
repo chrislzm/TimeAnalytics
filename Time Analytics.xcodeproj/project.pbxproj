@@ -32,6 +32,7 @@
 		A5668BEA1ED2888000CB688D /* TACommuteSegment+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5668BE81ED2888000CB688D /* TACommuteSegment+CoreDataProperties.swift */; };
 		A56811291ED22708002FF4D0 /* TAPlaceDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56811281ED22708002FF4D0 /* TAPlaceDetailTableViewCell.swift */; };
 		A568112D1ED27A7B002FF4D0 /* TACommuteTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A568112C1ED27A7B002FF4D0 /* TACommuteTableViewController.swift */; };
+		A576642F1EE275D5004F5CA2 /* TAModelRescueTimeExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A576642E1EE275D5004F5CA2 /* TAModelRescueTimeExtensions.swift */; };
 		A57CED131ED5232D008BD6B9 /* TAModelHealthKitExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57CED121ED5232D008BD6B9 /* TAModelHealthKitExtensions.swift */; };
 		A5866A1C1EC964450025D38F /* TANetClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5866A1B1EC964440025D38F /* TANetClient.swift */; };
 		A5866A1E1EC9649C0025D38F /* TANetConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5866A1D1EC9649C0025D38F /* TANetConstants.swift */; };
@@ -91,6 +92,7 @@
 		A5668BE81ED2888000CB688D /* TACommuteSegment+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TACommuteSegment+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		A56811281ED22708002FF4D0 /* TAPlaceDetailTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TAPlaceDetailTableViewCell.swift; sourceTree = "<group>"; };
 		A568112C1ED27A7B002FF4D0 /* TACommuteTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TACommuteTableViewController.swift; sourceTree = "<group>"; };
+		A576642E1EE275D5004F5CA2 /* TAModelRescueTimeExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TAModelRescueTimeExtensions.swift; sourceTree = "<group>"; };
 		A57CED121ED5232D008BD6B9 /* TAModelHealthKitExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TAModelHealthKitExtensions.swift; sourceTree = "<group>"; };
 		A5866A1B1EC964440025D38F /* TANetClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TANetClient.swift; sourceTree = "<group>"; };
 		A5866A1D1EC9649C0025D38F /* TANetConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TANetConstants.swift; sourceTree = "<group>"; };
@@ -217,6 +219,7 @@
 				A5AB93FC1ECA68A40055301C /* TAModel.swift */,
 				A57CED121ED5232D008BD6B9 /* TAModelHealthKitExtensions.swift */,
 				A52D9F361EDA6EED00DDC8C1 /* TAModelNotificationExtensions.swift */,
+				A576642E1EE275D5004F5CA2 /* TAModelRescueTimeExtensions.swift */,
 				A5866A1B1EC964440025D38F /* TANetClient.swift */,
 				A5866A1D1EC9649C0025D38F /* TANetConstants.swift */,
 				A5866A1F1EC966870025D38F /* TANetConvenience.swift */,
@@ -474,6 +477,7 @@
 				A52564BC1EC93E4000DD843F /* BorderedButton.swift in Sources */,
 				A556EB871ED425DA003F8E2B /* TAActivitySegment+CoreDataProperties.swift in Sources */,
 				A54502F61ED3FCC5003523CB /* TAHealthKitAccessController.swift in Sources */,
+				A576642F1EE275D5004F5CA2 /* TAModelRescueTimeExtensions.swift in Sources */,
 				A5B3191A1ED6571700401BF8 /* TADetailLineChartViewController.swift in Sources */,
 				A5FFFD8F1ECAB4A700B55020 /* TAPlaceTableViewController.swift in Sources */,
 				A52542AE1ED5F15E008F209C /* TAActivityDetailPlaceTableViewCell.swift in Sources */,
