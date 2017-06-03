@@ -63,6 +63,7 @@ class TAModel {
             TANetClient.sharedInstance.movesUserId = UserDefaults.standard.value(forKey: "movesUserId") as? UInt64
             TANetClient.sharedInstance.movesUserFirstDate = UserDefaults.standard.value(forKey: "movesUserFirstDate") as? String
             TANetClient.sharedInstance.movesLatestUpdate = UserDefaults.standard.value(forKey: "movesLatestUpdate") as? Date
+            TANetClient.sharedInstance.rescueTimeApiKey = UserDefaults.standard.value(forKey: "rescueTimeApiKey") as? String
             TANetClient.sharedInstance.lastCheckedForNewData = lastCheck
         }
     }
@@ -75,6 +76,7 @@ class TAModel {
         UserDefaults.standard.removeObject(forKey: "movesRefreshToken")
         UserDefaults.standard.removeObject(forKey: "movesUserFirstDate")
         UserDefaults.standard.removeObject(forKey: "movesLatestUpdate")
+        UserDefaults.standard.removeObject(forKey: "rescueTimeApiKey")
         UserDefaults.standard.removeObject(forKey: "lastCheckedForNewData")
         UserDefaults.standard.synchronize()
         TANetClient.sharedInstance.movesAccessTokenExpiration = nil
@@ -84,6 +86,7 @@ class TAModel {
         TANetClient.sharedInstance.movesUserId = nil
         TANetClient.sharedInstance.movesUserFirstDate = nil
         TANetClient.sharedInstance.movesLatestUpdate = nil
+        TANetClient.sharedInstance.rescueTimeApiKey = nil
         TANetClient.sharedInstance.lastCheckedForNewData = nil
     }
     
