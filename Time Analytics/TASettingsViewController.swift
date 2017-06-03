@@ -46,7 +46,7 @@ class TASettingsViewController:TADataUpdateViewController {
     func editRescueTimeApiKey() {
         let dialog = UIAlertController(title: "RescueTime API Key", message: "Entering a RescueTime API Key here will allow us to display your computer usage along with your other activities. Please note this feature is currently under development.", preferredStyle: UIAlertControllerStyle.alert)
         dialog.addTextField() { (textField) in
-            textField.text = TANetClient.sharedInstance.rescueTimeApiKey
+            textField.text = TAModel.sharedInstance.getRescueTimeApiKey()
         }
         dialog.addAction(UIAlertAction(title: "Done", style: UIAlertActionStyle.default, handler: {
             alert -> Void in
@@ -72,7 +72,8 @@ class TASettingsViewController:TADataUpdateViewController {
     }
     
     func saveRescueTimeApiKey(_ apiKey:String) {
-        // Start activity indicator and display message that we are updating
+        TAModel.sharedInstance.setRescueTimeApiKey(apiKey)
+
         let updatedDialog = UIAlertController(title: "Updated", message: "We will use this API key to request updates from RescueTime", preferredStyle: UIAlertControllerStyle.alert)
         updatedDialog.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
         
