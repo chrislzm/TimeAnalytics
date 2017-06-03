@@ -33,6 +33,9 @@ class TANetClient {
     var movesUserFirstDate:String?
     var movesLatestUpdate:Date?
     
+    // RescueTime session variable
+    var rescueTimeApiKey:String?
+    
     // Internal session variables
     var lastCheckedForNewData:Date?
     

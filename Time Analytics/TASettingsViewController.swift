@@ -27,6 +27,9 @@ class TASettingsViewController:TADataUpdateViewController {
         // After this begins, AppDelegate will handle the rest of the data processing flow, including importing HealthKit data
         TAModel.sharedInstance.downloadAndProcessNewMovesData()
     }
+    @IBAction func rescueTimeButtonPressed() {
+        editRescueTimeApiKey()
+    }
 
     @IBAction func logOutButtonPressed() {
         // Confirmation dialog for logout
@@ -36,6 +39,49 @@ class TASettingsViewController:TADataUpdateViewController {
         present(alert, animated: true, completion: nil)
     }
     
+    // MARK: Action Helper Methods
+    
+    // RescueTime API Key
+    
+    func editRescueTimeApiKey() {
+        let dialog = UIAlertController(title: "RescueTime API Key", message: "Entering a RescueTime API Key here will allow us to display your computer usage along with your other activities. Please note this feature is currently under development.", preferredStyle: UIAlertControllerStyle.alert)
+        dialog.addTextField() { (textField) in
+            textField.text = TANetClient.sharedInstance.rescueTimeApiKey
+        }
+        dialog.addAction(UIAlertAction(title: "Done", style: UIAlertActionStyle.default, handler: {
+            alert -> Void in
+            let textField = dialog.textFields![0] as UITextField
+            self.confirmRescueTimeApiKey(textField.text!)
+        }))
+        dialog.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default, handler: nil))
+        DispatchQueue.main.async {
+            self.present(dialog, animated: true, completion: nil)
+        }
+    }
+    
+    func confirmRescueTimeApiKey(_ apiKey:String) {
+        let confirmDialog = UIAlertController(title: "Confirm", message: "RescueTime API Key:\n\(apiKey)", preferredStyle: UIAlertControllerStyle.alert)
+        confirmDialog.addAction(UIAlertAction(title: "Save", style: UIAlertActionStyle.default, handler: {
+            alert -> Void in
+            self.saveRescueTimeApiKey(apiKey)
+        }))
+        confirmDialog.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default, handler: nil))
+        DispatchQueue.main.async {
+            self.present(confirmDialog, animated: true, completion: nil)
+        }
+    }
+    
+    func saveRescueTimeApiKey(_ apiKey:String) {
+        // Start activity indicator and display message that we are updating
+        let updatedDialog = UIAlertController(title: "Updated", message: "We will use this API key to request updates from RescueTime", preferredStyle: UIAlertControllerStyle.alert)
+        updatedDialog.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+        
+        DispatchQueue.main.async {
+            self.present(updatedDialog, animated: true, completion: nil)
+        }
+    }
+    
+    // Logout
     func logoutConfirmed(alert:UIAlertAction!) {
         DispatchQueue.main.async {
             
