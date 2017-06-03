@@ -131,4 +131,55 @@ extension TANetClient {
             }
         }
     }
+    
+    struct RescueTimeApi {
+        struct Constants {
+            static let Host = "www.rescuetime.com"
+        }
+        
+        struct Methods {
+            static let AnalyticData = "/anapi/data"
+        }
+        
+        struct ParameterKeys {
+            
+            // Required Parameters
+            static let Key = "key"
+            static let Format = "format"
+            
+            // Optional Parameters
+            static let Perspective = "perspective"
+            static let TimeResolution = "resolution_time"
+            static let Group = "restrict_group"
+            static let StartDay = "restrict_begin"
+            static let EndDay = "restrict_end"
+            static let Kind = "restrict_kind"
+            static let Thing = "restrict_thing"
+            static let Thingy = "restrict_thingy"
+        }
+        
+        struct ParameterValues {
+            static let CsvFormat = "csv"
+            static let JsonFormat = "json"
+            
+            // For "Perspective" parameter
+            static let Rank = "rank"
+            static let Interval = "interval"
+            static let Member = "member"
+            
+            // For "Time Resolution" parameter
+            static let Month = "month"
+            static let Week = "week"
+            static let Day = "day"
+            static let Hour = "hour"
+            static let Minute = "minute"
+            
+            // for "Kind" parameter
+            static let Category = "category"
+            static let Activity = "activity"
+            static let Productivity = "productivity"
+            static let Document = "document"
+            static let Efficiency = "efficiency"
+        }
+    }
 }
