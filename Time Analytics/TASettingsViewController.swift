@@ -102,7 +102,7 @@ class TASettingsViewController:TADataUpdateViewController {
             let timeFormatter = DateFormatter()
             timeFormatter.dateFormat = "h:mm a"
             
-            let lastUpdatedString = "\(dateFormatter.string(from: lastChecked)) at \(timeFormatter.string(from: lastChecked))"
+            let lastUpdatedString = "Last Updated - \(timeFormatter.string(from: lastChecked)) \(dateFormatter.string(from: lastChecked))"
             
             self.lastUpdatedLabel.text = lastUpdatedString
         }
