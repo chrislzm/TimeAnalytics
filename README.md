@@ -7,7 +7,7 @@ By Chris Leung
 
 Overview
 --------
-Learn how you spend your time with Time Analytics. Analyze your data from [Moves](https://moves-app.com/) and [Apple Health](https://www.apple.com/ios/health/) and generate detailed information about the places, commutes and activities you spend the most time on. Learn how they relate to each other through summaries, graphs and history views.
+Learn how you spend your time with Time Analytics. Analyze your data from [Moves](https://moves-app.com/), [Apple Health](https://www.apple.com/ios/health/), and [RescueTime](https://www.rescuetime.com) and view detailed information about the activities, places, and commutes you spend the most time on. Learn how they all relate to each other through automatically generated charts, statistics and detailed history views.
 
 Installation
 ------------
@@ -45,11 +45,12 @@ Please obtain your own [Moves API ClientId and ClientSecret](https://dev.moves-a
 
 I highly recommend first reading documentation and code in "AppDelegate.swift" and "TAModelNotificationExtensions.swift" to understand the different steps of the data processing flow and their associated notifications.
 
-3rd Party API documentation:
+API documentation:
 
-* [Charts Framework](https://github.com/danielgindi/Charts)
-* [HealthKit API](https://developer.apple.com/reference/healthkit)
-* [Moves API](https://dev.moves-app.com/docs/api)
+* [Charts](https://github.com/danielgindi/Charts)
+* [HealthKit](https://developer.apple.com/reference/healthkit)
+* [Moves](https://dev.moves-app.com/docs/api)
+* [RescueTime](https://www.rescuetime.com/apidoc#analytic-api-reference)
 
 Additional Settings
 -------------------
@@ -68,11 +69,6 @@ Issues
 ------
 * Xcode "No such module 'Charts'": This is a known issue with Charts. To resolve, compile the project, and the error message should disappear. (May require Xcode restart.)
 * For us to pay attention to in the future: Data refresh uses Moves API "lastUpdate" (optional) value as the "updatedSince" parameter in requests for new data in order to optimize the request and only retrieve new data that's been updated by Moves (a.k.a. delta sync). So far I have not seen any Moves Storyline data that does not contain this value. If this value disappears in the future, the refresh process will take longer than needed and we should use a different value for "updatedSince".
-
-Credits
-------
-* [Moves](https://moves-app.com/)
-* [Charts 3.0.2](https://github.com/danielgindi/Charts)
 
 Questions
 ---------
